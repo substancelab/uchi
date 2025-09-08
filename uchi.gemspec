@@ -8,14 +8,14 @@ Gem::Specification.new do |spec|
   spec.authors = ["Jakob Skjerning"]
   spec.email = ["jakob@mentalized.net"]
 
-  spec.summary = "TODO: Write a short summary, because RubyGems requires one."
-  spec.description = "TODO: Write a longer description or delete this line."
-  spec.homepage = "https://github.com/koppen/uchi"
+  spec.summary = "Some automated admin stuff for Rails apps"
+  # spec.description = "TODO: Write a longer description or delete this line."
+  spec.homepage = "https://github.com/substancelab/uchi"
   spec.required_ruby_version = ">= 3.2.0"
 
-  spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
+  # spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/koppen/uchi"
+  spec.metadata["source_code_uri"] = "https://github.com/substancelab/uchi"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
