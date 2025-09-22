@@ -8,6 +8,7 @@
     "test": "test"
   },
   "scripts": {
+    "assets:build": "npm run build:css && npm run build:js",
     "build:css": "node_modules/.bin/tailwindcss -i ./app/assets/tailwind/uchi.css -o ./app/assets/stylesheets/uchi/application.css",
     "build:js": "node_modules/.bin/esbuild --bundle --outfile=app/assets/javascripts/uchi/application.js app/assets/javascripts/uchi.js",
     "test": "echo \"Error: no test specified\" && exit 1",
