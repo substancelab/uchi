@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
-require_relative "uchi/version"
+require "uchi/version"
+require "uchi/engine"
 
 module Uchi
-  class Error < StandardError; end
   # Your code goes here...
 end

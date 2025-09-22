@@ -1,0 +1,21 @@
+/* Uchi UI */
+
+/* This file is compiled into app/assets/stylesheets/uchi/application.css by
+running the following command:
+
+    tailwindcss -i app/assets/tailwind/uchi.css -o app/assets/stylesheets/uchi/application.css
+    npx @tailwindcss/cli -i ./app/assets/tailwind/uchi.css -o ./app/assets/stylesheets/uchi/application.css
+*/
+
+/* We need tailwindcss, duh */
+@import "tailwindcss";
+
+/* Import the default theme variables from Flowbite
+This imports them from node_modules/flowbite/src/themes/default.css */
+@import "flowbite/src/themes/default";
+
+/* Import the Flowbite plugin */
+@plugin "flowbite/plugin";
+
+/* Configure the source files of Flowbite */
+@source "../../../node_modules/flowbite";

@@ -1,0 +1,16 @@
+<header class="items-center justify-between px-4 mb-6 space-x-6 space-y-3 md:flex md:px-0">
+  <div>
+    <h1 class="mb-1 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white group"><%= title %></h1>
+    <% if description.present? %>
+      <div class="text-lg text-gray-500 lg:mb-0 dark:text-gray-400 lg:max-w-2xl"><%= description %></div>
+    <% end %>
+  </div>
+
+  <% if actions.any? %>
+    <div class="flex items-center space-x-2">
+      <% actions.each do |action| %>
+        <%= action %>
+      <% end %>
+    </div>
+  <% end %>
+</header>

@@ -1,0 +1,23 @@
+<%= link_to("< Back", :action => :index) %>
+
+<%= render(
+  Uchi::Ui::PageHeader.new(
+    description: @repository.translate.description(:show, record: @record),
+    title: @repository.translate.title(:show, record: @record),
+  )
+) do |header| %>
+  <% header.with_action do %>
+    <%= link_to(@repository.translate.link_to_edit(@record), {:action => :edit, :id => @record.id}, class: Flowbite::Button.classes) %>
+  <% end %>
+<% end %>
+
+<%= render(Uchi::Ui::Show::AttributeFields.new(
+  attribute_fields: @repository.fields_for_show.select { |field| field.group_as(:show) == :attributes },
+  record: @record,
+  repository: @repository
+)) %>
+
+<% association_fields = @repository.fields_for_show.select{ |field| field.group_as(:show) == :associations } %>
+<% association_fields.each do |field| %>
+  <%= render(field.show_component(record: @record, repository: @repository)) %>
+<% end %>

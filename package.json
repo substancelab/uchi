@@ -1,0 +1,28 @@
+{
+  "name": "uchi",
+  "version": "0.0.1",
+  "description": "## Installation",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "build:css": "node_modules/.bin/tailwindcss -i ./app/assets/tailwind/uchi.css -o ./app/assets/stylesheets/uchi/application.css",
+    "build:js": "node_modules/.bin/esbuild --bundle --outfile=app/assets/javascripts/uchi/application.js app/assets/javascripts/uchi.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch:css": "node_modules/.bin/tailwindcss --watch -i ./app/assets/tailwind/uchi.css -o ./app/assets/stylesheets/uchi/application.css",
+    "watch:js": "node_modules/.bin/esbuild --watch --bundle --outfile=app/assets/javascripts/uchi/application.js app/assets/javascripts/uchi.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hotwired/turbo-rails": "^8.0.16",
+    "@tailwindcss/cli": "^4.1.13",
+    "flowbite": "^3.1.2",
+    "tailwindcss": "^4.1.13"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10"
+  }
+}

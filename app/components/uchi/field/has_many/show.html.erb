@@ -1,0 +1,18 @@
+<div class="my-10">
+  <h2 class="px-4 my-6 text-2xl font-bold md:px-0"><%= repository.translate.field_label(field) %></h2>
+
+  <div class="relative overflow-x-auto bg-white border border-gray-200 shadow-sm md:rounded-lg dark:bg-gray-800 dark:border-gray-700">
+    <%= render(Uchi::Ui::Index::RecordsTable.new(
+      columns: fields,
+      records: associated_records,
+      repository: associated_repository,
+      sort_order: associated_repository.default_sort_order,
+      scope: {
+        field: field.name,
+        id: record.id,
+        inverse_of: inverse_association.name,
+        model: record.model_name,
+      }
+    )) %>
+  </div>
+</div>

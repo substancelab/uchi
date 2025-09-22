@@ -1,0 +1,4 @@
+<%= link_to(
+  associated_record,
+  helpers.uchi.send("#{associated_repository.model_param_key}_path", id: associated_record.id),
+) %>

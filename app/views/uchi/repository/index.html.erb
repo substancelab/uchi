@@ -1,0 +1,21 @@
+<%= render(
+  Uchi::Ui::PageHeader.new(
+    description: @repository.translate.description(:index),
+    title: @repository.translate.title(:index),
+  )) do |header| %>
+  <% header.with_action do %>
+    <%= link_to(@repository.translate.link_to_new, {:action => :new}, class: Flowbite::Button.classes) %>
+  <% end %>
+<% end %>
+
+<div class="mx-0">
+  <div class="relative overflow-x-auto bg-white border border-gray-200 shadow-sm md:rounded-lg dark:bg-gray-800 dark:border-gray-700">
+    <%= render(Uchi::Ui::Index::RecordsTable.new(
+      columns: @columns,
+      sort_order: current_sort_order,
+      records: @records,
+      repository: @repository,
+      scope: (scoped? ? scope_params : nil),
+    )) %>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<%= render(
+  Uchi::Ui::PageHeader.new(
+    description: @repository.translate.description(:edit),
+    title: @repository.translate.title(:edit, record: @record),
+  )
+) %>
+
+<div class="mx-4 md:mx-0">
+  <%= render(Flowbite::Card.new) do %>
+    <%= form_with model: @record, url: {:action => :update} do |form| %>
+      <div class="space-y-6">
+        <% @repository.fields_for_edit.each do |field| %>
+          <div>
+            <%= render(
+              field.edit_component(
+                form: form,
+                repository: @repository,
+                label: @repository.translate.field_label(field),
+                hint: @repository.translate.field_hint(field)
+              )
+            ) %>
+          </div>
+        <% end %>
+
+        <%= render(Uchi::Ui::Form::Footer.new) do |footer| %>
+          <%= footer.with_action { render(Flowbite::Button.new) { @repository.translate.submit_button } } %>
+          <%= footer.with_action { link_to(@repository.translate.link_to_cancel, :action => :show, :id => @record.id) } %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
