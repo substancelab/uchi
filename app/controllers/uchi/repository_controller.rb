@@ -7,7 +7,7 @@ module Uchi
     def create
       @record = build_record
       if @record.save
-        redirect_to({:action => :show, :id => @record.id}, :notice => "Office created successfully.")
+        redirect_to({action: :show, id: @record.id}, notice: "Office created successfully.")
       else
         render :new
       end
@@ -30,7 +30,7 @@ module Uchi
 
         # TODO: This is very much a security issue. We need to restrict and
         # validate this.
-        @records = find_all_records(:scope => parent_record.public_send(field_name))
+        @records = find_all_records(scope: parent_record.public_send(field_name))
       else
         # Handle the normal case
         @columns = @repository.fields_for_index
@@ -49,7 +49,7 @@ module Uchi
     def update
       @record = find_record
       if @record.update(record_params)
-        redirect_to({:action => :show, :id => @record.id}, :notice => "Office updated successfully.")
+        redirect_to({action: :show, id: @record.id}, notice: "Office updated successfully.")
       else
         render :edit
       end
@@ -66,7 +66,7 @@ module Uchi
     end
 
     def find_all_records(scope: nil)
-      @repository.find_all(:scope => scope, :sort_order => current_sort_order)
+      @repository.find_all(scope: scope, sort_order: current_sort_order)
     end
 
     def find_record
@@ -75,8 +75,8 @@ module Uchi
 
     def record_params
       editable_fields = @repository.fields_for_edit
-      (params[@repository.model_param_key] || ActionController::Parameters.new).
-        permit(editable_fields.map(&:param_key))
+      (params[@repository.model_param_key] || ActionController::Parameters.new)
+        .permit(editable_fields.map(&:param_key))
     end
 
     def repository_class

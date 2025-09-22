@@ -15,7 +15,7 @@ module Uchi
         def associated_records
           records = field.value(record)
 
-          associated_repository.find_all(:scope => records)
+          associated_repository.find_all(scope: records)
         end
 
         def associated_repository

@@ -90,7 +90,7 @@ module Uchi
 
     # Provides access to translation helpers specific to this repository.
     def translate
-      @translate ||= Translate.new(:repository => self)
+      @translate ||= Translate.new(repository: self)
     end
 
     private

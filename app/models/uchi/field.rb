@@ -21,20 +21,20 @@ module Uchi
     def edit_component(form:, repository:, label: nil, hint: nil)
       component_class = self.class.const_get(:Edit)
       component_class.new(
-        :field => self,
-        :form => form,
-        :repository => repository,
-        :label => label,
-        :hint => hint
+        field: self,
+        form: form,
+        repository: repository,
+        label: label,
+        hint: hint
       )
     end
 
     def index_component(record:, repository:)
       component_class = self.class.const_get(:Index)
       component_class.new(
-        :field => self,
-        :record => record,
-        :repository => repository
+        field: self,
+        record: record,
+        repository: repository
       )
     end
 
@@ -70,9 +70,9 @@ module Uchi
     def show_component(record:, repository:)
       component_class = self.class.const_get(:Show)
       component_class.new(
-        :field => self,
-        :record => record,
-        :repository => repository
+        field: self,
+        record: record,
+        repository: repository
       )
     end
 

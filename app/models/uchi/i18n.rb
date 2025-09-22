@@ -6,7 +6,7 @@ module Uchi
 
     def translate(key, **options)
       scope = options.delete(:scope) || "uchi"
-      ::I18n.translate(key, **options, :scope => scope)
+      ::I18n.translate(key, **options, scope: scope)
     end
   end
 end

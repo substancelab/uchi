@@ -11,10 +11,10 @@ module Uchi
       def description(page, record: nil)
         translate(
           "description",
-          :default => nil,
-          :model => singular_name,
-          :record => record,
-          :scope => i18n_scope(page)
+          default: nil,
+          model: singular_name,
+          record: record,
+          scope: i18n_scope(page)
         )
       end
 
@@ -26,8 +26,8 @@ module Uchi
       def field_label(field)
         translate(
           "label",
-          :default => model.human_attribute_name(field.name),
-          :scope => i18n_scope("field.#{field.name}")
+          default: model.human_attribute_name(field.name),
+          scope: i18n_scope("field.#{field.name}")
         )
       end
 
@@ -35,22 +35,22 @@ module Uchi
       def field_hint(field)
         translate(
           "hint",
-          :default => nil,
-          :scope => i18n_scope("field.#{field.name}")
+          default: nil,
+          scope: i18n_scope("field.#{field.name}")
         )
       end
 
       def link_to_cancel
-        translate("common.cancel", :default => "Cancel")
+        translate("common.cancel", default: "Cancel")
       end
 
       def link_to_edit(record)
         translate(
           "link_to_edit",
-          :default => "Edit",
-          :model => singular_name,
-          :record => repository.title(record),
-          :scope => i18n_scope("button")
+          default: "Edit",
+          model: singular_name,
+          record: repository.title(record),
+          scope: i18n_scope("button")
         )
       end
 
@@ -58,9 +58,9 @@ module Uchi
       def link_to_new
         translate(
           "link_to_new",
-          :default => "New %{model}", # rubocop:disable Style/FormatStringToken
-          :model => singular_name,
-          :scope => i18n_scope("button")
+          default: "New %{model}", # rubocop:disable Style/FormatStringToken
+          model: singular_name,
+          scope: i18n_scope("button")
         )
       end
 
@@ -69,14 +69,14 @@ module Uchi
       def plural_name
         ::I18n.translate(
           "uchi.repository.#{i18n_key}.model",
-          :count => 2,
-          :default => model.model_name.human(:count => 2)
+          count: 2,
+          default: model.model_name.human(count: 2)
         )
       end
 
       # Returns the label for a generic submit button
       def submit_button
-        translate("common.save", :default => "Save")
+        translate("common.save", default: "Save")
       end
 
       # Returns the title for the given page.
@@ -85,10 +85,10 @@ module Uchi
 
         translate(
           "title",
-          :default => plural_name,
-          :model => singular_name,
-          :record => record,
-          :scope => i18n_scope(page)
+          default: plural_name,
+          model: singular_name,
+          record: record,
+          scope: i18n_scope(page)
         )
       end
 
@@ -112,8 +112,8 @@ module Uchi
       def singular_name
         ::I18n.translate(
           "uchi.repository.#{i18n_key}.model",
-          :count => 1,
-          :default => model.model_name.human(:count => 1)
+          count: 1,
+          default: model.model_name.human(count: 1)
         )
       end
 

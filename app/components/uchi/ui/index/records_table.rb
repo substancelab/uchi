@@ -30,7 +30,7 @@ module Uchi
             [
               scope[:model],
               scope[:id],
-              scope[:field],
+              scope[:field]
             ]
           else
             [repository.controller_name]
