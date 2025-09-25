@@ -7,7 +7,7 @@ module Uchi
     def create
       @record = build_record
       if @record.save
-        redirect_to({action: :show, id: @record.id}, notice: "Office created successfully.")
+        redirect_to(@repository.routes.path_for(:show, id: @record.id), notice: "Office created successfully.")
       else
         render :new
       end
@@ -49,7 +49,7 @@ module Uchi
     def update
       @record = find_record
       if @record.update(record_params)
-        redirect_to({action: :show, id: @record.id}, notice: "Office updated successfully.")
+        redirect_to(@repository.routes.path_for(:show, id: @record.id), notice: "Office updated successfully.")
       else
         render :edit
       end

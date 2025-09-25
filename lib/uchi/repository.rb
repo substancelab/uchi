@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "repository/routes"
+
 module Uchi
   class Repository
     class << self
@@ -81,6 +83,14 @@ module Uchi
 
     def model_param_key
       model.model_name.param_key
+    end
+
+    # Returns an instance of Uchi::Repository::Routes for this repository,
+    # which can be used to generate paths and URLs.
+    #
+    # @return [Uchi::Repository::Routes]
+    def routes
+      @routes ||= Routes.new(self)
     end
 
     # Returns the title to show for a given record

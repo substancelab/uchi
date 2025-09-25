@@ -1,4 +1,4 @@
-<%= link_to("< Back", :action => :index) %>
+<%= link_to("< Back", @repository.routes.path_for(:index)) %>
 
 <%= render(
   Uchi::Ui::PageHeader.new(
@@ -7,7 +7,7 @@
   )
 ) do |header| %>
   <% header.with_action do %>
-    <%= link_to(@repository.translate.link_to_edit(@record), {:action => :edit, :id => @record.id}, class: Flowbite::Button.classes) %>
+    <%= link_to(@repository.translate.link_to_edit(@record), @repository.routes.path_for(:edit, id: @record.id), class: Flowbite::Button.classes) %>
   <% end %>
 <% end %>
 

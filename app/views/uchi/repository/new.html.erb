@@ -6,7 +6,7 @@
 ) %>
 
 <%= render(Flowbite::Card.new) do %>
-  <%= form_with model: @record, url: {:action => :create} do |form| %>
+  <%= form_with model: @record, url: @repository.routes.path_for(:create) do |form| %>
     <div class="space-y-6">
       <% @repository.fields_for_edit.each do |field| %>
         <div>
@@ -23,7 +23,7 @@
 
       <%= render(Uchi::Ui::Form::Footer.new) do |footer| %>
         <%= footer.with_action { render(Flowbite::Button.new) { @repository.translate.submit_button } } %>
-        <%= footer.with_action { link_to(@repository.translate.link_to_cancel, :action => :index) } %>
+        <%= footer.with_action { link_to(@repository.translate.link_to_cancel, @repository.routes.path_for(:index)) } %>
       <% end %>
     </div>
   <% end %>

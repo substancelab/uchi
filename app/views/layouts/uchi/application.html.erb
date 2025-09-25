@@ -15,7 +15,7 @@
         <ul class="space-y-2 font-medium">
           <% Uchi::Repository.all.map { |repository| repository.new }.sort_by { |repository| repository.translate.plural_name.downcase }.each do |repository| %>
             <li>
-              <%= link_to({:controller => repository.controller_name, :action => :index}, :class => "flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group") do %>
+              <%= link_to(repository.routes.path_for(:index), :class => "flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group") do %>
                 <span class="ms-3"><%= repository.translate.plural_name.titlecase %></span>
               <% end %>
             </li>

@@ -4,7 +4,7 @@
     title: @repository.translate.title(:index),
   )) do |header| %>
   <% header.with_action do %>
-    <%= link_to(@repository.translate.link_to_new, {:action => :new}, class: Flowbite::Button.classes) %>
+    <%= link_to(@repository.translate.link_to_new, @repository.routes.path_for(:new), class: Flowbite::Button.classes) %>
   <% end %>
 <% end %>
 
