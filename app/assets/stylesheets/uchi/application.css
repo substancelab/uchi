@@ -1026,6 +1026,9 @@
   .mx-4 {
     margin-inline: calc(var(--spacing) * 4);
   }
+  .my-4 {
+    margin-block: calc(var(--spacing) * 4);
+  }
   .my-6 {
     margin-block: calc(var(--spacing) * 6);
   }
