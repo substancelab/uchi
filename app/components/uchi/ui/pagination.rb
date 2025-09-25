@@ -39,16 +39,6 @@ module Uchi
         end
         result
       end
-
-      # Returns true if there is a previous page
-      def previous?
-        paginator.page > 1
-      end
-
-      # Returns true if there is a next page
-      def next?
-        paginator.next.present?
-      end
     end
   end
 end
