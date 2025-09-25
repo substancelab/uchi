@@ -56,6 +56,7 @@ end
 Add to `config/routes.rb`:
 
 ```
+  mount Uchi::Engine, :at => "/uchi"
   namespace :uchi do
     resources :customers
   end
