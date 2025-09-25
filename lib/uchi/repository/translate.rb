@@ -70,7 +70,7 @@ module Uchi
         ::I18n.translate(
           "uchi.repository.#{i18n_key}.model",
           count: 2,
-          default: model.model_name.human(count: 2)
+          default: model.model_name.plural.humanize
         )
       end
 
