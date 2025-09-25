@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require "pagy"
+
 module Uchi
   class RepositoryController < Uchi::ApplicationController
+    include Pagy::Method
+
     before_action :set_repository
 
     def create
@@ -35,6 +39,7 @@ module Uchi
         # Handle the normal case
         @columns = @repository.fields_for_index
         @records = find_all_records
+        @pagy, @records = pagy(:offset, @records, limit: index_records_per_page, page: params[:page])
       end
     end
 
@@ -71,6 +76,11 @@ module Uchi
 
     def find_record
       @record = @repository.find(params[:id])
+    end
+
+    # Returns the number of records per page to show in index views
+    def index_records_per_page
+      5
     end
 
     def record_params
