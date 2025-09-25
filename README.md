@@ -3,6 +3,8 @@
 
 ## Installation
 
+### 1. Install the gem
+
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -15,11 +17,51 @@ And then execute:
 $ bundle
 ```
 
-Or install it yourself as:
+### 2. Create a repository
 
-```bash
-$ gem install uchi
+Add a repository for one of your models in `app/uchi/repositories/customer.rb`:
+
+```ruby
+module Uchi
+  module Repositories
+    class Customer < Repository
+      # Returns an array of fields to show for this resource.
+      def fields
+        [
+          Field::Number.new(:id),
+          Field::Text.new(:name),
+        ]
+      end
+    end
+  end
+end
 ```
+
+### 3. Create a controller to handle requests
+
+In `app/controllers/uchi/customers_controller.rb`:
+
+```ruby
+module Uchi
+  class CustomersController < Uchi::RepositoryController
+    def repository_class
+      Uchi::Repositories::Customer
+    end
+  end
+end
+```
+
+### 4. Route requests to the controller
+
+Add to `config/routes.rb`:
+
+```
+  namespace :uchi do
+    resources :customers
+  end
+```
+
+And visit http://localhost:3000/uchi/customers.
 
 ## Principles
 
