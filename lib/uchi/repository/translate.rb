@@ -64,6 +64,10 @@ module Uchi
         )
       end
 
+      def loading_message
+        translate("loading", default: "Loading...", scope: "uchi.repository.common")
+      end
+
       # Returns the localized, human-readable plural name of the model this
       # repository manages.
       def plural_name
