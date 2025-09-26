@@ -6,6 +6,13 @@ module Uchi
       class TurboFrame < ViewComponent::Base
         attr_reader :repository, :scope, :src
 
+        def call
+          helpers
+            .turbo_frame_tag(turbo_frame_id, **options) {
+              content
+            }
+        end
+
         def initialize(repository:, scope: nil, src: nil)
           super()
           @repository = repository
