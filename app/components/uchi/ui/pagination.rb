@@ -39,6 +39,10 @@ module Uchi
         end
         result
       end
+
+      def render?
+        paginator.present?
+      end
     end
   end
 end
