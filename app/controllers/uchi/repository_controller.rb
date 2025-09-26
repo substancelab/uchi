@@ -35,6 +35,7 @@ module Uchi
         # TODO: This is very much a security issue. We need to restrict and
         # validate this.
         @records = find_all_records(scope: parent_record.public_send(field_name))
+        @pagy, @records = pagy(:offset, @records, limit: scoped_records_per_page, page: params[:page])
       else
         # Handle the normal case
         @columns = @repository.fields_for_index
@@ -104,6 +105,10 @@ module Uchi
 
     helper_method def scoped?
       params[:scope].present?
+    end
+
+    def scoped_records_per_page
+      5
     end
 
     def set_repository
