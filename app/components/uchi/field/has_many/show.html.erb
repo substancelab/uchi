@@ -9,20 +9,18 @@
         id: record.id,
         inverse_of: inverse_association.name,
         model: record.model_name,
-      }
-    )) do %>
-      <%= render(Uchi::Ui::Index::RecordsTable.new(
-        columns: fields,
-        records: associated_records,
-        repository: associated_repository,
-        sort_order: associated_repository.default_sort_order,
+      },
+      src: associated_repository.routes.path_for(
+        :index,
         scope: {
           field: field.name,
           id: record.id,
           inverse_of: inverse_association.name,
           model: record.model_name,
-        }
-      )) %>
+        },
+      )
+    )) do %>
+      Loading...
     <% end %>
   </div>
 </div>

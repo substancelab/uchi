@@ -4,15 +4,22 @@ module Uchi
   module Ui
     module Index
       class TurboFrame < ViewComponent::Base
-        attr_reader :repository, :scope
+        attr_reader :repository, :scope, :src
 
-        def initialize(repository:, scope: nil)
+        def initialize(repository:, scope: nil, src: nil)
           super()
           @repository = repository
           @scope = scope
+          @src = src
         end
 
         protected
+
+        def options
+          options = {}
+          options[:src] = src if src.present?
+          options
+        end
 
         def scoped?
           scope.present?
