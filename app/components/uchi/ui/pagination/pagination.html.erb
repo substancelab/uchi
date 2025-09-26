@@ -1,5 +1,5 @@
 <nav aria-label="<%= aria_label %>">
-  <ul class="flex items-center -space-x-px h-10 text-base">
+  <ul class="flex items-center -space-x-px h-8 text-sm">
     <%= render(Uchi::Ui::Pagination::PreviousLink.new(paginator: @paginator)) %>
     <% pages.each do |page_number| %>
       <% if page_number.nil? %>
