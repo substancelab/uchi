@@ -10,12 +10,17 @@
 
 <div class="mx-0">
   <div class="relative overflow-x-auto bg-white border border-gray-200 shadow-sm md:rounded-lg dark:bg-gray-800 dark:border-gray-700">
-    <%= render(Uchi::Ui::Index::RecordsTable.new(
-      columns: @columns,
-      sort_order: current_sort_order,
-      records: @records,
+    <%= render(Uchi::Ui::Index::TurboFrame.new(
       repository: @repository,
       scope: (scoped? ? scope_params : nil),
-    )) %>
+    )) do %>
+      <%= render(Uchi::Ui::Index::RecordsTable.new(
+        columns: @columns,
+        sort_order: current_sort_order,
+        records: @records,
+        repository: @repository,
+        scope: (scoped? ? scope_params : nil),
+      )) %>
+    <% end %>
   </div>
 </div>
