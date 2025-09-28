@@ -22,6 +22,10 @@ module Uchi
 
       class Show < Uchi::Field::Base::Show
       end
+
+      def searchable?
+        true
+      end
     end
   end
 end

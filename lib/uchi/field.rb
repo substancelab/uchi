@@ -67,6 +67,12 @@ module Uchi
       name == :id
     end
 
+    # Returns true if the field is searchable and should be included in the
+    # query when a search term has been entered.
+    def searchable?
+      false
+    end
+
     def show_component(record:, repository:)
       component_class = self.class.const_get(:Show)
       component_class.new(
