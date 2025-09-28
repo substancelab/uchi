@@ -2,6 +2,10 @@ module Uchi
   module Ui
     module Index
       class RecordsTable
+        # Renders a search for the records table.
+        #
+        # Based on Flowbites Simple search input
+        # (https://flowbite.com/docs/forms/search-input/#simple-search-input)
         class SearchForm < ViewComponent::Base
           attr_reader :params, :repository
 

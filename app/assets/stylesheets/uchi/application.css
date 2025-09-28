@@ -1026,6 +1026,9 @@
   .mx-4 {
     margin-inline: calc(var(--spacing) * 4);
   }
+  .mx-auto {
+    margin-inline: auto;
+  }
   .my-4 {
     margin-block: calc(var(--spacing) * 4);
   }
@@ -1037,6 +1040,9 @@
   }
   .ms-0 {
     margin-inline-start: calc(var(--spacing) * 0);
+  }
+  .ms-2 {
+    margin-inline-start: calc(var(--spacing) * 2);
   }
   .ms-3 {
     margin-inline-start: calc(var(--spacing) * 3);
@@ -1448,9 +1454,6 @@
   .h-8 {
     height: calc(var(--spacing) * 8);
   }
-  .h-10 {
-    height: calc(var(--spacing) * 10);
-  }
   .h-\[calc\(100\%-1rem\)\] {
     height: calc(100% - 1rem);
   }
@@ -1569,6 +1572,9 @@
   }
   .max-w-2xl {
     max-width: var(--container-2xl);
+  }
+  .max-w-sm {
+    max-width: var(--container-sm);
   }
   .datatable-input {
     .datatable-wrapper .datatable-search & {
@@ -2175,6 +2181,9 @@
   .py-6 {
     padding-block: calc(var(--spacing) * 6);
   }
+  .ps-10 {
+    padding-inline-start: calc(var(--spacing) * 10);
+  }
   .pt-2 {
     padding-top: calc(var(--spacing) * 2);
   }
@@ -2530,6 +2539,11 @@
       z-index: 10;
     }
   }
+  .focus\:border-blue-500 {
+    &:focus {
+      border-color: var(--color-blue-500);
+    }
+  }
   .focus\:ring-2 {
     &:focus {
       --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
@@ -2545,6 +2559,11 @@
   .focus\:ring-blue-300 {
     &:focus {
       --tw-ring-color: var(--color-blue-300);
+    }
+  }
+  .focus\:ring-blue-500 {
+    &:focus {
+      --tw-ring-color: var(--color-blue-500);
     }
   }
   .focus\:ring-gray-200 {
@@ -2741,6 +2760,13 @@
       color: var(--color-white);
     }
   }
+  .dark\:placeholder-gray-400 {
+    @media (prefers-color-scheme: dark) {
+      &::placeholder {
+        color: var(--color-gray-400);
+      }
+    }
+  }
   .dark\:hover\:bg-blue-700 {
     @media (prefers-color-scheme: dark) {
       &:hover {
@@ -2801,6 +2827,20 @@
         @media (hover: hover) {
           color: var(--color-white);
         }
+      }
+    }
+  }
+  .dark\:focus\:border-blue-500 {
+    @media (prefers-color-scheme: dark) {
+      &:focus {
+        border-color: var(--color-blue-500);
+      }
+    }
+  }
+  .dark\:focus\:ring-blue-500 {
+    @media (prefers-color-scheme: dark) {
+      &:focus {
+        --tw-ring-color: var(--color-blue-500);
       }
     }
   }
