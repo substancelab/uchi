@@ -14,6 +14,7 @@
     scope: (scoped? ? scope_params : nil),
   )) do %>
     <div class="relative overflow-x-auto bg-white border border-gray-200 shadow-sm md:rounded-lg dark:bg-gray-800 dark:border-gray-700">
+      <%= render(Uchi::Ui::Index::RecordsTable::SearchForm.new(params: params, repository: @repository)) %>
       <%= render(Uchi::Ui::Index::RecordsTable.new(
         columns: @columns,
         sort_order: current_sort_order,

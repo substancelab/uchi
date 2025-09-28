@@ -1,0 +1,6 @@
+<%= form_tag(repository.routes.path_for(:index), method: :get) do %>
+  <%= hidden_field_tag("sort[by]", sort_by) if sort_by? %>
+  <%= hidden_field_tag("sort[direction]", sort_direction) if sort_direction? %>
+  <%= search_field_tag(:query) %>
+  <%= submit_tag("Search") %>
+<% end %>
