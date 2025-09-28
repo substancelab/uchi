@@ -58,9 +58,10 @@ module Uchi
       fields.select { |field| field.on.include?(:show) }
     end
 
-    def find_all(scope: model.all, sort_order: default_sort_order)
+    def find_all(search: nil, scope: model.all, sort_order: default_sort_order)
       scope ||= model.all
       query = scope.includes(includes)
+      query = apply_search(query, search)
       apply_sort_order(query, sort_order)
     end
 
@@ -104,6 +105,20 @@ module Uchi
     end
 
     private
+
+    def apply_search(query, search)
+      return query unless search.present?
+
+      searchable_fields = fields.select { |field| field.searchable? }
+      return query if searchable_fields.empty?
+
+      search = search.strip
+      conditions = searchable_fields.map { |field|
+        arel_field = model.arel_table[field.name]
+        arel_field.matches("%#{search}%")
+      }
+      query.where(conditions.inject(:or))
+    end
 
     def apply_sort_order(query, sort_order)
       field_to_sort_by = fields.find { |field| field.name == sort_order.name }

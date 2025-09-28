@@ -72,7 +72,12 @@ module Uchi
     end
 
     def find_all_records(scope: nil)
-      @repository.find_all(scope: scope, sort_order: current_sort_order)
+      @repository.
+        find_all(
+          scope: scope,
+          search: params[:query],
+          sort_order: current_sort_order
+        )
     end
 
     def find_record
