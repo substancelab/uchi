@@ -11,6 +11,10 @@ module Uchi
             @repository = repository
           end
 
+          def query
+            params[:query]
+          end
+
           def scope
             params[:scope]
           end
