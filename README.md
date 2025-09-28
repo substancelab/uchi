@@ -29,7 +29,7 @@ module Uchi
       def fields
         [
           Field::Number.new(:id),
-          Field::Text.new(:name),
+          Field::String.new(:name),
         ]
       end
     end

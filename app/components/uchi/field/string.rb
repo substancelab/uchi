@@ -2,7 +2,7 @@
 
 module Uchi
   class Field
-    class Text < Field
+    class String < Field
       class Edit < Uchi::Field::Base::Edit
         private
 
