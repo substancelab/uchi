@@ -18,6 +18,7 @@
       <%= render(Uchi::Ui::Index::RecordsTable.new(
         columns: @columns,
         sort_order: current_sort_order,
+        query: params[:query],
         records: @records,
         repository: @repository,
         scope: (scoped? ? scope_params : nil),

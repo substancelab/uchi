@@ -8,11 +8,12 @@ module Uchi
         # representation of a Field from repository. Defaults to all fields.
         attr_reader :columns
 
-        attr_reader :sort_order, :records, :repository, :scope
+        attr_reader :query, :sort_order, :records, :repository, :scope
 
-        def initialize(columns:, records:, repository:, scope: nil, sort_order: nil)
+        def initialize(columns:, records:, repository:, query: nil, scope: nil, sort_order: nil)
           super()
           @columns = columns
+          @query = query
           @sort_order = sort_order
           @records = records
           @repository = repository
