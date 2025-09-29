@@ -94,6 +94,13 @@ module Uchi
       @routes ||= Routes.new(self)
     end
 
+    # Returns true if this repository has at least one searchable field.
+    #
+    # @return [Boolean]
+    def searchable?
+      searchable_fields.any?
+    end
+
     # Returns the title to show for a given record
     def title(record)
       record.to_s
@@ -108,8 +115,6 @@ module Uchi
 
     def apply_search(query, search)
       return query unless search.present?
-
-      searchable_fields = fields.select { |field| field.searchable? }
       return query if searchable_fields.empty?
 
       search = search.strip
@@ -129,6 +134,10 @@ module Uchi
       else
         sort_order.apply(query)
       end
+    end
+
+    def searchable_fields
+      @searchable_fields ||= fields.select { |field| field.searchable? }
     end
   end
 end

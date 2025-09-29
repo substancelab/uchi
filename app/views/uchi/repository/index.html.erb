@@ -14,9 +14,11 @@
     scope: (scoped? ? scope_params : nil),
   )) do %>
     <div class="relative overflow-x-auto bg-white border border-gray-200 shadow-sm md:rounded-lg dark:bg-gray-800 dark:border-gray-700">
-      <div class="px-3 py-3">
-        <%= render(Uchi::Ui::Index::RecordsTable::SearchForm.new(params: params, repository: @repository)) %>
-      </div>
+      <% if @repository.searchable? %>
+        <div class="px-3 py-3">
+          <%= render(Uchi::Ui::Index::RecordsTable::SearchForm.new(params: params, repository: @repository)) %>
+        </div>
+      <% end %>
       <%= render(Uchi::Ui::Index::RecordsTable.new(
         columns: @columns,
         sort_order: current_sort_order,
