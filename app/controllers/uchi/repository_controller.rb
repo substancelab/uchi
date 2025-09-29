@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "pagy"
+require "uchi/pagination/controller"
 
 module Uchi
   class RepositoryController < Uchi::ApplicationController
-    include Pagy::Method
+    include Uchi::Pagination::Controller
 
     before_action :set_repository
 
@@ -35,12 +35,12 @@ module Uchi
         # TODO: This is very much a security issue. We need to restrict and
         # validate this.
         @records = find_all_records(scope: parent_record.public_send(field_name))
-        @pagy, @records = pagy(:offset, @records, limit: scoped_records_per_page, page: params[:page])
+        @paginator, @records = paginate(@records, records_per_page: scoped_records_per_page)
       else
         # Handle the normal case
         @columns = @repository.fields_for_index
         @records = find_all_records
-        @pagy, @records = pagy(:offset, @records, limit: index_records_per_page, page: params[:page])
+        @paginator, @records = paginate(@records, records_per_page: index_records_per_page)
       end
     end
 
