@@ -45,14 +45,19 @@ module Uchi
     # the name of the field we're reading. The lambda should return the value of
     # the field for the given record.
     #
+    # @param searchable [Boolean] Whether the field is searchable in index
+    #   views. Pass it a simple boolean (false or true). Defaults to false for
+    #   most fields, except Uchi::Field::String and Uchi::Field::Text.
+    #
     # @param sortable [Boolean] Whether the field is sortable in index views.
-    # Pass it a simple boolean (false or true), or it can be configured with a
-    # lambda, which receives the query and direction and must return an
-    # ActiveRecord::Relation. Defaults to true.
-    def initialize(name, on: [:edit, :index, :show], reader: DEFAULT_READER, sortable: true)
+    #   Pass it a simple boolean (false or true), or it can be configured with a
+    #   lambda, which receives the query and direction and must return an
+    #   ActiveRecord::Relation. Defaults to true.
+    def initialize(name, on: [:edit, :index, :show], reader: DEFAULT_READER, searchable: default_searchable?, sortable: true)
       @on = on
       @reader = reader
       @name = name.to_sym
+      @searchable = searchable
       @sortable = sortable
     end
 
@@ -70,7 +75,9 @@ module Uchi
     # Returns true if the field is searchable and should be included in the
     # query when a search term has been entered.
     def searchable?
-      false
+      return !!@searchable if @searchable
+
+      default_searchable?
     end
 
     def show_component(record:, repository:)
@@ -89,6 +96,12 @@ module Uchi
 
     def value(record)
       reader.call(record, name)
+    end
+
+    protected
+
+    def default_searchable?
+      false
     end
   end
 end

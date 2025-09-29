@@ -23,7 +23,9 @@ module Uchi
       class Show < Uchi::Field::Base::Show
       end
 
-      def searchable?
+      protected
+
+      def default_searchable?
         true
       end
     end
