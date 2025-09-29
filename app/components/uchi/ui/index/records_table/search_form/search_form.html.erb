@@ -10,6 +10,12 @@
     <span class="sr-only">Search TODO: Translate</span>
   <% end %>
 
+  <% if scoped? %>
+    <%= hidden_field_tag("scope[field]", scope[:field]) %>
+    <%= hidden_field_tag("scope[id]", scope[:id]) %>
+    <%= hidden_field_tag("scope[inverse_of]", scope[:inverse_of]) %>
+    <%= hidden_field_tag("scope[model]", scope[:model]) %>
+  <% end %>
   <%= hidden_field_tag("sort[by]", sort_by) if sort_by? %>
   <%= hidden_field_tag("sort[direction]", sort_direction) if sort_direction? %>
 <% end %>

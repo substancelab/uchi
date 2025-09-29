@@ -23,6 +23,10 @@ module Uchi
             params[:scope]
           end
 
+          def scoped?
+            scope.present?
+          end
+
           def sort_by
             params.dig(:sort, :by)
           end
