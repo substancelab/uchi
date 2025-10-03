@@ -31,4 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "flowbite-components", ">= 0.1.1"
   spec.add_dependency "pagy", ">= 43.0.0.rc1"
   spec.add_dependency "rails", ">= 7.2"
+  spec.add_dependency "turbo-rails"
 end
