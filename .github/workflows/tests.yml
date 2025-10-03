@@ -5,6 +5,18 @@ on:
   pull_request:
     branches: [ "main" ]
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: '3.4.5'
+      - name: Standard
+        run: bundle exec rake standard
   test:
     runs-on: ubuntu-latest
     env:
