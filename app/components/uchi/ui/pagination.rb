@@ -27,7 +27,7 @@ module Uchi
         pages += [1]
         pages += (paginator.page - 2..paginator.page + 2).to_a
         pages += [paginator.last]
-        pages = pages.select { |page| page >= 1 && page <= paginator.last }.uniq.sort
+        pages = pages.select { |page| page.between?(1, paginator.last) }.uniq.sort
 
         result = []
         pages.each_with_index do |page, index|
