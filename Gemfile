@@ -11,4 +11,5 @@ gem "rake", "~> 13.0"
 gem "standard", "~> 1.3"
 
 # Stuff for running the tests and the dummy app
+gem "rails-controller-testing"
 gem "sqlite3"

@@ -1,0 +1,90 @@
+require "test_helper"
+
+module Uchi
+  class AuthorsControllerTest < ActionDispatch::IntegrationTest
+    setup do
+      @author = Author.create!(name: "Test Author")
+    end
+
+    test "GET edit renders successfully" do
+      get edit_uchi_author_url(id: @author.id)
+      assert_response :success
+    end
+
+    test "GET edit renders the edit view" do
+      get edit_uchi_author_url(id: @author.id)
+      assert_template :edit
+    end
+
+    test "GET index responds successfully" do
+      get uchi_authors_url
+      assert_response :success
+    end
+
+    test "GET index renders the index view" do
+      get uchi_authors_url
+      assert_template :index
+    end
+
+    test "GET new renders successfully" do
+      get new_uchi_author_url
+      assert_response :success
+    end
+
+    test "GET new renders the new view" do
+      get new_uchi_author_url
+      assert_template :new
+    end
+
+    test "GET show responds successfully" do
+      get uchi_author_url(id: @author.id)
+      assert_response :success
+    end
+
+    test "GET show renders the show view" do
+      get uchi_author_url(id: @author.id)
+      assert_template :show
+    end
+
+    test "PATCH update redirects to show after successful update" do
+      patch uchi_author_url(id: @author.id), params: {author: {name: "Updated Name"}}
+      assert_redirected_to uchi_author_url(id: @author.id)
+    end
+
+    test "PATCH update changes the author's attributes" do
+      patch uchi_author_url(id: @author.id), params: {author: {name: "Updated Name"}}
+      @author.reload
+      assert_equal "Updated Name", @author.name
+    end
+
+    test "PATCH update rerenders the edit view after unsuccessful update" do
+      patch uchi_author_url(id: @author.id), params: {author: {name: ""}}
+      assert_template :edit
+    end
+
+    test "PATCH responds with 422 after unsuccessful update" do
+      patch uchi_author_url(id: @author.id), params: {author: {name: ""}}
+      assert_response :unprocessable_entity
+    end
+
+    test "POST create redirects to show after successful creation" do
+      post uchi_authors_url, params: {author: {name: "New Author"}}
+      assert_redirected_to uchi_author_url(id: Author.last.id)
+    end
+
+    test "POST create creates a new author" do
+      post uchi_authors_url, params: {author: {name: "New Author"}}
+      assert_equal "New Author", Author.last.name
+    end
+
+    test "POST create rerenders the new view after unsuccessful creation" do
+      post uchi_authors_url, params: {author: {name: ""}}
+      assert_template :new
+    end
+
+    test "POST create responds with 422 after unsuccessful creation" do
+      post uchi_authors_url, params: {author: {name: ""}}
+      assert_response :unprocessable_entity
+    end
+  end
+end
