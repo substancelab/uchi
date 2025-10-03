@@ -1,0 +1,29 @@
+da:
+  hello: "Halløj verden"
+  uchi:
+    common:
+      cancel: "Annuller"
+      save: "Gem"
+    repository:
+      common:
+        loading: "Indlæser..."
+      author:
+        button:
+          link_to_edit: "Rediger"
+          link_to_new: "Ny forfatter"
+        edit:
+          title: "Rediger forfatter"
+        field:
+          name:
+            hint: "Indtast forfatterens navn"
+            label: "Navn"
+        index:
+          description: "Liste over forfattere"
+          title: "Forfattere"
+        model:
+          one: "Forfatter"
+          other: "Forfattere"
+        new:
+          title: "Ny forfatter"
+        show:
+          title: "Vis forfatter"

@@ -1,0 +1,154 @@
+require "test_helper"
+require_relative "../../dummy/app/uchi/repositories/author"
+
+class UchiRepositoryTranslateTest < ActiveSupport::TestCase
+  def setup
+    @repository = Uchi::Repositories::Author.new
+    @translate = @repository.translate
+    @field = Uchi::Field.new(:name)
+  end
+
+  test "initializes with repository" do
+    assert_equal @repository, @translate.repository
+  end
+
+  test "#description returns translation from uchi.repository.author.description.index" do
+    result = @translate.description(:index)
+    assert_nil result
+  end
+
+  test "#description falls back to nil" do
+    result = @translate.description(:index)
+    assert_nil result
+  end
+
+  test "#field_label returns translation from uchi.repository.author.field.name.label" do
+    I18n.with_locale(:da) do
+      result = @translate.field_label(@field)
+      assert_equal "Navn", result
+    end
+  end
+
+  test "#field_label falls back to human_attribute_name" do
+    result = @translate.field_label(@field)
+    assert_equal "Name", result
+  end
+
+  test "#field_hint returns translation from uchi.repository.author.field.name.hint" do
+    I18n.with_locale(:da) do
+      result = @translate.field_hint(@field)
+      assert_equal "Indtast forfatterens navn", result
+    end
+  end
+
+  test "#field_hint falls back to nil" do
+    result = @translate.field_hint(@field)
+    assert_nil result
+  end
+
+  test "#link_to_cancel returns cancel text" do
+    I18n.with_locale(:da) do
+      result = @translate.link_to_cancel
+      assert_equal "Annuller", result
+    end
+  end
+
+  test "#link_to_cancel falls back to Cancel" do
+    result = @translate.link_to_cancel
+    assert_equal "Cancel", result
+  end
+
+  test "#link_to_edit returns translation from uchi.repository.author.button.link_to_edit" do
+    author = Author.new(name: "Test Author")
+    I18n.with_locale(:da) do
+      result = @translate.link_to_edit(author)
+      assert_equal "Rediger", result
+    end
+  end
+
+  test "#link_to_edit falls back to Edit" do
+    author = Author.new(name: "Test Author")
+    result = @translate.link_to_edit(author)
+    assert_equal "Edit", result
+  end
+
+  test "#link_to_new returns translation from uchi.repository.author.button.link_to_new" do
+    I18n.with_locale(:da) do
+      result = @translate.link_to_new
+      assert_equal "Ny forfatter", result
+    end
+  end
+
+  test "#link_to_new falls back to New %{model}" do
+    result = @translate.link_to_new
+    assert_equal "New Author", result
+  end
+
+  test "#loading_message returns translation from uchi.repository.common.loading" do
+    I18n.with_locale(:da) do
+      result = @translate.loading_message
+      assert_equal "Indlæser...", result
+    end
+  end
+
+  test "#loading_message falls back to Loading..." do
+    result = @translate.loading_message
+    assert_equal "Loading...", result
+  end
+
+  test "#plural_name returns translation from uchi.repository.author.model with count 2" do
+    I18n.with_locale(:da) do
+      result = @translate.plural_name
+      assert_equal "Forfattere", result
+    end
+  end
+
+  test "#plural_name falls back to humanized plural model name" do
+    result = @translate.plural_name
+    assert_equal "Authors", result
+  end
+
+  test "#submit_button returns translation from uchi.common.save" do
+    I18n.with_locale(:da) do
+      result = @translate.submit_button
+      assert_equal "Gem", result
+    end
+  end
+
+  test "#submit_button falls back to Save" do
+    result = @translate.submit_button
+    assert_equal "Save", result
+  end
+
+  test "#title returns repository title for show page with record" do
+    author = Author.new(name: "Test Author")
+    result = @translate.title(:show, record: author)
+    assert_equal "Test Author", result
+  end
+
+  test "#title returns translation from uchi.repository.author.index.title for index page" do
+    I18n.with_locale(:da) do
+      result = @translate.title(:index)
+      assert_equal "Forfattere", result
+    end
+  end
+
+  test "#title returns translation from uchi.repository.author.edit.title for edit page" do
+    I18n.with_locale(:da) do
+      result = @translate.title(:edit)
+      assert_equal "Rediger forfatter", result
+    end
+  end
+
+  test "#title returns translation from uchi.repository.author.new.title for new page" do
+    I18n.with_locale(:da) do
+      result = @translate.title(:new)
+      assert_equal "Ny forfatter", result
+    end
+  end
+
+  test "#title falls back to plural_name" do
+    result = @translate.title(:index)
+    assert_equal "Authors", result
+  end
+end
