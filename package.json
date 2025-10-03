@@ -11,6 +11,7 @@
     "assets:build": "npm run build:css && npm run build:js",
     "build:css": "node_modules/.bin/tailwindcss -i ./app/assets/tailwind/uchi.css -o ./app/assets/stylesheets/uchi/application.css",
     "build:js": "node_modules/.bin/esbuild --bundle --outfile=app/assets/javascripts/uchi/application.js app/assets/javascripts/uchi.js",
+    "herb:lint": "herb-lint '**/*.html.erb'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch:css": "node_modules/.bin/tailwindcss --watch -i ./app/assets/tailwind/uchi.css -o ./app/assets/stylesheets/uchi/application.css",
     "watch:js": "node_modules/.bin/esbuild --watch --bundle --outfile=app/assets/javascripts/uchi/application.js app/assets/javascripts/uchi.js"
@@ -24,6 +25,7 @@
     "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
+    "@herb-tools/linter": "^0.7.4",
     "esbuild": "0.25.10"
   }
 }
