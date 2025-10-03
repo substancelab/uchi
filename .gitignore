@@ -9,3 +9,6 @@
 /pkg/
 /spec/reports/
 /tmp/
+
+test/dummy/tmp/
+test/dummy/storage/*.sqlite3

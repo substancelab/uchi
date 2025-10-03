@@ -14,7 +14,11 @@ module Uchi
       # Preserve Uchi as a namespace for autoloading from app/uchi
       # See https://github.com/fxn/zeitwerk/issues/250 for details
       ActiveSupport::Dependencies.autoload_paths.delete("#{Rails.root}/app/uchi")
-      Rails.autoloaders.main.push_dir("#{Rails.root}/app/uchi", namespace: Uchi)
+
+      uchi_directory = Rails.root.join("app/uchi")
+      if uchi_directory.exist?
+        Rails.autoloaders.main.push_dir(uchi_directory, namespace: Uchi)
+      end
     end
   end
 end
