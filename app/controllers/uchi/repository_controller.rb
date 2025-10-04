@@ -11,7 +11,8 @@ module Uchi
     def create
       @record = build_record
       if @record.save
-        redirect_to(@repository.routes.path_for(:show, id: @record.id), notice: "Office created successfully.", status: :see_other)
+        flash[:notice] = @repository.translate.successful_create
+        redirect_to(@repository.routes.path_for(:show, id: @record.id), status: :see_other)
       else
         render :new, status: :unprocessable_entity
       end
