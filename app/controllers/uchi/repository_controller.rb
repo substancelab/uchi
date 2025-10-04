@@ -80,8 +80,6 @@ module Uchi
     end
 
     def find_all_records_from_association(name:, parent_record:)
-      # TODO: This is very much a security issue. We need to restrict and
-      # validate this.
       association = parent_record.class.reflect_on_association(name.to_sym)
       raise NameError, "No association named #{name} on #{parent_record.class}" unless association
 
@@ -91,7 +89,8 @@ module Uchi
       associated_repository = Uchi::Repository.for_model(association.klass)&.new
       raise NameError, "No repository found for associated model #{association.klass}" unless associated_repository
 
-      find_all_records(scope: parent_record.public_send(name))
+      scope = parent_record.public_send(name)
+      find_all_records(scope: scope)
     end
 
     def find_record
