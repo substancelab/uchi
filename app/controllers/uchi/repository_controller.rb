@@ -89,7 +89,7 @@ module Uchi
       associated_repository = Uchi::Repository.for_model(association.klass)&.new
       raise NameError, "No repository found for associated model #{association.klass}" unless associated_repository
 
-      scope = parent_record.public_send(name)
+      scope = parent_record.association(name.to_sym).scope
       find_all_records(scope: scope)
     end
 
