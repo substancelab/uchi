@@ -53,7 +53,7 @@ module Uchi
     #   Pass it a simple boolean (false or true), or it can be configured with a
     #   lambda, which receives the query and direction and must return an
     #   ActiveRecord::Relation. Defaults to true.
-    def initialize(name, on: [:edit, :index, :show], reader: DEFAULT_READER, searchable: default_searchable?, sortable: true)
+    def initialize(name, on: default_on, reader: DEFAULT_READER, searchable: default_searchable?, sortable: true)
       @on = on
       @reader = reader
       @name = name.to_sym
@@ -93,6 +93,10 @@ module Uchi
     end
 
     protected
+
+    def default_on
+      [:edit, :index, :show]
+    end
 
     def default_searchable?
       false

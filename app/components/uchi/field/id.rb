@@ -25,6 +25,10 @@ module Uchi
 
       protected
 
+      def default_on
+        [:index, :show]
+      end
+
       def default_searchable?
         true
       end
