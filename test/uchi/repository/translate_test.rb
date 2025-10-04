@@ -120,6 +120,18 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Save", result
   end
 
+  test "successful_create returns translation from uchi.repository.author.create.success" do
+    I18n.with_locale(:da) do
+      result = @translate.successful_create
+      assert_equal "Forfatteren er blevet tilføjet", result
+    end
+  end
+
+  test "successful_create falls back to default translation" do
+    result = @translate.successful_create
+    assert_equal "Your changes have been saved", result
+  end
+
   test "successful_update returns translation from uchi.repository.author.update.success" do
     I18n.with_locale(:da) do
       result = @translate.successful_update

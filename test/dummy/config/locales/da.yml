@@ -7,6 +7,8 @@ da:
     repository:
       common:
         loading: "Indlæser..."
+        create:
+          success: "Oprettet succesfuldt"
         update:
           success: "Dine ændringer er gemt"
       author:
@@ -29,5 +31,7 @@ da:
           title: "Ny forfatter"
         show:
           title: "Vis forfatter"
+        create:
+          success: "Forfatteren er blevet tilføjet"
         update:
           success: "Dine ændringer til forfatteren blev gemt"

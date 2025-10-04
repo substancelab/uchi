@@ -83,6 +83,18 @@ module Uchi
         translate("common.save", default: "Save")
       end
 
+      def successful_create
+        translate(
+          "create.success",
+          default: translate(
+            "create.success",
+            default: "Your changes have been saved",
+            scope: "common"
+          ),
+          scope: "uchi.repository.#{i18n_key}"
+        )
+      end
+
       def successful_update
         translate(
           "update.success",
