@@ -82,6 +82,9 @@ module Uchi
     def find_all_records_from_association(name:, parent_record:)
       # TODO: This is very much a security issue. We need to restrict and
       # validate this.
+      association = parent_record.class.reflect_on_association(name.to_sym)
+      raise NameError, "No association named #{name} on #{parent_record.class}" unless association
+
       find_all_records(scope: parent_record.public_send(name))
     end
 
