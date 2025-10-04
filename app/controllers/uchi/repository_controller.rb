@@ -102,7 +102,6 @@ module Uchi
 
     # Returns the number of records per page to show in index views
     def index_records_per_page
-      # TODO: Should this be moved to repository?
       25
     end
 
