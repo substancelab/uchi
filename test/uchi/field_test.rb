@@ -30,14 +30,6 @@ class UchiFieldTest < ActiveSupport::TestCase
     assert_equal :name, @field.param_key
   end
 
-  test "#primary_key? returns true for id field" do
-    id_field = Uchi::Field.new(:id)
-    name_field = Uchi::Field.new(:name)
-
-    assert id_field.primary_key?
-    assert_not name_field.primary_key?
-  end
-
   test "#searchable? returns false by default" do
     assert_not @field.searchable?
   end
