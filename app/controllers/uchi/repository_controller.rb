@@ -89,6 +89,9 @@ module Uchi
       associated_repository = Uchi::Repository.for_model(association.klass)&.new
       raise NameError, "No repository found for associated model #{association.klass}" unless associated_repository
 
+      field = source_repository.fields.find { |f| f.name == name.to_sym }
+      raise NameError, "No field named #{name} on #{source_repository.model}" unless field
+
       scope = parent_record.association(name.to_sym).scope
       find_all_records(scope: scope)
     end
