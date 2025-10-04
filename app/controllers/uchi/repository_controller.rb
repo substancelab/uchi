@@ -13,7 +13,7 @@ module Uchi
       if @record.save
         redirect_to(@repository.routes.path_for(:show, id: @record.id), notice: "Office created successfully.")
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -57,7 +57,7 @@ module Uchi
       if @record.update(record_params)
         redirect_to(@repository.routes.path_for(:show, id: @record.id), notice: "Office updated successfully.")
       else
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 
