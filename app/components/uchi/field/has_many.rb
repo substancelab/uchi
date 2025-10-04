@@ -72,6 +72,12 @@ module Uchi
         # key of the model.
         :"#{name}_id"
       end
+
+      protected
+
+      def default_on
+        [:show]
+      end
     end
   end
 end
