@@ -78,6 +78,14 @@ module Uchi
         )
       end
 
+      def search_label
+        translate("common.search", default: "Search")
+      end
+
+      def search_button
+        translate("common.search", default: "Search")
+      end
+
       # Returns the label for a generic submit button
       def submit_button
         translate("common.save", default: "Save")
