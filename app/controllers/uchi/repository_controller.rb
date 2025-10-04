@@ -55,7 +55,8 @@ module Uchi
     def update
       @record = find_record
       if @record.update(record_params)
-        redirect_to(@repository.routes.path_for(:show, id: @record.id), notice: "Office updated successfully.")
+        flash[:notice] = @repository.translate.successful_update
+        redirect_to(@repository.routes.path_for(:show, id: @record.id))
       else
         render :edit, status: :unprocessable_entity
       end
