@@ -83,6 +83,18 @@ module Uchi
         translate("common.save", default: "Save")
       end
 
+      def successful_update
+        translate(
+          "update.success",
+          default: translate(
+            "update.success",
+            default: "Your changes have been saved",
+            scope: "common"
+          ),
+          scope: "uchi.repository.#{i18n_key}"
+        )
+      end
+
       # Returns the title for the given page.
       def title(page, record: nil)
         return repository.title(record) if record && page == :show

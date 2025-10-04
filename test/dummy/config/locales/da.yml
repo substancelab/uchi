@@ -7,6 +7,8 @@ da:
     repository:
       common:
         loading: "Indlæser..."
+        update:
+          success: "Dine ændringer er gemt"
       author:
         button:
           link_to_edit: "Rediger"
@@ -27,3 +29,5 @@ da:
           title: "Ny forfatter"
         show:
           title: "Vis forfatter"
+        update:
+          success: "Dine ændringer til forfatteren blev gemt"

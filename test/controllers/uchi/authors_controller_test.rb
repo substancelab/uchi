@@ -57,6 +57,18 @@ module Uchi
       assert_equal "Updated Name", @author.name
     end
 
+    test "PATCH update flashes a translated success message after successful update" do
+      ::I18n.with_locale(:da) do
+        patch uchi_author_url(id: @author.id), params: {author: {name: "Updated Name"}}
+        assert_equal "Dine ændringer til forfatteren blev gemt", flash[:notice]
+      end
+    end
+
+    test "PATCH update falls back to default success message after successful update" do
+      patch uchi_author_url(id: @author.id), params: {author: {name: "Updated Name"}}
+      assert_equal "Your changes have been saved", flash[:notice]
+    end
+
     test "PATCH update rerenders the edit view after unsuccessful update" do
       patch uchi_author_url(id: @author.id), params: {author: {name: ""}}
       assert_template :edit
