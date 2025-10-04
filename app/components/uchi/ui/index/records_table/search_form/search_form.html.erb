@@ -1,5 +1,5 @@
 <%= form_tag(repository.routes.path_for(:index), class: "flex items-center max-w-sm", method: :get) do %>
-  <%= label_tag(:query, "Search TODO: Translate", class: "sr-only") %>
+  <%= label_tag(:query, repository.translate.search_label, class: "sr-only") %>
   <div class="relative w-full">
     <%= search_field_tag(:query, query, class: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500") %>
   </div>
@@ -7,7 +7,7 @@
     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
     </svg>
-    <span class="sr-only">Search TODO: Translate</span>
+    <span class="sr-only"><%= repository.translate.search_button %></span>
   <% end %>
 
   <% if scoped? %>
