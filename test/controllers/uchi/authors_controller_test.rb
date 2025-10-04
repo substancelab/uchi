@@ -94,6 +94,13 @@ module Uchi
       assert_response :see_other
     end
 
+    test "POST create flashes a translated success message after successful creation" do
+      ::I18n.with_locale(:da) do
+        post uchi_authors_url, params: {author: {name: "New Author"}}
+        assert_equal "Forfatteren er blevet tilføjet", flash[:notice]
+      end
+    end
+
     test "POST create creates a new author" do
       post uchi_authors_url, params: {author: {name: "New Author"}}
       assert_equal "New Author", Author.last.name
