@@ -66,12 +66,6 @@ module Uchi
       name.to_sym
     end
 
-    # Returns true if the field is a primary key
-    def primary_key?
-      # TODO: This should probably be configurable
-      name == :id
-    end
-
     # Returns true if the field is searchable and should be included in the
     # query when a search term has been entered.
     def searchable?
