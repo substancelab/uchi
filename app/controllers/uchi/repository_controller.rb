@@ -32,10 +32,7 @@ module Uchi
 
         @columns = @repository.fields_for_index
         @columns = @columns.reject { |field| field.name == inverse_of } if inverse_of
-
-        # TODO: This is very much a security issue. We need to restrict and
-        # validate this.
-        @records = find_all_records(scope: parent_record.public_send(field_name))
+        @records = find_all_records_from_association(name: field_name, parent_record: parent_record)
         @paginator, @records = paginate(@records, records_per_page: scoped_records_per_page)
       else
         # Handle the normal case
@@ -80,6 +77,23 @@ module Uchi
           search: params[:query],
           sort_order: current_sort_order
         )
+    end
+
+    def find_all_records_from_association(name:, parent_record:)
+      association = parent_record.class.reflect_on_association(name.to_sym)
+      raise NameError, "No association named #{name} on #{parent_record.class}" unless association
+
+      source_repository = Uchi::Repository.for_model(association.active_record)&.new
+      raise NameError, "No repository found for scoped model #{association.active_record}" unless source_repository
+
+      associated_repository = Uchi::Repository.for_model(association.klass)&.new
+      raise NameError, "No repository found for associated model #{association.klass}" unless associated_repository
+
+      field = source_repository.fields.find { |f| f.name == name.to_sym }
+      raise NameError, "No field named #{name} on #{source_repository.model}" unless field
+
+      scope = parent_record.association(name.to_sym).scope
+      find_all_records(scope: scope)
     end
 
     def find_record
