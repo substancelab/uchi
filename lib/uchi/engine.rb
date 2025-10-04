@@ -1,3 +1,5 @@
+require "turbo-rails"
+
 module Uchi
   class Engine < ::Rails::Engine
     isolate_namespace Uchi
