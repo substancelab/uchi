@@ -32,10 +32,7 @@ module Uchi
 
         @columns = @repository.fields_for_index
         @columns = @columns.reject { |field| field.name == inverse_of } if inverse_of
-
-        # TODO: This is very much a security issue. We need to restrict and
-        # validate this.
-        @records = find_all_records(scope: parent_record.public_send(field_name))
+        @records = find_all_records_from_association(name: field_name, parent_record: parent_record)
         @paginator, @records = paginate(@records, records_per_page: scoped_records_per_page)
       else
         # Handle the normal case
@@ -80,6 +77,12 @@ module Uchi
           search: params[:query],
           sort_order: current_sort_order
         )
+    end
+
+    def find_all_records_from_association(name:, parent_record:)
+      # TODO: This is very much a security issue. We need to restrict and
+      # validate this.
+      find_all_records(scope: parent_record.public_send(name))
     end
 
     def find_record
