@@ -85,6 +85,12 @@ module Uchi
       association = parent_record.class.reflect_on_association(name.to_sym)
       raise NameError, "No association named #{name} on #{parent_record.class}" unless association
 
+      source_repository = Uchi::Repository.for_model(association.active_record)&.new
+      raise NameError, "No repository found for scoped model #{association.active_record}" unless source_repository
+
+      associated_repository = Uchi::Repository.for_model(association.klass)&.new
+      raise NameError, "No repository found for associated model #{association.klass}" unless associated_repository
+
       find_all_records(scope: parent_record.public_send(name))
     end
 
