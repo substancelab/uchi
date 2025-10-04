@@ -3,20 +3,6 @@
 module Uchi
   class Field
     class Id < Number
-      class Edit < Uchi::Field::Base::Edit
-        private
-
-        def options
-          options = {
-            attribute: field.name,
-            form: form,
-            label: {content: label}
-          }
-          options[:hint] = {content: hint} if hint.present?
-          options
-        end
-      end
-
       class Index < Uchi::Field::Base::Index
       end
 
