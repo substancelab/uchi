@@ -14,11 +14,7 @@ module Uchi
 
       # Returns the repository for the given model, or nil if none is found.
       def for_model(model)
-        if model.is_a?(String) || model.is_a?(Symbol)
-          # TODO: Is this not a potential security issue?
-          model = model.to_s.constantize
-        end
-        all.find { |repository| repository.model == model }
+        all.find { |repository| repository.model.to_s == model.to_s }
       end
 
       # Returns the model class this repository manages.
