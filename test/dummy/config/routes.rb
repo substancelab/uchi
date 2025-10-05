@@ -3,5 +3,7 @@ Rails.application.routes.draw do
 
   namespace :uchi do
     resources :authors
+    resources :books
+    resources :titles
   end
 end
