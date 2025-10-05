@@ -6,9 +6,7 @@ module Uchi
     class BelongsToTest < ActiveSupport::TestCase
       def setup
         @field = Uchi::Field::BelongsTo.new(:author)
-        # Create a mock object that can respond to class methods
-        @mock_record = OpenStruct.new(author: nil, author_id: 1)
-        @form = OpenStruct.new(object: @mock_record)
+        @form = OpenStruct.new(object: Author.new)
         @repository = Uchi::Repositories::Author.new
       end
 
@@ -42,18 +40,6 @@ module Uchi
       end
 
       test "#edit_component returns an instance of Edit component" do
-        # Mock the class reflection methods to avoid database dependencies
-        @mock_record.define_singleton_method(:class) do
-          Class.new do
-            def self.reflect_on_association(name)
-              OpenStruct.new(
-                foreign_key: "#{name}_id",
-                klass: Author
-              )
-            end
-          end.new.class
-        end
-
         component = @field.edit_component(form: @form, hint: "Custom hint", label: "Custom label", repository: @repository)
         assert_equal "Custom hint", component.hint
         assert_equal "Custom label", component.label

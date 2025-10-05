@@ -6,8 +6,7 @@ module Uchi
     class HasManyTest < ActiveSupport::TestCase
       def setup
         @field = Uchi::Field::HasMany.new(:books)
-        @mock_record = OpenStruct.new(books: [])
-        @form = OpenStruct.new(object: @mock_record)
+        @form = OpenStruct.new(object: Author.new)
         @repository = Uchi::Repositories::Author.new
       end
 
