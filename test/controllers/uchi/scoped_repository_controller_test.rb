@@ -20,5 +20,23 @@ module Uchi
       get uchi_titles_url(scope: {model: "Book", id: @book.id, field: "titles"})
       assert_select "turbo-frame"
     end
+
+    test "GET index lists only the records associated with the parent record" do
+      title1 = Title.create!(locale: "da-DK", title: "Hobbitten", book: @book)
+      title2 = Title.create!(locale: "de-DE", title: "Der Hobbit", book: @book)
+
+      other_book = Book.create!(original_title: "1984")
+      Title.create!(locale: "de-DE", title: "1984", book: other_book)
+
+      get uchi_titles_url(scope: {model: "Book", id: @book.id, field: "titles", inverse_of: "book"})
+
+      assert_equal assigns(:records), [title1, title2]
+    end
+
+    test "GET index does not include the field for the parent record" do
+      get uchi_titles_url(scope: {model: "Book", id: @book.id, field: "titles", inverse_of: "book"})
+
+      assert_not assigns(:columns).find { |column| column.name == :book }
+    end
   end
 end
