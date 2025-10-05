@@ -22,7 +22,7 @@ module Uchi
 
       test "has custom collection_query" do
         custom_query = ->(query) { query.where(active: true) }
-        field = Uchi::Field::BelongsTo.new(:author, collection_query: custom_query)
+        field = Uchi::Field::BelongsTo.new(:book, collection_query: custom_query)
         assert_equal custom_query, field.collection_query
       end
 
@@ -61,7 +61,7 @@ module Uchi
       end
 
       test "#searchable? returns false when explicitly set" do
-        field = Uchi::Field::BelongsTo.new(:author, searchable: false)
+        field = Uchi::Field::BelongsTo.new(:book, searchable: false)
         assert_not field.searchable?
       end
 
@@ -74,7 +74,7 @@ module Uchi
       end
 
       test "#sortable? returns false when explicitly set" do
-        field = Uchi::Field::BelongsTo.new(:author, sortable: false)
+        field = Uchi::Field::BelongsTo.new(:book, sortable: false)
         assert_not field.sortable?
       end
     end
@@ -82,14 +82,13 @@ module Uchi
     class BelongsToIndexTest < ViewComponent::TestCase
       def setup
         @book = Book.create!(original_title: "The Hobbit")
-        @field = Uchi::Field::BelongsTo.new(:book)
         @title = Title.new(book: @book, locale: "da-DK", title: "Hobbitten")
-        @record = OpenStruct.new(author: @author)
+        @field = Uchi::Field::BelongsTo.new(:book)
         @repository = Uchi::Repositories::Title.new
 
         @component = Uchi::Field::BelongsTo::Index.new(
           field: @field,
-          record: @record,
+          record: @title,
           repository: @repository
         )
       end
@@ -108,6 +107,7 @@ module Uchi
 
     class BelongsToShowTest < ViewComponent::TestCase
       def setup
+        @book = Book.create!(original_title: "The Hobbit")
         @field = Uchi::Field::BelongsTo.new(:book)
         @record = Title.new(book: @book, locale: "da-DK", title: "Hobbitten")
         @repository = Uchi::Repositories::Title.new
