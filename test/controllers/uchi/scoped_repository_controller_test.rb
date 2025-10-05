@@ -15,5 +15,10 @@ module Uchi
       get uchi_titles_url(scope: {model: "Book", id: @book.id, field: "titles"})
       assert_template :index
     end
+
+    test "GET index includes a turbo-frame" do
+      get uchi_titles_url(scope: {model: "Book", id: @book.id, field: "titles"})
+      assert_select "turbo-frame"
+    end
   end
 end
