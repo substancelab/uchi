@@ -22,6 +22,8 @@ module Uchi
           reflection = record.class.reflect_on_association(field.name)
           model = reflection.klass
           repository_class = Uchi::Repository.for_model(model)
+          raise NameError, "No repository found for associated model #{model}" unless repository_class
+
           repository_class.new
         end
 
