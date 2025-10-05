@@ -69,7 +69,7 @@ module Uchi
     # Returns true if the field is searchable and should be included in the
     # query when a search term has been entered.
     def searchable?
-      return !!@searchable if @searchable
+      return !!@searchable unless @searchable.nil?
 
       default_searchable?
     end

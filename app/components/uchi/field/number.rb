@@ -8,8 +8,8 @@ module Uchi
 
         def options
           options = {
-            form: form,
             attribute: field.name,
+            form: form,
             label: {content: label}
           }
           options[:hint] = {content: hint} if hint.present?
