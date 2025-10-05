@@ -5,9 +5,9 @@ module Uchi
   class Field
     class HasManyTest < ActiveSupport::TestCase
       def setup
-        @field = Uchi::Field::HasMany.new(:books)
-        @form = OpenStruct.new(object: Author.new)
-        @repository = Uchi::Repositories::Author.new
+        @field = Uchi::Field::HasMany.new(:titles)
+        @form = OpenStruct.new(object: Book.new)
+        @repository = Uchi::Repositories::Book.new
       end
 
       test "inherits from Uchi::Field" do
@@ -22,7 +22,7 @@ module Uchi
 
       test "has custom collection_query" do
         custom_query = ->(query) { query.where(published: true) }
-        field = Uchi::Field::HasMany.new(:books, collection_query: custom_query)
+        field = Uchi::Field::HasMany.new(:titles, collection_query: custom_query)
         assert_equal custom_query, field.collection_query
       end
 
@@ -31,7 +31,7 @@ module Uchi
       end
 
       test "#param_key returns foreign key name" do
-        assert_equal :books_id, @field.param_key
+        assert_equal :titles_id, @field.param_key
       end
 
       test "#group_as returns :associations" do
@@ -66,13 +66,72 @@ module Uchi
       end
 
       test "#searchable? returns false when explicitly set" do
-        field = Uchi::Field::HasMany.new(:books, searchable: false)
+        field = Uchi::Field::HasMany.new(:titles, searchable: false)
         assert_not field.searchable?
       end
 
       test "#sortable? returns false when explicitly set" do
-        field = Uchi::Field::HasMany.new(:books, sortable: false)
+        field = Uchi::Field::HasMany.new(:titles, sortable: false)
         assert_not field.sortable?
+      end
+    end
+
+    class HasManyEditTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::HasMany.new(:titles)
+        @book = Book.new(original_title: "The Hobbit")
+        @repository = Uchi::Repositories::Book.new
+        @view_context = ActionController::Base.new.view_context
+
+        @form = ActionView::Helpers::FormBuilder.new(:book, @book, @view_context, {})
+
+        @component = Uchi::Field::HasMany::Edit.new(
+          field: @field,
+          form: @form,
+          hint: "Custom hint",
+          label: "Custom label",
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Edit, @component
+      end
+    end
+
+    class HasManyIndexTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::HasMany.new(:titles)
+        @book = Book.new(original_title: "The Hobbit")
+        @repository = Uchi::Repositories::Book.new
+
+        @component = Uchi::Field::HasMany::Index.new(
+          field: @field,
+          record: @book,
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Index, @component
+      end
+    end
+
+    class HasManyShowTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::HasMany.new(:titles)
+        @book = Book.new(original_title: "The Hobbit")
+        @repository = Uchi::Repositories::Book.new
+
+        @component = Uchi::Field::HasMany::Show.new(
+          field: @field,
+          record: @book,
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Show, @component
       end
     end
   end

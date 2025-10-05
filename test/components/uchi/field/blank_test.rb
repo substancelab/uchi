@@ -56,5 +56,64 @@ module Uchi
         assert_not field.sortable?
       end
     end
+
+    class BlankEditTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::Blank.new(:separator)
+        @record = Author.new(name: "Test Author")
+        @repository = Uchi::Repositories::Author.new
+        @view_context = ActionController::Base.new.view_context
+
+        @form = ActionView::Helpers::FormBuilder.new(:author, @record, @view_context, {})
+
+        @component = Uchi::Field::Blank::Edit.new(
+          field: @field,
+          form: @form,
+          hint: "Custom hint",
+          label: "Custom label",
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Edit, @component
+      end
+    end
+
+    class BlankIndexTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::Blank.new(:separator)
+        @record = Author.new(name: "Test Author")
+        @repository = Uchi::Repositories::Author.new
+
+        @component = Uchi::Field::Blank::Index.new(
+          field: @field,
+          record: @record,
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Index, @component
+      end
+    end
+
+    class BlankShowTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::Blank.new(:separator)
+        @record = Author.new(name: "Test Author")
+        @repository = Uchi::Repositories::Author.new
+
+        @component = Uchi::Field::Blank::Show.new(
+          field: @field,
+          record: @record,
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Show, @component
+      end
+    end
   end
 end

@@ -6,7 +6,9 @@ class UchiRepositoryTest < ActiveSupport::TestCase
   test ".all returns all Uchi::Repository's" do
     repositories = Uchi::Repository.all
 
-    assert_equal repositories, [Uchi::Repositories::Author]
+    assert_equal \
+      repositories.sort_by(&:name),
+      [Uchi::Repositories::Author, Uchi::Repositories::Book, Uchi::Repositories::Title]
   end
 
   test ".for_model returns the repository for the given model" do

@@ -59,5 +59,55 @@ module Uchi
         assert_not field.sortable?
       end
     end
+
+    class IdIndexTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::Id.new(:id)
+        @record = Author.new(name: "Test Author")
+        @record.define_singleton_method(:id) { 123 }
+        @repository = Uchi::Repositories::Author.new
+
+        @component = Uchi::Field::Id::Index.new(
+          field: @field,
+          record: @record,
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Index, @component
+      end
+
+      test "renders the field content" do
+        result = render_inline(@component)
+
+        assert_includes result.to_html, "123"
+      end
+    end
+
+    class IdShowTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::Id.new(:id)
+        @record = Author.new(name: "Test Author")
+        @record.define_singleton_method(:id) { 123 }
+        @repository = Uchi::Repositories::Author.new
+
+        @component = Uchi::Field::Id::Show.new(
+          field: @field,
+          record: @record,
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Show, @component
+      end
+
+      test "renders the field content" do
+        result = render_inline(@component)
+
+        assert_includes result.to_html, "123"
+      end
+    end
   end
 end
