@@ -9,6 +9,7 @@ gem "irb"
 gem "ostruct"
 gem "rake", "~> 13.0"
 
+gem "capybara"
 gem "standard", "~> 1.3"
 
 # Stuff for running the tests and the dummy app

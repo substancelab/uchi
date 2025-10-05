@@ -75,5 +75,64 @@ module Uchi
         assert_not field.sortable?
       end
     end
+
+    class HasManyEditTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::HasMany.new(:books)
+        @author = Author.new(name: "J.R.R. Tolkien")
+        @repository = Uchi::Repositories::Author.new
+        @view_context = ActionController::Base.new.view_context
+
+        @form = ActionView::Helpers::FormBuilder.new(:author, @author, @view_context, {})
+
+        @component = Uchi::Field::HasMany::Edit.new(
+          field: @field,
+          form: @form,
+          hint: "Custom hint",
+          label: "Custom label",
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Edit, @component
+      end
+    end
+
+    class HasManyIndexTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::HasMany.new(:books)
+        @author = Author.new(name: "J.R.R. Tolkien")
+        @repository = Uchi::Repositories::Author.new
+
+        @component = Uchi::Field::HasMany::Index.new(
+          field: @field,
+          record: @author,
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Index, @component
+      end
+    end
+
+    class HasManyShowTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::HasMany.new(:books)
+        @author = Author.new(name: "J.R.R. Tolkien")
+        @repository = Uchi::Repositories::Author.new
+
+        @component = Uchi::Field::HasMany::Show.new(
+          field: @field,
+          record: @author,
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Show, @component
+      end
+    end
   end
 end

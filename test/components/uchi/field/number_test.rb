@@ -56,5 +56,108 @@ module Uchi
         assert_not field.sortable?
       end
     end
+
+    class NumberEditTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::Number.new(:age)
+        @record = Author.new(name: "Test Author")
+        @record.define_singleton_method(:age) { 25 }
+        @record.define_singleton_method(:age=) { |val| @age = val }
+        @repository = Uchi::Repositories::Author.new
+        @view_context = ActionController::Base.new.view_context
+
+        @form = ActionView::Helpers::FormBuilder.new(:author, @record, @view_context, {})
+
+        @component = Uchi::Field::Number::Edit.new(
+          field: @field,
+          form: @form,
+          hint: "Custom hint",
+          label: "Custom label",
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Edit, @component
+      end
+
+      test "renders a number input field with the field content" do
+        render_inline(@component)
+
+        assert_selector("input[name='author[age]']")
+      end
+
+      test "renders label with specified text" do
+        render_inline(@component)
+
+        assert_selector("label", text: "Custom label")
+      end
+
+      test "renders hint when provided" do
+        render_inline(@component)
+
+        assert_selector("p", text: "Custom hint")
+      end
+
+      test "initializes the input component with the correct options" do
+        expected_options = {
+          attribute: :age,
+          form: @form,
+          label: {content: "Custom label"},
+          hint: {content: "Custom hint"}
+        }
+        assert_equal expected_options, @component.send(:options)
+      end
+    end
+
+    class NumberIndexTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::Number.new(:age)
+        @record = Author.new(name: "Test Author")
+        @record.define_singleton_method(:age) { 25 }
+        @repository = Uchi::Repositories::Author.new
+
+        @component = Uchi::Field::Number::Index.new(
+          field: @field,
+          record: @record,
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Index, @component
+      end
+
+      test "renders the field content" do
+        result = render_inline(@component)
+
+        assert_includes result.to_html, "25"
+      end
+    end
+
+    class NumberShowTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::Number.new(:age)
+        @record = Author.new(name: "Test Author")
+        @record.define_singleton_method(:age) { 25 }
+        @repository = Uchi::Repositories::Author.new
+
+        @component = Uchi::Field::Number::Show.new(
+          field: @field,
+          record: @record,
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Show, @component
+      end
+
+      test "renders the field content" do
+        result = render_inline(@component)
+
+        assert_includes result.to_html, "25"
+      end
+    end
   end
 end

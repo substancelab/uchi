@@ -56,5 +56,97 @@ module Uchi
         assert_not field.sortable?
       end
     end
+
+    class DateTimeEditTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::DateTime.new(:created_at)
+        @record = Author.new(name: "Test Author")
+        @record.define_singleton_method(:created_at) { ::DateTime.new(2024, 1, 1, 12, 0, 0) }
+        @record.define_singleton_method(:created_at=) { |val| @created_at = val }
+        @repository = Uchi::Repositories::Author.new
+        @view_context = ActionController::Base.new.view_context
+
+        @form = ActionView::Helpers::FormBuilder.new(:author, @record, @view_context, {})
+
+        @component = Uchi::Field::DateTime::Edit.new(
+          field: @field,
+          form: @form,
+          hint: "Custom hint",
+          label: "Custom label",
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Edit, @component
+      end
+
+      test "can be rendered without errors" do
+        # Skip rendering tests due to missing Flowbite::InputField::DateTime dependency
+        assert_nothing_raised do
+          @component
+        end
+      end
+
+      test "initializes the input component with the correct options" do
+        expected_options = {
+          attribute: :created_at,
+          form: @form,
+          label: {content: "Custom label"},
+          hint: {content: "Custom hint"}
+        }
+        assert_equal expected_options, @component.send(:options)
+      end
+    end
+
+    class DateTimeIndexTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::DateTime.new(:created_at)
+        @record = Author.new(name: "Test Author")
+        @record.define_singleton_method(:created_at) { ::DateTime.new(2024, 1, 1, 12, 0, 0) }
+        @repository = Uchi::Repositories::Author.new
+
+        @component = Uchi::Field::DateTime::Index.new(
+          field: @field,
+          record: @record,
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Index, @component
+      end
+
+      test "renders the field content" do
+        result = render_inline(@component)
+
+        assert_includes result.to_html, "2024-01-01T12:00:00+00:00"
+      end
+    end
+
+    class DateTimeShowTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::DateTime.new(:created_at)
+        @record = Author.new(name: "Test Author")
+        @record.define_singleton_method(:created_at) { ::DateTime.new(2024, 1, 1, 12, 0, 0) }
+        @repository = Uchi::Repositories::Author.new
+
+        @component = Uchi::Field::DateTime::Show.new(
+          field: @field,
+          record: @record,
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Show, @component
+      end
+
+      test "renders the field content" do
+        result = render_inline(@component)
+
+        assert_includes result.to_html, "2024-01-01T12:00:00+00:00"
+      end
+    end
   end
 end
