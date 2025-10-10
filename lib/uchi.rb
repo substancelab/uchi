@@ -1,8 +1,8 @@
-gem "flowbite-components"
-require "flowbite/components"
-
 gem "turbo-rails"
 require "turbo-rails"
+
+gem "view_component"
+require "view_component"
 
 require "uchi/version"
 require "uchi/engine"
