@@ -6,6 +6,21 @@ module Uchi
       @book = Book.create!(original_title: "The Hobbit")
     end
 
+    test "GET edit responds successfully" do
+      get edit_uchi_book_url(id: @book.id)
+      assert_response :success
+    end
+
+    test "GET edit renders a form for updating the model" do
+      get edit_uchi_book_url(id: @book.id)
+      assert_select "form[action=?][method='post']", uchi_book_path(id: @book.id)
+    end
+
+    test "GET edit links back to the model" do
+      get edit_uchi_book_url(id: @book.id)
+      assert_select "a[href=?]", uchi_book_path(id: @book.id), text: "Cancel"
+    end
+
     test "GET index links to show for each record" do
       get uchi_books_url
 
@@ -15,6 +30,21 @@ module Uchi
     test "GET index links to edit for each record" do
       get uchi_books_url
       assert_select "tr td a[data-turbo-frame='_top'][href=?]", edit_uchi_book_path(id: @book.id)
+    end
+
+    test "GET new responds successfully" do
+      get new_uchi_book_url
+      assert_response :success
+    end
+
+    test "GET new renders a form for create a new model" do
+      get new_uchi_book_url
+      assert_select "form[action=?][method='post']", uchi_books_path
+    end
+
+    test "GET new links back to the index" do
+      get new_uchi_book_url
+      assert_select "a[href=?]", uchi_books_path, text: "Cancel"
     end
 
     test "GET show responds successfully" do
