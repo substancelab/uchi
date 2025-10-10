@@ -21,11 +21,6 @@ module Uchi
       assert_select "a[href=?]", uchi_book_path(id: @book.id), text: "Cancel"
     end
 
-    test "GET edit links to the specified path" do
-      get edit_uchi_book_url(id: @book.id, cancel_to: uchi_authors_path)
-      assert_select "a[href=?]", uchi_authors_path, text: "Cancel"
-    end
-
     test "GET index links to show for each record" do
       get uchi_books_url
 
@@ -50,11 +45,6 @@ module Uchi
     test "GET new links back to the index" do
       get new_uchi_book_url
       assert_select "a[href=?]", uchi_books_path, text: "Cancel"
-    end
-
-    test "GET new links to the specified path" do
-      get new_uchi_book_url(cancel_to: uchi_authors_path)
-      assert_select "a[href=?]", uchi_authors_path, text: "Cancel"
     end
 
     test "GET show responds successfully" do

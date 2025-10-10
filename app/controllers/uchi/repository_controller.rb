@@ -68,18 +68,14 @@ module Uchi
 
     # Returns the path to use for the cancel link
     helper_method def path_for_cancel(default:)
-      return params[:cancel_to] if params[:cancel_to].present?
+      return default unless scoped?
 
-      if scoped?
-        parent_model_name = scope[:model]
-        parent_repository = Uchi::Repository.for_model(parent_model_name)&.new
-        raise NameError, "No repository found for scoped model #{parent_model_name}" unless parent_repository
+      parent_model_name = scope[:model]
+      parent_repository = Uchi::Repository.for_model(parent_model_name)&.new
+      raise NameError, "No repository found for scoped model #{parent_model_name}" unless parent_repository
 
-        parent_model_id = scope[:id]
-        return parent_repository.routes.path_for(:show, id: parent_model_id)
-      end
-
-      default
+      parent_model_id = scope[:id]
+      parent_repository.routes.path_for(:show, id: parent_model_id)
     end
 
     helper_method def current_sort_order
