@@ -66,6 +66,11 @@ module Uchi
       @repository.build(record_params)
     end
 
+    # Returns the path to use for the cancel link
+    helper_method def path_for_cancel(default:)
+      params[:cancel_to].presence || default
+    end
+
     helper_method def current_sort_order
       @current_sort_order ||= SortOrder.from_params(params) || @repository.default_sort_order
     end
