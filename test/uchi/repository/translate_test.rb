@@ -12,6 +12,19 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal @repository, @translate.repository
   end
 
+  test "#destroy_dialog_title returns translation from uchi.repository.author.dialog.destroy.title" do
+    I18n.with_locale(:da) do
+      record = Author.new(name: "J. K. Rowling")
+      result = @translate.destroy_dialog_title(record)
+      assert_equal "Er du sikker på, at du vil slette J. K. Rowling?", result
+    end
+  end
+
+  test "#destroy_dialog_title falls back to default translation" do
+    result = @translate.destroy_dialog_title(:destroy)
+    assert_equal "Are you sure?", result
+  end
+
   test "#description returns translation from uchi.repository.author.description.index" do
     result = @translate.description(:index)
     assert_nil result

@@ -16,6 +16,9 @@ da:
           link_to_destroy: "Slet %{record}"
           link_to_edit: "Rediger"
           link_to_new: "Ny forfatter"
+        dialog:
+          destroy:
+            title: "Er du sikker på, at du vil slette %{record}?"
         edit:
           title: "Rediger forfatter"
         field:

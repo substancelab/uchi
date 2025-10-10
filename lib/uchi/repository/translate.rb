@@ -18,6 +18,36 @@ module Uchi
         )
       end
 
+      # Returns a title for a dialog with the given name, e.g. :destroy.
+      # The title may include interpolation keys such as %{record}.
+      #
+      # Example translation key:
+      #   uchi.repository.author.dialog.destroy.title
+      #
+      # Example default value:
+      #   Are you sure you want to delete %{record}?
+      #
+      # Note that the default value itself is also looked up in the "common"
+      # scope, so that it can be shared across repositories.
+      #
+      # Example fallback translation key:
+      #   common.dialog.destroy.title
+      #
+      # Example fallback default value:
+      #   Are you sure you want to delete this record?
+      def destroy_dialog_title(record = nil)
+        translate(
+          "dialog.destroy.title",
+          default: translate(
+            "common.dialog.destroy.title",
+            default: "Are you sure?",
+            record: repository.title(record)
+          ),
+          record: repository.title(record),
+          scope: "uchi.repository.#{i18n_key}"
+        )
+      end
+
       def failed_destroy
         translate(
           "destroy.failure",

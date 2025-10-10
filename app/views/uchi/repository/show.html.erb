@@ -7,7 +7,15 @@
   )
 ) do |header| %>
   <% header.with_action do %>
-    <%= button_to(@repository.translate.link_to_destroy(@record), @repository.routes.path_for(:destroy, id: @record.id), method: :delete, class: Flowbite::Button.classes(style: :red)) %>
+    <%= button_to(
+      @repository.translate.link_to_destroy(@record),
+      @repository.routes.path_for(:destroy, id: @record.id),
+      method: :delete,
+      class: Flowbite::Button.classes(style: :red),
+      data: {
+        :"turbo-confirm" => @repository.translate.destroy_dialog_title(@record)
+      }
+    ) %>
   <% end %>
 
   <% header.with_action do %>

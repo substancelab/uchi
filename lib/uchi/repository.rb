@@ -99,6 +99,8 @@ module Uchi
 
     # Returns the title to show for a given record
     def title(record)
+      return nil unless record
+
       record.to_s
     end
 
