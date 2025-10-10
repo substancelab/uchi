@@ -19,6 +19,10 @@ module Uchi
           @repository = repository
           @scope = scope
         end
+
+        def path_for_edit(record)
+          repository.routes.path_for(:edit, id: record.id, scope: scope)
+        end
       end
     end
   end

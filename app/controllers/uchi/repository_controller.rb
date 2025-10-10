@@ -66,6 +66,18 @@ module Uchi
       @repository.build(record_params)
     end
 
+    # Returns the path to use for the cancel link
+    helper_method def path_for_cancel(default:)
+      return default unless scoped?
+
+      parent_model_name = scope[:model]
+      parent_repository = Uchi::Repository.for_model(parent_model_name)&.new
+      raise NameError, "No repository found for scoped model #{parent_model_name}" unless parent_repository
+
+      parent_model_id = scope[:id]
+      parent_repository.routes.path_for(:show, id: parent_model_id)
+    end
+
     helper_method def current_sort_order
       @current_sort_order ||= SortOrder.from_params(params) || @repository.default_sort_order
     end
@@ -117,14 +129,19 @@ module Uchi
 
     helper_method def scope_params
       if scoped?
-        params[:scope].permit(:field, :id, :inverse_of, :model)
+        scope.permit(:field, :id, :inverse_of, :model)
       else
         ActionController::Parameters.new
       end
     end
 
+    # Returns the scope that we're currently operating within, if any.
+    def scope
+      params[:scope]
+    end
+
     helper_method def scoped?
-      params[:scope].present?
+      scope.present?
     end
 
     def scoped_records_per_page
