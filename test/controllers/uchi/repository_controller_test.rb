@@ -6,6 +6,17 @@ module Uchi
       @book = Book.create!(original_title: "The Hobbit")
     end
 
+    test "GET index links to show for each record" do
+      get uchi_books_url
+
+      assert_select "tr td a[data-turbo-frame='_top'][href=?]", uchi_book_path(id: @book.id)
+    end
+
+    test "GET index links to edit for each record" do
+      get uchi_books_url
+      assert_select "tr td a[data-turbo-frame='_top'][href=?]", edit_uchi_book_path(id: @book.id)
+    end
+
     test "GET show responds successfully" do
       get uchi_book_url(id: @book.id)
       assert_response :success
