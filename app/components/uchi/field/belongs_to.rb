@@ -23,10 +23,17 @@ module Uchi
 
         private
 
+        def collection_for_select
+          repository = associated_repository
+          collection.map do |item|
+            [repository.title(item), item.id]
+          end
+        end
+
         def options
           options = {
             attribute: attribute_name,
-            collection: collection.map { |item| [item.name, item.id] },
+            collection: collection_for_select,
             form: form,
             label: {content: label}
           }
