@@ -18,6 +18,17 @@ module Uchi
       end
     end
 
+    def destroy
+      @record = find_record
+      if @record.destroy
+        flash[:notice] = @repository.translate.successful_destroy
+        redirect_to(@repository.routes.path_for(:index), status: :see_other)
+      else
+        flash[:alert] = @repository.translate.failed_destroy
+        redirect_to(@repository.routes.path_for(:show, id: @record.id), status: :see_other)
+      end
+    end
+
     def edit
       @record = find_record
     end

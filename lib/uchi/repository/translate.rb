@@ -18,6 +18,48 @@ module Uchi
         )
       end
 
+      # Returns a title for a dialog with the given name, e.g. :destroy.
+      # The title may include interpolation keys such as %{record}.
+      #
+      # Example translation key:
+      #   uchi.repository.author.dialog.destroy.title
+      #
+      # Example default value:
+      #   Are you sure you want to delete %{record}?
+      #
+      # Note that the default value itself is also looked up in the "common"
+      # scope, so that it can be shared across repositories.
+      #
+      # Example fallback translation key:
+      #   common.dialog.destroy.title
+      #
+      # Example fallback default value:
+      #   Are you sure you want to delete this record?
+      def destroy_dialog_title(record = nil)
+        translate(
+          "dialog.destroy.title",
+          default: translate(
+            "common.dialog.destroy.title",
+            default: "Are you sure?",
+            record: repository.title(record)
+          ),
+          record: repository.title(record),
+          scope: "uchi.repository.#{i18n_key}"
+        )
+      end
+
+      def failed_destroy
+        translate(
+          "destroy.failure",
+          default: translate(
+            "destroy.failure",
+            default: "The record could not be deleted",
+            scope: "common"
+          ),
+          scope: "uchi.repository.#{i18n_key}"
+        )
+      end
+
       def initialize(repository:)
         @repository = repository
       end
@@ -42,6 +84,16 @@ module Uchi
 
       def link_to_cancel
         translate("common.cancel", default: "Cancel")
+      end
+
+      def link_to_destroy(record)
+        translate(
+          "link_to_destroy",
+          default: "Delete",
+          model: singular_name,
+          record: repository.title(record),
+          scope: i18n_scope("button")
+        )
       end
 
       def link_to_edit(record)
@@ -97,6 +149,18 @@ module Uchi
           default: translate(
             "create.success",
             default: "Your changes have been saved",
+            scope: "common"
+          ),
+          scope: "uchi.repository.#{i18n_key}"
+        )
+      end
+
+      def successful_destroy
+        translate(
+          "destroy.success",
+          default: translate(
+            "destroy.success",
+            default: "The record has been deleted",
             scope: "common"
           ),
           scope: "uchi.repository.#{i18n_key}"

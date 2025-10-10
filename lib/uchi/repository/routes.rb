@@ -14,7 +14,7 @@ module Uchi
       def path_for(action, **options)
         action = action.to_sym
         case action
-        when :edit, :new, :show, :update
+        when :destroy, :edit, :new, :show, :update
           singular_path_for(action, **options)
         else
           plural_path_for(action, **options)
@@ -40,6 +40,7 @@ module Uchi
       def singular_path_for(action, **options)
         action = nil if action == :show
         action = nil if action == :update
+        action = nil if action == :destroy
         parts = [
           action,
           uchi_namespace,

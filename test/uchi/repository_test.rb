@@ -121,6 +121,10 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_equal "Alice", author_repository.title(author)
   end
 
+  test "#title returns nil when record is nil" do
+    assert_nil author_repository.title(nil)
+  end
+
   test "#translate returns the translate helper" do
     assert_instance_of Uchi::Repository::Translate, author_repository.translate
   end

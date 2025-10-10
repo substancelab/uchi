@@ -13,8 +13,12 @@ da:
           success: "Dine ændringer er gemt"
       author:
         button:
+          link_to_destroy: "Slet %{record}"
           link_to_edit: "Rediger"
           link_to_new: "Ny forfatter"
+        dialog:
+          destroy:
+            title: "Er du sikker på, at du vil slette %{record}?"
         edit:
           title: "Rediger forfatter"
         field:
@@ -33,5 +37,8 @@ da:
           title: "Vis forfatter"
         create:
           success: "Forfatteren er blevet tilføjet"
+        destroy:
+          failure: "Forfatteren kunne ikke slettes"
+          success: "Forfatteren er blevet slettet"
         update:
           success: "Dine ændringer til forfatteren blev gemt"

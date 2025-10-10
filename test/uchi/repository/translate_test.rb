@@ -12,6 +12,19 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal @repository, @translate.repository
   end
 
+  test "#destroy_dialog_title returns translation from uchi.repository.author.dialog.destroy.title" do
+    I18n.with_locale(:da) do
+      record = Author.new(name: "J. K. Rowling")
+      result = @translate.destroy_dialog_title(record)
+      assert_equal "Er du sikker på, at du vil slette J. K. Rowling?", result
+    end
+  end
+
+  test "#destroy_dialog_title falls back to default translation" do
+    result = @translate.destroy_dialog_title(:destroy)
+    assert_equal "Are you sure?", result
+  end
+
   test "#description returns translation from uchi.repository.author.description.index" do
     result = @translate.description(:index)
     assert_nil result
@@ -20,6 +33,18 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
   test "#description falls back to nil" do
     result = @translate.description(:index)
     assert_nil result
+  end
+
+  test "failed_destroy returns translation from uchi.repository.author.destroy.failure" do
+    I18n.with_locale(:da) do
+      result = @translate.failed_destroy
+      assert_equal "Forfatteren kunne ikke slettes", result
+    end
+  end
+
+  test "failed_destroy falls back to default translation" do
+    result = @translate.failed_destroy
+    assert_equal "The record could not be deleted", result
   end
 
   test "#field_label returns translation from uchi.repository.author.field.name.label" do
@@ -56,6 +81,20 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
   test "#link_to_cancel falls back to Cancel" do
     result = @translate.link_to_cancel
     assert_equal "Cancel", result
+  end
+
+  test "#link_to_destroy returns destroy text" do
+    author = Author.new(name: "Brandon Sanderson")
+    I18n.with_locale(:da) do
+      result = @translate.link_to_destroy(author)
+      assert_equal "Slet Brandon Sanderson", result
+    end
+  end
+
+  test "#link_to_destroy falls back to delete" do
+    author = Author.new(name: "Brandon Sanderson")
+    result = @translate.link_to_destroy(author)
+    assert_equal "Delete", result
   end
 
   test "#link_to_edit returns translation from uchi.repository.author.button.link_to_edit" do
@@ -130,6 +169,18 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
   test "successful_create falls back to default translation" do
     result = @translate.successful_create
     assert_equal "Your changes have been saved", result
+  end
+
+  test "successful_destroy returns translation from uchi.repository.author.destroy.success" do
+    I18n.with_locale(:da) do
+      result = @translate.successful_destroy
+      assert_equal "Forfatteren er blevet slettet", result
+    end
+  end
+
+  test "successful_destroy falls back to default translation" do
+    result = @translate.successful_destroy
+    assert_equal "The record has been deleted", result
   end
 
   test "successful_update returns translation from uchi.repository.author.update.success" do

@@ -11,6 +11,8 @@ module Uchi
       end
 
       def title(model)
+        return nil unless model
+
         model.name
       end
     end
