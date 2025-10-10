@@ -25,6 +25,21 @@ module Uchi
       assert_select "a[href=?]", uchi_book_path(id: @book.id), text: "Cancel"
     end
 
+    test "GET new responds successfully" do
+      get new_uchi_title_url(scope: @scope)
+      assert_response :success
+    end
+
+    test "GET new renders a form to create a new model" do
+      get new_uchi_title_url(scope: @scope)
+      assert_select "form[action=?][method='post']", uchi_titles_path
+    end
+
+    test "GET new links back to the scoped model" do
+      get new_uchi_title_url(scope: @scope)
+      assert_select "a[href=?]", uchi_book_path(id: @book.id), text: "Cancel"
+    end
+
     test "GET index responds successfully" do
       get uchi_titles_url(scope: @scope)
       assert_response :success
