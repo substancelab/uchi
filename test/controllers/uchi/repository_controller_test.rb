@@ -52,6 +52,11 @@ module Uchi
       assert_select "a[href=?]", uchi_books_path, text: "Cancel"
     end
 
+    test "GET new links to the specified path" do
+      get new_uchi_book_url(cancel_to: uchi_authors_path)
+      assert_select "a[href=?]", uchi_authors_path, text: "Cancel"
+    end
+
     test "GET show responds successfully" do
       get uchi_book_url(id: @book.id)
       assert_response :success
