@@ -13,6 +13,7 @@ da:
           success: "Dine ændringer er gemt"
       author:
         button:
+          link_to_destroy: "Slet %{record}"
           link_to_edit: "Rediger"
           link_to_new: "Ny forfatter"
         edit:

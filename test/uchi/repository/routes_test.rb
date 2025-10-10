@@ -23,6 +23,10 @@ class UchiRepositoryRoutesTest < ActiveSupport::TestCase
     assert_equal "/uchi/authors", @routes.path_for(:create)
   end
 
+  test "#path_for returns path to destroy action" do
+    assert_equal "/uchi/authors/1", @routes.path_for(:destroy, id: 1)
+  end
+
   test "#path_for returns path to edit action" do
     assert_equal "/uchi/authors/1/edit", @routes.path_for(:edit, id: 1)
   end

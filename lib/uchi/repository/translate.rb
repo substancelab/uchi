@@ -56,6 +56,16 @@ module Uchi
         translate("common.cancel", default: "Cancel")
       end
 
+      def link_to_destroy(record)
+        translate(
+          "link_to_destroy",
+          default: "Delete",
+          model: singular_name,
+          record: repository.title(record),
+          scope: i18n_scope("button")
+        )
+      end
+
       def link_to_edit(record)
         translate(
           "link_to_edit",

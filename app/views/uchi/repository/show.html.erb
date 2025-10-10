@@ -7,6 +7,10 @@
   )
 ) do |header| %>
   <% header.with_action do %>
+    <%= button_to(@repository.translate.link_to_destroy(@record), @repository.routes.path_for(:destroy, id: @record.id), method: :delete, class: Flowbite::Button.classes) %>
+  <% end %>
+
+  <% header.with_action do %>
     <%= link_to(@repository.translate.link_to_edit(@record), @repository.routes.path_for(:edit, id: @record.id), class: Flowbite::Button.classes) %>
   <% end %>
 <% end %>

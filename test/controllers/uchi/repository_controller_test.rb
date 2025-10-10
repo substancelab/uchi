@@ -69,6 +69,11 @@ module Uchi
       assert_template :show
     end
 
+    test "GET show includes a button to delete the record" do
+      get uchi_book_url(id: @book.id)
+      assert_select "form[action=?]", uchi_book_path(id: @book.id), text: "Delete"
+    end
+
     test "GET show includes a turbo-frame that loads the titles in a scoped index view" do
       get uchi_book_url(id: @book.id)
 
