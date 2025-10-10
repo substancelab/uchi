@@ -37,7 +37,7 @@ module Uchi
       assert_response :success
     end
 
-    test "GET new renders a form for create a new model" do
+    test "GET new renders a form to create a new model" do
       get new_uchi_book_url
       assert_select "form[action=?][method='post']", uchi_books_path
     end
