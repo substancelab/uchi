@@ -20,6 +20,11 @@ module Uchi
       assert_select "form[action=?][method='post']", uchi_title_path(id: @dk_title.id)
     end
 
+    test "GET edit links back to the scoped model" do
+      get edit_uchi_title_url(id: @dk_title.id, scope: @scope)
+      assert_select "a[href=?]", uchi_book_path(id: @book.id), text: "Cancel"
+    end
+
     test "GET index responds successfully" do
       get uchi_titles_url(scope: @scope)
       assert_response :success
