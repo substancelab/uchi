@@ -22,6 +22,18 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_nil result
   end
 
+  test "failed_destroy returns translation from uchi.repository.author.destroy.failure" do
+    I18n.with_locale(:da) do
+      result = @translate.failed_destroy
+      assert_equal "Forfatteren kunne ikke slettes", result
+    end
+  end
+
+  test "failed_destroy falls back to default translation" do
+    result = @translate.failed_destroy
+    assert_equal "The record could not be deleted", result
+  end
+
   test "#field_label returns translation from uchi.repository.author.field.name.label" do
     I18n.with_locale(:da) do
       result = @translate.field_label(@field)
@@ -130,6 +142,18 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
   test "successful_create falls back to default translation" do
     result = @translate.successful_create
     assert_equal "Your changes have been saved", result
+  end
+
+  test "successful_destroy returns translation from uchi.repository.author.destroy.success" do
+    I18n.with_locale(:da) do
+      result = @translate.successful_destroy
+      assert_equal "Forfatteren er blevet slettet", result
+    end
+  end
+
+  test "successful_destroy falls back to default translation" do
+    result = @translate.successful_destroy
+    assert_equal "The record has been deleted", result
   end
 
   test "successful_update returns translation from uchi.repository.author.update.success" do

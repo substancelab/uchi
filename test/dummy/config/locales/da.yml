@@ -33,5 +33,8 @@ da:
           title: "Vis forfatter"
         create:
           success: "Forfatteren er blevet tilføjet"
+        destroy:
+          failure: "Forfatteren kunne ikke slettes"
+          success: "Forfatteren er blevet slettet"
         update:
           success: "Dine ændringer til forfatteren blev gemt"

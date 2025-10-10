@@ -18,6 +18,18 @@ module Uchi
         )
       end
 
+      def failed_destroy
+        translate(
+          "destroy.failure",
+          default: translate(
+            "destroy.failure",
+            default: "The record could not be deleted",
+            scope: "common"
+          ),
+          scope: "uchi.repository.#{i18n_key}"
+        )
+      end
+
       def initialize(repository:)
         @repository = repository
       end
@@ -97,6 +109,18 @@ module Uchi
           default: translate(
             "create.success",
             default: "Your changes have been saved",
+            scope: "common"
+          ),
+          scope: "uchi.repository.#{i18n_key}"
+        )
+      end
+
+      def successful_destroy
+        translate(
+          "destroy.success",
+          default: translate(
+            "destroy.success",
+            default: "The record has been deleted",
             scope: "common"
           ),
           scope: "uchi.repository.#{i18n_key}"
