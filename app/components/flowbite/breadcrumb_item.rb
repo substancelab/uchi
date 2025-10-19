@@ -20,7 +20,7 @@ module Flowbite
     def call
       content_tag(:li, item_options) do
         content_tag(:div, class: "flex items-center") do
-          concat(render(Flowbite::BreadcrumbSeparator.new))
+          concat(render(prefix_icon)) if prefix_icon
           concat(render_link)
         end
       end
@@ -32,13 +32,17 @@ module Flowbite
       {}
     end
 
+    def prefix_icon
+      Flowbite::BreadcrumbSeparator.new
+    end
+
     def render_link
       link_options = {class: link_classes}.merge(options)
       content_tag(:a, content, href: href, **link_options)
     end
 
     def link_classes
-      ["text-sm", "font-medium", "ms-1", "text-gray-700", "hover:text-blue-600", "md:ms-2", "dark:text-gray-400", "dark:hover:text-white"]
+      ["ms-1", "text-sm", "font-medium", "text-gray-700", "hover:text-blue-600", "dark:text-gray-400", "dark:hover:text-white"]
     end
   end
 end

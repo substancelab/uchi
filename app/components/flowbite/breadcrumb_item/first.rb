@@ -11,12 +11,6 @@ module Flowbite
     # @example First item
     #   <%= render Flowbite::BreadcrumbItem::First.new(href: "/") { "Home" } %>
     class First < BreadcrumbItem
-      def call
-        content_tag(:li, item_options) do
-          render_link
-        end
-      end
-
       protected
 
       def item_options
@@ -25,6 +19,10 @@ module Flowbite
 
       def link_classes
         ["text-sm", "font-medium", "inline-flex", "items-center", "text-gray-700", "hover:text-blue-600", "dark:text-gray-400", "dark:hover:text-white"]
+      end
+
+      def prefix_icon
+        nil
       end
     end
   end

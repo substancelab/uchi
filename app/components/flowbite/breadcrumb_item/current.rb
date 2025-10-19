@@ -14,15 +14,6 @@ module Flowbite
         super(href: nil, **options)
       end
 
-      def call
-        content_tag(:li, item_options) do
-          content_tag(:div, class: "flex items-center") do
-            concat(render(Flowbite::BreadcrumbSeparator.new))
-            concat(render_link)
-          end
-        end
-      end
-
       protected
 
       def item_options
@@ -35,7 +26,7 @@ module Flowbite
       end
 
       def link_classes
-        ["text-sm", "font-medium", "ms-1", "text-gray-500", "md:ms-2", "dark:text-gray-400"]
+        ["ms-1", "text-sm", "font-medium", "text-gray-500", "dark:text-gray-400"]
       end
     end
   end

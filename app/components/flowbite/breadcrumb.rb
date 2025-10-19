@@ -23,7 +23,9 @@ module Flowbite
     def call
       content_tag(:nav, class: "flex", "aria-label": "Breadcrumb") do
         content_tag(:ol, class: "inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse") do
-          items.each { |item| concat(item) }
+          items.each_with_index do |item, index|
+            concat(item)
+          end
         end
       end
     end

@@ -2759,11 +2759,6 @@
       margin-inline: calc(var(--spacing) * 0);
     }
   }
-  .md\:ms-2 {
-    @media (width >= 48rem) {
-      margin-inline-start: calc(var(--spacing) * 2);
-    }
-  }
   .md\:flex {
     @media (width >= 48rem) {
       display: flex;
