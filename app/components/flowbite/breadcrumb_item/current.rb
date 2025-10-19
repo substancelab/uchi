@@ -17,7 +17,7 @@ module Flowbite
       def call
         content_tag(:li, item_options) do
           content_tag(:div, class: "flex items-center") do
-            concat(separator_icon)
+            concat(render(Flowbite::BreadcrumbSeparator.new))
             concat(render_link)
           end
         end

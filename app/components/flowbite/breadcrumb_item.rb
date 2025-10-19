@@ -20,7 +20,7 @@ module Flowbite
     def call
       content_tag(:li, item_options) do
         content_tag(:div, class: "flex items-center") do
-          concat(separator_icon)
+          concat(render(Flowbite::BreadcrumbSeparator.new))
           concat(render_link)
         end
       end
@@ -39,24 +39,6 @@ module Flowbite
 
     def link_classes
       ["text-sm", "font-medium", "ms-1", "text-gray-700", "hover:text-blue-600", "md:ms-2", "dark:text-gray-400", "dark:hover:text-white"]
-    end
-
-    def separator_icon
-      tag.svg(
-        class: "rtl:rotate-180 w-3 h-3 text-gray-400 mx-1",
-        "aria-hidden": "true",
-        xmlns: "http://www.w3.org/2000/svg",
-        fill: "none",
-        viewBox: "0 0 6 10"
-      ) do
-        tag.path(
-          stroke: "currentColor",
-          "stroke-linecap": "round",
-          "stroke-linejoin": "round",
-          "stroke-width": "2",
-          d: "m1 9 4-4-4-4"
-        )
-      end
     end
   end
 end
