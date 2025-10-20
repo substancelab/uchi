@@ -22,7 +22,13 @@ module Flowbite
       end
 
       def prefix_icon
-        Flowbite::BreadcrumbHome.new
+        nil
+      end
+
+      def render_link
+        icon = render(Flowbite::BreadcrumbHome.new)
+        link_options = {class: link_classes}.merge(options)
+        content_tag(:a, safe_join([icon, content]), href: href, **link_options)
       end
     end
   end
