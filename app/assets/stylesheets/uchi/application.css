@@ -1053,6 +1053,9 @@
   .me-2 {
     margin-inline-end: calc(var(--spacing) * 2);
   }
+  .me-2\.5 {
+    margin-inline-end: calc(var(--spacing) * 2.5);
+  }
   .mt-2 {
     margin-top: calc(var(--spacing) * 2);
   }

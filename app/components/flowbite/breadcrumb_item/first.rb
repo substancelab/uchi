@@ -22,7 +22,7 @@ module Flowbite
       end
 
       def prefix_icon
-        nil
+        Flowbite::BreadcrumbHome.new
       end
     end
   end
