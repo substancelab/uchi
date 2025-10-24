@@ -1,3 +1,15 @@
+<%= render(Flowbite::Breadcrumb.new) do |breadcrumb| %>
+  <% breadcrumb.with_item do %>
+    <%= render Flowbite::BreadcrumbItem::First.new(href: @repository.routes.root_path).with_content(Rails.application.name.titlecase) %>
+  <% end %>
+  <% breadcrumb.with_item do %>
+    <%= render Flowbite::BreadcrumbItem.new(href: @repository.routes.path_for(:index)).with_content(@repository.translate.breadcrumb_label(:index)) %>
+  <% end %>
+  <% breadcrumb.with_item do %>
+    <%= render Flowbite::BreadcrumbItem::Current.new.with_content(@repository.translate.breadcrumb_label(:new, record: @record)) %>
+  <% end %>
+<% end %>
+
 <%= render(
   Uchi::Ui::PageHeader.new(
     description: @repository.translate.description(:new),

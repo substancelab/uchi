@@ -5,6 +5,25 @@ module Uchi
     class Translate
       attr_reader :repository
 
+      # Returns the breadcrumb label for the given page.
+      #
+      # Example translation key:
+      #   uchi.repository.author.breadcrumb.edit.label
+      def breadcrumb_label(page, record: nil)
+        default = {
+          index: plural_name,
+          show: title_for_record(record)
+        }[page.intern].presence
+        default ||= translate("common.#{page}", default: page.to_s.capitalize)
+        translate(
+          "label",
+          default: default,
+          model: singular_name,
+          record: title_for_record(record),
+          scope: i18n_scope("breadcrumb.#{page}")
+        )
+      end
+
       # Returns a description for the given page, or nil if none is found.
       # This description is intended to provide additional context for the page
       # being shown.
@@ -215,6 +234,12 @@ module Uchi
           count: 1,
           default: model.model_name.human(count: 1)
         )
+      end
+
+      def title_for_record(record)
+        return nil unless record
+
+        repository.title(record)
       end
 
       def translate(key, **options)

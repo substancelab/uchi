@@ -1,11 +1,12 @@
-<%= link_to("< Back", @repository.routes.path_for(:index)) %>
-
 <%= render(Flowbite::Breadcrumb.new) do |breadcrumb| %>
   <% breadcrumb.with_item do %>
-    <%= render Flowbite::BreadcrumbItem::First.new(href: @repository.routes.path_for(:index)).with_content(@repository.translate.title(:index)) %>
+    <%= render Flowbite::BreadcrumbItem::First.new(href: @repository.routes.root_path).with_content(Rails.application.name.titlecase) %>
   <% end %>
   <% breadcrumb.with_item do %>
-    <%= render Flowbite::BreadcrumbItem::Current.new.with_content(@repository.translate.title(:show, record: @record)) %>
+    <%= render Flowbite::BreadcrumbItem.new(href: @repository.routes.path_for(:index)).with_content(@repository.translate.breadcrumb_label(:index)) %>
+  <% end %>
+  <% breadcrumb.with_item do %>
+    <%= render Flowbite::BreadcrumbItem::Current.new.with_content(@repository.translate.breadcrumb_label(:show, record: @record)) %>
   <% end %>
 <% end %>
 

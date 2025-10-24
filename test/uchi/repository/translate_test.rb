@@ -12,12 +12,46 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal @repository, @translate.repository
   end
 
-  test "#destroy_dialog_title returns translation from uchi.repository.author.dialog.destroy.title" do
+  test "#breadcrumb_label returns translation from uchi.repository.author.breadcrumb.index.label" do
     I18n.with_locale(:da) do
-      record = Author.new(name: "J. K. Rowling")
-      result = @translate.destroy_dialog_title(record)
-      assert_equal "Er du sikker på, at du vil slette J. K. Rowling?", result
+      result = @translate.breadcrumb_label(:index)
+      assert_equal "Forfattere", result
     end
+  end
+
+  test "#breadcrumb_label for index page defaults to plural name" do
+    result = @translate.breadcrumb_label(:index)
+    assert_equal "Authors", result
+  end
+
+  test "#breadcrumb_label for show page returns translation from uchi.repository.author.breadcrumb.show.label" do
+    I18n.with_locale(:da) do
+      result = @translate.breadcrumb_label(:show, record: Author.new(name: "Test Author"))
+      assert_equal "Vis Test Author", result
+    end
+  end
+
+  test "#breadcrumb_label for show page defaults to record title" do
+    result = @translate.breadcrumb_label(:show, record: Author.new(name: "Test Author"))
+    assert_equal "Test Author", result
+  end
+
+  test "#breadcrumb_label for edit page returns translation from uchi.repository.author.breadcrumb.show.label" do
+    I18n.with_locale(:da) do
+      result = @translate.breadcrumb_label(:edit, record: Author.new(name: "Test Author"))
+      assert_equal "Rediger Test Author", result
+    end
+  end
+
+  test "#breadcrumb_label for edit page defaults to page name" do
+    result = @translate.breadcrumb_label(:edit, record: Author.new(name: "Test Author"))
+    assert_equal "Edit", result
+  end
+
+  test "#destroy_dialog_title returns translation from uchi.repository.author.dialog.destroy.title" do
+    record = Author.new(name: "J. K. Rowling")
+    result = @translate.destroy_dialog_title(record)
+    assert_equal "Er du sikker på, at du vil slette J. K. Rowling?", result
   end
 
   test "#destroy_dialog_title falls back to default translation" do
