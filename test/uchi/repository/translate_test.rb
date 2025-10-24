@@ -36,7 +36,7 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Test Author", result
   end
 
-  test "#breadcrumb_label for edit page returns translation from uchi.repository.author.breadcrumb.show.label" do
+  test "#breadcrumb_label for edit page returns translation from uchi.repository.author.breadcrumb.edit.label" do
     I18n.with_locale(:da) do
       result = @translate.breadcrumb_label(:edit, record: Author.new(name: "Test Author"))
       assert_equal "Rediger Test Author", result
