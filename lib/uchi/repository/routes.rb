@@ -21,6 +21,10 @@ module Uchi
         end
       end
 
+      def root_path
+        "/#{uchi_namespace}/"
+      end
+
       private
 
       def call_url_helper_in_main_app(parts, **options)

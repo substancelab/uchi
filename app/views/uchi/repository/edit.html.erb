@@ -2,8 +2,14 @@
   Uchi::Ui::PageHeader.new(
     description: @repository.translate.description(:edit),
     title: @repository.translate.title(:edit, record: @record),
-  )
-) %>
+  )) do |header| %>
+  <% header.with_breadcrumb(items: [
+    {href: @repository.routes.root_path, label: Rails.application.name.titlecase },
+    {href: @repository.routes.path_for(:index), label: @repository.translate.breadcrumb_label(:index) },
+    {href: @repository.routes.path_for(:show, id: @record.id), label: @repository.translate.breadcrumb_label(:show, record: @record) },
+    {href: @repository.routes.path_for(:edit, id: @record.id), label: @repository.translate.breadcrumb_label(:edit, record: @record) }
+  ]) %>
+<% end %>
 
 <div class="mx-4 md:mx-0">
   <%= render(Flowbite::Card.new) do %>

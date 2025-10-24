@@ -12,6 +12,13 @@ da:
         update:
           success: "Dine ændringer er gemt"
       author:
+        breadcrumb:
+          edit:
+            label: "Rediger %{record}"
+          index:
+            label: "Forfattere"
+          show:
+            label: "Vis %{record}"
         button:
           link_to_destroy: "Slet %{record}"
           link_to_edit: "Rediger"
