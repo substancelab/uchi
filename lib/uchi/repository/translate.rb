@@ -13,7 +13,7 @@ module Uchi
         default = {
           index: plural_name,
           show: title_for_record(record)
-        }[page.intern].presence
+        }[page.to_sym].presence
         default ||= translate("common.#{page}", default: page.to_s.capitalize)
         translate(
           "label",
