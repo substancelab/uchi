@@ -20,13 +20,7 @@ class Pagy
   autoload :Method,             path.join('toolbox/paginators/method')
   autoload :I18n,               path.join('modules/i18n/i18n')
   autoload :Console,            path.join('modules/console')
-  autoload :Calendar,           path.join('classes/calendar/calendar')
   autoload :Offset,             path.join('classes/offset/offset')
-  autoload :Search,             path.join('classes/offset/search')
-  autoload :ElasticsearchRails, path.join('classes/offset/search')
-  autoload :Meilisearch,        path.join('classes/offset/search')
-  autoload :Searchkick,         path.join('classes/offset/search')
-  autoload :Keyset,             path.join('classes/keyset/keyset')
 
   def self.options = @options ||= {}
 
@@ -41,10 +35,6 @@ class Pagy
   # Define the hierarchical identity methods, overridden by the respective classes
   def offset?    = false
   def countless? = false
-  def calendar?  = false
-  def search?    = false
-  def keyset?    = false
-  def keynav?    = false
 
   # Validates and assign the passed options: var must be present and value.to_i must be >= to min
   def assign_and_check(name_min)

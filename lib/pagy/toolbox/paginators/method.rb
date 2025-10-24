@@ -3,14 +3,7 @@
 require_relative '../../classes/request'
 
 class Pagy
-  paginators = { offset:              :OffsetPaginator,
-                 countless:           :CountlessPaginator,
-                 keyset:              :KeysetPaginator,
-                 keynav_js:           :KeynavJsPaginator,
-                 calendar:            :CalendarPaginator,
-                 elasticsearch_rails: :ElasticsearchRailsPaginator,
-                 meilisearch:         :MeilisearchPaginator,
-                 searchkick:          :SearchkickPaginator }.freeze
+  paginators = { offset:              :OffsetPaginator }.freeze
 
   path = Pathname.new(__dir__)
   paginators.each { |symbol, name| autoload name, path.join(symbol.to_s) }
