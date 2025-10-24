@@ -6,6 +6,7 @@ module Uchi
       attr_reader :description, :title
 
       renders_many :actions
+      renders_one :breadcrumb, Uchi::Ui::Breadcrumb
 
       def initialize(title:, description: nil)
         super()

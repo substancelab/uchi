@@ -1,8 +1,3 @@
-<%= render(Uchi::Ui::Breadcrumbs.new(items: [
-  {href: @repository.routes.root_path, label: Rails.application.name.titlecase },
-  {href: @repository.routes.path_for(:index), label: @repository.translate.breadcrumb_label(:index) },
-  {href: @repository.routes.path_for(:show, id: @record.id), label: @repository.translate.breadcrumb_label(:show, record: @record) }
-])) %>
 
 <%= render(
   Uchi::Ui::PageHeader.new(
@@ -25,6 +20,12 @@
   <% header.with_action do %>
     <%= link_to(@repository.translate.link_to_edit(@record), @repository.routes.path_for(:edit, id: @record.id), class: Flowbite::Button.classes) %>
   <% end %>
+
+  <% header.with_breadcrumb(items: [
+      {href: @repository.routes.root_path, label: Rails.application.name.titlecase },
+      {href: @repository.routes.path_for(:index), label: @repository.translate.breadcrumb_label(:index) },
+      {href: @repository.routes.path_for(:show, id: @record.id), label: @repository.translate.breadcrumb_label(:show, record: @record) }
+    ]) %>
 <% end %>
 
 <%= render(Uchi::Ui::Show::AttributeFields.new(

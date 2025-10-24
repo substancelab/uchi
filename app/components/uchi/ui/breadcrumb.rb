@@ -2,7 +2,7 @@
 
 module Uchi
   module Ui
-    class Breadcrumbs < ViewComponent::Base
+    class Breadcrumb < ViewComponent::Base
       attr_reader :items
 
       def initialize(items:)
