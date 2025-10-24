@@ -49,9 +49,11 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
   end
 
   test "#destroy_dialog_title returns translation from uchi.repository.author.dialog.destroy.title" do
-    record = Author.new(name: "J. K. Rowling")
-    result = @translate.destroy_dialog_title(record)
-    assert_equal "Er du sikker på, at du vil slette J. K. Rowling?", result
+    I18n.with_locale(:da) do
+      record = Author.new(name: "J. K. Rowling")
+      result = @translate.destroy_dialog_title(record)
+      assert_equal "Er du sikker på, at du vil slette J. K. Rowling?", result
+    end
   end
 
   test "#destroy_dialog_title falls back to default translation" do
