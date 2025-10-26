@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "pagy"
+require "uchi/pagy"
 
 require "uchi/pagination/page"
 
