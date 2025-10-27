@@ -17,7 +17,13 @@ And then execute:
 $ bundle
 ```
 
-### 2. Create a repository
+### 2. Install Uchi
+
+```bash
+$ rails generate uchi:install
+```
+
+### 3. Create a repository
 
 Add a repository for one of your models in `app/uchi/repositories/customer.rb`:
 
@@ -37,7 +43,7 @@ module Uchi
 end
 ```
 
-### 3. Create a controller to handle requests
+### 4. Create a controller to handle requests
 
 In `app/controllers/uchi/customers_controller.rb`:
 
@@ -51,7 +57,7 @@ module Uchi
 end
 ```
 
-### 4. Route requests to the controller
+### 5. Route requests to the controller
 
 Add to `config/routes.rb`:
 
