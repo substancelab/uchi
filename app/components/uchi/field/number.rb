@@ -18,6 +18,11 @@ module Uchi
       end
 
       class Index < Uchi::Field::Base::Index
+        class << self
+          def classes_for_table_cell
+            super + ["text-right"]
+          end
+        end
       end
 
       class Show < Uchi::Field::Base::Show
