@@ -1,12 +1,9 @@
-<!-- FLASH MESSAGES HERE -->
-<%= flash.inspect %>
 <% if flash.any? %>
   <div class="fixed bottom-4 right-4 z-50 space-y-4">
     <% flash.each do |type, message| %>
       <%= render Flowbite::Toast.new(
         message: message,
         style: flash_style(type),
-        id: "flash-#{type}"
       ) %>
     <% end %>
   </div>

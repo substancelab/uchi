@@ -66,13 +66,13 @@ module Uchi
     test "PATCH update flashes a translated success message after successful update" do
       ::I18n.with_locale(:da) do
         patch uchi_author_url(id: @author.id), params: {author: {name: "Updated Name"}}
-        assert_equal "Dine ændringer til forfatteren blev gemt", flash[:notice]
+        assert_equal "Dine ændringer til forfatteren blev gemt", flash[:success]
       end
     end
 
     test "PATCH update falls back to default success message after successful update" do
       patch uchi_author_url(id: @author.id), params: {author: {name: "Updated Name"}}
-      assert_equal "Your changes have been saved", flash[:notice]
+      assert_equal "Your changes have been saved", flash[:success]
     end
 
     test "PATCH update rerenders the edit view after unsuccessful update" do
@@ -98,7 +98,7 @@ module Uchi
     test "POST create flashes a translated success message after successful creation" do
       ::I18n.with_locale(:da) do
         post uchi_authors_url, params: {author: {name: "New Author"}}
-        assert_equal "Forfatteren er blevet tilføjet", flash[:notice]
+        assert_equal "Forfatteren er blevet tilføjet", flash[:success]
       end
     end
 
