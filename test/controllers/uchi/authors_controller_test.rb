@@ -47,8 +47,9 @@ module Uchi
     end
 
     test "PATCH update redirects to show after successful update" do
+      srand(42)
       patch uchi_author_url(id: @author.id), params: {author: {name: "Updated Name"}}
-      assert_redirected_to uchi_author_url(id: @author.id)
+      assert_redirected_to uchi_author_url(id: @author.id, uniq: 0.3745401188473625)
     end
 
     test "PATCH update responds with 303 after successful update" do

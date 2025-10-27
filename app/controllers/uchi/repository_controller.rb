@@ -65,7 +65,7 @@ module Uchi
       @record = find_record
       if @record.update(record_params)
         flash[:notice] = @repository.translate.successful_update
-        redirect_to(@repository.routes.path_for(:show, id: @record.id), status: :see_other)
+        redirect_to(@repository.routes.path_for(:show, id: @record.id, uniq: rand), status: :see_other)
       else
         render :edit, status: :unprocessable_entity
       end
