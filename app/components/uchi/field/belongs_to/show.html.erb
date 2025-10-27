@@ -1,4 +1,3 @@
-<%= link_to(
-  associated_record,
-  helpers.uchi.send("#{associated_repository.model_param_key}_path", id: associated_record.id),
-) %>
+<%= render(Flowbite::Link.new(
+  href: helpers.uchi.send("#{associated_repository.model_param_key}_path", id: associated_record.id)
+).with_content(associated_record.to_s)) %>
