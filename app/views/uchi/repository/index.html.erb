@@ -1,3 +1,5 @@
+<%- content_for(:page_title) { @repository.translate.title(:index) } %>
+
 <%= render(
   Uchi::Ui::PageHeader.new(
     description: @repository.translate.description(:index),
