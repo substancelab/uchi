@@ -19,8 +19,7 @@ module Uchi
     end
 
     def edit_component(form:, repository:, label: nil, hint: nil)
-      component_class = self.class.const_get(:Edit)
-      component_class.new(
+      edit_component_class.new(
         field: self,
         form: form,
         repository: repository,
@@ -29,13 +28,20 @@ module Uchi
       )
     end
 
+    def edit_component_class
+      self.class.const_get(:Edit)
+    end
+
     def index_component(record:, repository:)
-      component_class = self.class.const_get(:Index)
-      component_class.new(
+      index_component_class.new(
         field: self,
         record: record,
         repository: repository
       )
+    end
+
+    def index_component_class
+      self.class.const_get(:Index)
     end
 
     # @param name [String, Symbol] The name of the field.
@@ -75,12 +81,15 @@ module Uchi
     end
 
     def show_component(record:, repository:)
-      component_class = self.class.const_get(:Show)
-      component_class.new(
+      show_component_class.new(
         field: self,
         record: record,
         repository: repository
       )
+    end
+
+    def show_component_class
+      self.class.const_get(:Show)
     end
 
     # Returns true if the field is sortable

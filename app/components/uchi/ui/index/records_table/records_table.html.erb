@@ -2,7 +2,8 @@
   <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
     <tr>
       <% columns.each do |field| %>
-        <th scope="col" class="px-4 py-3 md:px-6">
+        <% component_class = field.index_component_class %>
+        <th scope="col" class="px-4 py-3 md:px-6 <%= component_class.classes_for_table_cell.join(" ") %>">
           <% if field.sortable? %>
             <% if field.name == sort_order&.name %>
               <% if sort_order&.ascending? %>
@@ -40,7 +41,8 @@
     <% records.each do |record| %>
       <tr class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <% columns.each do |field| %>
-          <td class="px-4 py-4 md:px-6">
+          <% component_class = field.index_component_class %>
+          <td class="px-4 py-4 md:px-6 <%= component_class.classes_for_table_cell.join(" ") %>">
             <%= render(field.index_component(record: record, repository: repository)) %>
           </td>
         <% end %>

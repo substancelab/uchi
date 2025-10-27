@@ -36,6 +36,14 @@ module Uchi
       class Index < ViewComponent::Base
         attr_reader :field, :record, :repository
 
+        class << self
+          # Returns the CSS classes to apply to the td or th of the table where
+          # this field is rendered.
+          def classes_for_table_cell
+            []
+          end
+        end
+
         def initialize(field:, record:, repository:)
           super()
 
