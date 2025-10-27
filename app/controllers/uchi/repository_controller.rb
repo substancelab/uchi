@@ -11,7 +11,7 @@ module Uchi
     def create
       @record = build_record
       if @record.save
-        flash[:notice] = @repository.translate.successful_create
+        flash[:success] = @repository.translate.successful_create
         redirect_to(@repository.routes.path_for(:show, id: @record.id), status: :see_other)
       else
         render :new, status: :unprocessable_entity
@@ -21,7 +21,7 @@ module Uchi
     def destroy
       @record = find_record
       if @record.destroy
-        flash[:notice] = @repository.translate.successful_destroy
+        flash[:success] = @repository.translate.successful_destroy
         redirect_to(@repository.routes.path_for(:index), status: :see_other)
       else
         flash[:alert] = @repository.translate.failed_destroy
@@ -64,8 +64,8 @@ module Uchi
     def update
       @record = find_record
       if @record.update(record_params)
-        flash[:notice] = @repository.translate.successful_update
-        redirect_to(@repository.routes.path_for(:show, id: @record.id), status: :see_other)
+        flash[:success] = @repository.translate.successful_update
+        redirect_to(@repository.routes.path_for(:show, id: @record.id, uniq: rand), status: :see_other)
       else
         render :edit, status: :unprocessable_entity
       end
