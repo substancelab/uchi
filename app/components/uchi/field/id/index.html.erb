@@ -1,1 +1,4 @@
-<%= link_to(field.value(record), @repository.routes.path_for(:show, id: record.id), target: "_top") %>
+<%= render(Flowbite::Link.new(
+  href: @repository.routes.path_for(:show, id: record.id),
+  target: "_top").with_content(field.value(record))
+) %>
