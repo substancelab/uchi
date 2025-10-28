@@ -8,5 +8,9 @@ module Uchi
       destination = File.join("app/uchi/repositories")
       template "repository.rb", File.join(destination, "#{file_name}.rb")
     end
+
+    def generate_controller
+      generate("uchi:controller", name)
+    end
   end
 end

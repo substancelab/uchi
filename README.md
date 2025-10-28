@@ -27,58 +27,15 @@ $ rails generate uchi:install
 
 Add a repository for one of your models by running
 
-```
+```bash
 $ rails generate uchi:repository Customer
 ```
 
-or add it manually in `app/uchi/repositories/customer.rb`:
-
-```ruby
-module Uchi
-  module Repositories
-    class Customer < Repository
-      # Returns an array of fields to show for this resource.
-      def fields
-        [
-          Field::Number.new(:id),
-          Field::String.new(:name),
-        ]
-      end
-    end
-  end
-end
-```
-
-### 4. Create a controller to handle requests
-
-Run the `uchi:controller` generator:
-
-```
-$ rails generate uchi:controller Customer
-```
-
-which creates a controller in `app/controllers/uchi/customers_controller.rb`:
-
-```ruby
-module Uchi
-  class CustomersController < Uchi::RepositoryController
-    def repository_class
-      Uchi::Repositories::Customer
-    end
-  end
-end
-```
-
-and a route for the controller in `config/routes.rb`:
-
-```ruby
-  mount Uchi::Engine, :at => "/uchi"
-  namespace :uchi do
-    resources :customers
-  end
-```
+This adds a repository in `app/uchi/repositories/customer.rb`, a controller to use that repository in `app/controllers/uchi/customers_controller.rb` and a route to `config/routes.rb` to send requests to the controller.
 
 You can now visit http://localhost:3000/uchi/customers - welcome to Uchi :)
+
+Next up; customize your repository to return the fields you want to expose.
 
 ## Principles
 
