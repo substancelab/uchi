@@ -1,0 +1,11 @@
+# frozen_string_literal: true
+
+module Uchi
+  class <%= plural_file_name.titlecase %>Controller < Uchi::RepositoryController
+    private
+
+    def repository_class
+      Uchi::Repositories::<%= class_name %>
+    end
+  end
+end

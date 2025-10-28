@@ -28,7 +28,7 @@ $ rails generate uchi:install
 Add a repository for one of your models by running
 
 ```
-rails generate uchi:repository Customer
+$ rails generate uchi:repository Customer
 ```
 
 or add it manually in `app/uchi/repositories/customer.rb`:
@@ -51,7 +51,13 @@ end
 
 ### 4. Create a controller to handle requests
 
-In `app/controllers/uchi/customers_controller.rb`:
+Run the `uchi:controller` generator:
+
+```
+$ rails generate uchi:controller Customer
+```
+
+which creates a controller in `app/controllers/uchi/customers_controller.rb`:
 
 ```ruby
 module Uchi
@@ -63,18 +69,16 @@ module Uchi
 end
 ```
 
-### 5. Route requests to the controller
+and a route for the controller in `config/routes.rb`:
 
-Add to `config/routes.rb`:
-
-```
+```ruby
   mount Uchi::Engine, :at => "/uchi"
   namespace :uchi do
     resources :customers
   end
 ```
 
-And visit http://localhost:3000/uchi/customers.
+You can now visit http://localhost:3000/uchi/customers - welcome to Uchi :)
 
 ## Principles
 
