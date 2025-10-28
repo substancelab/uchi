@@ -1,0 +1,11 @@
+# frozen_string_literal: true
+
+module Uchi
+  module Repositories
+    class <%= class_name %> < Repository
+      def fields
+        []
+      end
+    end
+  end
+end

@@ -25,7 +25,13 @@ $ rails generate uchi:install
 
 ### 3. Create a repository
 
-Add a repository for one of your models in `app/uchi/repositories/customer.rb`:
+Add a repository for one of your models by running
+
+```
+rails generate uchi:repository Customer
+```
+
+or add it manually in `app/uchi/repositories/customer.rb`:
 
 ```ruby
 module Uchi
