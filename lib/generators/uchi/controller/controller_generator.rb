@@ -10,7 +10,7 @@ module Uchi
     end
 
     def add_route
-      route "  namespace :uchi do\n    resources :#{plural_file_name}\n  end"
+      route "resources :#{plural_file_name}", namespace: :uchi
     end
   end
 end
