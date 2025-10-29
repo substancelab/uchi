@@ -6,7 +6,7 @@ module Uchi
 
     def create_controller_file
       destination = File.join("app/controllers/uchi")
-      template "controller.rb", File.join(destination, "#{file_name}_controller.rb")
+      template "controller.rb", File.join(destination, "#{plural_file_name}_controller.rb")
     end
 
     def add_route
