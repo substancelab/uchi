@@ -171,6 +171,13 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Loading...", result
   end
 
+  test "#no_records_found returns translation from uchi.common.no_records_found" do
+    I18n.with_locale(:da) do
+      result = @translate.no_records_found
+      assert_equal "Ingen resultater", result
+    end
+  end
+
   test "#plural_name returns translation from uchi.repository.author.model with count 2" do
     I18n.with_locale(:da) do
       result = @translate.plural_name

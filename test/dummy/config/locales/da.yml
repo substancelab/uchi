@@ -3,6 +3,7 @@ da:
   uchi:
     common:
       cancel: "Annuller"
+      no_records_found: "Ingen resultater"
       save: "Gem"
     repository:
       common:

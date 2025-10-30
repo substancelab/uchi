@@ -25,18 +25,25 @@
           <%= render(Uchi::Ui::Index::RecordsTable::SearchForm.new(params: params, repository: @repository)) %>
         </div>
       <% end %>
-      <%= render(Uchi::Ui::Index::RecordsTable.new(
-        columns: @columns,
-        sort_order: current_sort_order,
-        query: params[:query],
-        records: @records,
-        repository: @repository,
-        scope: (scoped? ? scope_params : nil),
-      )) %>
+      <% if @records.any? %>
+        <%= render(Uchi::Ui::Index::RecordsTable.new(
+          columns: @columns,
+          sort_order: current_sort_order,
+          query: params[:query],
+          records: @records,
+          repository: @repository,
+          scope: (scoped? ? scope_params : nil),
+        )) %>
+      <% else %>
+        <div class="p-6 text-center text-gray-500 dark:text-gray-400">
+          <%= @repository.translate.no_records_found %>
+        </div>
+      <% end %>
     </div>
-
-    <div class="my-4 flex justify-center">
-      <%= render(Uchi::Ui::Pagination.new(paginator: @paginator)) %>
-    </div>
+    <% if @records.any? %>
+      <div class="my-4 flex justify-center">
+        <%= render(Uchi::Ui::Pagination.new(paginator: @paginator)) %>
+      </div>
+    <% end %>
   <% end %>
 </div>
