@@ -6,7 +6,7 @@
     scope: {
       field: field.name,
       id: record.id,
-      inverse_of: inverse_association.name,
+      inverse_of: inverse_association&.name,
       model: record.model_name,
     },
     src: associated_repository.routes.path_for(
@@ -14,7 +14,7 @@
       scope: {
         field: field.name,
         id: record.id,
-        inverse_of: inverse_association.name,
+        inverse_of: inverse_association&.name,
         model: record.model_name,
       },
     )
