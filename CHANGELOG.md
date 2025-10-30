@@ -12,3 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Better blank slate when a RecordsTable has no records; we also no longer show page navigation when there are no records.
 - A changelog!
 - Everything else up until now ;)
+
+### Fixed
+
+- uchi:controller generator now generates proper controller names when name contains multiple words.
