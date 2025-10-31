@@ -58,7 +58,7 @@ Field::Number.new(:calculated_sum, sortable: false)
 
 To customize the query used to sort by a given field, pass a lambda to `:sortable`:
 
-```css
+```ruby
 Field::Number(
   :users_count,
   sortable: lambda { |query, direction|
