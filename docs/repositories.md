@@ -43,6 +43,7 @@ end
 ```
 
 `default_sort_order` should return a `Uchi::Repository::SortOrder`.
+
 ## Avoiding n+1
 
 To avoid n+1 performance issues on your index pages and other lists, you can set up includes for the repository.
