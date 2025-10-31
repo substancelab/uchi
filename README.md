@@ -66,6 +66,8 @@ Uchi comes with a bunch of fields that you can choose from, fx:
 
 If none of the above works for you, you can create your own and use those.
 
+For more details about fields see the [Fields documentation](docs/fields.md).
+
 ## Repositories
 
 The cornerstones of Uchi are the repositories. This is where you configure what parts of your models you want to expose and how to do it.
