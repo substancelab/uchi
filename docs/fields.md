@@ -72,7 +72,7 @@ The lambda receives 2 arguments:
 1. `query`: The `ActiveRecord::Relation` that makes up the current database query
 2. `direction`: A symbol indicating what order to sort; either `:asc` or `:desc`.
 
-The lambda should receive an `ActiveRecord::Relation` with the desired sort order added.
+The lambda should return an `ActiveRecord::Relation` with the desired sort order added.
 
 ### Sorting by columns in another table
 

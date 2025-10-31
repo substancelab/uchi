@@ -86,7 +86,7 @@ class Uchi::Repository::Something < Uchi::Repository
 end
 ```
 
-For more details about fields see the [Repositories documentation](docs/repositories.md).
+For more details about repositories see the [Repositories documentation](docs/repositories.md).
 
 ## Translations
 
