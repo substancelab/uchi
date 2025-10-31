@@ -86,6 +86,8 @@ class Uchi::Repository::Something < Uchi::Repository
 end
 ```
 
+For more details about fields see the [Repositories documentation](docs/repositories.md).
+
 ## Translations
 
 Everything is localizable and translatable out of the box.
