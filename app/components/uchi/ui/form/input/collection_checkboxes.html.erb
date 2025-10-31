@@ -1,0 +1,32 @@
+<div>
+  <% if render_label? %>
+    <%= form.label attribute, label_text, class: label_classes.join(" ") %>
+  <% end %>
+
+  <div class="mt-2 space-y-3">
+    <%= form.collection_check_boxes(
+      attribute,
+      collection,
+      value_method,
+      text_method,
+      collection_check_boxes_options
+    ) do |b| %>
+      <div class="<%= checkbox_item_classes.join(" ") %>">
+        <div class="flex items-center h-5">
+          <%= b.check_box(class: checkbox_classes.join(" "), disabled: disabled?) %>
+        </div>
+        <div class="ms-2 text-sm">
+          <%= b.label(class: checkbox_label_classes.join(" ")) %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if render_hint? %>
+    <p class="<%= hint_classes.join(" ") %>"><%= hint_text %></p>
+  <% end %>
+
+  <% errors.each do |error| %>
+    <%= render(Flowbite::Input::ValidationError.new) { error.upcase_first } %>
+  <% end %>
+</div>

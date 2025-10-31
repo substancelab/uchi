@@ -30,6 +30,10 @@ class UchiFieldTest < ActiveSupport::TestCase
     assert_equal :name, @field.param_key
   end
 
+  test "#permitted_param returns name as symbol" do
+    assert_equal :name, @field.permitted_param
+  end
+
   test "#searchable? returns false by default" do
     assert_not @field.searchable?
   end

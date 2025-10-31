@@ -129,9 +129,9 @@ module Uchi
     end
 
     def record_params
-      editable_fields = @repository.fields_for_edit
+      permitted_params = @repository.fields_for_edit.map(&:permitted_param)
       (params[@repository.model_param_key] || ActionController::Parameters.new)
-        .permit(editable_fields.map(&:param_key))
+        .permit(*permitted_params)
     end
 
     def repository_class

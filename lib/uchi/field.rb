@@ -75,6 +75,11 @@ module Uchi
       name.to_sym
     end
 
+    # Returns the values to use for permitting this field in strong parameters
+    def permitted_param
+      param_key
+    end
+
     # Returns true if the field is searchable and should be included in the
     # query when a search term has been entered.
     def searchable?
