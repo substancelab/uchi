@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Field for HasAndBelongsToMany associations.
 - Better blank slate when a RecordsTable has no records; we also no longer show page navigation when there are no records.
 - A changelog!
 - Everything else up until now ;)
