@@ -39,7 +39,7 @@ Next up; customize your repository to return the fields you want to expose.
 
 ## Fields
 
-Each repository defines a method, `#fields`, that returns the fields to include in the views in that repository. For example, a `Customer` repository could returns its fields as:
+Each repository defines a method, `#fields`, that returns the fields to include in the views in that repository. For example, a `Customer` repository could return its fields as:
 
 ```ruby
 class Uchi::Repository::Customer < Uchi::Repository
