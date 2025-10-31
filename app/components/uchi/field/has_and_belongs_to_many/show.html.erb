@@ -1,0 +1,28 @@
+<div class="my-10">
+  <h2 class="px-4 my-6 text-2xl font-bold md:px-0"><%= repository.translate.field_label(field) %></h2>
+
+  <%= render(Uchi::Ui::Index::TurboFrame.new(
+    repository: associated_repository,
+    scope: {
+      field: field.name,
+      id: record.id,
+      inverse_of: inverse_association&.name,
+      model: record.model_name,
+    },
+    src: associated_repository.routes.path_for(
+      :index,
+      scope: {
+        field: field.name,
+        id: record.id,
+        inverse_of: inverse_association&.name,
+        model: record.model_name,
+      },
+    )
+  )) do %>
+    <div class="relative overflow-x-auto bg-white border border-gray-200 shadow-sm md:rounded-lg dark:bg-gray-800 dark:border-gray-700">
+      <div class="grid grid place-items-center p-8">
+        <%= render(Uchi::Ui::Spinner.new(message: repository.translate.loading_message)) %>
+      </div>
+    </div>
+  <% end %>
+</div>
