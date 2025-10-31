@@ -84,17 +84,6 @@ class Uchi::Repository::Something < Uchi::Repository
 end
 ```
 
-## Principles
-
-### Defaults are defaults
-
-Rely on defaults whenever possible. If something has already been decided for us by Rails or Flowbite or Tailwind use their decision.
-
-### I18n is opt in
-
-We don't want to force you to translate everything. If a field doesn't need a translation, don't add one, we'll just fall back to the fields name.
-
-
 ## Translations
 
 Everything is localizable and translatable out of the box.
@@ -208,6 +197,16 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/substa
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+
+## Principles
+
+### Defaults are defaults
+
+Rely on defaults whenever possible. If something has already been decided for us by Rails or Flowbite or Tailwind use their decision.
+
+### I18n is opt in
+
+We don't want to force you to translate everything. If a field doesn't need a translation, don't add one, we'll just fall back to the fields name.
 
 ## Credits
 
