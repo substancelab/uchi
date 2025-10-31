@@ -37,6 +37,35 @@ You can now visit http://localhost:3000/uchi/customers - welcome to Uchi :)
 
 Next up; customize your repository to return the fields you want to expose.
 
+## Fields
+
+Each repository defines a method, `#fields`, that returns the fields to include in the views in that repository. For example, a `Customer` repository could returns its fields as:
+
+```ruby
+class Uchi::Repository::Customer < Uchi::Repository
+  def fields
+    [
+      Field::String.new(:name),
+      Field::Date.new(:started_on),
+      Field::BelongsTo.new(:company),
+      Field::HasMany.new(:agreements),
+    ]
+  end
+end
+```
+
+Uchi comes with a bunch of fields that you can choose from, fx:
+
+- `Field::BelongsTo`
+- `Field::Boolean`
+- `Field::Date`
+- `Field::DateTime`
+- `Field::HasMany`
+- `Field::Number`
+- `Field::String`
+
+If none of the above works for you, you can create your own and use those.
+
 ## Principles
 
 ### Defaults are defaults
