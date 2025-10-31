@@ -10,6 +10,9 @@ module Uchi
       :reader,
       :sortable
 
+    # The repository this field is associated with.
+    attr_accessor :repository
+
     def column_name
       name.to_s.humanize
     end

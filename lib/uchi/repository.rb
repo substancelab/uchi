@@ -41,17 +41,17 @@ module Uchi
 
     # Returns an array of fields to show on the edit page.
     def fields_for_edit
-      fields.select { |field| field.on.include?(:edit) }
+      fields.select { |field| field.on.include?(:edit) }.each { |field| field.repository = self }
     end
 
     # Returns an array of fields to show on the index page.
     def fields_for_index
-      fields.select { |field| field.on.include?(:index) }
+      fields.select { |field| field.on.include?(:index) }.each { |field| field.repository = self }
     end
 
     # Returns an array of fields to show on the show page.
     def fields_for_show
-      fields.select { |field| field.on.include?(:show) }
+      fields.select { |field| field.on.include?(:show) }.each { |field| field.repository = self }
     end
 
     def find_all(search: nil, scope: model.all, sort_order: default_sort_order)
