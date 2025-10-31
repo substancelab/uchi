@@ -42,8 +42,7 @@ class UchiRepositoryTest < ActiveSupport::TestCase
   end
 
   test "#fields_for_edit returns fields to include on the edit page" do
-    author = Author.new(name: "Alice")
-    fields = author_repository.fields_for_edit(author)
+    fields = author_repository.fields_for_edit
 
     assert_equal [:name, :born_on, :biography], fields.map(&:name)
   end
