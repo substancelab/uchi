@@ -10,6 +10,9 @@ module Uchi
       :reader,
       :sortable
 
+    # The record associated with this field.
+    attr_accessor :record
+
     def column_name
       name.to_s.humanize
     end

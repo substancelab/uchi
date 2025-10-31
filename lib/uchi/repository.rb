@@ -40,8 +40,8 @@ module Uchi
     end
 
     # Returns an array of fields to show on the edit page.
-    def fields_for_edit
-      fields.select { |field| field.on.include?(:edit) }
+    def fields_for_edit(record)
+      fields.select { |field| field.on.include?(:edit) }.each { |field| field.record = record }
     end
 
     # Returns an array of fields to show on the index page.

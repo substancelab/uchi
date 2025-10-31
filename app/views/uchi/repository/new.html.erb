@@ -15,7 +15,7 @@
 <%= render(Flowbite::Card.new) do %>
   <%= form_with model: @record, url: @repository.routes.path_for(:create) do |form| %>
     <div class="space-y-6">
-      <% @repository.fields_for_edit.each do |field| %>
+      <% @repository.fields_for_edit(@record).each do |field| %>
         <div>
           <%= render(
             field.edit_component(
