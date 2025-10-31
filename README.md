@@ -74,7 +74,7 @@ The cornerstones of Uchi are the repositories. This is where you configure what 
 
 There's a one-to-one mapping between a repository and a model. So if you have a `User` model that you want to include in Uchi, you must have a `User` repository as well.
 
-### Model inferrence
+### Model inference
 
 For the most part the model class for each repository is inferred from the repository class name, ie `Uchi::Repository::User` manages the `User` model. In some cases you might need to specify the relationship explicitly. You can override the `Uchi::Repository.model` class method in that case:
 
