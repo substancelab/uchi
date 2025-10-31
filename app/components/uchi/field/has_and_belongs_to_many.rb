@@ -7,7 +7,16 @@ module Uchi
 
       class Edit < Uchi::Field::Base::Edit
         def collection
-          field.collection(record: record)
+          associated_repository = field.associated_repository(record: record)
+
+          field
+            .collection(record: record)
+            .map { |associated_record|
+              [
+                associated_repository.title(associated_record),
+                associated_record.id
+              ]
+            }
         end
       end
 
