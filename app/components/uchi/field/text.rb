@@ -10,7 +10,8 @@ module Uchi
           options = {
             attribute: field.name,
             form: form,
-            label: {content: label}
+            label: {content: label},
+            input: {options: {rows: 8}}
           }
           options[:hint] = {content: hint} if hint.present?
           options
