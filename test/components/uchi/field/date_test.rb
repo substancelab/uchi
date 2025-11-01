@@ -39,7 +39,7 @@ module Uchi
       end
 
       test "#searchable? returns false when explicitly set" do
-        field = Uchi::Field::Date.new(:born_on, searchable: false)
+        field = Uchi::Field::Date.new(:born_on).searchable(false)
         assert_not field.searchable?
       end
 
@@ -52,7 +52,7 @@ module Uchi
       end
 
       test "#sortable? returns false when explicitly set" do
-        field = Uchi::Field::Date.new(:born_on, sortable: false)
+        field = Uchi::Field::Date.new(:born_on).sortable(false)
         assert_not field.sortable?
       end
     end
