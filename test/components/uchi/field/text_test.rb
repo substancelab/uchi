@@ -82,7 +82,7 @@ module Uchi
       test "renders a textarea field with the field content" do
         render_inline(@component)
 
-        assert_selector("textarea[name='author[biography]']", text: "Famous author")
+        assert_selector("textarea[name='author[biography]'][rows='8']", text: "Famous author")
       end
 
       test "renders label with specified text" do
@@ -102,6 +102,7 @@ module Uchi
           attribute: :biography,
           form: @form,
           label: {content: "Custom label"},
+          input: {options: {rows: 8}},
           hint: {content: "Custom hint"}
         }
         assert_equal expected_options, @component.send(:options)
