@@ -7,8 +7,8 @@ module Uchi
         super
         @on = default_on
         @reader = DEFAULT_READER
-        @searchable = nil
-        @sortable = true
+        @searchable = default_searchable?
+        @sortable = default_sortable?
       end
 
       # Sets or gets which actions this field should appear on.
@@ -126,6 +126,10 @@ module Uchi
 
       def default_searchable?
         false
+      end
+
+      def default_sortable?
+        true
       end
     end
   end
