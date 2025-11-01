@@ -111,9 +111,6 @@ module Uchi
     # @example Setting
     #   Field::String.new(:password).searchable(false)
     #   Field::Number.new(:id).searchable(true)
-    #
-    # @example Getting via searchable?
-    #   field.searchable? # => true
     def searchable(value = :not_provided)
       return (!!@searchable unless @searchable.nil? || default_searchable?) if value == :not_provided
 
