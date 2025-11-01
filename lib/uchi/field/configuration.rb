@@ -3,6 +3,8 @@
 module Uchi
   class Field
     module Configuration
+      class NoValue; end
+
       def initialize(*args)
         super
         @on = default_on
@@ -70,8 +72,8 @@ module Uchi
       # @example Setting
       #   Field::String.new(:password).searchable(false)
       #   Field::Number.new(:id).searchable(true)
-      def searchable(value = :not_provided)
-        return (!!@searchable unless @searchable.nil? || default_searchable?) if value == :not_provided
+      def searchable(value = NoValue)
+        return (!!@searchable unless @searchable.nil? || default_searchable?) if value == NoValue
 
         @searchable = value
         self
@@ -98,8 +100,8 @@ module Uchi
       #
       # @example Getting
       #   field.sortable # => true
-      def sortable(value = :not_provided)
-        return @sortable if value == :not_provided
+      def sortable(value = NoValue)
+        return @sortable if value == NoValue
 
         @sortable = value
         self

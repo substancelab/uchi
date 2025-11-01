@@ -101,8 +101,8 @@ module Uchi
       #
       # @example Getting
       #   field.collection_query # => #<Proc...>
-      def collection_query(query_proc = :not_provided)
-        return @collection_query if query_proc == :not_provided
+      def collection_query(query_proc = NoValue)
+        return @collection_query if query_proc == NoValue
 
         @collection_query = query_proc
         self
