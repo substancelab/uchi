@@ -22,7 +22,7 @@ module Uchi
 
       test "has custom collection_query" do
         custom_query = ->(query) { query.where(published: true) }
-        field = Uchi::Field::HasMany.new(:titles, collection_query: custom_query)
+        field = Uchi::Field::HasMany.new(:titles).collection_query(custom_query)
         assert_equal custom_query, field.collection_query
       end
 
@@ -66,12 +66,12 @@ module Uchi
       end
 
       test "#searchable? returns false when explicitly set" do
-        field = Uchi::Field::HasMany.new(:titles, searchable: false)
+        field = Uchi::Field::HasMany.new(:titles).searchable(false)
         assert_not field.searchable?
       end
 
       test "#sortable? returns false when explicitly set" do
-        field = Uchi::Field::HasMany.new(:titles, sortable: false)
+        field = Uchi::Field::HasMany.new(:titles).sortable(false)
         assert_not field.sortable?
       end
     end

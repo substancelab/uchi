@@ -24,7 +24,7 @@ module Uchi
 
       test "has custom collection_query" do
         custom_query = ->(query) { query.where(published: true) }
-        field = Uchi::Field::HasAndBelongsToMany.new(:categories, collection_query: custom_query)
+        field = Uchi::Field::HasAndBelongsToMany.new(:categories).collection_query(custom_query)
         assert_equal custom_query, field.collection_query
       end
 
@@ -72,12 +72,12 @@ module Uchi
       end
 
       test "#searchable? returns false when explicitly set" do
-        field = Uchi::Field::HasAndBelongsToMany.new(:categories, searchable: false)
+        field = Uchi::Field::HasAndBelongsToMany.new(:categories).searchable(false)
         assert_not field.searchable?
       end
 
       test "#sortable? returns false when explicitly set" do
-        field = Uchi::Field::HasAndBelongsToMany.new(:categories, sortable: false)
+        field = Uchi::Field::HasAndBelongsToMany.new(:categories).sortable(false)
         assert_not field.sortable?
       end
     end

@@ -39,7 +39,7 @@ module Uchi
       end
 
       test "#searchable? returns false when explicitly set" do
-        field = Uchi::Field::Blank.new(:separator, searchable: false)
+        field = Uchi::Field::Blank.new(:separator).searchable(false)
         assert_not field.searchable?
       end
 
@@ -52,7 +52,7 @@ module Uchi
       end
 
       test "#sortable? returns false when explicitly set" do
-        field = Uchi::Field::Blank.new(:separator, sortable: false)
+        field = Uchi::Field::Blank.new(:separator).sortable(false)
         assert_not field.sortable?
       end
     end
