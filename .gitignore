@@ -3,6 +3,7 @@
 /.yardoc
 /coverage/
 /doc/
+/docs/*.yml
 /Gemfile.lock
 /node_modules/
 /package-lock.json

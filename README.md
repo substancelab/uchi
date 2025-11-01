@@ -37,21 +37,44 @@ You can now visit http://localhost:3000/uchi/customers - welcome to Uchi :)
 
 Next up; customize your repository to return the fields you want to expose.
 
-## Principles
+## Fields
 
-### Defaults are defaults
+Each repository defines a method, `#fields`, that returns the fields to include in the views in that repository. For example, a `Customer` repository could return its fields as:
 
-Rely on defaults whenever possible. If something has already been decided for us by Rails or Flowbite or Tailwind use their decision.
+```ruby
+class Uchi::Repository::Customer < Uchi::Repository
+  def fields
+    [
+      Field::String.new(:name),
+      Field::Date.new(:started_on),
+      Field::BelongsTo.new(:company),
+      Field::HasMany.new(:agreements),
+    ]
+  end
+end
+```
 
-### I18n is opt in
+Uchi comes with a bunch of fields that you can choose from, fx:
 
-We don't want to force you to translate everything. If a field doesn't need a translation, don't add one, we'll just fall back to the fields name.
+- `Field::BelongsTo`
+- `Field::Boolean`
+- `Field::Date`
+- `Field::DateTime`
+- `Field::HasMany`
+- `Field::Number`
+- `Field::String`
+
+If none of the above works for you, you can create your own and use those.
+
+For more details about fields see the [Fields documentation](docs/fields.md).
 
 ## Repositories
 
-### Model inferrence
+The cornerstones of Uchi are the repositories. This is where you configure what parts of your models you want to expose and how to do it.
 
-There is expected to a one-to-one mapping between repositories and models. Ie we expect one model to exist for each repository.
+There's a one-to-one mapping between a repository and a model. So if you have a `User` model that you want to include in Uchi, you must have a `User` repository as well.
+
+### Model inference
 
 For the most part the model class for each repository is inferred from the repository class name, ie `Uchi::Repository::User` manages the `User` model. In some cases you might need to specify the relationship explicitly. You can override the `Uchi::Repository.model` class method in that case:
 
@@ -62,6 +85,8 @@ class Uchi::Repository::Something < Uchi::Repository
   end
 end
 ```
+
+For more details about repositories see the [Repositories documentation](docs/repositories.md).
 
 ## Translations
 
@@ -177,6 +202,17 @@ After checking out the repo, run `bin/setup` to install dependencies. You can al
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
+## Principles
+
+### Defaults are defaults
+
+Rely on defaults whenever possible. If something has already been decided for us by Rails or Flowbite or Tailwind use their decision.
+
+### I18n is opt in
+
+We don't want to force you to translate everything. If a field doesn't need a translation, don't add one, we'll just fall back to the fields name.
+
 ## Credits
 
 * Uchi contains parts of [Pagy](https://github.com/ddnexus/pagy), Copyright (c) 2017-2025 Domizio Demichelis
+* Uchi contains parts of [Flowbite Components](https://github.com/substancelab/flowbite-components), Copyright (c) 2025 Substance Lab
