@@ -73,7 +73,7 @@ module Uchi
       #   Field::String.new(:password).searchable(false)
       #   Field::Number.new(:id).searchable(true)
       def searchable(value = NoValue)
-        return (!!@searchable unless @searchable.nil? || default_searchable?) if value == NoValue
+        return @searchable if value == NoValue
 
         @searchable = value
         self
