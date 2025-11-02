@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name = "uchi"
   spec.version = Uchi::VERSION
   spec.authors = ["Jakob Skjerning"]
-  spec.email = ["jakob@mentalized.net"]
+  spec.email = ["jakob@substancelab.com"]
 
   spec.summary = "Some automated admin stuff for Rails apps"
   # spec.description = "TODO: Write a longer description or delete this line."
