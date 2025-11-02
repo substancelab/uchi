@@ -80,8 +80,8 @@ module Uchi
       #
       # @example Getting
       #   field.collection_query # => #<Proc...>
-      def collection_query(query_proc = NoValue)
-        return @collection_query if query_proc == NoValue
+      def collection_query(query_proc = Configuration::Unset)
+        return @collection_query if query_proc == Configuration::Unset
 
         @collection_query = query_proc
         self

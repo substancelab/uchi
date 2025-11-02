@@ -3,7 +3,7 @@
 module Uchi
   class Field
     module Configuration
-      class NoValue; end
+      class Unset; end
 
       def initialize(*args)
         super
@@ -72,8 +72,8 @@ module Uchi
       # @example Setting
       #   Field::String.new(:password).searchable(false)
       #   Field::Number.new(:id).searchable(true)
-      def searchable(value = NoValue)
-        return @searchable if value == NoValue
+      def searchable(value = Configuration::Unset)
+        return @searchable if value == Configuration::Unset
 
         @searchable = value
         self
@@ -100,8 +100,8 @@ module Uchi
       #
       # @example Getting
       #   field.sortable # => true
-      def sortable(value = NoValue)
-        return @sortable if value == NoValue
+      def sortable(value = Configuration::Unset)
+        return @sortable if value == Configuration::Unset
 
         @sortable = value
         self
