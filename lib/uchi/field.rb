@@ -6,8 +6,6 @@ module Uchi
   class Field
     include Configuration
 
-    DEFAULT_READER = ->(record, field_name) { record.public_send(field_name) }
-
     attr_reader :name
 
     # The repository this field is associated with.
