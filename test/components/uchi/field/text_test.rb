@@ -3,10 +3,10 @@ require "ostruct"
 
 module Uchi
   class Field
-    class StringTest < ActiveSupport::TestCase
+    class TextTest < ActiveSupport::TestCase
       def setup
-        @field = Uchi::Field::String.new(:name)
-        @form = OpenStruct.new(object: OpenStruct.new(name: "Test Name"))
+        @field = Uchi::Field::Text.new(:biography)
+        @form = OpenStruct.new(object: OpenStruct.new(biography: "Test Biography"))
         @repository = Uchi::Repositories::Author.new
       end
 
@@ -15,7 +15,7 @@ module Uchi
       end
 
       test "has default options" do
-        assert_equal [:edit, :index, :show], @field.on
+        assert_equal [:edit, :show], @field.on
         assert @field.searchable?
         assert @field.sortable?
       end
@@ -27,7 +27,7 @@ module Uchi
         assert_equal @field, component.field
         assert_equal @form, component.form
         assert_equal @repository, component.repository
-        assert_kind_of Uchi::Field::String::Edit, component
+        assert_kind_of Uchi::Field::Text::Edit, component
       end
 
       test "#index_component returns an instance of Index component" do
@@ -35,11 +35,11 @@ module Uchi
         assert_equal @field, component.field
         assert_equal @form.object, component.record
         assert_equal @repository, component.repository
-        assert_kind_of Uchi::Field::String::Index, component
+        assert_kind_of Uchi::Field::Text::Index, component
       end
 
       test "#searchable? returns false when explicitly set" do
-        field = Uchi::Field::String.new(:name).searchable(false)
+        field = Uchi::Field::Text.new(:biography).searchable(false)
         assert_not field.searchable?
       end
 
@@ -48,25 +48,25 @@ module Uchi
         assert_equal @field, component.field
         assert_equal @form.object, component.record
         assert_equal @repository, component.repository
-        assert_kind_of Uchi::Field::String::Show, component
+        assert_kind_of Uchi::Field::Text::Show, component
       end
 
       test "#sortable? returns false when explicitly set" do
-        field = Uchi::Field::String.new(:name).sortable(false)
+        field = Uchi::Field::Text.new(:biography).sortable(false)
         assert_not field.sortable?
       end
     end
 
-    class StringEditTest < ViewComponent::TestCase
+    class TextEditTest < ViewComponent::TestCase
       def setup
-        @field = Uchi::Field::String.new(:name)
-        @record = Author.new(name: "J.R.R. Tolkien")
+        @field = Uchi::Field::Text.new(:biography)
+        @record = Author.new(name: "J.R.R. Tolkien", biography: "Famous author")
         @repository = Uchi::Repositories::Author.new
         @view_context = ActionController::Base.new.view_context
 
         @form = ActionView::Helpers::FormBuilder.new(:author, @record, @view_context, {})
 
-        @component = Uchi::Field::String::Edit.new(
+        @component = Uchi::Field::Text::Edit.new(
           field: @field,
           form: @form,
           hint: "Custom hint",
@@ -79,42 +79,43 @@ module Uchi
         assert_kind_of Uchi::Field::Base::Edit, @component
       end
 
-      test "renders an input field with the field content" do
+      test "renders a textarea field with the field content" do
         render_inline(@component)
 
-        assert_selector("input[type='text'][name='author[name]'][value='J.R.R Tolkien']")
+        assert_selector("textarea[name='author[biography]'][rows='8']", text: "Famous author")
       end
 
       test "renders label with specified text" do
         render_inline(@component)
 
-        assert_selector("label[for='author_name']", text: "Custom label")
+        assert_selector("label[for='author_biography']", text: "Custom label")
       end
 
       test "renders hint when provided" do
         render_inline(@component)
 
-        assert_selector("p[id=author_name_hint]", text: "Custom hint")
+        assert_selector("p[id=author_biography_hint]", text: "Custom hint")
       end
 
       test "initializes the input component with the correct options" do
         expected_options = {
-          attribute: :name,
+          attribute: :biography,
           form: @form,
           label: {content: "Custom label"},
+          input: {options: {rows: 8}},
           hint: {content: "Custom hint"}
         }
         assert_equal expected_options, @component.send(:options)
       end
     end
 
-    class StringIndexTest < ViewComponent::TestCase
+    class TextIndexTest < ViewComponent::TestCase
       def setup
-        @field = Uchi::Field::String.new(:name)
-        @record = Author.new(name: "J.R.R. Tolkien")
+        @field = Uchi::Field::Text.new(:biography)
+        @record = Author.new(name: "J.R.R. Tolkien", biography: "Famous author of The Lord of the Rings")
         @repository = Uchi::Repositories::Author.new
 
-        @component = Uchi::Field::String::Index.new(
+        @component = Uchi::Field::Text::Index.new(
           field: @field,
           record: @record,
           repository: @repository
@@ -128,17 +129,17 @@ module Uchi
       test "renders the field content" do
         result = render_inline(@component)
 
-        assert_includes result.to_html, "J.R.R. Tolkien"
+        assert_includes result.to_html, "Famous author of The Lord of the Rings"
       end
     end
 
-    class StringShowTest < ViewComponent::TestCase
+    class TextShowTest < ViewComponent::TestCase
       def setup
-        @field = Uchi::Field::String.new(:name)
-        @record = Author.new(name: "J.R.R. Tolkien")
+        @field = Uchi::Field::Text.new(:biography)
+        @record = Author.new(name: "J.R.R. Tolkien", biography: "Famous author of The Lord of the Rings")
         @repository = Uchi::Repositories::Author.new
 
-        @component = Uchi::Field::String::Show.new(
+        @component = Uchi::Field::Text::Show.new(
           field: @field,
           record: @record,
           repository: @repository
@@ -152,7 +153,7 @@ module Uchi
       test "renders the field content" do
         result = render_inline(@component)
 
-        assert_includes result.to_html, "J.R.R. Tolkien"
+        assert_includes result.to_html, "Famous author of The Lord of the Rings"
       end
     end
   end

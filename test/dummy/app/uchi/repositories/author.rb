@@ -6,7 +6,7 @@ module Uchi
           Field::Number.new(:id).on(:index, :show),
           Field::String.new(:name),
           Field::Date.new(:born_on),
-          Field::String.new(:biography).on(:edit, :new, :show)
+          Field::Text.new(:biography).on(:edit, :new, :show)
         ]
       end
 
