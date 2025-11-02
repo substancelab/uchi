@@ -81,6 +81,14 @@ module Uchi
         self
       end
 
+      # Returns true if the field is searchable and should be included in the
+      # query when a search term has been entered.
+      def searchable?
+        return default_searchable? if @searchable.nil?
+
+        !!@searchable
+      end
+
       # Sets or gets whether and how this field is sortable.
       #
       # When called with an argument, sets sortable and returns self for chaining.
@@ -109,17 +117,11 @@ module Uchi
         self
       end
 
-      # Returns true if the field is searchable and should be included in the
-      # query when a search term has been entered.
-      def searchable?
-        return !!@searchable unless @searchable.nil?
-
-        default_searchable?
-      end
-
       # Returns true if the field is sortable
       def sortable?
-        !!sortable
+        return default_sortable? if @sortable.nil?
+
+        !!@sortable
       end
 
       protected

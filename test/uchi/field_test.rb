@@ -43,6 +43,11 @@ class UchiFieldTest < ActiveSupport::TestCase
     assert field.searchable?
   end
 
+  test "#searchable? returns default (false) when explicitly set to nil" do
+    field = Uchi::Field.new(:name).searchable(nil)
+    assert_not field.searchable?
+  end
+
   test "#sortable? returns true by default" do
     assert @field.sortable?
   end
@@ -50,6 +55,11 @@ class UchiFieldTest < ActiveSupport::TestCase
   test "#sortable? returns false when explicitly set" do
     field = Uchi::Field.new(:name).sortable(false)
     assert_not field.sortable?
+  end
+
+  test "#sortable? returns default (true) when explicitly set to nil" do
+    field = Uchi::Field.new(:name).sortable(nil)
+    assert field.sortable?
   end
 
   test "#value uses reader to get value from record" do
