@@ -6,14 +6,14 @@ Gem::Specification.new do |spec|
   spec.name = "uchi"
   spec.version = Uchi::VERSION
   spec.authors = ["Jakob Skjerning"]
-  spec.email = ["jakob@mentalized.net"]
+  spec.email = ["jakob@substancelab.com"]
 
-  spec.summary = "Some automated admin stuff for Rails apps"
-  # spec.description = "TODO: Write a longer description or delete this line."
+  spec.summary = "Build usable and extensible admin panels for your Ruby on Rails application in minutes."
+  spec.description = "Level up your scaffolds with a modern admin backend framework, designed for Rails developers who demand both beauty, functionality, and extensibility. Uchi provides a set of components and conventions for creating user interfaces that are both powerful and easy to use."
   spec.homepage = "https://github.com/substancelab/uchi"
   spec.required_ruby_version = ">= 3.2.0"
 
-  spec.metadata["homepage_uri"] = spec.homepage
+  spec.metadata["homepage_uri"] = "https://www.uchiadmin.com/"
   spec.metadata["source_code_uri"] = "https://github.com/substancelab/uchi"
 
   # Specify which files should be added to the gem when it is released.
