@@ -13,7 +13,8 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://www.uchiadmin.com/"
   spec.required_ruby_version = ">= 3.2.0"
 
-  spec.metadata["homepage_uri"] = "https://www.uchiadmin.com/"
+  spec.metadata["changelog_uri"] = "https://github.com/substancelab/uchi/blob/main/CHANGELOG.md"
+  spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/substancelab/uchi"
 
   # Specify which files should be added to the gem when it is released.
