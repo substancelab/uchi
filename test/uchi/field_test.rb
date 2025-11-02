@@ -39,8 +39,13 @@ class UchiFieldTest < ActiveSupport::TestCase
   end
 
   test "#searchable? returns true when explicitly set" do
-    field = Uchi::Field.new(:name, searchable: true)
+    field = Uchi::Field.new(:name).searchable(true)
     assert field.searchable?
+  end
+
+  test "#searchable? returns default (false) when explicitly set to nil" do
+    field = Uchi::Field.new(:name).searchable(nil)
+    assert_not field.searchable?
   end
 
   test "#sortable? returns true by default" do
@@ -48,8 +53,13 @@ class UchiFieldTest < ActiveSupport::TestCase
   end
 
   test "#sortable? returns false when explicitly set" do
-    field = Uchi::Field.new(:name, sortable: false)
+    field = Uchi::Field.new(:name).sortable(false)
     assert_not field.sortable?
+  end
+
+  test "#sortable? returns default (true) when explicitly set to nil" do
+    field = Uchi::Field.new(:name).sortable(nil)
+    assert field.sortable?
   end
 
   test "#value uses reader to get value from record" do
@@ -59,7 +69,7 @@ class UchiFieldTest < ActiveSupport::TestCase
 
   test "#value uses custom reader when provided" do
     custom_reader = ->(record, field_name) { "Custom: #{record.public_send(field_name)}" }
-    field = Uchi::Field.new(:name, reader: custom_reader)
+    field = Uchi::Field.new(:name).reader(custom_reader)
     record = OpenStruct.new(name: "Test")
 
     assert_equal "Custom: Test", field.value(record)

@@ -65,8 +65,6 @@ module Uchi
         end
       end
 
-      attr_reader :collection_query
-
       def associated_repository(record:)
         reflection = record.class.reflect_on_association(name)
         model = reflection.klass
@@ -81,9 +79,33 @@ module Uchi
         @collection_query.call(query)
       end
 
-      def initialize(name, collection_query: DEFAULT_COLLECTION_QUERY, **args)
-        super(name, **args)
-        @collection_query = collection_query
+      def initialize(name)
+        super
+        @collection_query = DEFAULT_COLLECTION_QUERY
+      end
+
+      # Sets or gets a custom query for filtering the collection of associated records.
+      #
+      # When called with an argument, sets the query and returns self for chaining.
+      # When called without arguments, returns the current query.
+      #
+      # @param query_proc [Proc, Symbol] A callable that receives an ActiveRecord query
+      #   and returns a modified query.
+      # @return [self, Proc] Returns self for method chaining when setting,
+      #   or the query proc when getting
+      #
+      # @example Setting
+      #   Field::HasAndBelongsToMany.new(:tags).collection_query(->(query) {
+      #     query.where(active: true)
+      #   })
+      #
+      # @example Getting
+      #   field.collection_query # => #<Proc...>
+      def collection_query(query_proc = Configuration::Unset)
+        return @collection_query if query_proc == Configuration::Unset
+
+        @collection_query = query_proc
+        self
       end
 
       def group_as(_action)
