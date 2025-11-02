@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["jakob@substancelab.com"]
 
   spec.summary = "Build usable and extensible admin panels for your Ruby on Rails application in minutes."
-  spec.description = "Level up your scaffolds with a modern admin backend framework, designed for Rails developers who demand both beauty, functionality and extensibility. Uchi provides a set of components and conventions for creating user interfaces that are both powerful and easy to use."
+  spec.description = "Level up your scaffolds with a modern admin backend framework, designed for Rails developers who demand both beauty, functionality, and extensibility. Uchi provides a set of components and conventions for creating user interfaces that are both powerful and easy to use."
   spec.homepage = "https://github.com/substancelab/uchi"
   spec.required_ruby_version = ">= 3.2.0"
 
