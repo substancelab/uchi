@@ -60,7 +60,7 @@ module Uchi
     class TextEditTest < ViewComponent::TestCase
       def setup
         @field = Uchi::Field::Text.new(:biography)
-        @record = Author.new(name: "J.R.R Tolkien", biography: "Famous author")
+        @record = Author.new(name: "J.R.R. Tolkien", biography: "Famous author")
         @repository = Uchi::Repositories::Author.new
         @view_context = ActionController::Base.new.view_context
 
@@ -112,7 +112,7 @@ module Uchi
     class TextIndexTest < ViewComponent::TestCase
       def setup
         @field = Uchi::Field::Text.new(:biography)
-        @record = Author.new(name: "J.R.R Tolkien", biography: "Famous author of The Lord of the Rings")
+        @record = Author.new(name: "J.R.R. Tolkien", biography: "Famous author of The Lord of the Rings")
         @repository = Uchi::Repositories::Author.new
 
         @component = Uchi::Field::Text::Index.new(
@@ -136,7 +136,7 @@ module Uchi
     class TextShowTest < ViewComponent::TestCase
       def setup
         @field = Uchi::Field::Text.new(:biography)
-        @record = Author.new(name: "J.R.R Tolkien", biography: "Famous author of The Lord of the Rings")
+        @record = Author.new(name: "J.R.R. Tolkien", biography: "Famous author of The Lord of the Rings")
         @repository = Uchi::Repositories::Author.new
 
         @component = Uchi::Field::Text::Show.new(

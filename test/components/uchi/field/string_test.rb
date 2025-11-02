@@ -60,7 +60,7 @@ module Uchi
     class StringEditTest < ViewComponent::TestCase
       def setup
         @field = Uchi::Field::String.new(:name)
-        @record = Author.new(name: "J.R.R Tolkien")
+        @record = Author.new(name: "J.R.R. Tolkien")
         @repository = Uchi::Repositories::Author.new
         @view_context = ActionController::Base.new.view_context
 
@@ -111,7 +111,7 @@ module Uchi
     class StringIndexTest < ViewComponent::TestCase
       def setup
         @field = Uchi::Field::String.new(:name)
-        @record = Author.new(name: "J.R.R Tolkien")
+        @record = Author.new(name: "J.R.R. Tolkien")
         @repository = Uchi::Repositories::Author.new
 
         @component = Uchi::Field::String::Index.new(
@@ -128,14 +128,14 @@ module Uchi
       test "renders the field content" do
         result = render_inline(@component)
 
-        assert_includes result.to_html, "J.R.R Tolkien"
+        assert_includes result.to_html, "J.R.R. Tolkien"
       end
     end
 
     class StringShowTest < ViewComponent::TestCase
       def setup
         @field = Uchi::Field::String.new(:name)
-        @record = Author.new(name: "J.R.R Tolkien")
+        @record = Author.new(name: "J.R.R. Tolkien")
         @repository = Uchi::Repositories::Author.new
 
         @component = Uchi::Field::String::Show.new(
@@ -152,7 +152,7 @@ module Uchi
       test "renders the field content" do
         result = render_inline(@component)
 
-        assert_includes result.to_html, "J.R.R Tolkien"
+        assert_includes result.to_html, "J.R.R. Tolkien"
       end
     end
   end
