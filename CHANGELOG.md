@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `Uchi::Repository#title` now dynamically checks for common methods to use as the string representation of a model, ultimately falling back to `#to_s` if none are found.
+- `File` field. You can now use the File field to work with Rails ActiveStorage attachments.
 
 ### Fixed
 
