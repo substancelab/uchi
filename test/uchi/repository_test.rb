@@ -115,10 +115,22 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert author_repository.searchable?
   end
 
-  test "#title returns a string representation of the record" do
+  test "#title returns the name attribute if available" do
     author = Author.new(name: "Alice")
 
     assert_equal "Alice", author_repository.title(author)
+  end
+
+  test "#title returns the title attribute if available" do
+    title = Title.new(title: "Alice in Wonderland")
+
+    assert_equal "Alice in Wonderland", title_repository.title(title)
+  end
+
+  test "#title returns whatever the repository has configured" do
+    book = Book.new(original_title: "Original Title")
+
+    assert_equal "Original Title", book_repository.title(book)
   end
 
   test "#title returns nil when record is nil" do
@@ -133,5 +145,13 @@ class UchiRepositoryTest < ActiveSupport::TestCase
 
   def author_repository
     Uchi::Repositories::Author.new
+  end
+
+  def book_repository
+    Uchi::Repositories::Book.new
+  end
+
+  def title_repository
+    Uchi::Repositories::Title.new
   end
 end

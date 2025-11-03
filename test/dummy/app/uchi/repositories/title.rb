@@ -8,10 +8,6 @@ module Uchi
           Field::String.new(:title)
         ]
       end
-
-      def title(model)
-        model.title
-      end
     end
   end
 end

@@ -61,3 +61,21 @@ end
 ```
 
 See https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-includes for details.
+
+## Customizing the title of a record
+
+When a model is rendered in the UI, we call the `#title` method on the repository for that model. By default `#title` returns the value of the first of the following methods that exists on the model:
+
+1. `#name`
+2. `#title`
+3. `#to_s`
+
+If none of those return a suitable value for your model, you can override the `#title` method in your repository to return a better value:
+
+```ruby
+  def title(record)
+    return nil unless record
+
+    record.original_title
+  end
+```

@@ -97,11 +97,23 @@ module Uchi
       searchable_fields.any?
     end
 
-    # Returns the title to show for a given record
+    # Returns the title to show for a given record. By default, this method
+    # returns the value of the first of the following methods that exist:
+    #
+    # 1. `name`
+    # 2. `title`
+    # 3. `to_s`
+    #
+    # You can override this method in your repository subclass to provide
+    # custom logic.
     def title(record)
       return nil unless record
 
-      record.to_s
+      [:name, :title, :to_s].each do |method|
+        if record.respond_to?(method)
+          return record.public_send(method)
+        end
+      end
     end
 
     # Provides access to translation helpers specific to this repository.

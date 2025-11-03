@@ -9,12 +9,6 @@ module Uchi
           Field::Text.new(:biography).on(:edit, :new, :show)
         ]
       end
-
-      def title(model)
-        return nil unless model
-
-        model.name
-      end
     end
   end
 end
