@@ -5,3 +5,4 @@ ruby_version: 3.2
 ignore:
   - 'lib/uchi/pagy.rb'
   - 'lib/uchi/pagy/**/*'
+  - 'test/dummy/db/migrate/**/*'
