@@ -167,12 +167,12 @@ module Uchi
         assert_kind_of Uchi::Field::Base::Show, @component
       end
 
-      test "renders 'No file attached' when no file is attached" do
+      test "renders a dash when no file is attached" do
         @record.sample.detach
 
         result = render_inline(@component)
 
-        assert_includes result.to_html, "No file attached"
+        assert_includes result.to_html, "—"
       end
 
       test "renders download link when file is attached" do
