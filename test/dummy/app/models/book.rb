@@ -3,4 +3,5 @@ class Book < ApplicationRecord
   has_many :titles
 
   has_one_attached :sample
+  has_one_attached :cover
 end

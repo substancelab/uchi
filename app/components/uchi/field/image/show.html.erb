@@ -1,0 +1,6 @@
+<% attachment = field.value(record) %>
+<% if attachment.attached? %>
+  <%= image_tag attachment, class: "max-w-full h-auto rounded-lg shadow-md" %>
+<% else %>
+  <span class="text-gray-400">—</span>
+<% end %>
