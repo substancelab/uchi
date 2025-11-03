@@ -111,8 +111,7 @@ module Uchi
 
       [:name, :title, :to_s].each do |method|
         if record.respond_to?(method)
-          value = record.public_send(method)
-          return value.to_s if value.present?
+          return record.public_send(method)
         end
       end
     end
