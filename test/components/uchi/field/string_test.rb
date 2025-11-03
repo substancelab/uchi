@@ -82,7 +82,7 @@ module Uchi
       test "renders an input field with the field content" do
         render_inline(@component)
 
-        assert_selector("input[type='text'][name='author[name]'][value='J.R.R Tolkien']")
+        assert_selector("input[type='text'][name='author[name]'][value='J.R.R. Tolkien']")
       end
 
       test "renders label with specified text" do
