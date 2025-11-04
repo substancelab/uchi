@@ -3,7 +3,7 @@
 
 Build usable and extensible admin panels for your Ruby on Rails application in minutes.
 
-Level up your scaffolds with a modern admin backend framework, designed for Rails developers who demand both beauty, functionality and extensibility. Uchi provides a set of components and conventions for creating user interfaces that are both powerful and easy to use.
+Level up your scaffolds with a modern admin backend framework, designed for Rails developers who demand both beauty, functionality, and extensibility. Uchi provides a set of components and conventions for creating user interfaces that are both powerful and easy to use.
 
 ## Installation
 
