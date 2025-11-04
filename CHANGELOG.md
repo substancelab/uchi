@@ -9,14 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Fixed
+
+### Removed
+
+
+## [0.1.4]
+
+### Added
+
 - `Uchi::Repository#title` now dynamically checks for common methods to use as the string representation of a model, ultimately falling back to `#to_s` if none are found.
 - `File` field. You can now use the File field to work with Rails ActiveStorage attachments.
 - `Image` field. Based on the `File` field it is now possible to upload images to your models and render them inline in Uchi.
 - Breadcrumb labels for links to index pages now use the title for the index page if that's been translated. You can still specify a more precise text in `repository.[name].breadcrumb.index.label`.
-
-### Fixed
-
-### Removed
 
 
 ## [0.1.3]
