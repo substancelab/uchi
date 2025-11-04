@@ -10,17 +10,37 @@ module Uchi
       # Example translation key:
       #   uchi.repository.author.breadcrumb.edit.label
       def breadcrumb_label(page, record: nil)
+        return breadcrumb_label_for_index if page.to_sym == :index
+
         default = {
-          index: plural_name,
           show: title_for_record(record)
         }[page.to_sym].presence
         default ||= translate("common.#{page}", default: page.to_s.capitalize)
+
         translate(
           "label",
           default: default,
           model: singular_name,
           record: title_for_record(record),
           scope: i18n_scope("breadcrumb.#{page}")
+        )
+      end
+
+      # Returns the breadcrumb label for the index page.
+      #
+      # Returns the first of the following that is present:
+      # 1. Translation from "uchi.repository.author.breadcrumb.index.label"
+      # 2. Translation from "uchi.repository.author.index.title"
+      # 3. plural name of the model
+      # 4. Translation from "common.index"
+      # 5. Capitalized page name ("Index")
+      def breadcrumb_label_for_index
+        first_present_value(
+          translate(i18n_scope("breadcrumb.index.label"), default: nil),
+          translate(i18n_scope("index.title"), default: nil),
+          plural_name,
+          translate("common.index"),
+          "Index"
         )
       end
 
@@ -217,13 +237,23 @@ module Uchi
 
       private
 
+      # Returns the first translation that yields a present value by looking
+      # through each key in keys in order.
+      def first_present_value(*values)
+        values.find(&:presence)
+      end
+
       # Returns the segment of the i18n key specific to this repository.
       def i18n_key
         @repository.model.model_name.i18n_key
       end
 
-      def i18n_scope(section)
-        "uchi.repository.#{i18n_key}.#{section}"
+      def i18n_scope(section = nil)
+        [
+          "uchi.repository",
+          i18n_key,
+          section
+        ].compact.join(".")
       end
 
       def model
