@@ -50,3 +50,7 @@ da:
           success: "Forfatteren er blevet slettet"
         update:
           success: "Dine ændringer til forfatteren blev gemt"
+
+      book:
+        index:
+          title: "Bøger"

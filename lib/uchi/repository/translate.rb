@@ -10,11 +10,13 @@ module Uchi
       # Example translation key:
       #   uchi.repository.author.breadcrumb.edit.label
       def breadcrumb_label(page, record: nil)
+        return breadcrumb_label_for_index if page.to_sym == :index
+
         default = {
-          index: plural_name,
           show: title_for_record(record)
         }[page.to_sym].presence
         default ||= translate("common.#{page}", default: page.to_s.capitalize)
+
         translate(
           "label",
           default: default,
@@ -22,6 +24,26 @@ module Uchi
           record: title_for_record(record),
           scope: i18n_scope("breadcrumb.#{page}")
         )
+      end
+
+      # Returns the breadcrumb label for the index page.
+      #
+      # Returns the first of the following that is present:
+      # 1. Translation from "uchi.repository.author.breadcrumb.index.label"
+      # 2. Translation from "uchi.repository.author.index.title"
+      # 3. plural name of the model
+      # 4. Translation from "common.index"
+      # 5. Capitalized page name ("Index")
+      def breadcrumb_label_for_index
+        first_present_key(
+          "breadcrumb.index.label",
+          "index.title",
+          default: nil,
+          scope: i18n_scope
+        ).presence ||
+          plural_name.presence ||
+          translate("common.index").presence ||
+          page.to_s.capitalize
       end
 
       # Returns a description for the given page, or nil if none is found.
@@ -217,13 +239,27 @@ module Uchi
 
       private
 
+      # Returns the first translation that yields a present value by looking
+      # through each key in keys in order.
+      def first_present_key(*keys, **options)
+        keys.each do |key|
+          value = translate(key, **options)
+          return value if value.present?
+        end
+        nil
+      end
+
       # Returns the segment of the i18n key specific to this repository.
       def i18n_key
         @repository.model.model_name.i18n_key
       end
 
-      def i18n_scope(section)
-        "uchi.repository.#{i18n_key}.#{section}"
+      def i18n_scope(section = nil)
+        [
+          "uchi.repository",
+          i18n_key,
+          section,
+        ].compact.join(".")
       end
 
       def model

@@ -12,10 +12,18 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal @repository, @translate.repository
   end
 
-  test "#breadcrumb_label returns translation from uchi.repository.author.breadcrumb.index.label" do
+  test "#breadcrumb_label returns translation from .breadcrumb.index.label" do
     I18n.with_locale(:da) do
       result = @translate.breadcrumb_label(:index)
       assert_equal "Forfattere", result
+    end
+  end
+
+  test "#breadcrumb_label returns translation from .index.title if .breadcrumb.index isn't present" do
+    I18n.with_locale(:da) do
+      repository = Uchi::Repositories::Book.new
+      result = repository.translate.breadcrumb_label(:index)
+      assert_equal "Bøger", result
     end
   end
 
