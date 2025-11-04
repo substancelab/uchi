@@ -35,15 +35,13 @@ module Uchi
       # 4. Translation from "common.index"
       # 5. Capitalized page name ("Index")
       def breadcrumb_label_for_index
-        first_present_key(
-          "breadcrumb.index.label",
-          "index.title",
-          default: nil,
-          scope: i18n_scope
-        ).presence ||
-          plural_name.presence ||
-          translate("common.index").presence ||
-          page.to_s.capitalize
+        first_present_value(
+          translate(i18n_scope("breadcrumb.index.label"), default: nil),
+          translate(i18n_scope("index.title"), default: nil),
+          plural_name,
+          translate("common.index"),
+          "Index"
+        )
       end
 
       # Returns a description for the given page, or nil if none is found.
@@ -241,12 +239,8 @@ module Uchi
 
       # Returns the first translation that yields a present value by looking
       # through each key in keys in order.
-      def first_present_key(*keys, **options)
-        keys.each do |key|
-          value = translate(key, **options)
-          return value if value.present?
-        end
-        nil
+      def first_present_value(*values)
+        values.find(&:presence)
       end
 
       # Returns the segment of the i18n key specific to this repository.
@@ -258,7 +252,7 @@ module Uchi
         [
           "uchi.repository",
           i18n_key,
-          section,
+          section
         ].compact.join(".")
       end
 

@@ -5,7 +5,8 @@ module Uchi
     module_function
 
     def translate(key, **options)
-      scope = options.delete(:scope) || "uchi"
+      scope = options.delete(:scope)
+      scope ||= "uchi" unless key.to_s.start_with?("uchi.")
       ::I18n.translate(key, **options, scope: scope)
     end
   end
