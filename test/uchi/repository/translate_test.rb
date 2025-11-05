@@ -162,7 +162,15 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     end
   end
 
-  test "#link_to_new falls back to New %{model}" do
+  test "#link_to_new falls back to common.new when .button.link_to_new isn't present" do
+    I18n.with_locale(:da) do
+      repository = Uchi::Repositories::Book.new
+      result = repository.translate.link_to_new
+      assert_equal "Tilføj", result
+    end
+  end
+
+  test "#link_to_new falls back to New %{model} when common.new isn't present" do
     result = @translate.link_to_new
     assert_equal "New Author", result
   end

@@ -146,10 +146,15 @@ module Uchi
       end
 
       # Returns the text for the "new" action link.
+      #
+      # Returns the first of the following translations that is present:
+      # 1. Translation from "uchi.repository.[name].button.link_to_new"
+      # 2. Translation from "uchi.common.new" with interpolation key %{model}
+      # 3. Default string "New %{model}"
       def link_to_new
         translate(
           "link_to_new",
-          default: "New %{model}", # rubocop:disable Style/FormatStringToken
+          default: translate("common.new", default: "New %{model}"),
           model: singular_name,
           scope: i18n_scope("button")
         )
