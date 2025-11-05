@@ -145,7 +145,7 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     author = Author.new(name: "Test Author")
     I18n.with_locale(:da) do
       result = @translate.link_to_edit(author)
-      assert_equal "Rediger", result
+      assert_equal "Rediger forfatter", result
     end
   end
 
@@ -287,10 +287,20 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     end
   end
 
-  test "#title_for_edit returns translation from uchi.repository.author.edit.title for edit page" do
+  test "#title_for_edit returns translation from .edit.title" do
     I18n.with_locale(:da) do
-      result = @translate.title_for_edit(@record)
-      assert_equal "Rediger forfatter", result
+      author = Author.new(name: "Brandon Sanderson")
+      result = @translate.title_for_edit(author)
+      assert_equal "Rediger detaljer om Brandon Sanderson", result
+    end
+  end
+
+  test "#title_for_edit falls back to .button.link_to_edit when .edit.title isn't present" do
+    I18n.with_locale(:da) do
+      record = Book.new
+      repository = Uchi::Repositories::Book.new
+      result = repository.translate.title_for_edit(record)
+      assert_equal "Rediger bog", result
     end
   end
 

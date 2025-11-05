@@ -243,12 +243,15 @@ module Uchi
       end
 
       def title_for_edit(record)
-        translate(
-          "title",
-          default: plural_name,
-          model: singular_name,
-          record: record,
-          scope: i18n_scope(:edit)
+        first_present_value(
+          translate(
+            "title",
+            default: nil,
+            model: singular_name,
+            record: repository.title(record),
+            scope: i18n_scope(:edit)
+          ),
+          link_to_edit(record)
         )
       end
 
