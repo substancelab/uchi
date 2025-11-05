@@ -1,6 +1,9 @@
 da:
   hello: "Halløj verden"
   uchi:
+    breadcrumb:
+      root:
+        label: "Hjem"
     common:
       cancel: "Annuller"
       destroy: "Slet"

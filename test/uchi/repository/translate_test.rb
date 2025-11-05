@@ -56,6 +56,13 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Edit", result
   end
 
+  test "#breadcrumb_label_for_root returns translation from uchi.breadcrumb.root.label" do
+    I18n.with_locale(:da) do
+      result = @translate.breadcrumb_label_for_root
+      assert_equal "Hjem", result
+    end
+  end
+
   test "#breadcrumb_label_for_root returns the application title" do
     result = @translate.breadcrumb_label_for_root
     assert_equal "Dummy", result

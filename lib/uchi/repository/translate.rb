@@ -44,9 +44,16 @@ module Uchi
         )
       end
 
-      # Returns the label for the root breadcrumb item.
+      # Returns the label for the root breadcrumb item. Defaults to the
+      # application name.
+      #
+      # To customize this provide a translation for the key:
+      # `uchi.breadcrumb.root.label`
       def breadcrumb_label_for_root
-        Rails.application.name.titlecase
+        first_present_value(
+          translate("breadcrumb.root.label", default: nil),
+          Rails.application.name.titlecase
+        )
       end
 
       # Returns a description for the given page, or nil if none is found.
