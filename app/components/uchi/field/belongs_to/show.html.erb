@@ -1,3 +1,5 @@
-<%= render(Flowbite::Link.new(
-  href: associated_repository.routes.path_for(:show, id: associated_record.id)
-).with_content(associated_record.to_s)) %>
+<% if associated_record %>
+  <%= render(Flowbite::Link.new(
+    href: associated_repository.routes.path_for(:show, id: associated_record.id)
+  ).with_content(associated_record.to_s)) %>
+<% end %>
