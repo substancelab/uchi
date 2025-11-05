@@ -13,7 +13,7 @@
     <div class="md:flex">
       <nav class="w-64 h-full px-3 py-4 overflow-y-auto shrink-0 bg-gray-50 dark:bg-gray-800" aria-label="Main">
         <ul class="space-y-2 font-medium">
-          <% Uchi::Repository.all.map { |repository| repository.new }.sort_by { |repository| repository.translate.plural_name.downcase }.each do |repository| %>
+          <% Uchi::Repository.all.map { |repository| repository.new }.sort_by { |repository| repository.translate.navigation_label.downcase }.each do |repository| %>
             <li>
               <%= link_to(repository.routes.path_for(:index), :class => "flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group") do %>
                 <span class="ms-3"><%= repository.translate.navigation_label %></span>
