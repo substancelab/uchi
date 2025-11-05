@@ -25,9 +25,16 @@ module Uchi
 
         def collection_for_select
           repository = associated_repository
-          collection.map do |item|
+          items = []
+          items << ["", nil] if optional?
+          items + collection.map do |item|
             [repository.title(item), item.id]
           end
+        end
+
+        # Returns true if the association is optional.
+        def optional?
+          reflection.options[:optional] == true
         end
 
         def options
