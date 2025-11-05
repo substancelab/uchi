@@ -127,11 +127,20 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Cancel", result
   end
 
-  test "#link_to_destroy returns destroy text" do
+  test "#link_to_destroy returns translation from .button.link_to_destroy" do
     author = Author.new(name: "Brandon Sanderson")
     I18n.with_locale(:da) do
       result = @translate.link_to_destroy(author)
       assert_equal "Slet Brandon Sanderson", result
+    end
+  end
+
+  test "#link_to_destroy falls back to common.destroy when .button.link_to_destroy isn't present" do
+    record = Book.new
+    I18n.with_locale(:da) do
+      repository = Uchi::Repositories::Book.new
+      result = repository.translate.link_to_destroy(record)
+      assert_equal "Slet", result
     end
   end
 
