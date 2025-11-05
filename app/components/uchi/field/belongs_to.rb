@@ -26,7 +26,7 @@ module Uchi
         def collection_for_select
           repository = associated_repository
           items = []
-          items << [] if optional?
+          items << ["", nil] if optional?
           items + collection.map do |item|
             [repository.title(item), item.id]
           end
