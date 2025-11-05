@@ -159,6 +159,21 @@ module Uchi
         translate("loading", default: "Loading...", scope: "uchi.repository.common")
       end
 
+      # Returns the label for the navigation link to this repository's index
+      # page.
+      #
+      # Returns the first of the following that is present:
+      # 1. Translation from "uchi.repository.[name].navigation.label"
+      # 2. Translation from "uchi.repository.[name].index.title"
+      # 3. plural name of the model
+      def navigation_label
+        first_present_value(
+          translate(i18n_scope("navigation.label"), default: nil),
+          translate(i18n_scope("index.title"), default: nil),
+          plural_name
+        )
+      end
+
       # Returns the localized, human-readable plural name of the model this
       # repository manages.
       def plural_name

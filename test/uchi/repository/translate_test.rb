@@ -179,6 +179,26 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Loading...", result
   end
 
+  test "#navigation_label returns translation from .navigation.label" do
+    I18n.with_locale(:da) do
+      result = @translate.navigation_label
+      assert_equal "Håndtér forfattere", result
+    end
+  end
+
+  test "#navigation_label returns translation from .index.title if .navigation.label isn't present" do
+    I18n.with_locale(:da) do
+      repository = Uchi::Repositories::Book.new
+      result = repository.translate.navigation_label
+      assert_equal "Bøger", result
+    end
+  end
+
+  test "#navigation_label for index page defaults to plural name" do
+    result = @translate.navigation_label
+    assert_equal "Authors", result
+  end
+
   test "#no_records_found returns translation from uchi.common.no_records_found" do
     I18n.with_locale(:da) do
       result = @translate.no_records_found

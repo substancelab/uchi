@@ -39,6 +39,8 @@ da:
         model:
           one: "Forfatter"
           other: "Forfattere"
+        navigation:
+          label: "Håndtér forfattere"
         new:
           title: "Ny forfatter"
         show:
