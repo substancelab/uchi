@@ -1,9 +1,9 @@
-<%- content_for(:page_title) { @repository.translate.title(:show, record: @record) } %>
+<%- content_for(:page_title) { @repository.translate.title_for_show(@record) } %>
 
 <%= render(
   Uchi::Ui::PageHeader.new(
     description: @repository.translate.description(:show, record: @record),
-    title: @repository.translate.title(:show, record: @record),
+    title: @repository.translate.title_for_show(@record),
   )
 ) do |header| %>
   <% header.with_action do %>

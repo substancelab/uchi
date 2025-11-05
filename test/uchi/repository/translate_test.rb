@@ -274,49 +274,49 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Your changes have been saved", result
   end
 
-  test "#title(:show) returns repository title for show page with record" do
+  test "#title_for_show returns repository title for show page with record" do
     author = Author.new(name: "Test Author")
-    result = @translate.title(:show, record: author)
+    result = @translate.title_for_show(author)
     assert_equal "Test Author", result
   end
 
-  test "#title(:index) returns translation from uchi.repository.author.index.title for index page" do
+  test "#title_for_index returns translation from uchi.repository.author.index.title for index page" do
     I18n.with_locale(:da) do
-      result = @translate.title(:index)
+      result = @translate.title_for_index
       assert_equal "Forfattere", result
     end
   end
 
-  test "#title(:edit) returns translation from uchi.repository.author.edit.title for edit page" do
+  test "#title_for_edit returns translation from uchi.repository.author.edit.title for edit page" do
     I18n.with_locale(:da) do
-      result = @translate.title(:edit)
+      result = @translate.title_for_edit(@record)
       assert_equal "Rediger forfatter", result
     end
   end
 
-  test "#title(:new) returns translation from uchi.repository.author.new.title for new page" do
+  test "#title_for_new returns translation from uchi.repository.author.new.title for new page" do
     I18n.with_locale(:da) do
-      result = @translate.title(:new)
+      result = @translate.title_for_new
       assert_equal "Ny forfatter", result
     end
   end
 
-  test "#title(:index) falls back to plural_name" do
-    result = @translate.title(:index)
+  test "#title_for_index falls back to plural_name" do
+    result = @translate.title_for_index
     assert_equal "Authors", result
   end
 
   test "#title_for_new returns translation from .new.title" do
     I18n.with_locale(:da) do
       repository = Uchi::Repositories::Book.new
-      result = repository.translate.title(:new)
+      result = repository.translate.title_for_new
       assert_equal "Tilføj en ny bog", result
     end
   end
 
   test "#title_for_new falls back to .button.link_to_new when .new.title isn't present" do
     I18n.with_locale(:da) do
-      result = @translate.title(:new)
+      result = @translate.title_for_new
       assert_equal "Ny forfatter", result
     end
   end

@@ -242,17 +242,33 @@ module Uchi
         )
       end
 
-      # Returns the title for the given page.
-      def title(page, record: nil)
-        return title_for_new if page == :new
-        return repository.title(record) if record && page == :show
-
+      def title_for_edit(record)
         translate(
           "title",
           default: plural_name,
           model: singular_name,
           record: record,
-          scope: i18n_scope(page)
+          scope: i18n_scope(:edit)
+        )
+      end
+
+      def title_for_index
+        translate(
+          "title",
+          default: plural_name,
+          model: singular_name,
+          scope: i18n_scope(:index)
+        )
+      end
+
+      def title_for_show(record)
+        return repository.title(record) if record
+
+        translate(
+          "title",
+          default: plural_name,
+          model: singular_name,
+          scope: i18n_scope(:show)
         )
       end
 
