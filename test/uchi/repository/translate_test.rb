@@ -141,11 +141,20 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Delete", result
   end
 
-  test "#link_to_edit returns translation from uchi.repository.author.button.link_to_edit" do
+  test "#link_to_edit returns translation from .button.link_to_edit" do
     author = Author.new(name: "Test Author")
     I18n.with_locale(:da) do
       result = @translate.link_to_edit(author)
       assert_equal "Rediger forfatter", result
+    end
+  end
+
+  test "#link_to_edit falls back to common.edit when .button.link_to_edit isn't present" do
+    record = Title.new
+    I18n.with_locale(:da) do
+      repository = Uchi::Repositories::Title.new
+      result = repository.translate.link_to_edit(record)
+      assert_equal "Rediger", result
     end
   end
 

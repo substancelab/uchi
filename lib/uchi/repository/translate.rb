@@ -136,12 +136,21 @@ module Uchi
       end
 
       def link_to_edit(record)
-        translate(
-          "link_to_edit",
-          default: "Edit",
-          model: singular_name,
-          record: repository.title(record),
-          scope: i18n_scope("button")
+        first_present_value(
+          translate(
+            "link_to_edit",
+            default: nil,
+            model: singular_name,
+            record: repository.title(record),
+            scope: i18n_scope("button")
+          ),
+          translate(
+            "common.edit",
+            default: nil,
+            model: singular_name,
+            record: repository.title(record)
+          ),
+          "Edit"
         )
       end
 
