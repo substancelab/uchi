@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - BelongsTo fields no longer fail when showing an association where the associated record is nil.
+- BelongsTo dropdowns for optional associations now include a blank option.
 
 ### Removed
 
