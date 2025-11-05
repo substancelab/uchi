@@ -274,19 +274,6 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Your changes have been saved", result
   end
 
-  test "#title_for_show returns repository title for show page with record" do
-    author = Author.new(name: "Test Author")
-    result = @translate.title_for_show(author)
-    assert_equal "Test Author", result
-  end
-
-  test "#title_for_index returns translation from uchi.repository.author.index.title for index page" do
-    I18n.with_locale(:da) do
-      result = @translate.title_for_index
-      assert_equal "Forfattere", result
-    end
-  end
-
   test "#title_for_edit returns translation from .edit.title" do
     I18n.with_locale(:da) do
       author = Author.new(name: "Brandon Sanderson")
@@ -304,16 +291,23 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     end
   end
 
-  test "#title_for_new returns translation from uchi.repository.author.new.title for new page" do
+  test "#title_for_index returns translation from uchi.repository.author.index.title for index page" do
     I18n.with_locale(:da) do
-      result = @translate.title_for_new
-      assert_equal "Ny forfatter", result
+      result = @translate.title_for_index
+      assert_equal "Forfattere", result
     end
   end
 
   test "#title_for_index falls back to plural_name" do
     result = @translate.title_for_index
     assert_equal "Authors", result
+  end
+
+  test "#title_for_new returns translation from uchi.repository.author.new.title for new page" do
+    I18n.with_locale(:da) do
+      result = @translate.title_for_new
+      assert_equal "Ny forfatter", result
+    end
   end
 
   test "#title_for_new returns translation from .new.title" do
@@ -329,5 +323,11 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
       result = @translate.title_for_new
       assert_equal "Ny forfatter", result
     end
+  end
+
+  test "#title_for_show returns repository title for show page with record" do
+    author = Author.new(name: "Test Author")
+    result = @translate.title_for_show(author)
+    assert_equal "Test Author", result
   end
 end
