@@ -244,6 +244,7 @@ module Uchi
 
       # Returns the title for the given page.
       def title(page, record: nil)
+        return title_for_new if page == :new
         return repository.title(record) if record && page == :show
 
         translate(
@@ -252,6 +253,20 @@ module Uchi
           model: singular_name,
           record: record,
           scope: i18n_scope(page)
+        )
+      end
+
+      # Returns the title for the "new" page.
+      #
+      # Returns the first of the following translations that is present:
+      # 1. Translation from "uchi.repository.[name].new.title"
+      # 2. Translation from "uchi.repository.[name].button.link_to_new"
+      # 3. Translation from "uchi.common.new" with interpolation key %{model}
+      # 4. Default string "New %{model}"
+      def title_for_new
+        first_present_value(
+          translate(i18n_scope("new.title"), default: nil),
+          link_to_new
         )
       end
 

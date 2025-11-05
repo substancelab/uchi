@@ -305,4 +305,19 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     result = @translate.title(:index)
     assert_equal "Authors", result
   end
+
+  test "#title_for_new returns translation from .new.title" do
+    I18n.with_locale(:da) do
+      repository = Uchi::Repositories::Book.new
+      result = repository.translate.title(:new)
+      assert_equal "Tilføj en ny bog", result
+    end
+  end
+
+  test "#title_for_new falls back to .button.link_to_new when .new.title isn't present" do
+    I18n.with_locale(:da) do
+      result = @translate.title(:new)
+      assert_equal "Ny forfatter", result
+    end
+  end
 end

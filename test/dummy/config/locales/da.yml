@@ -57,3 +57,5 @@ da:
       book:
         index:
           title: "Bøger"
+        new:
+          title: "Tilføj en ny bog"
