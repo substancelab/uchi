@@ -6,7 +6,7 @@
     title: @repository.translate.title_for_new,
   )) do |header| %>
   <% header.with_breadcrumb(items: [
-    {href: @repository.routes.root_path, label: Rails.application.name.titlecase },
+    {href: @repository.routes.root_path, label: @repository.translate.breadcrumb_label_for_root },
     {href: @repository.routes.path_for(:index), label: @repository.translate.breadcrumb_label(:index) },
     {href: @repository.routes.path_for(:new), label: @repository.translate.breadcrumb_label(:new) }
   ]) %>
