@@ -274,34 +274,34 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Your changes have been saved", result
   end
 
-  test "#title returns repository title for show page with record" do
+  test "#title(:show) returns repository title for show page with record" do
     author = Author.new(name: "Test Author")
     result = @translate.title(:show, record: author)
     assert_equal "Test Author", result
   end
 
-  test "#title returns translation from uchi.repository.author.index.title for index page" do
+  test "#title(:index) returns translation from uchi.repository.author.index.title for index page" do
     I18n.with_locale(:da) do
       result = @translate.title(:index)
       assert_equal "Forfattere", result
     end
   end
 
-  test "#title returns translation from uchi.repository.author.edit.title for edit page" do
+  test "#title(:edit) returns translation from uchi.repository.author.edit.title for edit page" do
     I18n.with_locale(:da) do
       result = @translate.title(:edit)
       assert_equal "Rediger forfatter", result
     end
   end
 
-  test "#title returns translation from uchi.repository.author.new.title for new page" do
+  test "#title(:new) returns translation from uchi.repository.author.new.title for new page" do
     I18n.with_locale(:da) do
       result = @translate.title(:new)
       assert_equal "Ny forfatter", result
     end
   end
 
-  test "#title falls back to plural_name" do
+  test "#title(:index) falls back to plural_name" do
     result = @translate.title(:index)
     assert_equal "Authors", result
   end
