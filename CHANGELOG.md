@@ -13,8 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The button to add a new model now falls back to the translation from  `common.new` when the button-specific translation doesn't exist before falling back to `"New %{model}"`.
 - The button to edit a model now falls back to the translation from `common.edit` when the button-specific translation doesn't exist before falling back to `"Edit"`.
 - The button to delete a model now falls back to the translation from  `common.destroy` when the button-specific translation doesn't exist before falling back to `"Delete"`.
-- Page title for the new page can now be customized using a `uchi.repository.[name].new.title` translation. If that translation isn't present, the title falls back to `repository.[name].button.link_to_new`, and then `common.new` before ultimately falling back to `"New %{model}"`
-- Page title for the edit page can now be customized using a `uchi.repository.[name].edit.title` translation. If that translation isn't present, the title falls back to `repository.[name].button.link_to_edit`, and then `common.edit` before ultimately falling back to `"Edit %{model}"`
+- Page title for the new page can now be customized using a `repository.[name].new.title` translation. If that translation isn't present, the title falls back to `repository.[name].button.link_to_new`, and then `common.new` before ultimately falling back to `"New %{model}"`
+- Page title for the edit page can now be customized using a `repository.[name].edit.title` translation. If that translation isn't present, the title falls back to `repository.[name].button.link_to_edit`, and then `common.edit` before ultimately falling back to `"Edit %{model}"`
 
 ### Fixed
 
