@@ -44,6 +44,11 @@ module Uchi
         )
       end
 
+      # Returns the label for the root breadcrumb item.
+      def breadcrumb_label_for_root
+        Rails.application.name.titlecase
+      end
+
       # Returns a description for the given page, or nil if none is found.
       # This description is intended to provide additional context for the page
       # being shown.

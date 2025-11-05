@@ -56,6 +56,11 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Edit", result
   end
 
+  test "#breadcrumb_label_for_root returns the application title" do
+    result = @translate.breadcrumb_label_for_root
+    assert_equal "Dummy", result
+  end
+
   test "#destroy_dialog_title returns translation from uchi.repository.author.dialog.destroy.title" do
     I18n.with_locale(:da) do
       record = Author.new(name: "J. K. Rowling")
