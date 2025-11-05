@@ -39,7 +39,7 @@ module Uchi
           translate(i18n_scope("breadcrumb.index.label"), default: nil),
           translate(i18n_scope("index.title"), default: nil),
           plural_name,
-          translate("common.index"),
+          translate("common.index", default: nil),
           "Index"
         )
       end
