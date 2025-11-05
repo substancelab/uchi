@@ -126,30 +126,53 @@ module Uchi
       end
 
       def link_to_destroy(record)
-        translate(
-          "link_to_destroy",
-          default: "Delete",
-          model: singular_name,
-          record: repository.title(record),
-          scope: i18n_scope("button")
+        first_present_value(
+          translate(
+            "link_to_destroy",
+            default: nil,
+            model: singular_name,
+            record: repository.title(record),
+            scope: i18n_scope("button")
+          ),
+          translate(
+            "common.destroy",
+            default: nil,
+            model: singular_name,
+            record: repository.title(record)
+          ),
+          "Delete"
         )
       end
 
       def link_to_edit(record)
-        translate(
-          "link_to_edit",
-          default: "Edit",
-          model: singular_name,
-          record: repository.title(record),
-          scope: i18n_scope("button")
+        first_present_value(
+          translate(
+            "link_to_edit",
+            default: nil,
+            model: singular_name,
+            record: repository.title(record),
+            scope: i18n_scope("button")
+          ),
+          translate(
+            "common.edit",
+            default: nil,
+            model: singular_name,
+            record: repository.title(record)
+          ),
+          "Edit"
         )
       end
 
       # Returns the text for the "new" action link.
+      #
+      # Returns the first of the following translations that is present:
+      # 1. Translation from "uchi.repository.[name].button.link_to_new"
+      # 2. Translation from "uchi.common.new" with interpolation key %{model}
+      # 3. Default string "New %{model}"
       def link_to_new
         translate(
           "link_to_new",
-          default: "New %{model}", # rubocop:disable Style/FormatStringToken
+          default: translate("common.new", default: "New %{model}"),
           model: singular_name,
           scope: i18n_scope("button")
         )
@@ -157,6 +180,21 @@ module Uchi
 
       def loading_message
         translate("loading", default: "Loading...", scope: "uchi.repository.common")
+      end
+
+      # Returns the label for the navigation link to this repository's index
+      # page.
+      #
+      # Returns the first of the following that is present:
+      # 1. Translation from "uchi.repository.[name].navigation.label"
+      # 2. Translation from "uchi.repository.[name].index.title"
+      # 3. plural name of the model
+      def navigation_label
+        first_present_value(
+          translate(i18n_scope("navigation.label"), default: nil),
+          translate(i18n_scope("index.title"), default: nil),
+          plural_name
+        )
       end
 
       # Returns the localized, human-readable plural name of the model this
@@ -222,16 +260,50 @@ module Uchi
         )
       end
 
-      # Returns the title for the given page.
-      def title(page, record: nil)
-        return repository.title(record) if record && page == :show
+      def title_for_edit(record)
+        first_present_value(
+          translate(
+            "title",
+            default: nil,
+            model: singular_name,
+            record: repository.title(record),
+            scope: i18n_scope(:edit)
+          ),
+          link_to_edit(record)
+        )
+      end
+
+      def title_for_index
+        translate(
+          "title",
+          default: plural_name,
+          model: singular_name,
+          scope: i18n_scope(:index)
+        )
+      end
+
+      def title_for_show(record)
+        return repository.title(record) if record
 
         translate(
           "title",
           default: plural_name,
           model: singular_name,
-          record: record,
-          scope: i18n_scope(page)
+          scope: i18n_scope(:show)
+        )
+      end
+
+      # Returns the title for the "new" page.
+      #
+      # Returns the first of the following translations that is present:
+      # 1. Translation from "uchi.repository.[name].new.title"
+      # 2. Translation from "uchi.repository.[name].button.link_to_new"
+      # 3. Translation from "uchi.common.new" with interpolation key %{model}
+      # 4. Default string "New %{model}"
+      def title_for_new
+        first_present_value(
+          translate(i18n_scope("new.title"), default: nil),
+          link_to_new
         )
       end
 

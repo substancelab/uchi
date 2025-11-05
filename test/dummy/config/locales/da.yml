@@ -3,6 +3,9 @@ da:
   uchi:
     common:
       cancel: "Annuller"
+      destroy: "Slet"
+      edit: "Rediger"
+      new: "Tilføj"
       no_records_found: "Ingen resultater"
       save: "Gem"
     repository:
@@ -22,13 +25,13 @@ da:
             label: "Vis %{record}"
         button:
           link_to_destroy: "Slet %{record}"
-          link_to_edit: "Rediger"
+          link_to_edit: "Rediger forfatter"
           link_to_new: "Ny forfatter"
         dialog:
           destroy:
             title: "Er du sikker på, at du vil slette %{record}?"
         edit:
-          title: "Rediger forfatter"
+          title: "Rediger detaljer om %{record}"
         field:
           name:
             hint: "Indtast forfatterens navn"
@@ -39,6 +42,8 @@ da:
         model:
           one: "Forfatter"
           other: "Forfattere"
+        navigation:
+          label: "Håndtér forfattere"
         new:
           title: "Ny forfatter"
         show:
@@ -52,5 +57,9 @@ da:
           success: "Dine ændringer til forfatteren blev gemt"
 
       book:
+        button:
+          link_to_edit: "Rediger bog"
         index:
           title: "Bøger"
+        new:
+          title: "Tilføj en ny bog"

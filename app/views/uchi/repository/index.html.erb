@@ -1,9 +1,9 @@
-<%- content_for(:page_title) { @repository.translate.title(:index) } %>
+<%- content_for(:page_title) { @repository.translate.title_for_index } %>
 
 <%= render(
   Uchi::Ui::PageHeader.new(
     description: @repository.translate.description(:index),
-    title: @repository.translate.title(:index),
+    title: @repository.translate.title_for_index,
   )) do |header| %>
   <% header.with_action do %>
     <%= link_to(@repository.translate.link_to_new, @repository.routes.path_for(:new), class: Flowbite::Button.classes) %>

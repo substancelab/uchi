@@ -1,9 +1,9 @@
-<%- content_for(:page_title) { @repository.translate.title(:edit, record: @record) } %>
+<%- content_for(:page_title) { @repository.translate.title_for_edit(@record) } %>
 
 <%= render(
   Uchi::Ui::PageHeader.new(
     description: @repository.translate.description(:edit),
-    title: @repository.translate.title(:edit, record: @record),
+    title: @repository.translate.title_for_edit(@record),
   )) do |header| %>
   <% header.with_breadcrumb(items: [
     {href: @repository.routes.root_path, label: Rails.application.name.titlecase },

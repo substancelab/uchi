@@ -127,11 +127,20 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Cancel", result
   end
 
-  test "#link_to_destroy returns destroy text" do
+  test "#link_to_destroy returns translation from .button.link_to_destroy" do
     author = Author.new(name: "Brandon Sanderson")
     I18n.with_locale(:da) do
       result = @translate.link_to_destroy(author)
       assert_equal "Slet Brandon Sanderson", result
+    end
+  end
+
+  test "#link_to_destroy falls back to common.destroy when .button.link_to_destroy isn't present" do
+    record = Book.new
+    I18n.with_locale(:da) do
+      repository = Uchi::Repositories::Book.new
+      result = repository.translate.link_to_destroy(record)
+      assert_equal "Slet", result
     end
   end
 
@@ -141,10 +150,19 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Delete", result
   end
 
-  test "#link_to_edit returns translation from uchi.repository.author.button.link_to_edit" do
+  test "#link_to_edit returns translation from .button.link_to_edit" do
     author = Author.new(name: "Test Author")
     I18n.with_locale(:da) do
       result = @translate.link_to_edit(author)
+      assert_equal "Rediger forfatter", result
+    end
+  end
+
+  test "#link_to_edit falls back to common.edit when .button.link_to_edit isn't present" do
+    record = Title.new
+    I18n.with_locale(:da) do
+      repository = Uchi::Repositories::Title.new
+      result = repository.translate.link_to_edit(record)
       assert_equal "Rediger", result
     end
   end
@@ -162,7 +180,15 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     end
   end
 
-  test "#link_to_new falls back to New %{model}" do
+  test "#link_to_new falls back to common.new when .button.link_to_new isn't present" do
+    I18n.with_locale(:da) do
+      repository = Uchi::Repositories::Book.new
+      result = repository.translate.link_to_new
+      assert_equal "Tilføj", result
+    end
+  end
+
+  test "#link_to_new falls back to New %{model} when common.new isn't present" do
     result = @translate.link_to_new
     assert_equal "New Author", result
   end
@@ -177,6 +203,26 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
   test "#loading_message falls back to Loading..." do
     result = @translate.loading_message
     assert_equal "Loading...", result
+  end
+
+  test "#navigation_label returns translation from .navigation.label" do
+    I18n.with_locale(:da) do
+      result = @translate.navigation_label
+      assert_equal "Håndtér forfattere", result
+    end
+  end
+
+  test "#navigation_label returns translation from .index.title if .navigation.label isn't present" do
+    I18n.with_locale(:da) do
+      repository = Uchi::Repositories::Book.new
+      result = repository.translate.navigation_label
+      assert_equal "Bøger", result
+    end
+  end
+
+  test "#navigation_label for index page defaults to plural name" do
+    result = @translate.navigation_label
+    assert_equal "Authors", result
   end
 
   test "#no_records_found returns translation from uchi.common.no_records_found" do
@@ -246,35 +292,60 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Your changes have been saved", result
   end
 
-  test "#title returns repository title for show page with record" do
-    author = Author.new(name: "Test Author")
-    result = @translate.title(:show, record: author)
-    assert_equal "Test Author", result
+  test "#title_for_edit returns translation from .edit.title" do
+    I18n.with_locale(:da) do
+      author = Author.new(name: "Brandon Sanderson")
+      result = @translate.title_for_edit(author)
+      assert_equal "Rediger detaljer om Brandon Sanderson", result
+    end
   end
 
-  test "#title returns translation from uchi.repository.author.index.title for index page" do
+  test "#title_for_edit falls back to .button.link_to_edit when .edit.title isn't present" do
     I18n.with_locale(:da) do
-      result = @translate.title(:index)
+      record = Book.new
+      repository = Uchi::Repositories::Book.new
+      result = repository.translate.title_for_edit(record)
+      assert_equal "Rediger bog", result
+    end
+  end
+
+  test "#title_for_index returns translation from uchi.repository.author.index.title for index page" do
+    I18n.with_locale(:da) do
+      result = @translate.title_for_index
       assert_equal "Forfattere", result
     end
   end
 
-  test "#title returns translation from uchi.repository.author.edit.title for edit page" do
-    I18n.with_locale(:da) do
-      result = @translate.title(:edit)
-      assert_equal "Rediger forfatter", result
-    end
+  test "#title_for_index falls back to plural_name" do
+    result = @translate.title_for_index
+    assert_equal "Authors", result
   end
 
-  test "#title returns translation from uchi.repository.author.new.title for new page" do
+  test "#title_for_new returns translation from uchi.repository.author.new.title for new page" do
     I18n.with_locale(:da) do
-      result = @translate.title(:new)
+      result = @translate.title_for_new
       assert_equal "Ny forfatter", result
     end
   end
 
-  test "#title falls back to plural_name" do
-    result = @translate.title(:index)
-    assert_equal "Authors", result
+  test "#title_for_new returns translation from .new.title" do
+    I18n.with_locale(:da) do
+      repository = Uchi::Repositories::Book.new
+      result = repository.translate.title_for_new
+      assert_equal "Tilføj en ny bog", result
+    end
+  end
+
+  test "#title_for_new falls back to .button.link_to_new when .new.title isn't present" do
+    I18n.with_locale(:da) do
+      result = @translate.title_for_new
+      assert_equal "Ny forfatter", result
+    end
+  end
+
+  test "#title_for_show returns repository title for show page with record" do
+    author = Author.new(name: "Test Author")
+    result = @translate.title_for_show(author)
+    assert_equal "Test Author", result
   end
 end
