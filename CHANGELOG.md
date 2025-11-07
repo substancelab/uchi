@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Fixed
+
+### Removed
+
+
+## [0.1.5]
+
+### Added
+
 - Labels in the navigation can now be translated. If the navigation-specific translation key isn't set, we'll use the title translation for the repositorys index page.
 - The button to add a new model now falls back to the translation from  `common.new` when the button-specific translation doesn't exist before falling back to `"New %{model}"`.
 - The button to edit a model now falls back to the translation from `common.edit` when the button-specific translation doesn't exist before falling back to `"Edit"`.
@@ -21,8 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - BelongsTo fields no longer fail when showing an association where the associated record is nil.
 - BelongsTo dropdowns for optional associations now include a blank option.
-
-### Removed
 
 
 ## [0.1.4]
