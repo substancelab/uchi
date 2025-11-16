@@ -22,15 +22,7 @@
         "
         aria-label="Main"
       >
-        <ul class="space-y-2 font-medium">
-          <% Uchi::Repository.all.map { |repository| repository.new }.sort_by { |repository| repository.translate.navigation_label.downcase }.each do |repository| %>
-            <li>
-              <%= link_to(repository.routes.path_for(:index), :class => "flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group") do %>
-                <span class="ms-3"><%= repository.translate.navigation_label %></span>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
+        <%= render Uchi::Ui::Navigation.new %>
       </nav>
 
       <main class="py-6 overflow-x-hidden grow md:px-6"><%= yield %></main>
