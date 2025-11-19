@@ -30,7 +30,7 @@ module Uchi
       end
 
       def repositories
-        Uchi::Repository.all.map { |repository| repository.new }
+        Uchi::Repository.all.map(&:new)
       end
     end
   end
