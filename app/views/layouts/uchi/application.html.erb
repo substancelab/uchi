@@ -1,7 +1,11 @@
 <!DOCTYPE html>
+
 <html>
   <head>
-    <title><%= content_for?(:page_title) ? yield(:page_title) : "Uchi" %></title>
+    <title>
+      <%= content_for?(:page_title) ? yield(:page_title) : "Uchi" %>
+    </title>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,21 +15,9 @@
   </head>
   <body class="antialiased bg-gray-50 dark:bg-gray-900 p-2">
     <div class="md:flex">
-      <nav class="w-64 h-full px-3 py-4 overflow-y-auto shrink-0 bg-gray-50 dark:bg-gray-800" aria-label="Main">
-        <ul class="space-y-2 font-medium">
-          <% Uchi::Repository.all.map { |repository| repository.new }.sort_by { |repository| repository.translate.navigation_label.downcase }.each do |repository| %>
-            <li>
-              <%= link_to(repository.routes.path_for(:index), :class => "flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group") do %>
-                <span class="ms-3"><%= repository.translate.navigation_label %></span>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
-      </nav>
+      <%= render(partial: "uchi/navigation/main") %>
 
-      <main class="py-6 overflow-x-hidden grow md:px-6">
-        <%= yield %>
-      </main>
+      <main class="py-6 overflow-x-hidden grow md:px-6"><%= yield %></main>
     </div>
 
     <%= render "layouts/uchi/flash_messages" %>
