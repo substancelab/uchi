@@ -134,6 +134,12 @@ module Uchi
         .permit(*permitted_params)
     end
 
+    # Returns the repository class associated with this controller.
+    #
+    # For example, Uchi::AuthorsController would return
+    # Uchi::Repositories::Author.
+    #
+    # @return [Class<Uchi::Repository>]
     def repository_class
       return @repository_class if defined?(@repository_class)
 
