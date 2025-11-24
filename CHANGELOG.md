@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- It is no longer necessary to add a `repository_class` method to your `Uchi::Controllers`; they now guess their related repository themselves. You can still define the method if need be, though.
+
 ### Fixed
 
 ### Removed
