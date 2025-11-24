@@ -146,7 +146,16 @@ module Uchi
       controller_name = self.class.name.demodulize
       base_name = controller_name.sub(/Controller$/, "")
       repository_name = base_name.singularize
-      @repository_class = Uchi::Repositories.const_get(repository_name)
+      begin
+        @repository_class = Uchi::Repositories.const_get(repository_name)
+      rescue NameError
+        raise \
+          NameError,
+          "No repository found for controller #{self.class.name}. Expected " \
+          "Uchi::Repositories::#{repository_name} to exist. If you want to " \
+          "a repository with a different name, override #repository_class in " \
+          "your controller."
+      end
     end
 
     helper_method def scope_params
