@@ -6,6 +6,11 @@ module Uchi
       @author = Author.create!(name: "Test Author")
     end
 
+    test "#repository_class returns the correct repository class" do
+      controller = Uchi::AuthorsController.new
+      assert_equal Uchi::Repositories::Author, controller.send(:repository_class)
+    end
+
     test "GET edit renders successfully" do
       get edit_uchi_author_url(id: @author.id)
       assert_response :success

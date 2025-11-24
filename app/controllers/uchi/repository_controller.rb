@@ -135,7 +135,12 @@ module Uchi
     end
 
     def repository_class
-      raise NotImplementedError, "Subclasses must implement repository_class"
+      return @repository_class if defined?(@repository_class)
+
+      controller_name = self.class.name.demodulize
+      base_name = controller_name.sub(/Controller$/, "")
+      repository_name = base_name.singularize
+      @repository_class = Uchi::Repositories.const_get(repository_name)
     end
 
     helper_method def scope_params
