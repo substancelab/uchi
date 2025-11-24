@@ -28,6 +28,21 @@ namespace :uchi do
 end
 ```
 
+## How to configure the repository for a controller
+
+Each repository is exposed to the user via a controller. For the vast majority of cases Uchi guesses the repository to use for a given controller, but in case you have special requirements, you can override the `#repository_class` method in your controller:
+
+```ruby
+module Uchi
+  class UsbController < Uchi::RepositoryController
+
+    def repository_class
+      Uchi::Repositories::USB
+    end
+  end
+end
+```
+
 ## Default sort order
 
 Lists of records in a repository are by default sorted by a column called `id`. To customize the default sort order, which is used when a user hasn’t explicitly chosen to sort by a specific field, you can create a `default_sort_order` method in the repository:

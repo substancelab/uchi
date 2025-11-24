@@ -134,8 +134,28 @@ module Uchi
         .permit(*permitted_params)
     end
 
+    # Returns the repository class associated with this controller.
+    #
+    # For example, Uchi::AuthorsController would return
+    # Uchi::Repositories::Author.
+    #
+    # @return [Class<Uchi::Repository>]
     def repository_class
-      raise NotImplementedError, "Subclasses must implement repository_class"
+      return @repository_class if defined?(@repository_class)
+
+      controller_name = self.class.name.demodulize
+      base_name = controller_name.sub(/Controller$/, "")
+      repository_name = base_name.singularize
+      begin
+        @repository_class = Uchi::Repositories.const_get(repository_name)
+      rescue NameError
+        raise \
+          NameError,
+          "No repository found for controller #{self.class.name}. Expected " \
+          "Uchi::Repositories::#{repository_name} to exist. If you want to " \
+          "a repository with a different name, override #repository_class in " \
+          "your controller."
+      end
     end
 
     helper_method def scope_params
