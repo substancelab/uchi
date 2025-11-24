@@ -2,10 +2,5 @@
 
 module Uchi
   class <%= name.pluralize %>Controller < Uchi::RepositoryController
-    private
-
-    def repository_class
-      Uchi::Repositories::<%= class_name %>
-    end
   end
 end
