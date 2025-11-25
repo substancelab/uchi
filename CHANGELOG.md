@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - It is no longer necessary to add a `repository_class` method to your `Uchi::Controllers`; they now guess their related repository themselves. You can still define the method if need be, though.
 - The main navigation in the left-hand side can now be customized for your application.
 - uchi:scaffold generator to ease adding new models to Uchi applications.
+- Pagination now only shows when there are multiple pages.
 
 ### Fixed
 
