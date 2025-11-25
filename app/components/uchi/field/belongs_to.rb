@@ -5,6 +5,23 @@ module Uchi
     class BelongsTo < Field
       DEFAULT_COLLECTION_QUERY = ->(query) { query }.freeze
 
+      module Helpers
+        def associated_record
+          field.value(record)
+        end
+
+        def associated_repository
+          reflection = record.class.reflect_on_association(field.name)
+          model = reflection.klass
+          repository_class = Uchi::Repository.for_model(model)
+          repository_class.new
+        end
+
+        def label_for_associated_record
+          associated_repository.title(associated_record)
+        end
+      end
+
       class Edit < Uchi::Field::Base::Edit
         def associated_repository
           model = reflection.klass
@@ -54,18 +71,24 @@ module Uchi
       end
 
       class Index < Uchi::Field::Base::Index
+        include Helpers
+
+        def render?
+          associated_record.present?
+        end
       end
 
       class Show < Uchi::Field::Base::Show
-        def associated_record
-          field.value(record)
+        include Helpers
+
+        def path_to_show_associated_record
+          associated_repository
+            .routes
+            .path_for(:show, id: associated_record.id)
         end
 
-        def associated_repository
-          reflection = record.class.reflect_on_association(field.name)
-          model = reflection.klass
-          repository_class = Uchi::Repository.for_model(model)
-          repository_class.new
+        def render?
+          associated_record.present?
         end
       end
 
