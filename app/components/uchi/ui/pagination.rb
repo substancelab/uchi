@@ -41,7 +41,7 @@ module Uchi
       end
 
       def render?
-        paginator.present?
+        paginator.present? && paginator.last > 1
       end
     end
   end
