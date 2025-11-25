@@ -72,6 +72,10 @@ module Uchi
 
       class Index < Uchi::Field::Base::Index
         include Helpers
+
+        def render?
+          associated_record.present?
+        end
       end
 
       class Show < Uchi::Field::Base::Show
@@ -81,6 +85,10 @@ module Uchi
           associated_repository
             .routes
             .path_for(:show, id: associated_record.id)
+        end
+
+        def render?
+          associated_record.present?
         end
       end
 

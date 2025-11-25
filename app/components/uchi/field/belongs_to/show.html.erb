@@ -1,5 +1,3 @@
-<% if associated_record %>
-  <%= render(Flowbite::Link.new(
-    href: path_to_show_associated_record,
-  ).with_content(label_for_associated_record)) %>
-<% end %>
+<%= render(Flowbite::Link.new(
+  href: path_to_show_associated_record,
+).with_content(label_for_associated_record)) %>
