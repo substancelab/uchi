@@ -53,19 +53,26 @@ module Uchi
         @alice = Author.create!(name: "Alice")
         @bob = Author.create!(name: "Bob")
 
-        # Inject test repository into Uchi::Repositories namespace for testing
-        Uchi::Repositories.const_set(:AuthorWithActions, AuthorWithActionsRepository) unless Uchi::Repositories.const_defined?(:AuthorWithActions)
+        # Temporarily remove standard Author repository and inject test repository
+        if Uchi::Repositories.const_defined?(:Author)
+          @original_author_repository = Uchi::Repositories::Author
+          Uchi::Repositories.send(:remove_const, :Author)
+        end
+        Uchi::Repositories.const_set(:Author, AuthorWithActionsRepository)
       end
 
       teardown do
-        # Clean up the test repository
-        Uchi::Repositories.send(:remove_const, :AuthorWithActions) if Uchi::Repositories.const_defined?(:AuthorWithActions)
+        # Restore original Author repository
+        Uchi::Repositories.send(:remove_const, :Author) if Uchi::Repositories.const_defined?(:Author)
+        if @original_author_repository
+          Uchi::Repositories.const_set(:Author, @original_author_repository)
+        end
       end
 
       test "POST create runs action on single record" do
         post "/uchi/actions/executions",
           params: {
-            repository: "author_with_actions",
+            model: "Author",
             action_name: "PublishAuthorAction",
             id: @alice.id
           }
@@ -78,7 +85,7 @@ module Uchi
       test "POST create runs action on multiple records" do
         post "/uchi/actions/executions",
           params: {
-            repository: "author_with_actions",
+            model: "Author",
             action_name: "PublishAuthorAction",
             ids: [@alice.id, @bob.id]
           }
@@ -92,7 +99,7 @@ module Uchi
       test "POST create passes input to action" do
         post "/uchi/actions/executions",
           params: {
-            repository: "author_with_actions",
+            model: "Author",
             action_name: "ExportAuthorAction",
             id: @alice.id,
             format: "json"
@@ -105,7 +112,7 @@ module Uchi
       test "POST create redirects to repository index by default" do
         post "/uchi/actions/executions",
           params: {
-            repository: "author_with_actions",
+            model: "Author",
             action_name: "PublishAuthorAction",
             id: @alice.id
           }
@@ -117,7 +124,7 @@ module Uchi
       test "POST create redirects to custom path if specified in response" do
         post "/uchi/actions/executions",
           params: {
-            repository: "author_with_actions",
+            model: "Author",
             action_name: "RedirectAuthorAction",
             id: @alice.id
           }
@@ -125,11 +132,11 @@ module Uchi
         assert_redirected_to "/uchi/authors"
       end
 
-      test "POST create raises error for non-existent repository" do
+      test "POST create raises error for non-existent model" do
         assert_raises(NameError) do
           post "/uchi/actions/executions",
             params: {
-              repository: "non_existent",
+              model: "NonExistent",
               action_name: "PublishAuthorAction",
               id: @alice.id
             }
@@ -140,7 +147,7 @@ module Uchi
         assert_raises(NameError) do
           post "/uchi/actions/executions",
             params: {
-              repository: "author_with_actions",
+              model: "Author",
               action_name: "non_existent_action",
               id: @alice.id
             }

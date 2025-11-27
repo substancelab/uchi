@@ -21,18 +21,16 @@ module Uchi
 
       private
 
-      # Finds and instantiates the repository based on the repository param.
+      # Finds and instantiates the repository based on the model param.
       #
       # @return [Uchi::Repository]
-      # @raise [NameError] if the repository class is not found
+      # @raise [NameError] if the repository is not found
       def find_repository
-        repository_name = params[:repository]
-        repository_class_name = "Uchi::Repositories::#{repository_name.camelize}"
+        model_name = params[:model]
+        repository_class = Uchi::Repository.for_model(model_name)
 
-        begin
-          repository_class = repository_class_name.constantize
-        rescue NameError
-          raise NameError, "Repository '#{repository_class_name}' not found"
+        unless repository_class
+          raise NameError, "Repository for model '#{model_name}' not found"
         end
 
         repository_class.new
