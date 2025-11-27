@@ -4,7 +4,7 @@ require "test_helper"
 
 # Test action for repository tests
 class TestRepositoryAction < Uchi::Action
-  def handle(records, input = {})
+  def perform(records, input = {})
     Uchi::ActionResponse.success("Action executed")
   end
 end

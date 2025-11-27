@@ -7,10 +7,10 @@ module Uchi
   # a repository. Examples include publishing posts, exporting data, or sending
   # notifications.
   #
-  # To create an action, subclass this class and implement the `handle` method:
+  # To create an action, subclass this class and implement the `perform` method:
   #
   #   class PublishPost < Uchi::Action
-  #     def handle(records, input = {})
+  #     def perform(records, input = {})
   #       records.each { |record| record.update!(published: true) }
   #       ActionResponse.success("Published #{records.size} posts")
   #     end
@@ -54,15 +54,15 @@ module Uchi
       []
     end
 
-    # Executes the action on the given records.
+    # Performs the action on the given records.
     #
     # This method must be implemented in subclasses.
     #
     # @param records [ActiveRecord::Relation, Array] - The records to operate on
     # @param input [Hash] - Hash of field values from the action form
     # @return [Uchi::ActionResponse]
-    def handle(records, input = {})
-      raise NotImplementedError, "#{self.class}#handle must be implemented"
+    def perform(records, input = {})
+      raise NotImplementedError, "#{self.class}#perform must be implemented"
     end
 
     # Returns true if this action requires input fields.

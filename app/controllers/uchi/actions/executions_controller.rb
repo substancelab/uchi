@@ -14,7 +14,7 @@ module Uchi
         input = build_input(action: action)
         records = find_records(repository: repository)
 
-        response = action.handle(records, input)
+        response = action.perform(records, input)
 
         handle_response(response: response, repository: repository)
       end

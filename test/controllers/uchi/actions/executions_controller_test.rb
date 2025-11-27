@@ -4,7 +4,7 @@ require "test_helper"
 
 # Test action for controller tests
 class PublishAuthorAction < Uchi::Action
-  def handle(records, input = {})
+  def perform(records, input = {})
     records.each { |r| r.update!(name: "Published: #{r.name}") }
     Uchi::ActionResponse.success("Published #{records.size} authors")
   end
@@ -15,14 +15,14 @@ class ExportAuthorAction < Uchi::Action
     [Uchi::Field::String.new(:format)]
   end
 
-  def handle(records, input = {})
+  def perform(records, input = {})
     format = input[:format] || "csv"
     Uchi::ActionResponse.success("Exported #{records.size} authors as #{format}")
   end
 end
 
 class RedirectAuthorAction < Uchi::Action
-  def handle(records, input = {})
+  def perform(records, input = {})
     Uchi::ActionResponse.success("Redirected").redirect_to(path: "/uchi/authors")
   end
 end

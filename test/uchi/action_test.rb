@@ -4,7 +4,7 @@ require "test_helper"
 
 # Test action for use in tests
 class TestPublishAction < Uchi::Action
-  def handle(records, input = {})
+  def perform(records, input = {})
     records.each do |record|
       record.update!(name: "Published")
     end
@@ -20,7 +20,7 @@ class TestActionWithFields < Uchi::Action
     ]
   end
 
-  def handle(records, input = {})
+  def perform(records, input = {})
     Uchi::ActionResponse.success("Processed with #{input[:title]}")
   end
 end
@@ -30,7 +30,7 @@ class TestActionWithIcon < Uchi::Action
     "check-circle"
   end
 
-  def handle(records, input = {})
+  def perform(records, input = {})
     Uchi::ActionResponse.success("Done")
   end
 end
@@ -40,7 +40,7 @@ class TestActionWithConfirmText < Uchi::Action
     "Are you sure?"
   end
 
-  def handle(records, input = {})
+  def perform(records, input = {})
     Uchi::ActionResponse.success("Done")
   end
 end
@@ -101,22 +101,22 @@ class UchiActionTest < ActiveSupport::TestCase
     assert_equal true, action.requires_input?
   end
 
-  test "#handle must be implemented by subclasses" do
+  test "#perform must be implemented by subclasses" do
     action = Uchi::Action.new
 
     error = assert_raises(NotImplementedError) do
-      action.handle([])
+      action.perform([])
     end
 
-    assert_includes error.message, "Uchi::Action#handle must be implemented"
+    assert_includes error.message, "Uchi::Action#perform must be implemented"
   end
 
-  test "#handle receives records and input" do
+  test "#perform receives records and input" do
     alice = Author.create!(name: "Alice")
     bob = Author.create!(name: "Bob")
     action = TestPublishAction.new
 
-    response = action.handle([alice, bob], {})
+    response = action.perform([alice, bob], {})
 
     assert response.success?
     assert_equal "Published 2 records", response.message_text
@@ -124,11 +124,11 @@ class UchiActionTest < ActiveSupport::TestCase
     assert_equal "Published", bob.reload.name
   end
 
-  test "#handle works with empty input" do
+  test "#perform works with empty input" do
     alice = Author.create!(name: "Alice")
     action = TestActionWithFields.new
 
-    response = action.handle([alice], {title: "Test"})
+    response = action.perform([alice], {title: "Test"})
 
     assert response.success?
     assert_includes response.message_text, "Test"
