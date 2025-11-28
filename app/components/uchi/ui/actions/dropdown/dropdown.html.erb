@@ -1,7 +1,5 @@
-<div class="relative inline-block text-left">
+<div class="relative" data-controller="dropdown">
   <button
-    type="button"
-    popovertarget="actions-dropdown-<%= record.id %>"
     class="
       inline-flex items-center px-3 py-2 text-sm font-medium text-center
       text-gray-900 bg-white border border-gray-300 rounded-lg
@@ -10,6 +8,8 @@
       dark:hover:bg-gray-700 dark:hover:border-gray-600
       dark:focus:ring-gray-700
     "
+    data-action="dropdown#toggle click@window->dropdown#hide"
+    type="button"
   >
     Actions
     <svg
@@ -32,8 +32,9 @@
   <!-- Dropdown menu -->
   <div
     id="actions-dropdown-<%= record.id %>"
-    popover
+    data-dropdown-target="menu"
     class="
+      hidden transition transform origin-top-right absolute right-0
       bg-white divide-y divide-gray-100 rounded-lg shadow w-44
       dark:bg-gray-700 m-0 p-0
     "
