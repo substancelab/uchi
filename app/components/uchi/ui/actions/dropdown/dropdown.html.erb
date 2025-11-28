@@ -35,20 +35,19 @@
     data-dropdown-target="menu"
     class="
       hidden transition transform origin-top-right absolute right-0
-      bg-white divide-y divide-gray-100 rounded-lg shadow w-44
-      dark:bg-gray-700 m-0 p-0
+      z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700
     "
   >
-    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200 list-none m-0 p-0">
+    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
       <% actions.each do |action| %>
         <li>
-          <%= form_with url: "/uchi/actions/executions", method: :post, data: { turbo: false } do %>
+          <%= form_with url: "/uchi/actions/executions", method: :post, class: "block", data: { turbo: false } do %>
             <%= hidden_field_tag :model, repository.model.name %>
             <%= hidden_field_tag :action_name, action.class.name %>
             <%= hidden_field_tag :id, record.id %>
 
             <%= button_tag type: "submit",
-                          class: "block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" do %>
+                          class: "block px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" do %>
               <%= action.name %>
             <% end %>
           <% end %>

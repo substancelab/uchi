@@ -863,9 +863,6 @@
       max-width: 96rem;
     }
   }
-  .m-0 {
-    margin: calc(var(--spacing) * 0);
-  }
   .mx-0 {
     margin-inline: calc(var(--spacing) * 0);
   }
@@ -1576,9 +1573,6 @@
   .resize {
     resize: both;
   }
-  .list-none {
-    list-style-type: none;
-  }
   .grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -2028,9 +2022,6 @@
     .apexcharts-canvas .apexcharts-tooltip-series-group.apexcharts-active & {
       padding: 0 !important;
     }
-  }
-  .p-0 {
-    padding: calc(var(--spacing) * 0);
   }
   .p-1 {
     padding: calc(var(--spacing) * 1);
