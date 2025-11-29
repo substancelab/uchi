@@ -11,7 +11,7 @@ module Flowbite
   class BreadcrumbSeparator < ViewComponent::Base
     def call
       tag.svg(
-        class: "rtl:rotate-180 w-3 h-3 text-gray-400 mx-1",
+        class: "w-3.5 h-3.5 rtl:rotate-180 text-body",
         "aria-hidden": "true",
         xmlns: "http://www.w3.org/2000/svg",
         fill: "none",

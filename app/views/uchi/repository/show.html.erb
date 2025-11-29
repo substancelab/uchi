@@ -11,7 +11,7 @@
       @repository.translate.link_to_destroy(@record),
       @repository.routes.path_for(:destroy, id: @record.id),
       method: :delete,
-      class: Flowbite::Button.classes(style: :red),
+      class: Flowbite::Button.classes(style: :danger),
       data: {
         :"turbo-confirm" => @repository.translate.destroy_dialog_title(@record)
       }

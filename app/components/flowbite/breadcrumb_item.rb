@@ -42,7 +42,7 @@ module Flowbite
     end
 
     def link_classes
-      ["ms-1", "text-sm", "font-medium", "text-gray-700", "hover:text-blue-600", "dark:text-gray-400", "dark:hover:text-white"]
+      ["ms-1", "text-sm", "font-medium", "text-body", "hover:text-fg-brand"]
     end
   end
 end

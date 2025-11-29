@@ -18,7 +18,7 @@ module Flowbite
       end
 
       def link_classes
-        ["text-sm", "font-medium", "inline-flex", "items-center", "text-gray-700", "hover:text-blue-600", "dark:text-gray-400", "dark:hover:text-white"]
+        ["text-sm", "font-medium", "inline-flex", "items-center", "text-body", "hover:text-fg-brand"]
       end
 
       def prefix_icon

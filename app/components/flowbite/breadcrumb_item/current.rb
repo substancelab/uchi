@@ -26,7 +26,7 @@ module Flowbite
       end
 
       def link_classes
-        ["ms-1", "text-sm", "font-medium", "text-gray-500", "dark:text-gray-400"]
+        ["ms-1", "text-sm", "font-medium", "text-body-subtle"]
       end
     end
   end
