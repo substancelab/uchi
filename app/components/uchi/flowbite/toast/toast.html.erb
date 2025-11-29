@@ -8,13 +8,15 @@
   <div class="ms-3 text-sm font-normal"><%= message %></div>
 
   <% if dismissible %>
+    <%# Styles from https://flowbite.com/docs/components/toast/#default-toast %>
     <button
       type="button"
       class="
-        ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900
-        rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100
-        inline-flex items-center justify-center h-8 w-8 dark:text-gray-500
-        dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700
+        ms-auto flex items-center justify-center text-body
+        hover:text-heading bg-transparent box-border border
+        border-transparent hover:bg-neutral-secondary-medium focus:ring-4
+        focus:ring-neutral-tertiary font-medium leading-5 rounded text-sm
+        h-8 w-8 focus:outline-none
       "
       aria-label="Close"
     >

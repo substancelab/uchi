@@ -19,10 +19,10 @@
       },
     )
   )) do %>
-    <div class="relative overflow-x-auto bg-white border border-gray-200 shadow-sm md:rounded-lg dark:bg-gray-800 dark:border-gray-700">
+    <%= render(Uchi::Ui::Frame.new) do %>
       <div class="grid grid place-items-center p-8">
         <%= render(Uchi::Ui::Spinner.new(message: repository.translate.loading_message)) %>
       </div>
-    </div>
+    <% end %>
   <% end %>
 </div>

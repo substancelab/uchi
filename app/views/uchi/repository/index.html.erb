@@ -20,10 +20,11 @@
     repository: @repository,
     scope: (scoped? ? scope_params : nil),
   )) do %>
+    <%# Styles from https://flowbite.com/docs/components/tables/#default-table %>
     <div
       class="
-        relative overflow-x-auto bg-white border border-gray-200 shadow-sm
-        md:rounded-lg dark:bg-gray-800 dark:border-gray-700
+        relative overflow-x-auto bg-neutral-primary-soft rounded-base border
+        border-default shadow-xs
       "
     >
       <% if @repository.searchable? %>
@@ -42,7 +43,7 @@
           scope: (scoped? ? scope_params : nil),
         )) %>
       <% else %>
-        <div class="p-6 text-center text-gray-500 dark:text-gray-400">
+        <div class="p-6 text-center text-body-subtle">
           <%= @repository.translate.no_records_found %>
         </div>
       <% end %>

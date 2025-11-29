@@ -1,11 +1,12 @@
 <%= render(Uchi::Ui::Frame.new) do %>
-  <dl class="divide-y divide-gray-200 dark:divide-white/5">
+  <dl class="divide-y divide-default">
     <% attribute_fields.each do |field| %>
       <div class="px-4 py-4 sm:grid sm:grid-cols-4 sm:gap-4 sm:px-6">
-        <dt class="font-semibold text-gray-900 dark:text-white">
+        <dt class="font-semibold text-heading">
           <%= repository.translate.field_label(field) %>
         </dt>
-        <dd class="font-light text-gray-500 dark:text-gray-400 col-span-3">
+
+        <dd class="font-light text-body col-span-3">
           <%= render(field.show_component(record: record, repository: repository)) %>
         </dd>
       </div>
