@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 module Flowbite
-  module Input
-    class ValidationError < ViewComponent::Base
+  class Card
+    # Renders the title of a card element.
+    class Title < ViewComponent::Base
       class << self
         def classes(state: :default, style: :default)
           style = styles.fetch(style)
@@ -13,7 +14,7 @@ module Flowbite
         def styles
           {
             default: Flowbite::Style.new(
-              default: ["mt-2", "text-sm", "text-red-600", "dark:text-red-500"]
+              default: ["mb-2", "text-2xl", "font-semibold", "tracking-tight", "text-heading"]
             )
           }.freeze
         end
@@ -21,18 +22,15 @@ module Flowbite
       end
 
       def call
-        tag.p(content, class: classes)
+        title_options = {
+          class: self.class.classes
+        }.merge(@options)
+
+        content_tag(:h5, content, **title_options)
       end
 
-      def initialize(class: nil)
-        @class = Array.wrap(binding.local_variable_get(:class))
-      end
-
-      protected
-
-      # Returns the CSS classes to apply to the validation error
-      def classes
-        self.class.classes + @class
+      def initialize(**options)
+        @options = options || {}
       end
     end
   end

@@ -9,14 +9,16 @@ module Flowbite
     # Wraps `ActionView::Helpers::FormOptionsHelper#select`: https://api.rubyonrails.org/classes/ActionView/Helpers/FormOptionsHelper.html#method-i-select
     class Select < Field
       SIZES = {
-        sm: ["p-2", "text-xs"],
-        default: ["p-2.5", "text-sm"],
-        lg: ["px-4", "py-3", "text-base"]
+        sm: ["px-2.5", "py-2", "text-sm"],
+        default: ["px-3", "py-2.5", "text-sm"],
+        lg: ["px-3.5", "py-3", "text-base"]
       }.freeze
 
-      def initialize(form:, attribute:, collection: [], disabled: false, options: {}, size: :default)
-        super(form: form, attribute: attribute, disabled: disabled, options: options, size: size)
+      def initialize(form:, attribute:, class: nil, collection: [], disabled: false, include_blank: false, multiple: false, options: {}, size: :default)
+        super(form: form, attribute: attribute, class: binding.local_variable_get(:class), disabled: disabled, options: options, size: size)
         @collection = collection
+        @include_blank = include_blank
+        @multiple = multiple
       end
 
       # Returns the HTML to use for the actual input field element.
@@ -25,7 +27,7 @@ module Flowbite
           input_field_type,
           @attribute,
           @collection,
-          {},
+          select_options,
           html_options
         )
       end
@@ -36,6 +38,13 @@ module Flowbite
       end
 
       private
+
+      def select_options
+        {
+          include_blank: @include_blank,
+          multiple: @multiple
+        }
+      end
 
       # Returns the html_options argument for the select method
       def html_options

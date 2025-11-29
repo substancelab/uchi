@@ -19,9 +19,9 @@ module Flowbite
         def styles
           {
             default: Flowbite::Style.new(
-              default: ["block", "mb-2", "text-sm", "font-medium", "text-gray-900", "dark:text-white"],
-              disabled: ["block", "mb-2", "text-sm", "font-medium", "text-gray-400", "dark:text-gray-500"],
-              error: ["block", "mb-2", "text-sm", "font-medium", "text-red-700", "dark:text-red-500"]
+              default: ["block", "mb-2.5", "text-sm", "font-medium", "text-heading"],
+              disabled: ["block", "mb-2.5", "text-sm", "font-medium", "text-fg-disabled"],
+              error: ["block", "mb-2.5", "text-sm", "font-medium", "text-fg-danger-strong"]
             )
           }.freeze
         end
@@ -39,8 +39,9 @@ module Flowbite
         @object.errors.include?(@attribute.intern)
       end
 
-      def initialize(attribute:, form:, disabled: false, options: {})
+      def initialize(attribute:, form:, class: nil, disabled: false, options: {})
         @attribute = attribute
+        @class = Array.wrap(binding.local_variable_get(:class))
         @disabled = disabled
         @form = form
         @object = form.object
@@ -49,7 +50,7 @@ module Flowbite
 
       # Returns an array with the CSS classes to apply to the label element
       def classes
-        self.class.classes(state: state)
+        self.class.classes(state: state) + @class
       end
 
       protected
