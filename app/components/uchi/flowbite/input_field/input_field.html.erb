@@ -1,0 +1,9 @@
+<div class="<%= classes.join(" ") %>">
+  <%= label %>
+  <%= input %>
+  <%= hint %>
+
+  <% errors.each do |error| %>
+    <%= render(Uchi::Flowbite::Input::ValidationError.new) { error.upcase_first } %>
+  <% end %>
+</div>

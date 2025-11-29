@@ -1,4 +1,4 @@
-<%= render(Flowbite::Link.new(
+<%= render(Uchi::Flowbite::Link.new(
   href: @repository.routes.path_for(:show, id: record.id),
   target: "_top").with_content(field.value(record))
 ) %>

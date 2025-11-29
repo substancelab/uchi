@@ -6,7 +6,7 @@
     title: @repository.translate.title_for_index,
   )) do |header| %>
   <% header.with_action do %>
-    <%= link_to(@repository.translate.link_to_new, @repository.routes.path_for(:new), class: Flowbite::Button.classes) %>
+    <%= link_to(@repository.translate.link_to_new, @repository.routes.path_for(:new), class: Uchi::Flowbite::Button.classes) %>
   <% end %>
   <% header.with_breadcrumb(items: [
     {href: @repository.routes.root_path, label: @repository.translate.breadcrumb_label_for_root },

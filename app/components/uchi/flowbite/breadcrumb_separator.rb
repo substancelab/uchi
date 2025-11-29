@@ -1,0 +1,30 @@
+# frozen_string_literal: true
+
+module Uchi::Flowbite
+  # Renders a breadcrumb separator icon.
+  #
+  # This is automatically used by BreadcrumbItem components, but can be
+  # used standalone if needed.
+  #
+  # @example Standalone usage
+  #   <%= render Uchi::Flowbite::BreadcrumbSeparator.new %>
+  class BreadcrumbSeparator < ViewComponent::Base
+    def call
+      tag.svg(
+        class: "w-3.5 h-3.5 rtl:rotate-180 text-body",
+        "aria-hidden": "true",
+        xmlns: "http://www.w3.org/2000/svg",
+        fill: "none",
+        viewBox: "0 0 6 10"
+      ) do
+        tag.path(
+          stroke: "currentColor",
+          "stroke-linecap": "round",
+          "stroke-linejoin": "round",
+          "stroke-width": "2",
+          d: "m1 9 4-4-4-4"
+        )
+      end
+    end
+  end
+end

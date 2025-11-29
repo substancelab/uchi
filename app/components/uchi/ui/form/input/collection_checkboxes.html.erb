@@ -27,6 +27,6 @@
   <% end %>
 
   <% errors.each do |error| %>
-    <%= render(Flowbite::Input::ValidationError.new) { error.upcase_first } %>
+    <%= render(Uchi::Flowbite::Input::ValidationError.new) { error.upcase_first } %>
   <% end %>
 </div>
