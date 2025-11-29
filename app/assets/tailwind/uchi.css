@@ -10,12 +10,12 @@ running the following command:
 /* We need tailwindcss, duh */
 @import "tailwindcss";
 
-/* Import the default theme variables from Flowbite
-This imports them from node_modules/flowbite/src/themes/default.css */
-@import "flowbite/src/themes/default";
-
 /* Import the Flowbite plugin */
 @plugin "flowbite/plugin";
+
+/* Import the default theme variables from Flowbite */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "flowbite/src/themes/default"; /* This imports them from node_modules/flowbite/src/themes/default.css */
 
 /* Configure the source files of Flowbite */
 @source "../../../node_modules/flowbite";
