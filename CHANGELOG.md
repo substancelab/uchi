@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The main navigation in the left-hand side can now be customized for your application.
 - uchi:scaffold generator to ease adding new models to Uchi applications.
 - Pagination now only shows when there are multiple pages.
+- Flowbite 4-style UI components.
 
 ### Fixed
 
