@@ -5,5 +5,5 @@
     <%= attachment.filename %>
   <% end %>
 <% else %>
-  <span class="text-gray-400">—</span>
+  <%= render(Uchi::Ui::NoValue.new) %>
 <% end %>
