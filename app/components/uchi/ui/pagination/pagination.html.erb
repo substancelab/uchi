@@ -1,6 +1,7 @@
 <nav aria-label="<%= aria_label %>">
-  <ul class="flex items-center -space-x-px h-8 text-sm">
+  <ul class="flex -space-x-px text-sm">
     <%= render(Uchi::Ui::Pagination::PreviousLink.new(paginator: @paginator)) %>
+
     <% pages.each do |page_number| %>
       <% if page_number.nil? %>
         <%= render(Uchi::Ui::Pagination::Gap.new(page_number: page_number, paginator: @paginator)) %>
@@ -10,6 +11,7 @@
         <%= render(Uchi::Ui::Pagination::Link.new(page_number: page_number, paginator: @paginator)) %>
       <% end %>
     <% end %>
+
     <%= render(Uchi::Ui::Pagination::NextLink.new(paginator: @paginator)) %>
   </ul>
 </nav>

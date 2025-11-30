@@ -68,22 +68,22 @@ module Uchi
           end
 
           def label_classes
-            base = ["block", "mb-2", "text-sm", "font-medium"]
+            base = ["select-none ms-2 text-sm font-medium"]
             if disabled?
-              base + ["text-gray-400", "dark:text-gray-500"]
+              base + ["text-fg-disabled"]
             elsif errors?
-              base + ["text-red-700", "dark:text-red-500"]
+              base + ["text-fg-danger-strong"]
             else
-              base + ["text-gray-900", "dark:text-white"]
+              base + ["text-heading"]
             end
           end
 
           def hint_classes
             base = ["text-xs", "font-normal", "mt-1"]
             if disabled?
-              base + ["text-gray-400", "dark:text-gray-500"]
+              base + ["text-fg-disabled"]
             else
-              base + ["text-gray-500", "dark:text-gray-300"]
+              base + ["text-body"]
             end
           end
 
@@ -92,26 +92,21 @@ module Uchi
           end
 
           def checkbox_classes
-            base = ["w-4", "h-4", "rounded-sm", "focus:ring-2", "focus:ring-offset-2"]
+            base = ["w-4", "h-4", "border", "rounded-xs", "focus:ring-2"]
             if disabled?
-              base + ["text-blue-600", "bg-gray-100", "border-gray-300",
-                "dark:bg-gray-700", "dark:border-gray-600"]
+              base + ["border-light", "bg-neutral-secondary-medium", "focus:ring-brand-soft"]
             elsif errors?
-              base + ["text-red-600", "bg-red-50", "border-red-500",
-                "focus:ring-red-500", "dark:focus:ring-red-600",
-                "dark:bg-gray-700", "dark:border-red-500"]
+              base + ["text-fg-danger", "bg-danger-soft", "border-fg-danger", "focus:ring-fg-danger"]
             else
-              base + ["text-blue-600", "bg-gray-100", "border-gray-300",
-                "focus:ring-blue-500", "dark:focus:ring-blue-600",
-                "dark:bg-gray-700", "dark:border-gray-600"]
+              base + ["border-default-medium", "bg-neutral-secondary-medium", "focus:ring-brand-soft"]
             end
           end
 
           def checkbox_label_classes
             if disabled?
-              ["ms-2", "text-sm", "font-medium", "text-gray-400", "dark:text-gray-500"]
+              ["select-none", "ms-2", "text-sm", "font-medium", "text-fg-disabled"]
             else
-              ["ms-2", "text-sm", "font-medium", "text-gray-900", "dark:text-gray-300"]
+              ["select-none", "ms-2", "text-sm", "font-medium", "text-heading"]
             end
           end
 

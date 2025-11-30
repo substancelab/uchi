@@ -1,12 +1,12 @@
-<%= render(Flowbite::Breadcrumb.new) do |breadcrumb| %>
+<%= render(Uchi::Flowbite::Breadcrumb.new) do |breadcrumb| %>
   <% items.each.with_index do |item, index| %>
     <% breadcrumb.with_item do %>
       <% if index.zero? %>
-        <%= render Flowbite::BreadcrumbItem::First.new(href: item[:href]).with_content(item[:label]) %>
+        <%= render Uchi::Flowbite::BreadcrumbItem::First.new(href: item[:href]).with_content(item[:label]) %>
       <% elsif index == items.size - 1 %>
-        <%= render Flowbite::BreadcrumbItem::Current.new.with_content(item[:label]) %>
+        <%= render Uchi::Flowbite::BreadcrumbItem::Current.new.with_content(item[:label]) %>
       <% else %>
-        <%= render Flowbite::BreadcrumbItem.new(href: item[:href]).with_content(item[:label]) %>
+        <%= render Uchi::Flowbite::BreadcrumbItem.new(href: item[:href]).with_content(item[:label]) %>
       <% end %>
     <% end %>
   <% end %>

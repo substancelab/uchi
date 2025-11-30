@@ -1,0 +1,35 @@
+# frozen_string_literal: true
+
+module Uchi::Flowbite
+  class InputField
+    class Select < InputField
+      def initialize(attribute:, form:, collection: [], disabled: false, hint: nil, include_blank: false, input: {}, label: {}, multiple: false, size: :default)
+        super(attribute: attribute, disabled: disabled, form: form, hint: hint, input: input, label: label, size: size)
+        @collection = collection
+        @include_blank = include_blank
+        @multiple = multiple
+      end
+
+      def input
+        render(
+          input_component.new(
+            attribute: @attribute,
+            collection: @collection,
+            disabled: @disabled,
+            form: @form,
+            include_blank: @include_blank,
+            multiple: @multiple,
+            options: input_options,
+            size: @size
+          )
+        )
+      end
+
+      private
+
+      def input_component
+        Uchi::Flowbite::Input::Select
+      end
+    end
+  end
+end

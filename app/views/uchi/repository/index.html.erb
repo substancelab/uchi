@@ -6,8 +6,9 @@
     title: @repository.translate.title_for_index,
   )) do |header| %>
   <% header.with_action do %>
-    <%= link_to(@repository.translate.link_to_new, @repository.routes.path_for(:new), class: Flowbite::Button.classes) %>
+    <%= link_to(@repository.translate.link_to_new, @repository.routes.path_for(:new), class: Uchi::Flowbite::Button.classes) %>
   <% end %>
+
   <% header.with_breadcrumb(items: [
     {href: @repository.routes.root_path, label: @repository.translate.breadcrumb_label_for_root },
     {href: @repository.routes.path_for(:index), label: @repository.translate.breadcrumb_label(:index) }
@@ -19,12 +20,19 @@
     repository: @repository,
     scope: (scoped? ? scope_params : nil),
   )) do %>
-    <div class="relative overflow-x-auto bg-white border border-gray-200 shadow-sm md:rounded-lg dark:bg-gray-800 dark:border-gray-700">
+    <%# Styles from https://flowbite.com/docs/components/tables/#default-table %>
+    <div
+      class="
+        relative overflow-x-auto bg-neutral-primary-soft rounded-base border
+        border-default shadow-xs
+      "
+    >
       <% if @repository.searchable? %>
         <div class="px-3 py-3">
           <%= render(Uchi::Ui::Index::RecordsTable::SearchForm.new(params: params, repository: @repository)) %>
         </div>
       <% end %>
+
       <% if @records.any? %>
         <%= render(Uchi::Ui::Index::RecordsTable.new(
           columns: @columns,
@@ -35,11 +43,12 @@
           scope: (scoped? ? scope_params : nil),
         )) %>
       <% else %>
-        <div class="p-6 text-center text-gray-500 dark:text-gray-400">
+        <div class="p-6 text-center text-body-subtle">
           <%= @repository.translate.no_records_found %>
         </div>
       <% end %>
     </div>
+
     <% if @records.any? %>
       <div class="my-4 flex justify-center">
         <%= render(Uchi::Ui::Pagination.new(paginator: @paginator)) %>

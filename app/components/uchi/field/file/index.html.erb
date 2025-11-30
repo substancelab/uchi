@@ -1,6 +1,7 @@
 <% attachment = field.value(record) %>
+
 <% if attachment.attached? %>
   <%= attachment.filename.to_s %>
 <% else %>
-  <span class="text-gray-400">—</span>
+  <%= render(Uchi::Ui::NoValue.new) %>
 <% end %>

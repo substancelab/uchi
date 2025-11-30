@@ -8,12 +8,14 @@
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <%= javascript_include_tag "uchi/application", "data-turbo-track" => "reload" %>
     <%= stylesheet_link_tag "uchi/application", media: "all", "data-turbo-track": "reload" %>
   </head>
-  <body class="antialiased bg-gray-50 dark:bg-gray-900 p-2">
+
+  <body class="antialiased bg-neutral-secondary-medium p-2">
     <div class="md:flex">
       <%= render(partial: "uchi/navigation/main") %>
 
