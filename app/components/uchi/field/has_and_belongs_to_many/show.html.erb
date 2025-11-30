@@ -1,5 +1,7 @@
 <div class="my-10">
-  <h2 class="px-4 my-6 text-2xl font-bold md:px-0"><%= repository.translate.field_label(field) %></h2>
+  <h2 class="px-4 my-6 text-2xl font-bold md:px-0">
+    <%= repository.translate.field_label(field) %>
+  </h2>
 
   <%= render(Uchi::Ui::Index::TurboFrame.new(
     repository: associated_repository,
