@@ -2195,10 +2195,6 @@
     --tw-leading: var(--leading-relaxed);
     line-height: var(--leading-relaxed);
   }
-  .font-bold {
-    --tw-font-weight: var(--font-weight-bold);
-    font-weight: var(--font-weight-bold);
-  }
   .font-light {
     --tw-font-weight: var(--font-weight-light);
     font-weight: var(--font-weight-light);
