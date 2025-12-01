@@ -1,44 +1,40 @@
 <div class="relative" data-controller="dropdown">
-  <button
-    class="
-      inline-flex items-center px-3 py-2 text-sm font-medium text-center
-      text-gray-900 bg-white border border-gray-300 rounded-lg
-      hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200
-      dark:bg-gray-800 dark:text-white dark:border-gray-600
-      dark:hover:bg-gray-700 dark:hover:border-gray-600
-      dark:focus:ring-gray-700
-    "
-    data-action="dropdown#toggle click@window->dropdown#hide"
-    type="button"
-  >
-    Actions
-    <svg
-      class="w-2.5 h-2.5 ms-2.5"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 10 6"
-    >
-      <path
-        stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="m1 1 4 4 4-4"
-      />
-    </svg>
-  </button>
+  <%= render(Uchi::Flowbite::Button.new(style: :secondary, :data => {:action => "dropdown#toggle click@window->dropdown#hide"})) do %>
+    <div class="inline-flex items-center">
+      Actions TODO
+      <svg
+        class="w-4 h-4 ms-1.5 -me-0.5"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m19 9-7 7-7-7"
+        />
+      </svg>
+    </div>
+  <% end %>
 
   <!-- Dropdown menu -->
   <div
     id="actions-dropdown-<%= record.id %>"
     data-dropdown-target="menu"
     class="
-      hidden transition transform origin-top-right absolute right-0
-      z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700
+      transition transform origin-top-right absolute right-0 z-10 hidden bg-neutral-primary-medium border border-default-medium
+      rounded-base shadow-lg w-44 mt-1
     "
   >
-    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+    <ul
+      class="p-2 text-sm text-body font-medium"
+      aria-labelledby="actions-dropdown-button-<%= record.id %>"
+    >
       <% actions.each do |action| %>
         <li>
           <%= form_with url: "/uchi/actions/executions", method: :post, class: "block", data: { turbo: false } do %>
@@ -47,7 +43,7 @@
             <%= hidden_field_tag :id, record.id %>
 
             <%= button_tag type: "submit",
-                          class: "block px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" do %>
+                          class: "block inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" do %>
               <%= action.name %>
             <% end %>
           <% end %>
