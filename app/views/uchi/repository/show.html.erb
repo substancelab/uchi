@@ -6,6 +6,16 @@
     title: @repository.translate.title_for_show(@record),
   )
 ) do |header| %>
+  <% if @repository.actions.any? %>
+    <% header.with_action do %>
+      <%= render(Uchi::Ui::Actions::Dropdown.new(
+        actions: @repository.actions,
+        record: @record,
+        repository: @repository
+      )) %>
+    <% end %>
+  <% end %>
+
   <% header.with_action do %>
     <%= button_to(
       @repository.translate.link_to_destroy(@record),
@@ -20,16 +30,6 @@
 
   <% header.with_action do %>
     <%= link_to(@repository.translate.link_to_edit(@record), @repository.routes.path_for(:edit, id: @record.id), class: Uchi::Flowbite::Button.classes) %>
-  <% end %>
-
-  <% if @repository.actions.any? %>
-    <% header.with_action do %>
-      <%= render(Uchi::Ui::Actions::Dropdown.new(
-        actions: @repository.actions,
-        record: @record,
-        repository: @repository
-      )) %>
-    <% end %>
   <% end %>
 
   <% header.with_breadcrumb(items: [
