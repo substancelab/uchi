@@ -5,6 +5,20 @@ module Uchi
     class Translate
       attr_reader :repository
 
+      # Returns the label for the actions button in the UI.
+      #
+      # Returns the first of the following that is present:
+      # 1. uchi.repository.author.button.actions
+      # 2. uchi.common.actions
+      # 3. "Actions"
+      def actions_button_label
+        first_present_value(
+          translate(i18n_scope("button.actions"), default: nil),
+          translate("common.actions", default: nil),
+          "Actions"
+        )
+      end
+
       # Returns the breadcrumb label for the given page.
       #
       # Example translation key:

@@ -12,6 +12,27 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal @repository, @translate.repository
   end
 
+  test "#actions_button_label returns translation from button.actions" do
+    I18n.with_locale(:da) do
+      result = @translate.actions_button_label
+      assert_equal "Forfatter-handlinger", result
+    end
+  end
+
+  test "#actions_button_label falls back to common.actions when button.actions isn't present" do
+    I18n.with_locale(:da) do
+      repository = Uchi::Repositories::Book.new
+      result = repository.translate.actions_button_label
+      assert_equal "Handlinger", result
+    end
+  end
+
+  test "#actions_button_label falls back to 'Actions' when common.actions isn't present" do
+    repository = Uchi::Repositories::Book.new
+    result = repository.translate.actions_button_label
+    assert_equal "Actions", result
+  end
+
   test "#breadcrumb_label returns translation from .breadcrumb.index.label" do
     I18n.with_locale(:da) do
       result = @translate.breadcrumb_label(:index)

@@ -1,7 +1,8 @@
 <div class="relative" data-controller="dropdown">
   <%= render(Uchi::Flowbite::Button.new(style: :secondary, :data => {:action => "dropdown#toggle click@window->dropdown#hide"})) do %>
     <div class="inline-flex items-center">
-      Actions TODO
+      <%= repository.translate.actions_button_label %>
+
       <svg
         class="w-4 h-4 ms-1.5 -me-0.5"
         aria-hidden="true"
