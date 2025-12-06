@@ -96,7 +96,7 @@ module Uchi
           render(turbo_stream: response.turbo_stream_block.call)
         else
           flash[flash_key] = response.message_text if response.message_text
-          redirect_to(
+          redirect_back_or_to(
             repository.routes.path_for(:index),
             status: :see_other
           )
