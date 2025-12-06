@@ -61,6 +61,16 @@ module Uchi
       apply_sort_order(query, sort_order)
     end
 
+    # Finds multiple records by their IDs. If a record is not found, it is
+    # ignored.
+    #
+    # @param ids [Array<Integer>] The IDs of the records to find
+    #
+    # @return [ActiveRecord::Relation] The found records
+    def find_many(ids)
+      model.where(id: ids)
+    end
+
     def find(id)
       model.find(id)
     end
@@ -71,6 +81,21 @@ module Uchi
     # https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-includes
     # for further details.
     def includes
+      []
+    end
+
+    # Returns the list of actions available for this repository.
+    #
+    # Actions are instances of Uchi::Action subclasses that can be executed
+    # on one or more records.
+    #
+    # Example:
+    #   def actions
+    #     [PublishPost.new, ExportToCsv.new]
+    #   end
+    #
+    # @return [Array<Uchi::Action>]
+    def actions
       []
     end
 

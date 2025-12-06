@@ -7,6 +7,8 @@ require "view_component"
 require "uchi/version"
 require "uchi/engine"
 
+require "uchi/action"
+require "uchi/action_response"
 require "uchi/field"
 require "uchi/i18n"
 require "uchi/repository"
