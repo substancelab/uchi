@@ -15,11 +15,15 @@ module Uchi
         records = find_records(repository: repository)
 
         response = action.perform(records, input)
-
+        response = default_response unless response.is_a?(Uchi::ActionResponse)
         handle_response(response: response, repository: repository)
       end
 
       private
+
+      def default_response
+        ActionResponse.success
+      end
 
       # Finds and instantiates the repository based on the model param.
       #
