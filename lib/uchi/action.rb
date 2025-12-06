@@ -75,7 +75,7 @@ module Uchi
     private
 
     # Looks up i18n key with fallback
-    # @param key [Symbol] - the key to look up (e.g., :name, :confirm_text)
+    # @param key [Symbol] - the key to look up (e.g., :name)
     # @param default [String] - fallback value
     # @param options [Hash] - additional i18n options (count, etc.)
     # @return [String, nil]

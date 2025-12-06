@@ -35,16 +35,6 @@ class TestActionWithIcon < Uchi::Action
   end
 end
 
-class TestActionWithConfirmText < Uchi::Action
-  def confirm_text
-    "Are you sure?"
-  end
-
-  def perform(records, input = {})
-    Uchi::ActionResponse.success("Done")
-  end
-end
-
 class UchiActionTest < ActiveSupport::TestCase
   test "#name returns humanized class name by default" do
     action = TestPublishAction.new
