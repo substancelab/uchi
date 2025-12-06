@@ -12,7 +12,7 @@ module Uchi
   #   class PublishPost < Uchi::Action
   #     def perform(records, input = {})
   #       records.each { |record| record.update!(published: true) }
-  #       ActionResponse.success("Published #{records.size} posts")
+  #       Uchi::ActionResponse.success("Published #{records.size} posts")
   #     end
   #   end
   #
