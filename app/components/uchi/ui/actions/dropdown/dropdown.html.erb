@@ -1,5 +1,5 @@
 <div class="relative" data-controller="dropdown">
-  <%= render(Uchi::Flowbite::Button.new(style: :secondary, :data => {:action => "dropdown#toggle click@window->dropdown#hide"})) do %>
+  <%= render(Uchi::Flowbite::Button.new(style: :secondary, :data => {:action => "dropdown#toggle click@window->dropdown#hide"}, id: button_id)) do %>
     <div class="inline-flex items-center">
       <%= repository.translate.actions_button_label %>
 
@@ -25,19 +25,23 @@
 
   <!-- Dropdown menu -->
   <div
-    id="actions-dropdown-<%= record.id %>"
+    aria-orientation="vertical"
+    aria-hidden="true"
     data-dropdown-target="menu"
     class="
       transition transform origin-top-right absolute z-10 hidden bg-neutral-primary-medium border border-default-medium
       rounded-base shadow-lg w-44 mt-1 -ml-1/2
     "
+    id="actions-dropdown-<%= record.id %>"
+    role="menu"
+    tabindex="-1"
   >
     <ul
       class="p-2 text-sm text-body font-medium"
-      aria-labelledby="actions-dropdown-button-<%= record.id %>"
+      aria-labelledby="<%= button_id %>"
     >
       <% actions.each do |action| %>
-        <li>
+        <li role="menuitem">
           <%= form_with url: "/uchi/actions/executions", method: :post, class: "block", data: { turbo: false } do %>
             <%= hidden_field_tag :model, repository.model.name %>
             <%= hidden_field_tag :action_name, action.class.name %>
