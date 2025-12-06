@@ -20,6 +20,12 @@ module Uchi
         def render?
           actions.any?
         end
+
+        private
+
+        def button_id
+          "actions-dropdown-button-#{record.id}"
+        end
       end
     end
   end
