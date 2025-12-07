@@ -42,7 +42,7 @@
     >
       <% actions.each do |action| %>
         <li role="menuitem">
-          <%= form_with url: "/uchi/actions/executions", method: :post, class: "block" do %>
+          <%= form_with url: helpers.actions_executions_path, method: :post, class: "block" do %>
             <%= hidden_field_tag :model, repository.model.name %>
             <%= hidden_field_tag :action_name, action.class.name %>
             <%= hidden_field_tag :id, record.id %>
