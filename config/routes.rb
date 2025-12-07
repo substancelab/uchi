@@ -1,5 +1,5 @@
 Uchi::Engine.routes.draw do
-  resources :meeting_rooms
-  resources :offices
-  resources :reservations
+  namespace :actions do
+    resources :executions, only: [:create]
+  end
 end

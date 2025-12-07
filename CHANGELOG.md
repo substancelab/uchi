@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - uchi:scaffold generator to ease adding new models to Uchi applications.
 - Pagination now only shows when there are multiple pages.
 - Flowbite 4-style UI components.
+- Option to add custom actions to repositories. Each action operates on a single record for now and can take no inputs.
 
 ### Fixed
 
