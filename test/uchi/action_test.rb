@@ -25,16 +25,6 @@ class TestActionWithFields < Uchi::Action
   end
 end
 
-class TestActionWithIcon < Uchi::Action
-  def icon
-    "check-circle"
-  end
-
-  def perform(records, input = {})
-    Uchi::ActionResponse.success("Done")
-  end
-end
-
 class UchiActionTest < ActiveSupport::TestCase
   test "#name returns humanized class name by default" do
     action = TestPublishAction.new
@@ -52,18 +42,6 @@ class UchiActionTest < ActiveSupport::TestCase
   ensure
     # Clean up translation
     I18n.backend.reload!
-  end
-
-  test "#icon returns nil by default" do
-    action = TestPublishAction.new
-
-    assert_nil action.icon
-  end
-
-  test "#icon can be overridden" do
-    action = TestActionWithIcon.new
-
-    assert_equal "check-circle", action.icon
   end
 
   test "#fields returns empty array by default" do

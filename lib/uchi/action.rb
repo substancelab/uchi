@@ -24,15 +24,6 @@ module Uchi
   #     end
   #   end
   class Action
-    # Returns the icon name for this action (optional).
-    #
-    # The icon should be a Heroicons icon name (e.g., "check-circle").
-    #
-    # @return [String, nil]
-    def icon
-      nil
-    end
-
     # Returns the display name for this action.
     #
     # By default, this looks up the translation key
