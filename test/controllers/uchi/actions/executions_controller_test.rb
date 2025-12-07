@@ -27,6 +27,38 @@ class RedirectAuthorAction < Uchi::Action
   end
 end
 
+class ErrorAuthorAction < Uchi::Action
+  def perform(records, input = {})
+    Uchi::ActionResponse.error("Something went wrong with #{records.size} authors")
+  end
+end
+
+class DownloadAuthorAction < Uchi::Action
+  def perform(records, input = {})
+    # Create a temporary file for testing
+    file = Tempfile.new(["authors", ".csv"])
+    file.write("Name\n")
+    records.each { |r| file.write("#{r.name}\n") }
+    file.close
+
+    Uchi::ActionResponse.success("Downloaded")
+      .download(file_path: file.path, filename: "authors.csv")
+  end
+end
+
+class TurboStreamAuthorAction < Uchi::Action
+  def perform(records, input = {})
+    Uchi::ActionResponse.success("Turbo stream response")
+      .turbo_stream { "replace" }
+  end
+end
+
+class FailingAuthorAction < Uchi::Action
+  def perform(records, input = {})
+    raise StandardError, "Action failed unexpectedly"
+  end
+end
+
 # Test repository with actions (not in Uchi::Repositories to avoid auto-discovery)
 class AuthorWithActionsRepository < Uchi::Repository
   def self.model
@@ -41,7 +73,11 @@ class AuthorWithActionsRepository < Uchi::Repository
     [
       PublishAuthorAction.new,
       ExportAuthorAction.new,
-      RedirectAuthorAction.new
+      RedirectAuthorAction.new,
+      ErrorAuthorAction.new,
+      DownloadAuthorAction.new,
+      TurboStreamAuthorAction.new,
+      FailingAuthorAction.new
     ]
   end
 end
@@ -152,6 +188,95 @@ module Uchi
               id: @alice.id
             }
         end
+      end
+
+      test "POST create handles error response with alert flash" do
+        post "/uchi/actions/executions",
+          params: {
+            model: "Author",
+            action_name: "ErrorAuthorAction",
+            id: @alice.id
+          }
+
+        assert_response :redirect
+        assert_equal "Something went wrong with 1 authors", flash[:alert]
+        assert_nil flash[:success]
+      end
+
+      test "POST create handles error response for multiple records" do
+        post "/uchi/actions/executions",
+          params: {
+            model: "Author",
+            action_name: "ErrorAuthorAction",
+            ids: [@alice.id, @bob.id]
+          }
+
+        assert_response :redirect
+        assert_equal "Something went wrong with 2 authors", flash[:alert]
+      end
+
+      test "POST create handles download response" do
+        post "/uchi/actions/executions",
+          params: {
+            model: "Author",
+            action_name: "DownloadAuthorAction",
+            id: @alice.id
+          }
+
+        assert_response :success
+        assert_equal "text/csv", response.content_type
+        assert_match(/filename="authors.csv"/, response.headers["Content-Disposition"])
+        assert_includes response.body, "Alice"
+      end
+
+      test "POST create handles turbo_stream response" do
+        post "/uchi/actions/executions",
+          params: {
+            model: "Author",
+            action_name: "TurboStreamAuthorAction",
+            id: @alice.id
+          }
+
+        assert_response :success
+        assert_equal "replace", response.body
+      end
+
+      test "POST create raises error when action raises exception" do
+        assert_raises(StandardError) do
+          post "/uchi/actions/executions",
+            params: {
+              model: "Author",
+              action_name: "FailingAuthorAction",
+              id: @alice.id
+            }
+        end
+      end
+
+      test "POST create handles invalid record ID gracefully" do
+        post "/uchi/actions/executions",
+          params: {
+            model: "Author",
+            action_name: "PublishAuthorAction",
+            id: 999999
+          }
+
+        assert_response :redirect
+        # Action runs with no records found
+        assert_equal "Published 0 authors", flash[:success]
+      end
+
+      test "POST create processes only valid record IDs in batch" do
+        post "/uchi/actions/executions",
+          params: {
+            model: "Author",
+            action_name: "PublishAuthorAction",
+            ids: [@alice.id, 999999]
+          }
+
+        assert_response :redirect
+        # Only processes the valid record
+        assert_equal "Published 1 authors", flash[:success]
+        assert_equal "Published: Alice", @alice.reload.name
       end
     end
   end
