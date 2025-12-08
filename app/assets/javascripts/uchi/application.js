@@ -8712,6 +8712,9 @@
   // app/assets/javascripts/uchi.js
   var application = Application.start();
   application.register("dropdown", Dropdown);
+  if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    document.documentElement.classList.add("dark");
+  }
 })();
 /*! Bundled license information:
 

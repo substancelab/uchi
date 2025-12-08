@@ -9,3 +9,7 @@ import Dropdown from '@stimulus-components/dropdown'
 // Start Stimulus and register components
 const application = Application.start()
 application.register('dropdown', Dropdown)
+
+if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.documentElement.classList.add('dark')
+}
