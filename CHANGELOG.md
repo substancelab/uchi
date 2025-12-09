@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Field::BelongsTo now correctly uses the associated repository's `#title` method to render the associated record.
+- Dark mode now applies properly based on the user's system settings (ie when `prefers-color-scheme: dark` is set).
 
 ### Removed
 
