@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Fixed
+
+### Removed
+
+
+## [0.1.6]
+
+### Added
+
 - It is no longer necessary to add a `repository_class` method to your `Uchi::Controllers`; they now guess their related repository themselves. You can still define the method if need be, though.
 - The main navigation in the left-hand side can now be customized for your application.
 - uchi:scaffold generator to ease adding new models to Uchi applications.
@@ -20,8 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Field::BelongsTo now correctly uses the associated repository's `#title` method to render the associated record.
 - Dark mode now applies properly based on the user's system settings (ie when `prefers-color-scheme: dark` is set).
-
-### Removed
 
 
 ## [0.1.5]
