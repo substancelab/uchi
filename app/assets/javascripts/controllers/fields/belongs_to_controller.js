@@ -22,9 +22,7 @@ export default class extends Controller {
     this.combobox.destroy()
   }
 
-  handleChange(e) {
-    this.combobox.stop()
-
+  fetchOptions() {
     get(this.backendUrlValue, {
       query: { query: this.inputTarget.value }
     }).then(({response}) => {
@@ -35,9 +33,18 @@ export default class extends Controller {
     })
   }
 
+  handleChange() {
+    this.combobox.stop()
+    this.fetchOptions()
+  }
+
   handleComboboxCommit() {
     this.setValuesFromElement(event.target)
     this.hide()
+  }
+
+  handleFocus() {
+    this.fetchOptions()
   }
 
   selectOption() {

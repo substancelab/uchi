@@ -9193,8 +9193,7 @@
       this.listTarget.removeEventListener("combobox-commit", this.handleComboboxCommit);
       this.combobox.destroy();
     }
-    handleChange(e) {
-      this.combobox.stop();
+    fetchOptions() {
       get(this.backendUrlValue, {
         query: { query: this.inputTarget.value }
       }).then(({ response }) => {
@@ -9204,9 +9203,16 @@
         this.show();
       });
     }
+    handleChange() {
+      this.combobox.stop();
+      this.fetchOptions();
+    }
     handleComboboxCommit() {
       this.setValuesFromElement(event.target);
       this.hide();
+    }
+    handleFocus() {
+      this.fetchOptions();
     }
     selectOption() {
       this.combobox.clearSelection();
