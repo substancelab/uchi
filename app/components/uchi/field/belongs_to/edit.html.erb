@@ -1,1 +1,32 @@
-<%= render(Uchi::Flowbite::InputField::Select.new(**options)) %>
+<div
+  data-controller="belongs-to"
+  data-belongs-to-backend-url-value="<%= helpers.belongs_to_associated_records_path(field: field.name, model: repository.model, record_id: record&.id) %>"
+>
+  <%# Actual input. This is the hidden part which is what is sent to the server %>
+  <%= form.hidden_field "#{field.name}_id",
+    data: {
+      'belongs-to-target': 'id',
+    }
+  %>
+
+  <%# Search input. This is the visible part that users type into %>
+  <%=
+    render(Uchi::Flowbite::InputField::Text.new(
+      attribute: field.name,
+      form: form,
+      input: {
+        options: {
+          data: {
+            'belongs-to-target': 'input',
+            action: 'belongs-to#handleChange',
+            autocomplete: 'off'
+          },
+        },
+      }
+    ))
+  %>
+
+  <ul data-belongs-to-target="list">
+    <!-- Options will be dynamically inserted here -->
+  </ul>
+</div>
