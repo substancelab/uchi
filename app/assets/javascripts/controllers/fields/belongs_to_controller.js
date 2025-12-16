@@ -36,8 +36,9 @@ export default class extends Controller {
     }).then(({response}) => {
       return response.text()
     }).then((html) => {
-      this.show()
       this.listTarget.innerHTML = html
+      this.show()
+      this.markSelectedOption()
     })
   }
 
@@ -57,6 +58,17 @@ export default class extends Controller {
 
   handleFocus() {
     this.fetchOptions()
+  }
+
+  markSelectedOption() {
+    const options = this.listTarget.querySelectorAll('[role="option"]')
+    options.forEach((option) => {
+      option.removeAttribute('aria-selected')
+      const recordId = option.getAttribute('data-id')
+      if (recordId === this.idTarget.value) {
+        option.setAttribute('aria-selected', 'true')
+      }
+    })
   }
 
   selectOption() {
