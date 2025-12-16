@@ -9205,18 +9205,19 @@
       });
     }
     handleComboboxCommit() {
-      this.setIdValueFromElement(event.target);
+      this.setValuesFromElement(event.target);
       this.hide();
     }
     selectOption() {
       this.combobox.clearSelection();
       event.target.setAttribute("aria-selected", "true");
-      this.setIdValueFromElement(event.target);
+      this.setValuesFromElement(event.target);
       this.hide();
     }
-    setIdValueFromElement(element) {
+    setValuesFromElement(element) {
       const recordId = element.getAttribute("data-id");
       this.idTarget.value = recordId;
+      this.inputTarget.value = element.textContent.trim();
     }
     hide() {
       this.combobox.destroy();
