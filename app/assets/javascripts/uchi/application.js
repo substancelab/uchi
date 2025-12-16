@@ -9187,6 +9187,7 @@
     connect() {
       this.combobox = new Combobox(this.inputTarget, this.listTarget);
       this.listTarget.addEventListener("combobox-commit", this.handleComboboxCommit.bind(this));
+      this.listTarget.hidden = true;
     }
     disconnect() {
       this.listTarget.removeEventListener("combobox-commit", this.handleComboboxCommit);
@@ -9200,20 +9201,30 @@
         return response.text();
       }).then((html) => {
         this.listTarget.innerHTML = html;
-        this.combobox.start();
+        this.show();
       });
     }
     handleComboboxCommit() {
       this.setIdValueFromElement(event.target);
+      this.hide();
     }
     selectOption() {
       this.combobox.clearSelection();
       event.target.setAttribute("aria-selected", "true");
       this.setIdValueFromElement(event.target);
+      this.hide();
     }
     setIdValueFromElement(element) {
       const recordId = element.getAttribute("data-id");
       this.idTarget.value = recordId;
+    }
+    hide() {
+      this.combobox.destroy();
+      this.listTarget.hidden = true;
+    }
+    show() {
+      this.combobox.start();
+      this.listTarget.hidden = false;
     }
   };
 
