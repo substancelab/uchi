@@ -12,23 +12,35 @@ module Uchi
       layout false
 
       def index
-        @repository = Uchi::Repository.for_model(params[:model])&.new
-        parent_record = @repository.find(params[:record_id])
-        @field_name = params[:field]
-        inverse_of = params[:inverse_of]&.to_sym
+        @current_value = field.value(parent_record)
 
-        # @columns = @repository.fields_for_index
-        # @columns = @columns.reject { |field| field.name == inverse_of } if inverse_of
-        # @records = find_all_records_from_association(name: field_name, parent_record: parent_record)
-        # @paginator, @records = paginate(@records, records_per_page: scoped_records_per_page)
+        @field_name = params[:field]
         @records = find_all_records_from_association(name: @field_name, parent_record: parent_record)
-        p @records
       end
 
       private
 
+      def association
+        @association ||= begin
+          association = parent_record.class.reflect_on_association(field.name.to_sym)
+          raise NameError, "No association named #{field.name} on #{parent_record.class}" unless association
+
+          association
+        end
+      end
+
       def current_sort_order
         Uchi::SortOrder.new(:id, :asc)
+      end
+
+      def field
+        @field ||= begin
+          field_name = params[:field]
+          field = source_repository.fields.find { |f| f.name == field_name.to_sym }
+          raise NameError, "No field named #{field_name} on #{source_repository.model}" unless field
+
+          field
+        end
       end
 
       def find_all_records(repository:, scope: nil)
@@ -43,23 +55,25 @@ module Uchi
       end
 
       def find_all_records_from_association(name:, parent_record:)
-        # Duplicated from Uchi::RepositoryController; consider refactoring.
-
-        association = parent_record.class.reflect_on_association(name.to_sym)
-        raise NameError, "No association named #{name} on #{parent_record.class}" unless association
-
-        source_repository = Uchi::Repository.for_model(association.active_record)&.new
-        raise NameError, "No repository found for scoped model #{association.active_record}" unless source_repository
-
         associated_repository = Uchi::Repository.for_model(association.klass)&.new
         raise NameError, "No repository found for associated model #{association.klass}" unless associated_repository
-
-        field = source_repository.fields.find { |f| f.name == name.to_sym }
-        raise NameError, "No field named #{name} on #{source_repository.model}" unless field
 
         find_all_records(repository: associated_repository)
       end
 
+      def parent_record
+        source_repository.find(params[:record_id])
+      end
+
+      helper_method def source_repository
+        @source_repository ||= begin
+          model_name = params[:model]
+          repository_class = Uchi::Repository.for_model(model_name)
+          raise NameError, "No repository found for model #{model_name}" unless repository_class
+
+          repository_class.new
+        end
+      end
     end
   end
 end

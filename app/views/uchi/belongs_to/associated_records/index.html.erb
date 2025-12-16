@@ -1,10 +1,11 @@
 <ul class="p-2 text-sm text-body font-medium">
   <% @records.each do |record| %>
     <li
+      <% if record == @current_value %>aria-selected="true"<% end %>
       class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded aria-selected:bg-brand aria-selected:text-white"
       data-action="click->belongs-to#selectOption"
       data-id="<%= record.id %>"
-      id="<%= dom_id(record, [@repository.model, @field_name].join("-")) %>"
+      id="<%= dom_id(record, [source_repository.model, @field_name].join("-")) %>"
       role="option"
     >
       <%= record %>
