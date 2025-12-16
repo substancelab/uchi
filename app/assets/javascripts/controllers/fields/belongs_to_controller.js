@@ -33,6 +33,10 @@ export default class extends Controller {
     })
   }
 
+  handleBlur() {
+    this.hide()
+  }
+
   handleChange() {
     this.combobox.stop()
     this.fetchOptions()

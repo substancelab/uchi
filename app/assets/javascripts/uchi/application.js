@@ -9203,6 +9203,9 @@
         this.show();
       });
     }
+    handleBlur() {
+      this.hide();
+    }
     handleChange() {
       this.combobox.stop();
       this.fetchOptions();
