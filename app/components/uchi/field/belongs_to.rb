@@ -12,6 +12,13 @@ module Uchi
 
         def associated_repository
           reflection = record.class.reflect_on_association(field.name)
+
+          unless reflection
+            raise \
+              ArgumentError,
+              "No association named #{field.name.inspect} found on #{record.class}"
+          end
+
           model = reflection.klass
           repository_class = Uchi::Repository.for_model(model)
           repository_class.new
