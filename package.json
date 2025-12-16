@@ -21,6 +21,7 @@
   "dependencies": {
     "@github/combobox-nav": "^3.0.1",
     "@hotwired/turbo-rails": "^8.0.16",
+    "@rails/request.js": "^0.0.13",
     "@stimulus-components/dropdown": "^3.0.0",
     "@tailwindcss/cli": "^4.1.13",
     "flowbite": "^4.0.1",
