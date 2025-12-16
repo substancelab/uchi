@@ -13,12 +13,10 @@ export default class extends Controller {
     this.combobox = new Combobox(this.inputTarget, this.listTarget)
 
     this.listTarget.addEventListener('combobox-commit', this.handleComboboxCommit.bind(this))
-    this.listTarget.addEventListener('combobox-select', this.handleComboboxSelect.bind(this))
   }
 
   disconnect() {
     this.listTarget.removeEventListener('combobox-commit', this.handleComboboxCommit)
-    this.listTarget.removeEventListener('combobox-select', this.handleComboboxSelect)
 
     this.combobox.destroy()
   }
@@ -36,13 +34,19 @@ export default class extends Controller {
     })
   }
 
-  handleComboboxCommit(e) {
-    const recordId = event.target.getAttribute('data-id')
-    this.idTarget.value = recordId
+  handleComboboxCommit() {
+    this.setIdValueFromElement(event.target)
   }
 
-  handleComboboxSelect(e) {
-    const recordId = event.target.getAttribute('data-id')
+  selectOption() {
+    this.combobox.clearSelection()
+    event.target.setAttribute('aria-selected', 'true')
+
+    this.setIdValueFromElement(event.target)
+  }
+
+  setIdValueFromElement(element) {
+    const recordId = element.getAttribute('data-id')
     this.idTarget.value = recordId
   }
 }
