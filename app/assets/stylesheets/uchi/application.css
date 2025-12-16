@@ -1205,6 +1205,16 @@
       outline-style: none;
     }
   }
+  .aria-selected\:bg-brand {
+    &[aria-selected="true"] {
+      background-color: var(--color-brand);
+    }
+  }
+  .aria-selected\:text-white {
+    &[aria-selected="true"] {
+      color: var(--color-white);
+    }
+  }
   .sm\:grid {
     @media (width >= 40rem) {
       display: grid;

@@ -1,3 +1,10 @@
 <% @records.each do |record| %>
-  <li data-id="<%= record.id %>" id="<%= dom_id(record, [@repository.model, @field_name].join("-")) %>" role="option"><%= record %></li>
+  <li
+    class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded aria-selected:bg-brand aria-selected:text-white"
+    data-id="<%= record.id %>"
+    id="<%= dom_id(record, [@repository.model, @field_name].join("-")) %>"
+    role="option"
+  >
+    <%= record %>
+  </li>
 <% end %>
