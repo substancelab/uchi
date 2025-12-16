@@ -9,8 +9,16 @@ export default class extends Controller {
     backendUrl: String
   }
 
+  comboboxOptions = {
+    tabInsertsSuggestions: true
+  }
+
+  buildCombobox() {
+    return new Combobox(this.inputTarget, this.listTarget, this.comboboxOptions)
+  }
+
   connect() {
-    this.combobox = new Combobox(this.inputTarget, this.listTarget)
+    this.combobox = this.buildCombobox()
 
     this.listTarget.addEventListener('combobox-commit', this.handleComboboxCommit.bind(this))
     this.listTarget.hidden = true
@@ -56,7 +64,6 @@ export default class extends Controller {
     event.target.setAttribute('aria-selected', 'true')
 
     this.setValuesFromElement(event.target)
-    this.hide()
   }
 
   setValuesFromElement(element) {

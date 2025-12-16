@@ -9184,8 +9184,14 @@
     static values = {
       backendUrl: String
     };
+    comboboxOptions = {
+      tabInsertsSuggestions: true
+    };
+    buildCombobox() {
+      return new Combobox(this.inputTarget, this.listTarget, this.comboboxOptions);
+    }
     connect() {
-      this.combobox = new Combobox(this.inputTarget, this.listTarget);
+      this.combobox = this.buildCombobox();
       this.listTarget.addEventListener("combobox-commit", this.handleComboboxCommit.bind(this));
       this.listTarget.hidden = true;
     }
@@ -9221,7 +9227,6 @@
       this.combobox.clearSelection();
       event.target.setAttribute("aria-selected", "true");
       this.setValuesFromElement(event.target);
-      this.hide();
     }
     setValuesFromElement(element) {
       const recordId = element.getAttribute("data-id");
