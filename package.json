@@ -19,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@github/combobox-nav": "^3.0.1",
     "@hotwired/turbo-rails": "^8.0.16",
     "@stimulus-components/dropdown": "^3.0.0",
     "@tailwindcss/cli": "^4.1.13",

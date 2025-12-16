@@ -220,3 +220,4 @@ We don't want to force you to translate everything. If a field doesn't need a tr
 
 * Uchi contains parts of [Pagy](https://github.com/ddnexus/pagy), Copyright (c) 2017-2025 Domizio Demichelis
 * Uchi contains parts of [Flowbite Components](https://github.com/substancelab/flowbite-components), Copyright (c) 2025 Substance Lab
+* Uchi uses [combobox-nav](https://github.com/github/combobox-nav), Copyright (c) 2018 GitHub
