@@ -3,25 +3,21 @@ import Combobox from '@github/combobox-nav'
 import { get } from "@rails/request.js"
 
 export default class extends Controller {
-  static targets = ["id", "input", "list"]
+  static targets = ["id", "dropdown", "input", "label", "list"]
 
   static values = {
     backendUrl: String
   }
 
-  comboboxOptions = {
-    tabInsertsSuggestions: true
-  }
-
   buildCombobox() {
-    return new Combobox(this.inputTarget, this.listTarget, this.comboboxOptions)
+    return new Combobox(this.inputTarget, this.listTarget)
   }
 
   connect() {
     this.combobox = this.buildCombobox()
 
     this.listTarget.addEventListener('combobox-commit', this.handleComboboxCommit.bind(this))
-    this.listTarget.hidden = true
+    this.dropdownTarget.hidden = true
   }
 
   disconnect() {
@@ -40,10 +36,6 @@ export default class extends Controller {
       this.show()
       this.markSelectedOption()
     })
-  }
-
-  handleBlur() {
-    this.hide()
   }
 
   handleChange() {
@@ -82,15 +74,25 @@ export default class extends Controller {
     const recordId = element.getAttribute('data-id')
     this.idTarget.value = recordId
     this.inputTarget.value = element.textContent.trim()
+    this.labelTarget.textContent = element.textContent.trim()
   }
 
   hide() {
     this.combobox.destroy()
-    this.listTarget.hidden = true
+    this.dropdownTarget.hidden = true
   }
 
   show() {
     this.combobox.start()
-    this.listTarget.hidden = false
+    this.dropdownTarget.hidden = false
+    this.inputTarget.focus()
+  }
+
+  toggle() {
+    if (this.dropdownTarget.hidden) {
+      this.show()
+    } else {
+      this.hide()
+    }
   }
 }

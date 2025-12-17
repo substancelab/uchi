@@ -10,24 +10,53 @@
     }
   %>
 
-  <%# Search input. This is the visible part that users type into %>
-  <%=
-    render(Uchi::Flowbite::InputField::Text.new(
-      attribute: field.name,
-      form: form,
-      input: {
-        options: {
+  <button
+    class="<%= Uchi::Flowbite::Input::Field.classes.join(" ") %> text-left"
+    data-action="belongs-to#toggle"
+    type="button"
+  >
+    <div class="inline-flex items-center justify-between w-full">
+      <div data-belongs-to-target="label"><%= associated_record %></div>
+      <svg
+        class="w-4 h-4 ms-1.5 -me-0.5"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m19 9-7 7-7-7"
+        />
+      </svg>
+    </div>
+  </button>
+
+  <div class="absolute z-10 bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-full mt-1" data-belongs-to-target="dropdown">
+    <div class="bg-neutral-primary-medium border-b border-default-medium p-2 rounded-t-base">
+      <%# Search input. This is the visible part that users type into %>
+      <label for="<%= dom_id_for_filter_query_input %>" class="sr-only">Search</label>
+      <%=
+        text_field_tag(
+          "filter_query",
+          nil,
+          class: "bg-neutral-secondary-strong border border-default-strong text-heading text-sm rounded focus:ring-brand focus:border-brand block w-full px-2.5 py-2 shadow-xs placeholder:text-body",
           data: {
             'belongs-to-target': 'input',
-            action: 'belongs-to#handleChange blur->belongs-to#handleBlur focus->belongs-to#handleFocus',
+            action: 'belongs-to#handleChange focus->belongs-to#handleFocus',
             autocomplete: 'off'
           },
-        },
-      }
-    ))
-  %>
-
-  <div class="absolute z-10 bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-full" data-belongs-to-target="list">
-    <!-- Options will be dynamically inserted here -->
+          id: dom_id_for_filter_query_input,
+        )
+      %>
+    </div>
+    <div data-belongs-to-target="list">
+      <!-- Options will be dynamically inserted here -->
+    </div>
   </div>
 </div>
