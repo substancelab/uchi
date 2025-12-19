@@ -55,7 +55,7 @@ export default class extends Controller {
     this.fetchOptions()
   }
 
-  handleComboboxCommit() {
+  handleComboboxCommit(event) {
     this.setValuesFromElement(event.target)
     this.hide()
   }
@@ -75,7 +75,7 @@ export default class extends Controller {
     })
   }
 
-  selectOption() {
+  selectOption(event) {
     this.combobox.clearSelection()
     event.target.setAttribute('aria-selected', 'true')
 

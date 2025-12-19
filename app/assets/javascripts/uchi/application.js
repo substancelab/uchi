@@ -285,11 +285,11 @@
       };
       Connection.reopenDelay = 500;
       Connection.prototype.events = {
-        message(event2) {
+        message(event) {
           if (!this.isProtocolSupported()) {
             return;
           }
-          const { identifier, message, reason, reconnect, type } = JSON.parse(event2.data);
+          const { identifier, message, reason, reconnect, type } = JSON.parse(event.data);
           this.monitor.recordMessage();
           switch (type) {
             case message_types.welcome:
@@ -325,7 +325,7 @@
             return this.close({ allowReconnect: false });
           }
         },
-        close(event2) {
+        close(event) {
           logger_default.log("WebSocket onclose event");
           if (this.disconnected) {
             return;
@@ -659,8 +659,8 @@
     const candidate = element ? element.closest("input, button") : null;
     return candidate?.type == "submit" ? candidate : null;
   }
-  function clickCaptured(event2) {
-    const submitter2 = findSubmitterFromClickTarget(event2.target);
+  function clickCaptured(event) {
+    const submitter2 = findSubmitterFromClickTarget(event.target);
     if (submitter2 && submitter2.form) {
       submittersByForm.set(submitter2.form, submitter2);
     }
@@ -927,22 +927,22 @@
     return template.content;
   }
   function dispatch(eventName, { target, cancelable, detail } = {}) {
-    const event2 = new CustomEvent(eventName, {
+    const event = new CustomEvent(eventName, {
       cancelable,
       bubbles: true,
       composed: true,
       detail
     });
     if (target && target.isConnected) {
-      target.dispatchEvent(event2);
+      target.dispatchEvent(event);
     } else {
-      document.documentElement.dispatchEvent(event2);
+      document.documentElement.dispatchEvent(event);
     }
-    return event2;
+    return event;
   }
-  function cancelEvent(event2) {
-    event2.preventDefault();
-    event2.stopImmediatePropagation();
+  function cancelEvent(event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
   }
   function nextRepaint() {
     if (document.visibilityState === "hidden") {
@@ -1363,11 +1363,11 @@
     async perform() {
       const { fetchOptions } = this;
       this.delegate.prepareRequest(this);
-      const event2 = await this.#allowRequestToBeIntercepted(fetchOptions);
+      const event = await this.#allowRequestToBeIntercepted(fetchOptions);
       try {
         this.delegate.requestStarted(this);
-        if (event2.detail.fetchRequest) {
-          this.response = event2.detail.fetchRequest.response;
+        if (event.detail.fetchRequest) {
+          this.response = event.detail.fetchRequest.response;
         } else {
           this.response = fetchWithTurboHeaders(this.url.href, fetchOptions);
         }
@@ -1386,12 +1386,12 @@
     }
     async receive(response) {
       const fetchResponse = new FetchResponse(response);
-      const event2 = dispatch("turbo:before-fetch-response", {
+      const event = dispatch("turbo:before-fetch-response", {
         cancelable: true,
         detail: { fetchResponse },
         target: this.target
       });
-      if (event2.defaultPrevented) {
+      if (event.defaultPrevented) {
         this.delegate.requestPreventedHandlingResponse(this, fetchResponse);
       } else if (fetchResponse.succeeded) {
         this.delegate.requestSucceededWithResponse(this, fetchResponse);
@@ -1416,7 +1416,7 @@
     }
     async #allowRequestToBeIntercepted(fetchOptions) {
       const requestInterception = new Promise((resolve) => this.#resolveRequestPromise = resolve);
-      const event2 = dispatch("turbo:before-fetch-request", {
+      const event = dispatch("turbo:before-fetch-request", {
         cancelable: true,
         detail: {
           fetchOptions,
@@ -1425,17 +1425,17 @@
         },
         target: this.target
       });
-      this.url = event2.detail.url;
-      if (event2.defaultPrevented) await requestInterception;
-      return event2;
+      this.url = event.detail.url;
+      if (event.defaultPrevented) await requestInterception;
+      return event;
     }
     #willDelegateErrorHandling(error2) {
-      const event2 = dispatch("turbo:fetch-request-error", {
+      const event = dispatch("turbo:fetch-request-error", {
         target: this.target,
         cancelable: true,
         detail: { request: this, error: error2 }
       });
-      return !event2.defaultPrevented;
+      return !event.defaultPrevented;
     }
   };
   function isSafe(fetchMethod) {
@@ -1816,13 +1816,13 @@
       this.eventTarget.removeEventListener("submit", this.submitBubbled, false);
       this.eventTarget.addEventListener("submit", this.submitBubbled, false);
     };
-    submitBubbled = (event2) => {
-      if (!event2.defaultPrevented) {
-        const form = event2.target instanceof HTMLFormElement ? event2.target : void 0;
-        const submitter2 = event2.submitter || void 0;
+    submitBubbled = (event) => {
+      if (!event.defaultPrevented) {
+        const form = event.target instanceof HTMLFormElement ? event.target : void 0;
+        const submitter2 = event.submitter || void 0;
         if (form && submissionDoesNotDismissDialog(form, submitter2) && submissionDoesNotTargetIFrame(form, submitter2) && this.delegate.willSubmitForm(form, submitter2)) {
-          event2.preventDefault();
-          event2.stopImmediatePropagation();
+          event.preventDefault();
+          event.stopImmediatePropagation();
           this.delegate.formSubmitted(form, submitter2);
         }
       }
@@ -1957,19 +1957,19 @@
       document.removeEventListener("turbo:click", this.linkClicked);
       document.removeEventListener("turbo:before-visit", this.willVisit);
     }
-    clickBubbled = (event2) => {
-      if (this.clickEventIsSignificant(event2)) {
-        this.clickEvent = event2;
+    clickBubbled = (event) => {
+      if (this.clickEventIsSignificant(event)) {
+        this.clickEvent = event;
       } else {
         delete this.clickEvent;
       }
     };
-    linkClicked = (event2) => {
-      if (this.clickEvent && this.clickEventIsSignificant(event2)) {
-        if (this.delegate.shouldInterceptLinkClick(event2.target, event2.detail.url, event2.detail.originalEvent)) {
+    linkClicked = (event) => {
+      if (this.clickEvent && this.clickEventIsSignificant(event)) {
+        if (this.delegate.shouldInterceptLinkClick(event.target, event.detail.url, event.detail.originalEvent)) {
           this.clickEvent.preventDefault();
-          event2.preventDefault();
-          this.delegate.linkClickIntercepted(event2.target, event2.detail.url, event2.detail.originalEvent);
+          event.preventDefault();
+          this.delegate.linkClickIntercepted(event.target, event.detail.url, event.detail.originalEvent);
         }
       }
       delete this.clickEvent;
@@ -1977,8 +1977,8 @@
     willVisit = (_event) => {
       delete this.clickEvent;
     };
-    clickEventIsSignificant(event2) {
-      const target = event2.composed ? event2.target?.parentElement : event2.target;
+    clickEventIsSignificant(event) {
+      const target = event.composed ? event.target?.parentElement : event.target;
       const element = findLinkFromClickTarget(target) || target;
       return element instanceof Element && element.closest("turbo-frame, html") == this.element;
     }
@@ -2005,21 +2005,21 @@
       this.eventTarget.removeEventListener("click", this.clickBubbled, false);
       this.eventTarget.addEventListener("click", this.clickBubbled, false);
     };
-    clickBubbled = (event2) => {
-      if (event2 instanceof MouseEvent && this.clickEventIsSignificant(event2)) {
-        const target = event2.composedPath && event2.composedPath()[0] || event2.target;
+    clickBubbled = (event) => {
+      if (event instanceof MouseEvent && this.clickEventIsSignificant(event)) {
+        const target = event.composedPath && event.composedPath()[0] || event.target;
         const link = findLinkFromClickTarget(target);
         if (link && doesNotTargetIFrame(link.target)) {
           const location2 = getLocationForLink(link);
-          if (this.delegate.willFollowLinkToLocation(link, location2, event2)) {
-            event2.preventDefault();
+          if (this.delegate.willFollowLinkToLocation(link, location2, event)) {
+            event.preventDefault();
             this.delegate.followedLinkToLocation(link, location2);
           }
         }
       }
     };
-    clickEventIsSignificant(event2) {
-      return !(event2.target && event2.target.isContentEditable || event2.defaultPrevented || event2.which > 1 || event2.altKey || event2.ctrlKey || event2.metaKey || event2.shiftKey);
+    clickEventIsSignificant(event) {
+      return !(event.target && event.target.isContentEditable || event.defaultPrevented || event.which > 1 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey);
     }
   };
   var FormLinkClickObserver = class {
@@ -2967,24 +2967,24 @@
     beforeNodeMorphed = (currentElement, newElement) => {
       if (currentElement instanceof Element) {
         if (!currentElement.hasAttribute("data-turbo-permanent") && this.#beforeNodeMorphed(currentElement, newElement)) {
-          const event2 = dispatch("turbo:before-morph-element", {
+          const event = dispatch("turbo:before-morph-element", {
             cancelable: true,
             target: currentElement,
             detail: { currentElement, newElement }
           });
-          return !event2.defaultPrevented;
+          return !event.defaultPrevented;
         } else {
           return false;
         }
       }
     };
     beforeAttributeUpdated = (attributeName, target, mutationType) => {
-      const event2 = dispatch("turbo:before-morph-attribute", {
+      const event = dispatch("turbo:before-morph-attribute", {
         cancelable: true,
         target,
         detail: { attributeName, mutationType }
       });
-      return !event2.defaultPrevented;
+      return !event.defaultPrevented;
     };
     beforeNodeRemoved = (node) => {
       return this.beforeNodeMorphed(node);
@@ -3812,10 +3812,10 @@
     shouldInterceptLinkClick(element, _location, _event) {
       return this.#shouldRedirect(element);
     }
-    linkClickIntercepted(element, url, event2) {
+    linkClickIntercepted(element, url, event) {
       const frame = this.#findFrameElement(element);
       if (frame) {
-        frame.delegate.linkClickIntercepted(element, url, event2);
+        frame.delegate.linkClickIntercepted(element, url, event);
       }
     }
     // Form submit observer delegate
@@ -3918,9 +3918,9 @@
       }
     }
     // Event handlers
-    onPopState = (event2) => {
+    onPopState = (event) => {
       if (this.shouldHandlePopState()) {
-        const { turbo } = event2.state || {};
+        const { turbo } = event.state || {};
         if (turbo) {
           this.location = new URL(window.location.href);
           const { restorationIdentifier, restorationIndex } = turbo;
@@ -3983,9 +3983,9 @@
       this.eventTarget.addEventListener("turbo:before-fetch-request", this.#tryToUsePrefetchedRequest, true);
       this.started = true;
     };
-    #tryToPrefetchRequest = (event2) => {
+    #tryToPrefetchRequest = (event) => {
       if (getMetaContent("turbo-prefetch") === "false") return;
-      const target = event2.target;
+      const target = event.target;
       const isLink = target.matches && target.matches("a[href]:not([target^=_]):not([download])");
       if (isLink && this.#isPrefetchable(target)) {
         const link = target;
@@ -4003,18 +4003,18 @@
         }
       }
     };
-    #cancelRequestIfObsolete = (event2) => {
-      if (event2.target === this.#prefetchedLink) this.#cancelPrefetchRequest();
+    #cancelRequestIfObsolete = (event) => {
+      if (event.target === this.#prefetchedLink) this.#cancelPrefetchRequest();
     };
     #cancelPrefetchRequest = () => {
       prefetchCache.clear();
       this.#prefetchedLink = null;
     };
-    #tryToUsePrefetchedRequest = (event2) => {
-      if (event2.target.tagName !== "FORM" && event2.detail.fetchOptions.method === "GET") {
-        const cached = prefetchCache.get(event2.detail.url.toString());
+    #tryToUsePrefetchedRequest = (event) => {
+      if (event.target.tagName !== "FORM" && event.detail.fetchOptions.method === "GET") {
+        const cached = prefetchCache.get(event.detail.url.toString());
         if (cached) {
-          event2.detail.fetchRequest = cached;
+          event.detail.fetchRequest = cached;
         }
         prefetchCache.clear();
       }
@@ -4080,8 +4080,8 @@
     return link.hasAttribute("data-remote") || link.hasAttribute("data-behavior") || link.hasAttribute("data-confirm") || link.hasAttribute("data-method");
   };
   var eventPrevented = (link) => {
-    const event2 = dispatch("turbo:before-prefetch", { target: link, cancelable: true });
-    return event2.defaultPrevented;
+    const event = dispatch("turbo:before-prefetch", { target: link, cancelable: true });
+    return event.defaultPrevented;
   };
   var Navigator = class {
     constructor(delegate) {
@@ -4405,16 +4405,16 @@
     streamSourceIsConnected(source) {
       return this.sources.has(source);
     }
-    inspectFetchResponse = (event2) => {
-      const response = fetchResponseFromEvent(event2);
+    inspectFetchResponse = (event) => {
+      const response = fetchResponseFromEvent(event);
       if (response && fetchResponseIsStream(response)) {
-        event2.preventDefault();
+        event.preventDefault();
         this.receiveMessageResponse(response);
       }
     };
-    receiveMessageEvent = (event2) => {
-      if (this.#started && typeof event2.data == "string") {
-        this.receiveMessageHTML(event2.data);
+    receiveMessageEvent = (event) => {
+      if (this.#started && typeof event.data == "string") {
+        this.receiveMessageHTML(event.data);
       }
     };
     async receiveMessageResponse(response) {
@@ -4427,8 +4427,8 @@
       this.delegate.receivedMessageFromStream(StreamMessage.wrap(html));
     }
   };
-  function fetchResponseFromEvent(event2) {
-    const fetchResponse = event2.detail?.fetchResponse;
+  function fetchResponseFromEvent(event) {
+    const fetchResponse = event.detail?.fetchResponse;
     if (fetchResponse instanceof FetchResponse) {
       return fetchResponse;
     }
@@ -5003,8 +5003,8 @@
       return this.elementIsNavigatable(link) && locationIsVisitable(location2, this.snapshot.rootLocation) && this.navigator.linkPrefetchingIsEnabledForLocation(location2);
     }
     // Link click observer delegate
-    willFollowLinkToLocation(link, location2, event2) {
-      return this.elementIsNavigatable(link) && locationIsVisitable(location2, this.snapshot.rootLocation) && this.applicationAllowsFollowingLinkToLocation(link, location2, event2);
+    willFollowLinkToLocation(link, location2, event) {
+      return this.elementIsNavigatable(link) && locationIsVisitable(location2, this.snapshot.rootLocation) && this.applicationAllowsFollowingLinkToLocation(link, location2, event);
     }
     followedLinkToLocation(link, location2) {
       const action = this.getActionForLink(link);
@@ -5071,11 +5071,11 @@
       }
     }
     allowsImmediateRender({ element }, options) {
-      const event2 = this.notifyApplicationBeforeRender(element, options);
+      const event = this.notifyApplicationBeforeRender(element, options);
       const {
         defaultPrevented,
         detail: { render }
-      } = event2;
+      } = event;
       if (this.view.renderer && render) {
         this.view.renderer.renderElement = render;
       }
@@ -5100,17 +5100,17 @@
     }
     // Application events
     applicationAllowsFollowingLinkToLocation(link, location2, ev) {
-      const event2 = this.notifyApplicationAfterClickingLinkToLocation(link, location2, ev);
-      return !event2.defaultPrevented;
+      const event = this.notifyApplicationAfterClickingLinkToLocation(link, location2, ev);
+      return !event.defaultPrevented;
     }
     applicationAllowsVisitingLocation(location2) {
-      const event2 = this.notifyApplicationBeforeVisitingLocation(location2);
-      return !event2.defaultPrevented;
+      const event = this.notifyApplicationBeforeVisitingLocation(location2);
+      return !event.defaultPrevented;
     }
-    notifyApplicationAfterClickingLinkToLocation(link, location2, event2) {
+    notifyApplicationAfterClickingLinkToLocation(link, location2, event) {
       return dispatch("turbo:click", {
         target: link,
-        detail: { url: location2.href, originalEvent: event2 },
+        detail: { url: location2.href, originalEvent: event },
         cancelable: true
       });
     }
@@ -5458,7 +5458,7 @@
     }
     // View delegate
     allowsImmediateRender({ element: newFrame }, options) {
-      const event2 = dispatch("turbo:before-frame-render", {
+      const event = dispatch("turbo:before-frame-render", {
         target: this.element,
         detail: { newFrame, ...options },
         cancelable: true
@@ -5466,7 +5466,7 @@
       const {
         defaultPrevented,
         detail: { render }
-      } = event2;
+      } = event;
       if (this.view.renderer && render) {
         this.view.renderer.renderElement = render;
       }
@@ -5575,12 +5575,12 @@
           session.visit(url, options);
         }
       };
-      const event2 = dispatch("turbo:frame-missing", {
+      const event = dispatch("turbo:frame-missing", {
         target: this.element,
         detail: { response, visit: visit2 },
         cancelable: true
       });
-      return !event2.defaultPrevented;
+      return !event.defaultPrevented;
     }
     #handleFrameMissingFromResponse(fetchResponse) {
       this.view.missing();
@@ -5782,10 +5782,10 @@
     }
     async render() {
       return this.renderPromise ??= (async () => {
-        const event2 = this.beforeRenderEvent;
-        if (this.dispatchEvent(event2)) {
+        const event = this.beforeRenderEvent;
+        if (this.dispatchEvent(event)) {
           await nextRepaint();
-          await event2.detail.render(this);
+          await event.detail.render(this);
         }
       })();
     }
@@ -6015,8 +6015,8 @@
       }
     }
     dispatchMessageEvent(data) {
-      const event2 = new MessageEvent("message", { data });
-      return this.dispatchEvent(event2);
+      const event = new MessageEvent("message", { data });
+      return this.dispatchEvent(event);
     }
     subscriptionConnected() {
       this.setAttribute("connected", "");
@@ -6035,9 +6035,9 @@
   }
 
   // node_modules/@hotwired/turbo-rails/app/javascript/turbo/fetch_requests.js
-  function encodeMethodIntoRequestBody(event2) {
-    if (event2.target instanceof HTMLFormElement) {
-      const { target: form, detail: { fetchOptions } } = event2;
+  function encodeMethodIntoRequestBody(event) {
+    if (event.target instanceof HTMLFormElement) {
+      const { target: form, detail: { fetchOptions } } = event;
       form.addEventListener("turbo:submit-start", ({ detail: { formSubmission: { submitter: submitter2 } } }) => {
         const body = isBodyInit(fetchOptions.body) ? fetchOptions.body : new URLSearchParams();
         const method = determineFetchMethod(submitter2, body, form);
@@ -6105,8 +6105,8 @@
     bindingDisconnected(binding) {
       this.unorderedBindings.delete(binding);
     }
-    handleEvent(event2) {
-      const extendedEvent2 = extendEvent(event2);
+    handleEvent(event) {
+      const extendedEvent2 = extendEvent(event);
       for (const binding of this.bindings) {
         if (extendedEvent2.immediatePropagationStopped) {
           break;
@@ -6125,12 +6125,12 @@
       });
     }
   };
-  function extendEvent(event2) {
-    if ("immediatePropagationStopped" in event2) {
-      return event2;
+  function extendEvent(event) {
+    if ("immediatePropagationStopped" in event) {
+      return event;
     } else {
-      const { stopImmediatePropagation } = event2;
-      return Object.assign(event2, {
+      const { stopImmediatePropagation } = event;
+      return Object.assign(event, {
         immediatePropagationStopped: false,
         stopImmediatePropagation() {
           this.immediatePropagationStopped = true;
@@ -6224,19 +6224,19 @@
     }
   };
   var defaultActionDescriptorFilters = {
-    stop({ event: event2, value }) {
+    stop({ event, value }) {
       if (value)
-        event2.stopPropagation();
+        event.stopPropagation();
       return true;
     },
-    prevent({ event: event2, value }) {
+    prevent({ event, value }) {
       if (value)
-        event2.preventDefault();
+        event.preventDefault();
       return true;
     },
-    self({ event: event2, value, element }) {
+    self({ event, value, element }) {
       if (value) {
-        return element === event2.target;
+        return element === event.target;
       } else {
         return true;
       }
@@ -6320,12 +6320,12 @@
       const eventTarget = this.eventTargetName ? `@${this.eventTargetName}` : "";
       return `${this.eventName}${eventFilter}${eventTarget}->${this.identifier}#${this.methodName}`;
     }
-    shouldIgnoreKeyboardEvent(event2) {
+    shouldIgnoreKeyboardEvent(event) {
       if (!this.keyFilter) {
         return false;
       }
       const filters = this.keyFilter.split("+");
-      if (this.keyFilterDissatisfied(event2, filters)) {
+      if (this.keyFilterDissatisfied(event, filters)) {
         return true;
       }
       const standardFilter = filters.filter((key) => !allModifiers.includes(key))[0];
@@ -6335,14 +6335,14 @@
       if (!hasProperty(this.keyMappings, standardFilter)) {
         error(`contains unknown key filter: ${this.keyFilter}`);
       }
-      return this.keyMappings[standardFilter].toLowerCase() !== event2.key.toLowerCase();
+      return this.keyMappings[standardFilter].toLowerCase() !== event.key.toLowerCase();
     }
-    shouldIgnoreMouseEvent(event2) {
+    shouldIgnoreMouseEvent(event) {
       if (!this.keyFilter) {
         return false;
       }
       const filters = [this.keyFilter];
-      if (this.keyFilterDissatisfied(event2, filters)) {
+      if (this.keyFilterDissatisfied(event, filters)) {
         return true;
       }
       return false;
@@ -6365,9 +6365,9 @@
     get keyMappings() {
       return this.schema.keyMappings;
     }
-    keyFilterDissatisfied(event2, filters) {
+    keyFilterDissatisfied(event, filters) {
       const [meta, ctrl, alt, shift] = allModifiers.map((modifier) => filters.includes(modifier));
-      return event2.metaKey !== meta || event2.ctrlKey !== ctrl || event2.altKey !== alt || event2.shiftKey !== shift;
+      return event.metaKey !== meta || event.ctrlKey !== ctrl || event.altKey !== alt || event.shiftKey !== shift;
     }
   };
   var defaultEventNames = {
@@ -6412,9 +6412,9 @@
     get identifier() {
       return this.context.identifier;
     }
-    handleEvent(event2) {
-      const actionEvent = this.prepareActionEvent(event2);
-      if (this.willBeInvokedByEvent(event2) && this.applyEventModifiers(actionEvent)) {
+    handleEvent(event) {
+      const actionEvent = this.prepareActionEvent(event);
+      if (this.willBeInvokedByEvent(event) && this.applyEventModifiers(actionEvent)) {
         this.invokeWithEvent(actionEvent);
       }
     }
@@ -6428,7 +6428,7 @@
       }
       throw new Error(`Action "${this.action}" references undefined method "${this.methodName}"`);
     }
-    applyEventModifiers(event2) {
+    applyEventModifiers(event) {
       const { element } = this.action;
       const { actionDescriptorFilters } = this.context.application;
       const { controller } = this.context;
@@ -6436,33 +6436,33 @@
       for (const [name, value] of Object.entries(this.eventOptions)) {
         if (name in actionDescriptorFilters) {
           const filter = actionDescriptorFilters[name];
-          passes = passes && filter({ name, value, event: event2, element, controller });
+          passes = passes && filter({ name, value, event, element, controller });
         } else {
           continue;
         }
       }
       return passes;
     }
-    prepareActionEvent(event2) {
-      return Object.assign(event2, { params: this.action.params });
+    prepareActionEvent(event) {
+      return Object.assign(event, { params: this.action.params });
     }
-    invokeWithEvent(event2) {
-      const { target, currentTarget } = event2;
+    invokeWithEvent(event) {
+      const { target, currentTarget } = event;
       try {
-        this.method.call(this.controller, event2);
-        this.context.logDebugActivity(this.methodName, { event: event2, target, currentTarget, action: this.methodName });
+        this.method.call(this.controller, event);
+        this.context.logDebugActivity(this.methodName, { event, target, currentTarget, action: this.methodName });
       } catch (error2) {
         const { identifier, controller, element, index } = this;
-        const detail = { identifier, controller, element, index, event: event2 };
+        const detail = { identifier, controller, element, index, event };
         this.context.handleError(error2, `invoking action "${this.action}"`, detail);
       }
     }
-    willBeInvokedByEvent(event2) {
-      const eventTarget = event2.target;
-      if (event2 instanceof KeyboardEvent && this.action.shouldIgnoreKeyboardEvent(event2)) {
+    willBeInvokedByEvent(event) {
+      const eventTarget = event.target;
+      if (event instanceof KeyboardEvent && this.action.shouldIgnoreKeyboardEvent(event)) {
         return false;
       }
-      if (event2 instanceof MouseEvent && this.action.shouldIgnoreMouseEvent(event2)) {
+      if (event instanceof MouseEvent && this.action.shouldIgnoreMouseEvent(event)) {
         return false;
       }
       if (this.element === eventTarget) {
@@ -8518,9 +8518,9 @@
     }
     dispatch(eventName, { target = this.element, detail = {}, prefix = this.identifier, bubbles = true, cancelable = true } = {}) {
       const type = prefix ? `${prefix}:${eventName}` : eventName;
-      const event2 = new CustomEvent(type, { detail, bubbles, cancelable });
-      target.dispatchEvent(event2);
-      return event2;
+      const event = new CustomEvent(type, { detail, bubbles, cancelable });
+      target.dispatchEvent(event);
+      return event;
     }
   };
   Controller.blessings = [
@@ -8543,15 +8543,15 @@
     }
     return composedName;
   };
-  var extendedEvent = (type, event2, detail) => {
-    const { bubbles, cancelable, composed } = event2 || {
+  var extendedEvent = (type, event, detail) => {
+    const { bubbles, cancelable, composed } = event || {
       bubbles: true,
       cancelable: true,
       composed: true
     };
-    if (event2) {
+    if (event) {
       Object.assign(detail, {
-        originalEvent: event2
+        originalEvent: event
       });
     }
     const customEvent = new CustomEvent(type, {
@@ -8579,30 +8579,30 @@
   var useClickOutside = (composableController, options = {}) => {
     const controller = composableController;
     const { onlyVisible, dispatchEvent: dispatchEvent2, events, eventPrefix } = Object.assign({}, defaultOptions$5, options);
-    const onEvent = (event2) => {
+    const onEvent = (event) => {
       const targetElement = (options === null || options === void 0 ? void 0 : options.element) || controller.element;
-      if (targetElement.contains(event2.target) || !isElementInViewport(targetElement) && onlyVisible) {
+      if (targetElement.contains(event.target) || !isElementInViewport(targetElement) && onlyVisible) {
         return;
       }
       if (controller.clickOutside) {
-        controller.clickOutside(event2);
+        controller.clickOutside(event);
       }
       if (dispatchEvent2) {
         const eventName = composeEventName("click:outside", controller, eventPrefix);
-        const clickOutsideEvent = extendedEvent(eventName, event2, {
+        const clickOutsideEvent = extendedEvent(eventName, event, {
           controller
         });
         targetElement.dispatchEvent(clickOutsideEvent);
       }
     };
     const observe = () => {
-      events === null || events === void 0 ? void 0 : events.forEach(((event2) => {
-        window.addEventListener(event2, onEvent, true);
+      events === null || events === void 0 ? void 0 : events.forEach(((event) => {
+        window.addEventListener(event, onEvent, true);
       }));
     };
     const unobserve = () => {
-      events === null || events === void 0 ? void 0 : events.forEach(((event2) => {
-        window.removeEventListener(event2, onEvent, true);
+      events === null || events === void 0 ? void 0 : events.forEach(((event) => {
+        window.removeEventListener(event, onEvent, true);
       }));
     };
     const controllerDisconnect = controller.disconnect.bind(controller);
@@ -8682,10 +8682,10 @@
     const controllerEnter = (_a = controller.enter) === null || _a === void 0 ? void 0 : _a.bind(controller);
     const controllerLeave = (_b = controller.leave) === null || _b === void 0 ? void 0 : _b.bind(controller);
     const controllerToggleTransition = (_c = controller.toggleTransition) === null || _c === void 0 ? void 0 : _c.bind(controller);
-    async function enter(event2) {
+    async function enter(event) {
       if (controller.transitioned) return;
       controller.transitioned = true;
-      controllerEnter && controllerEnter(event2);
+      controllerEnter && controllerEnter(event);
       const enterFromClasses = getAttribute2("enterFrom", options, dataset);
       const enterActiveClasses = getAttribute2("enterActive", options, dataset);
       const enterToClasses = getAttribute2("enterTo", options, dataset);
@@ -8699,14 +8699,14 @@
       await transition(targetElement, enterFromClasses, enterActiveClasses, enterToClasses, hiddenClass, preserveOriginalClass, removeToClasses);
       if (leaveAfter > 0) {
         setTimeout((() => {
-          leave(event2);
+          leave(event);
         }), leaveAfter);
       }
     }
-    async function leave(event2) {
+    async function leave(event) {
       if (!controller.transitioned) return;
       controller.transitioned = false;
-      controllerLeave && controllerLeave(event2);
+      controllerLeave && controllerLeave(event);
       const leaveFromClasses = getAttribute2("leaveFrom", options, dataset);
       const leaveActiveClasses = getAttribute2("leaveActive", options, dataset);
       const leaveToClasses = getAttribute2("leaveTo", options, dataset);
@@ -8719,8 +8719,8 @@
         targetElement.classList.add(hiddenClass);
       }
     }
-    function toggleTransition(event2) {
-      controllerToggleTransition && controllerToggleTransition(event2);
+    function toggleTransition(event) {
+      controllerToggleTransition && controllerToggleTransition(event);
       if (controller.transitioned) {
         leave();
       } else {
@@ -8814,8 +8814,8 @@
     toggle() {
       this.toggleTransition();
     }
-    hide(event2) {
-      !this.element.contains(event2.target) && !this.menuTarget.classList.contains("hidden") && this.leave();
+    hide(event) {
+      !this.element.contains(event.target) && !this.menuTarget.classList.contains("hidden") && this.leave();
     }
   };
   _Dropdown.targets = ["menu"];
@@ -9121,8 +9121,8 @@
         list.id = `combobox-${Math.random().toString().slice(2, 6)}`;
       }
       this.ctrlBindings = !!navigator.userAgent.match(/Macintosh/);
-      this.keyboardEventHandler = (event2) => keyboardBindings(event2, this);
-      this.compositionEventHandler = (event2) => trackComposition(event2, this);
+      this.keyboardEventHandler = (event) => keyboardBindings(event, this);
+      this.compositionEventHandler = (event) => trackComposition(event, this);
       this.inputHandler = this.clearSelection.bind(this);
       input.setAttribute("role", "combobox");
       input.setAttribute("aria-controls", list.id);
@@ -9207,22 +9207,22 @@
       this.indicateDefaultOption();
     }
   };
-  function keyboardBindings(event2, combobox) {
-    if (event2.shiftKey || event2.metaKey || event2.altKey)
+  function keyboardBindings(event, combobox) {
+    if (event.shiftKey || event.metaKey || event.altKey)
       return;
-    if (!combobox.ctrlBindings && event2.ctrlKey)
+    if (!combobox.ctrlBindings && event.ctrlKey)
       return;
     if (combobox.isComposing)
       return;
-    switch (event2.key) {
+    switch (event.key) {
       case "Enter":
         if (commit(combobox.input, combobox.list)) {
-          event2.preventDefault();
+          event.preventDefault();
         }
         break;
       case "Tab":
         if (combobox.tabInsertsSuggestions && commit(combobox.input, combobox.list)) {
-          event2.preventDefault();
+          event.preventDefault();
         }
         break;
       case "Escape":
@@ -9230,39 +9230,39 @@
         break;
       case "ArrowDown":
         combobox.navigate(1);
-        event2.preventDefault();
+        event.preventDefault();
         break;
       case "ArrowUp":
         combobox.navigate(-1);
-        event2.preventDefault();
+        event.preventDefault();
         break;
       case "n":
-        if (combobox.ctrlBindings && event2.ctrlKey) {
+        if (combobox.ctrlBindings && event.ctrlKey) {
           combobox.navigate(1);
-          event2.preventDefault();
+          event.preventDefault();
         }
         break;
       case "p":
-        if (combobox.ctrlBindings && event2.ctrlKey) {
+        if (combobox.ctrlBindings && event.ctrlKey) {
           combobox.navigate(-1);
-          event2.preventDefault();
+          event.preventDefault();
         }
         break;
       default:
-        if (event2.ctrlKey)
+        if (event.ctrlKey)
           break;
         combobox.resetSelection();
     }
   }
-  function commitWithElement(event2) {
-    if (!(event2.target instanceof Element))
+  function commitWithElement(event) {
+    if (!(event.target instanceof Element))
       return;
-    const target = event2.target.closest('[role="option"]');
+    const target = event.target.closest('[role="option"]');
     if (!target)
       return;
     if (target.getAttribute("aria-disabled") === "true")
       return;
-    fireCommitEvent(target, { event: event2 });
+    fireCommitEvent(target, { event });
   }
   function commit(input, list) {
     const target = list.querySelector('[aria-selected="true"], [data-combobox-option-default="true"]');
@@ -9282,8 +9282,8 @@
   function visible(el) {
     return !el.hidden && !(el instanceof HTMLInputElement && el.type === "hidden") && (el.offsetWidth > 0 || el.offsetHeight > 0);
   }
-  function trackComposition(event2, combobox) {
-    combobox.isComposing = event2.type === "compositionstart";
+  function trackComposition(event, combobox) {
+    combobox.isComposing = event.type === "compositionstart";
     const list = document.getElementById(combobox.input.getAttribute("aria-controls") || "");
     if (!list)
       return;
@@ -9300,7 +9300,7 @@
     buildCombobox() {
       return new Combobox(this.inputTarget, this.listTarget);
     }
-    clickOutside(event2) {
+    clickOutside(event) {
       if (!this.dropdownTarget.hidden) {
         this.hide();
       }
@@ -9331,7 +9331,7 @@
       this.combobox.stop();
       this.fetchOptions();
     }
-    handleComboboxCommit() {
+    handleComboboxCommit(event) {
       this.setValuesFromElement(event.target);
       this.hide();
     }
@@ -9348,7 +9348,7 @@
         }
       });
     }
-    selectOption() {
+    selectOption(event) {
       this.combobox.clearSelection();
       event.target.setAttribute("aria-selected", "true");
       this.setValuesFromElement(event.target);
