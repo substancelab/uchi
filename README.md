@@ -222,3 +222,4 @@ We don't want to force you to translate everything. If a field doesn't need a tr
 * Uchi contains parts of [Flowbite Components](https://github.com/substancelab/flowbite-components), Copyright (c) 2025 Substance Lab
 * Uchi uses [combobox-nav](https://github.com/github/combobox-nav), Copyright (c) 2018 GitHub
 * Uchi uses [requestjs-rails](https://github.com/rails/requestjs-rails), Copyright (c) 2021 Marcelo Lauxen
+* Uchi uses [stimulus-use](https://github.com/stimulus-use/stimulus-use), Copyright (c) 2020 Adrien POLY
