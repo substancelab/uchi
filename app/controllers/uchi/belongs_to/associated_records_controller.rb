@@ -15,7 +15,7 @@ module Uchi
         @current_value = field.value(parent_record)
 
         @field_name = params[:field]
-        @records = find_all_records_from_association(name: @field_name, parent_record: parent_record)
+        @records = find_all_records_from_association(name: @field_name)
       end
 
       private
@@ -54,7 +54,7 @@ module Uchi
           )
       end
 
-      def find_all_records_from_association(name:, parent_record:)
+      def find_all_records_from_association(name:)
         associated_repository = Uchi::Repository.for_model(association.klass)&.new
         raise NameError, "No repository found for associated model #{association.klass}" unless associated_repository
 
