@@ -3,6 +3,8 @@
   data-controller="belongs-to"
   data-belongs-to-backend-url-value="<%= helpers.belongs_to_associated_records_path(field: field.name, model: repository.model, record_id: record&.id) %>"
 >
+  <%= render(Uchi::Flowbite::Input::Label.new(attribute: field.name, form: form, options: {for: dom_id_for_toggle})) %>
+
   <%# Actual input. This is the hidden part which is what is sent to the server %>
   <%= form.hidden_field "#{field.name}_id",
     data: {
@@ -13,6 +15,7 @@
   <button
     class="<%= Uchi::Flowbite::Input::Field.classes.join(" ") %> text-left"
     data-action="belongs-to#toggle"
+    id="<%= dom_id_for_toggle %>"
     type="button"
   >
     <div class="inline-flex items-center justify-between w-full">
