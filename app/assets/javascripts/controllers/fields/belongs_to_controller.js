@@ -78,7 +78,6 @@ export default class extends Controller {
   setValuesFromElement(element) {
     const recordId = element.getAttribute('data-id')
     this.idTarget.value = recordId
-    this.inputTarget.value = element.textContent.trim()
     this.labelTarget.textContent = element.textContent.trim()
   }
 
