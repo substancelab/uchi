@@ -22,7 +22,7 @@
     )
   )) do %>
     <%= render(Uchi::Ui::Frame.new) do %>
-      <div class="grid grid place-items-center p-8">
+      <div class="grid place-items-center p-8">
         <%= render(Uchi::Ui::Spinner.new(message: repository.translate.loading_message)) %>
       </div>
     <% end %>

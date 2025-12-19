@@ -57,6 +57,9 @@
     </div>
     <div data-belongs-to-target="list">
       <!-- Options will be dynamically inserted here -->
+      <div class="grid place-items-center p-8">
+        <%= render(Uchi::Ui::Spinner.new(message: associated_repository.translate.loading_message)) %>
+      </div>
     </div>
   </div>
 </div>
