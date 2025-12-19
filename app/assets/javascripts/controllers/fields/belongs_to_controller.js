@@ -1,8 +1,11 @@
 import { Controller } from "@hotwired/stimulus"
-import Combobox from '@github/combobox-nav'
 import { get } from "@rails/request.js"
+import { useDebounce } from 'stimulus-use'
+import Combobox from '@github/combobox-nav'
 
 export default class extends Controller {
+  static debounces = ["handleChange"]
+
   static targets = ["id", "dropdown", "input", "label", "list"]
 
   static values = {
@@ -14,6 +17,8 @@ export default class extends Controller {
   }
 
   connect() {
+    useDebounce(this)
+
     this.combobox = this.buildCombobox()
 
     this.listTarget.addEventListener('combobox-commit', this.handleComboboxCommit.bind(this))
