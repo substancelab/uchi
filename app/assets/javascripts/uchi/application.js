@@ -6106,12 +6106,12 @@
       this.unorderedBindings.delete(binding);
     }
     handleEvent(event2) {
-      const extendedEvent = extendEvent(event2);
+      const extendedEvent2 = extendEvent(event2);
       for (const binding of this.bindings) {
-        if (extendedEvent.immediatePropagationStopped) {
+        if (extendedEvent2.immediatePropagationStopped) {
           break;
         } else {
-          binding.handleEvent(extendedEvent);
+          binding.handleEvent(extendedEvent2);
         }
       }
     }
@@ -8534,6 +8534,87 @@
   Controller.values = {};
 
   // node_modules/stimulus-use/dist/index.js
+  var composeEventName = (name, controller, eventPrefix) => {
+    let composedName = name;
+    if (eventPrefix === true) {
+      composedName = `${controller.identifier}:${name}`;
+    } else if (typeof eventPrefix === "string") {
+      composedName = `${eventPrefix}:${name}`;
+    }
+    return composedName;
+  };
+  var extendedEvent = (type, event2, detail) => {
+    const { bubbles, cancelable, composed } = event2 || {
+      bubbles: true,
+      cancelable: true,
+      composed: true
+    };
+    if (event2) {
+      Object.assign(detail, {
+        originalEvent: event2
+      });
+    }
+    const customEvent = new CustomEvent(type, {
+      bubbles,
+      cancelable,
+      composed,
+      detail
+    });
+    return customEvent;
+  };
+  function isElementInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+    const vertInView = rect.top <= windowHeight && rect.top + rect.height > 0;
+    const horInView = rect.left <= windowWidth && rect.left + rect.width > 0;
+    return vertInView && horInView;
+  }
+  var defaultOptions$5 = {
+    events: ["click", "touchend"],
+    onlyVisible: true,
+    dispatchEvent: true,
+    eventPrefix: true
+  };
+  var useClickOutside = (composableController, options = {}) => {
+    const controller = composableController;
+    const { onlyVisible, dispatchEvent: dispatchEvent2, events, eventPrefix } = Object.assign({}, defaultOptions$5, options);
+    const onEvent = (event2) => {
+      const targetElement = (options === null || options === void 0 ? void 0 : options.element) || controller.element;
+      if (targetElement.contains(event2.target) || !isElementInViewport(targetElement) && onlyVisible) {
+        return;
+      }
+      if (controller.clickOutside) {
+        controller.clickOutside(event2);
+      }
+      if (dispatchEvent2) {
+        const eventName = composeEventName("click:outside", controller, eventPrefix);
+        const clickOutsideEvent = extendedEvent(eventName, event2, {
+          controller
+        });
+        targetElement.dispatchEvent(clickOutsideEvent);
+      }
+    };
+    const observe = () => {
+      events === null || events === void 0 ? void 0 : events.forEach(((event2) => {
+        window.addEventListener(event2, onEvent, true);
+      }));
+    };
+    const unobserve = () => {
+      events === null || events === void 0 ? void 0 : events.forEach(((event2) => {
+        window.removeEventListener(event2, onEvent, true);
+      }));
+    };
+    const controllerDisconnect = controller.disconnect.bind(controller);
+    Object.assign(controller, {
+      disconnect() {
+        unobserve();
+        controllerDisconnect();
+      }
+    });
+    observe();
+    return [observe, unobserve];
+  };
   var DebounceController = class extends Controller {
   };
   DebounceController.debounces = [];
@@ -9219,7 +9300,13 @@
     buildCombobox() {
       return new Combobox(this.inputTarget, this.listTarget);
     }
+    clickOutside(event2) {
+      if (!this.dropdownTarget.hidden) {
+        this.hide();
+      }
+    }
     connect() {
+      useClickOutside(this, { element: this.dropdownTarget });
       useDebounce(this);
       this.combobox = this.buildCombobox();
       this.listTarget.addEventListener("combobox-commit", this.handleComboboxCommit.bind(this));

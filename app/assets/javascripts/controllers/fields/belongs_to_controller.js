@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { get } from "@rails/request.js"
-import { useDebounce } from 'stimulus-use'
+import { useClickOutside, useDebounce } from 'stimulus-use'
 import Combobox from '@github/combobox-nav'
 
 export default class extends Controller {
@@ -16,7 +16,14 @@ export default class extends Controller {
     return new Combobox(this.inputTarget, this.listTarget)
   }
 
+  clickOutside(event) {
+    if (!this.dropdownTarget.hidden) {
+      this.hide()
+    }
+  }
+
   connect() {
+    useClickOutside(this, {element: this.dropdownTarget})
     useDebounce(this)
 
     this.combobox = this.buildCombobox()
