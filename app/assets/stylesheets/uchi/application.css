@@ -472,6 +472,9 @@
   .h-full {
     height: 100%;
   }
+  .max-h-96 {
+    max-height: calc(var(--spacing) * 96);
+  }
   .w-3 {
     width: calc(var(--spacing) * 3);
   }

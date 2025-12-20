@@ -38,7 +38,7 @@ export default class extends Controller {
     this.combobox.destroy()
   }
 
-  fetchOptions() {
+  fetchOptions(options) {
     get(this.backendUrlValue, {
       query: { query: this.inputTarget.value }
     }).then(({response}) => {
@@ -47,6 +47,9 @@ export default class extends Controller {
       this.listTarget.innerHTML = html
       this.show()
       this.markSelectedOption()
+      if (options?.scrollToSelected) {
+        this.scrollToSelectedOption()
+      }
     })
   }
 
@@ -61,7 +64,7 @@ export default class extends Controller {
   }
 
   handleFocus() {
-    this.fetchOptions()
+    this.fetchOptions({ scrollToSelected: true })
   }
 
   markSelectedOption() {
@@ -73,6 +76,21 @@ export default class extends Controller {
         option.setAttribute('aria-selected', 'true')
       }
     })
+  }
+
+  scrollToSelectedOption() {
+    const selectedOption = this.listTarget.querySelector('[aria-selected="true"]')
+    if (selectedOption) {
+      selectedOption.scrollIntoView({
+        // Aligns the element at the center of the scrollable container,
+        // positioning it in the middle of the visible area.
+        block: "center",
+        inline: "center",
+
+        // Only the nearest scrollable container is impacted by the scroll.
+        container: "nearest"
+      })
+    }
   }
 
   selectOption(event) {
