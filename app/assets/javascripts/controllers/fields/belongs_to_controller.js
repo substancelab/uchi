@@ -18,8 +18,13 @@ export default class extends Controller {
 
   clickOutside(event) {
     if (!this.dropdownTarget.hidden) {
-      this.hide()
+      this.closeDropdown()
     }
+  }
+
+  closeDropdown() {
+    this.combobox.destroy()
+    this.dropdownTarget.hidden = true
   }
 
   connect() {
@@ -45,7 +50,7 @@ export default class extends Controller {
       return response.text()
     }).then((html) => {
       this.listTarget.innerHTML = html
-      this.show()
+      this.openDropdown()
       this.markSelectedOption()
       if (options?.scrollToSelected) {
         this.scrollToSelectedOption()
@@ -60,7 +65,7 @@ export default class extends Controller {
 
   handleComboboxCommit(event) {
     this.setValuesFromElement(event.target)
-    this.hide()
+    this.closeDropdown()
   }
 
   handleFocus() {
@@ -76,6 +81,12 @@ export default class extends Controller {
         option.setAttribute('aria-selected', 'true')
       }
     })
+  }
+
+  openDropdown() {
+    this.combobox.start()
+    this.dropdownTarget.hidden = false
+    this.inputTarget.focus()
   }
 
   scrollToSelectedOption() {
@@ -106,22 +117,11 @@ export default class extends Controller {
     this.labelTarget.textContent = element.textContent.trim()
   }
 
-  hide() {
-    this.combobox.destroy()
-    this.dropdownTarget.hidden = true
-  }
-
-  show() {
-    this.combobox.start()
-    this.dropdownTarget.hidden = false
-    this.inputTarget.focus()
-  }
-
   toggle() {
     if (this.dropdownTarget.hidden) {
-      this.show()
+      this.openDropdown()
     } else {
-      this.hide()
+      this.closeDropdown()
     }
   }
 }

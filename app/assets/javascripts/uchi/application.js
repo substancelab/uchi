@@ -9302,8 +9302,12 @@
     }
     clickOutside(event) {
       if (!this.dropdownTarget.hidden) {
-        this.hide();
+        this.closeDropdown();
       }
+    }
+    closeDropdown() {
+      this.combobox.destroy();
+      this.dropdownTarget.hidden = true;
     }
     connect() {
       useClickOutside(this, { element: this.dropdownTarget });
@@ -9323,7 +9327,7 @@
         return response.text();
       }).then((html) => {
         this.listTarget.innerHTML = html;
-        this.show();
+        this.openDropdown();
         this.markSelectedOption();
         if (options?.scrollToSelected) {
           this.scrollToSelectedOption();
@@ -9336,7 +9340,7 @@
     }
     handleComboboxCommit(event) {
       this.setValuesFromElement(event.target);
-      this.hide();
+      this.closeDropdown();
     }
     handleFocus() {
       this.fetchOptions({ scrollToSelected: true });
@@ -9350,6 +9354,11 @@
           option.setAttribute("aria-selected", "true");
         }
       });
+    }
+    openDropdown() {
+      this.combobox.start();
+      this.dropdownTarget.hidden = false;
+      this.inputTarget.focus();
     }
     scrollToSelectedOption() {
       const selectedOption = this.listTarget.querySelector('[aria-selected="true"]');
@@ -9374,20 +9383,11 @@
       this.idTarget.value = recordId;
       this.labelTarget.textContent = element.textContent.trim();
     }
-    hide() {
-      this.combobox.destroy();
-      this.dropdownTarget.hidden = true;
-    }
-    show() {
-      this.combobox.start();
-      this.dropdownTarget.hidden = false;
-      this.inputTarget.focus();
-    }
     toggle() {
       if (this.dropdownTarget.hidden) {
-        this.show();
+        this.openDropdown();
       } else {
-        this.hide();
+        this.closeDropdown();
       }
     }
   };
