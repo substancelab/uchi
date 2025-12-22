@@ -22,8 +22,8 @@ module Uchi
 
       def association
         @association ||= begin
-          association = parent_record.class.reflect_on_association(field.name.to_sym)
-          raise NameError, "No association named #{field.name} on #{parent_record.class}" unless association
+          association = source_repository.model.reflect_on_association(field.name.to_sym)
+          raise NameError, "No association named #{field.name} on #{source_repository.model}" unless association
 
           association
         end
