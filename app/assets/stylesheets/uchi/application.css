@@ -475,6 +475,9 @@
   .max-h-96 {
     max-height: calc(var(--spacing) * 96);
   }
+  .min-h-\[1em\] {
+    min-height: 1em;
+  }
   .w-3 {
     width: calc(var(--spacing) * 3);
   }
