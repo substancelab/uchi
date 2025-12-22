@@ -33,9 +33,11 @@ module Uchi
         include Helpers
 
         def associated_repository
-          model = reflection.klass
-          repository_class = Uchi::Repository.for_model(model)
-          repository_class.new
+          @associated_repository ||= begin
+            model = reflection.klass
+            repository_class = Uchi::Repository.for_model(model)
+            repository_class.new
+          end
         end
 
         def attribute_name
@@ -53,6 +55,12 @@ module Uchi
 
         def dom_id_for_toggle
           "#{form.object_name}_#{attribute_name}_belongs_to_toggle"
+        end
+
+        def record_title(record)
+          return "" if record.nil?
+
+          associated_repository.title(record)
         end
 
         private

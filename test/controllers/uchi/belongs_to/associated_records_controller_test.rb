@@ -72,6 +72,17 @@ module Uchi
         assert_select "li[id*='_book_#{@book2.id}']"
       end
 
+      test "GET index uses the title method for the label text" do
+        get uchi.belongs_to_associated_records_path(
+          field: "book",
+          model: "Title",
+          record_id: @title.id
+        )
+
+        # Check that list items have id attributes (format: Title-book_book_{id})
+        assert_select "li[id*='_book_#{@book1.id}']", text: @book1.original_title
+      end
+
       test "GET index assigns @current_value to the current associated record" do
         get uchi.belongs_to_associated_records_path(
           field: "book",

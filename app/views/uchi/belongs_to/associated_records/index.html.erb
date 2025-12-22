@@ -7,7 +7,7 @@
       id="<%= dom_id(record, [source_repository.model, @field_name].join("-")) %>"
       role="option"
     >
-      <%= record %>
+      <%= record_title(record) %>
     </li>
   <% end %>
 </ul>
