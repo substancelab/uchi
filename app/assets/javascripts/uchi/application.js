@@ -9306,7 +9306,7 @@
       }
     }
     closeDropdown() {
-      this.combobox.destroy();
+      this.combobox.stop();
       this.dropdownTarget.hidden = true;
     }
     connect() {

@@ -23,7 +23,7 @@ export default class extends Controller {
   }
 
   closeDropdown() {
-    this.combobox.destroy()
+    this.combobox.stop()
     this.dropdownTarget.hidden = true
   }
 
