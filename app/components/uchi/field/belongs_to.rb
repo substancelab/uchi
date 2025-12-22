@@ -55,6 +55,12 @@ module Uchi
           "#{form.object_name}_#{attribute_name}_belongs_to_toggle"
         end
 
+        def record_title(record)
+          return "" if record.nil?
+
+          associated_repository.title(record)
+        end
+
         private
 
         def collection_for_select

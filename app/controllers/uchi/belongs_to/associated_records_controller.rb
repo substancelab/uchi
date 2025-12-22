@@ -18,7 +18,34 @@ module Uchi
         @records = find_all_records_from_association
       end
 
+      protected
+
+      helper_method def record_title(record)
+        return "" if record.nil?
+
+        associated_repository.title(record)
+      end
+
+      helper_method def source_repository
+        @source_repository ||= begin
+          model_name = params[:model]
+          repository_class = Uchi::Repository.for_model(model_name)
+          raise NameError, "No repository found for model #{model_name}" unless repository_class
+
+          repository_class.new
+        end
+      end
+
       private
+
+      def associated_repository
+        @associated_repository ||= begin
+          associated_repository = Uchi::Repository.for_model(association.klass)&.new
+          raise NameError, "No repository found for associated model #{association.klass}" unless associated_repository
+
+          associated_repository
+        end
+      end
 
       def association
         @association ||= begin
@@ -55,9 +82,6 @@ module Uchi
       end
 
       def find_all_records_from_association
-        associated_repository = Uchi::Repository.for_model(association.klass)&.new
-        raise NameError, "No repository found for associated model #{association.klass}" unless associated_repository
-
         find_all_records(repository: associated_repository)
       end
 
@@ -65,16 +89,6 @@ module Uchi
         return nil unless params[:record_id].present?
 
         source_repository.find(params[:record_id])
-      end
-
-      helper_method def source_repository
-        @source_repository ||= begin
-          model_name = params[:model]
-          repository_class = Uchi::Repository.for_model(model_name)
-          raise NameError, "No repository found for model #{model_name}" unless repository_class
-
-          repository_class.new
-        end
       end
     end
   end
