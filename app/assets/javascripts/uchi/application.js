@@ -9332,6 +9332,9 @@
         if (options?.scrollToSelected) {
           this.scrollToSelectedOption();
         }
+      }).catch((error2) => {
+        console.error("Failed to fetch options:", error2);
+        this.dropdownTarget.hidden = true;
       });
     }
     handleChange() {

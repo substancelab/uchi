@@ -55,6 +55,9 @@ export default class extends Controller {
       if (options?.scrollToSelected) {
         this.scrollToSelectedOption()
       }
+    }).catch((error) => {
+      console.error("Failed to fetch options:", error)
+      this.dropdownTarget.hidden = true
     })
   }
 
