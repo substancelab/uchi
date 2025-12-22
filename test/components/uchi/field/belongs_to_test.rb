@@ -77,6 +77,94 @@ module Uchi
         field = Uchi::Field::BelongsTo.new(:book).sortable(false)
         assert_not field.sortable?
       end
+
+      test "#collection_query allows method chaining" do
+        custom_query = ->(query) { query.where(active: true) }
+        field = Uchi::Field::BelongsTo.new(:book)
+          .collection_query(custom_query)
+          .sortable(false)
+        assert_equal custom_query, field.collection_query
+        assert_not field.sortable?
+      end
+
+      test "#collection_query with symbol" do
+        field = Uchi::Field::BelongsTo.new(:book).collection_query(:some_scope)
+        assert_equal :some_scope, field.collection_query
+      end
+    end
+
+    class BelongsToEditTest < ViewComponent::TestCase
+      def setup
+        @book1 = Book.create!(original_title: "The Hobbit")
+        @book2 = Book.create!(original_title: "The Lord of the Rings")
+        @field = Uchi::Field::BelongsTo.new(:book)
+        @title = Title.new(book: @book1, locale: "da-DK", title: "Hobbitten")
+        @repository = Uchi::Repositories::Title.new
+        @view_context = ActionController::Base.new.view_context
+
+        @form = ActionView::Helpers::FormBuilder.new(:title, @title, @view_context, {})
+
+        @component = Uchi::Field::BelongsTo::Edit.new(
+          field: @field,
+          form: @form,
+          hint: "Custom hint",
+          label: "Custom label",
+          repository: @repository
+        )
+      end
+
+      test "inherits from Base component" do
+        assert_kind_of Uchi::Field::Base::Edit, @component
+      end
+
+      test "#attribute_name returns the foreign key" do
+        assert_equal "book_id", @component.attribute_name
+      end
+
+      test "#collection returns all records from associated repository" do
+        collection = @component.collection
+        assert_includes collection.map(&:id), @book1.id
+        assert_includes collection.map(&:id), @book2.id
+      end
+
+      test "#collection applies custom query" do
+        custom_field = Uchi::Field::BelongsTo.new(:book).collection_query(->(query) {
+          query.where(original_title: "The Hobbit")
+        })
+        custom_component = Uchi::Field::BelongsTo::Edit.new(
+          field: custom_field,
+          form: @form,
+          repository: @repository
+        )
+
+        collection = custom_component.collection
+        assert_equal 1, collection.count
+        assert_equal @book1.id, collection.first.id
+      end
+
+      test "#dom_id_for_filter_query_input returns correct id" do
+        assert_equal "title_book_id_belongs_to_filter_query", @component.dom_id_for_filter_query_input
+      end
+
+      test "#dom_id_for_toggle returns correct id" do
+        assert_equal "title_book_id_belongs_to_toggle", @component.dom_id_for_toggle
+      end
+
+      test "#optional? returns false when association is required" do
+        # The book association on Title is required (not optional)
+        assert_not @component.send(:optional?)
+      end
+
+      test "collection_for_select does not include blank option for required associations" do
+        collection = @component.send(:collection_for_select)
+        # First item should not be blank for required associations
+        assert_not_equal ["", nil], collection.first
+      end
+
+      test "#associated_repository returns repository for associated model" do
+        repo = @component.associated_repository
+        assert_kind_of Uchi::Repositories::Book, repo
+      end
     end
 
     class BelongsToIndexTest < ViewComponent::TestCase
@@ -103,6 +191,49 @@ module Uchi
         # The component renders the object directly, so we check for the object representation
         assert_not_nil result.to_html
       end
+
+      test "#render? returns true when associated record is present" do
+        assert @component.render?
+      end
+
+      test "#render? returns false when associated record is nil" do
+        title_without_book = Title.new(locale: "da-DK", title: "Hobbitten")
+        component = Uchi::Field::BelongsTo::Index.new(
+          field: @field,
+          record: title_without_book,
+          repository: @repository
+        )
+
+        assert_not component.render?
+      end
+
+      test "#associated_record returns the associated record" do
+        assert_equal @book, @component.associated_record
+      end
+
+      test "#associated_repository returns repository for associated model" do
+        repo = @component.associated_repository
+        assert_kind_of Uchi::Repositories::Book, repo
+      end
+
+      test "#label_for_associated_record returns the title from repository" do
+        label = @component.label_for_associated_record
+        assert_equal "The Hobbit", label
+      end
+
+      test "raises error when association does not exist" do
+        invalid_field = Uchi::Field::BelongsTo.new(:nonexistent_association)
+        component = Uchi::Field::BelongsTo::Index.new(
+          field: invalid_field,
+          record: @title,
+          repository: @repository
+        )
+
+        error = assert_raises(ArgumentError) do
+          component.associated_repository
+        end
+        assert_match(/No association named :nonexistent_association found/, error.message)
+      end
     end
 
     class BelongsToShowTest < ViewComponent::TestCase
@@ -128,6 +259,54 @@ module Uchi
         assert_nothing_raised do
           @component
         end
+      end
+
+      test "#render? returns true when associated record is present" do
+        assert @component.render?
+      end
+
+      test "#render? returns false when associated record is nil" do
+        title_without_book = Title.new(locale: "da-DK", title: "Hobbitten")
+        component = Uchi::Field::BelongsTo::Show.new(
+          field: @field,
+          record: title_without_book,
+          repository: @repository
+        )
+
+        assert_not component.render?
+      end
+
+      test "#associated_record returns the associated record" do
+        assert_equal @book, @component.associated_record
+      end
+
+      test "#associated_repository returns repository for associated model" do
+        repo = @component.associated_repository
+        assert_kind_of Uchi::Repositories::Book, repo
+      end
+
+      test "#label_for_associated_record returns the title from repository" do
+        label = @component.label_for_associated_record
+        assert_equal "The Hobbit", label
+      end
+
+      test "#path_to_show_associated_record returns the show path" do
+        path = @component.path_to_show_associated_record
+        assert_equal "/uchi/books/#{@book.id}", path
+      end
+
+      test "raises error when association does not exist" do
+        invalid_field = Uchi::Field::BelongsTo.new(:nonexistent_association)
+        component = Uchi::Field::BelongsTo::Show.new(
+          field: invalid_field,
+          record: @record,
+          repository: @repository
+        )
+
+        error = assert_raises(ArgumentError) do
+          component.associated_repository
+        end
+        assert_match(/No association named :nonexistent_association found/, error.message)
       end
     end
   end

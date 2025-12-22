@@ -1,1 +1,69 @@
-<%= render(Uchi::Flowbite::InputField::Select.new(**options)) %>
+<div
+  class="relative"
+  data-action="keydown.esc->belongs-to#closeDropdown"
+  data-controller="belongs-to"
+  data-belongs-to-backend-url-value="<%= helpers.belongs_to_associated_records_path(field: field.name, model: repository.model, record_id: record&.id) %>"
+>
+  <%= render(Uchi::Flowbite::Input::Label.new(attribute: field.name, form: form, options: {for: dom_id_for_toggle})) %>
+
+  <%# Actual input. This is the hidden part which is what is sent to the server %>
+  <%= form.hidden_field "#{field.name}_id",
+    data: {
+      'belongs-to-target': 'id',
+    }
+  %>
+
+  <button
+    class="<%= Uchi::Flowbite::Input::Field.classes.join(" ") %> text-left"
+    data-action="belongs-to#toggle"
+    id="<%= dom_id_for_toggle %>"
+    type="button"
+  >
+    <div class="inline-flex items-center justify-between w-full">
+      <div class="min-h-[1em]" data-belongs-to-target="label"><%= associated_record %></div>
+      <svg
+        class="w-4 h-4 ms-1.5 -me-0.5"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="m19 9-7 7-7-7"
+        />
+      </svg>
+    </div>
+  </button>
+
+  <div class="absolute z-10 bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-full mt-1" data-belongs-to-target="dropdown">
+    <div class="bg-neutral-primary-medium border-b border-default-medium p-2 rounded-t-base">
+      <%# Search input. This is the visible part that users type into %>
+      <label for="<%= dom_id_for_filter_query_input %>" class="sr-only">Search</label>
+      <%=
+        text_field_tag(
+          "filter_query",
+          nil,
+          class: "bg-neutral-secondary-strong border border-default-strong text-heading text-sm rounded focus:ring-brand focus:border-brand block w-full px-2.5 py-2 shadow-xs placeholder:text-body",
+          data: {
+            'belongs-to-target': 'input',
+            action: 'belongs-to#handleChange focus->belongs-to#handleFocus',
+            autocomplete: 'off'
+          },
+          id: dom_id_for_filter_query_input,
+        )
+      %>
+    </div>
+    <div class="max-h-96 overflow-y-auto" data-belongs-to-target="list">
+      <!-- Options will be dynamically inserted here -->
+      <div class="grid place-items-center p-8">
+        <%= render(Uchi::Ui::Spinner.new(message: associated_repository.translate.loading_message)) %>
+      </div>
+    </div>
+  </div>
+</div>

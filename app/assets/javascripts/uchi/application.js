@@ -6106,12 +6106,12 @@
       this.unorderedBindings.delete(binding);
     }
     handleEvent(event) {
-      const extendedEvent = extendEvent(event);
+      const extendedEvent2 = extendEvent(event);
       for (const binding of this.bindings) {
-        if (extendedEvent.immediatePropagationStopped) {
+        if (extendedEvent2.immediatePropagationStopped) {
           break;
         } else {
-          binding.handleEvent(extendedEvent);
+          binding.handleEvent(extendedEvent2);
         }
       }
     }
@@ -8534,9 +8534,121 @@
   Controller.values = {};
 
   // node_modules/stimulus-use/dist/index.js
+  var composeEventName = (name, controller, eventPrefix) => {
+    let composedName = name;
+    if (eventPrefix === true) {
+      composedName = `${controller.identifier}:${name}`;
+    } else if (typeof eventPrefix === "string") {
+      composedName = `${eventPrefix}:${name}`;
+    }
+    return composedName;
+  };
+  var extendedEvent = (type, event, detail) => {
+    const { bubbles, cancelable, composed } = event || {
+      bubbles: true,
+      cancelable: true,
+      composed: true
+    };
+    if (event) {
+      Object.assign(detail, {
+        originalEvent: event
+      });
+    }
+    const customEvent = new CustomEvent(type, {
+      bubbles,
+      cancelable,
+      composed,
+      detail
+    });
+    return customEvent;
+  };
+  function isElementInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+    const vertInView = rect.top <= windowHeight && rect.top + rect.height > 0;
+    const horInView = rect.left <= windowWidth && rect.left + rect.width > 0;
+    return vertInView && horInView;
+  }
+  var defaultOptions$5 = {
+    events: ["click", "touchend"],
+    onlyVisible: true,
+    dispatchEvent: true,
+    eventPrefix: true
+  };
+  var useClickOutside = (composableController, options = {}) => {
+    const controller = composableController;
+    const { onlyVisible, dispatchEvent: dispatchEvent2, events, eventPrefix } = Object.assign({}, defaultOptions$5, options);
+    const onEvent = (event) => {
+      const targetElement = (options === null || options === void 0 ? void 0 : options.element) || controller.element;
+      if (targetElement.contains(event.target) || !isElementInViewport(targetElement) && onlyVisible) {
+        return;
+      }
+      if (controller.clickOutside) {
+        controller.clickOutside(event);
+      }
+      if (dispatchEvent2) {
+        const eventName = composeEventName("click:outside", controller, eventPrefix);
+        const clickOutsideEvent = extendedEvent(eventName, event, {
+          controller
+        });
+        targetElement.dispatchEvent(clickOutsideEvent);
+      }
+    };
+    const observe = () => {
+      events === null || events === void 0 ? void 0 : events.forEach(((event) => {
+        window.addEventListener(event, onEvent, true);
+      }));
+    };
+    const unobserve = () => {
+      events === null || events === void 0 ? void 0 : events.forEach(((event) => {
+        window.removeEventListener(event, onEvent, true);
+      }));
+    };
+    const controllerDisconnect = controller.disconnect.bind(controller);
+    Object.assign(controller, {
+      disconnect() {
+        unobserve();
+        controllerDisconnect();
+      }
+    });
+    observe();
+    return [observe, unobserve];
+  };
   var DebounceController = class extends Controller {
   };
   DebounceController.debounces = [];
+  var defaultWait$1 = 200;
+  var debounce2 = (fn, wait = defaultWait$1) => {
+    let timeoutId = null;
+    return function() {
+      const args = Array.from(arguments);
+      const context = this;
+      const params = args.map(((arg) => arg.params));
+      const callback = () => {
+        args.forEach(((arg, index) => arg.params = params[index]));
+        return fn.apply(context, args);
+      };
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(callback, wait);
+    };
+  };
+  var useDebounce = (composableController, options) => {
+    const controller = composableController;
+    const constructor = controller.constructor;
+    constructor.debounces.forEach(((func) => {
+      if (typeof func === "string") {
+        controller[func] = debounce2(controller[func], options === null || options === void 0 ? void 0 : options.wait);
+      }
+      if (typeof func === "object") {
+        const { name, wait } = func;
+        if (!name) return;
+        controller[name] = debounce2(controller[name], wait || (options === null || options === void 0 ? void 0 : options.wait));
+      }
+    }));
+  };
   var ThrottleController = class extends Controller {
   };
   ThrottleController.throttles = [];
@@ -8709,8 +8821,583 @@
   _Dropdown.targets = ["menu"];
   var Dropdown = _Dropdown;
 
+  // node_modules/@rails/request.js/src/fetch_response.js
+  var FetchResponse2 = class {
+    constructor(response) {
+      this.response = response;
+    }
+    get statusCode() {
+      return this.response.status;
+    }
+    get redirected() {
+      return this.response.redirected;
+    }
+    get ok() {
+      return this.response.ok;
+    }
+    get unauthenticated() {
+      return this.statusCode === 401;
+    }
+    get unprocessableEntity() {
+      return this.statusCode === 422;
+    }
+    get authenticationURL() {
+      return this.response.headers.get("WWW-Authenticate");
+    }
+    get contentType() {
+      const contentType = this.response.headers.get("Content-Type") || "";
+      return contentType.replace(/;.*$/, "");
+    }
+    get headers() {
+      return this.response.headers;
+    }
+    get html() {
+      if (this.contentType.match(/^(application|text)\/(html|xhtml\+xml)$/)) {
+        return this.text;
+      }
+      return Promise.reject(new Error(`Expected an HTML response but got "${this.contentType}" instead`));
+    }
+    get json() {
+      if (this.contentType.match(/^application\/.*json$/)) {
+        return this.responseJson || (this.responseJson = this.response.json());
+      }
+      return Promise.reject(new Error(`Expected a JSON response but got "${this.contentType}" instead`));
+    }
+    get text() {
+      return this.responseText || (this.responseText = this.response.text());
+    }
+    get isTurboStream() {
+      return this.contentType.match(/^text\/vnd\.turbo-stream\.html/);
+    }
+    get isScript() {
+      return this.contentType.match(/\b(?:java|ecma)script\b/);
+    }
+    async renderTurboStream() {
+      if (this.isTurboStream) {
+        if (window.Turbo) {
+          await window.Turbo.renderStreamMessage(await this.text);
+        } else {
+          console.warn("You must set `window.Turbo = Turbo` to automatically process Turbo Stream events with request.js");
+        }
+      } else {
+        return Promise.reject(new Error(`Expected a Turbo Stream response but got "${this.contentType}" instead`));
+      }
+    }
+    async activeScript() {
+      if (this.isScript) {
+        const script = document.createElement("script");
+        const metaTag = document.querySelector("meta[name=csp-nonce]");
+        if (metaTag) {
+          const nonce = metaTag.nonce === "" ? metaTag.content : metaTag.nonce;
+          if (nonce) {
+            script.setAttribute("nonce", nonce);
+          }
+        }
+        script.innerHTML = await this.text;
+        document.body.appendChild(script);
+      } else {
+        return Promise.reject(new Error(`Expected a Script response but got "${this.contentType}" instead`));
+      }
+    }
+  };
+
+  // node_modules/@rails/request.js/src/request_interceptor.js
+  var RequestInterceptor = class {
+    static register(interceptor) {
+      this.interceptor = interceptor;
+    }
+    static get() {
+      return this.interceptor;
+    }
+    static reset() {
+      this.interceptor = void 0;
+    }
+  };
+
+  // node_modules/@rails/request.js/src/lib/utils.js
+  function getCookie(name) {
+    const cookies = document.cookie ? document.cookie.split("; ") : [];
+    const prefix = `${encodeURIComponent(name)}=`;
+    const cookie = cookies.find((cookie2) => cookie2.startsWith(prefix));
+    if (cookie) {
+      const value = cookie.split("=").slice(1).join("=");
+      if (value) {
+        return decodeURIComponent(value);
+      }
+    }
+  }
+  function compact(object) {
+    const result = {};
+    for (const key in object) {
+      const value = object[key];
+      if (value !== void 0) {
+        result[key] = value;
+      }
+    }
+    return result;
+  }
+  function metaContent(name) {
+    const element = document.head.querySelector(`meta[name="${name}"]`);
+    return element && element.content;
+  }
+  function stringEntriesFromFormData(formData) {
+    return [...formData].reduce((entries, [name, value]) => {
+      return entries.concat(typeof value === "string" ? [[name, value]] : []);
+    }, []);
+  }
+  function mergeEntries(searchParams, entries) {
+    for (const [name, value] of entries) {
+      if (value instanceof window.File) continue;
+      if (searchParams.has(name) && !name.includes("[]")) {
+        searchParams.delete(name);
+        searchParams.set(name, value);
+      } else {
+        searchParams.append(name, value);
+      }
+    }
+  }
+
+  // node_modules/@rails/request.js/src/fetch_request.js
+  var FetchRequest2 = class {
+    constructor(method, url, options = {}) {
+      this.method = method;
+      this.options = options;
+      this.originalUrl = url.toString();
+    }
+    async perform() {
+      try {
+        const requestInterceptor = RequestInterceptor.get();
+        if (requestInterceptor) {
+          await requestInterceptor(this);
+        }
+      } catch (error2) {
+        console.error(error2);
+      }
+      const fetch2 = window.Turbo ? window.Turbo.fetch : window.fetch;
+      const response = new FetchResponse2(await fetch2(this.url, this.fetchOptions));
+      if (response.unauthenticated && response.authenticationURL) {
+        return Promise.reject(window.location.href = response.authenticationURL);
+      }
+      if (response.isScript) {
+        await response.activeScript();
+      }
+      const responseStatusIsTurboStreamable = response.ok || response.unprocessableEntity;
+      if (responseStatusIsTurboStreamable && response.isTurboStream) {
+        await response.renderTurboStream();
+      }
+      return response;
+    }
+    addHeader(key, value) {
+      const headers = this.additionalHeaders;
+      headers[key] = value;
+      this.options.headers = headers;
+    }
+    sameHostname() {
+      if (!this.originalUrl.startsWith("http:") && !this.originalUrl.startsWith("https:")) {
+        return true;
+      }
+      try {
+        return new URL(this.originalUrl).hostname === window.location.hostname;
+      } catch (_) {
+        return true;
+      }
+    }
+    get fetchOptions() {
+      return {
+        method: this.method.toUpperCase(),
+        headers: this.headers,
+        body: this.formattedBody,
+        signal: this.signal,
+        credentials: this.credentials,
+        redirect: this.redirect,
+        keepalive: this.keepalive
+      };
+    }
+    get headers() {
+      const baseHeaders = {
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-Type": this.contentType,
+        Accept: this.accept
+      };
+      if (this.sameHostname()) {
+        baseHeaders["X-CSRF-Token"] = this.csrfToken;
+      }
+      return compact(
+        Object.assign(baseHeaders, this.additionalHeaders)
+      );
+    }
+    get csrfToken() {
+      return getCookie(metaContent("csrf-param")) || metaContent("csrf-token");
+    }
+    get contentType() {
+      if (this.options.contentType) {
+        return this.options.contentType;
+      } else if (this.body == null || this.body instanceof window.FormData) {
+        return void 0;
+      } else if (this.body instanceof window.File) {
+        return this.body.type;
+      }
+      return "application/json";
+    }
+    get accept() {
+      switch (this.responseKind) {
+        case "html":
+          return "text/html, application/xhtml+xml";
+        case "turbo-stream":
+          return "text/vnd.turbo-stream.html, text/html, application/xhtml+xml";
+        case "json":
+          return "application/json, application/vnd.api+json";
+        case "script":
+          return "text/javascript, application/javascript";
+        default:
+          return "*/*";
+      }
+    }
+    get body() {
+      return this.options.body;
+    }
+    get query() {
+      const originalQuery = (this.originalUrl.split("?")[1] || "").split("#")[0];
+      const params = new URLSearchParams(originalQuery);
+      let requestQuery = this.options.query;
+      if (requestQuery instanceof window.FormData) {
+        requestQuery = stringEntriesFromFormData(requestQuery);
+      } else if (requestQuery instanceof window.URLSearchParams) {
+        requestQuery = requestQuery.entries();
+      } else {
+        requestQuery = Object.entries(requestQuery || {});
+      }
+      mergeEntries(params, requestQuery);
+      const query = params.toString();
+      return query.length > 0 ? `?${query}` : "";
+    }
+    get url() {
+      return this.originalUrl.split("?")[0].split("#")[0] + this.query;
+    }
+    get responseKind() {
+      return this.options.responseKind || "html";
+    }
+    get signal() {
+      return this.options.signal;
+    }
+    get redirect() {
+      return this.options.redirect || "follow";
+    }
+    get credentials() {
+      return this.options.credentials || "same-origin";
+    }
+    get keepalive() {
+      return this.options.keepalive || false;
+    }
+    get additionalHeaders() {
+      return this.options.headers || {};
+    }
+    get formattedBody() {
+      const bodyIsAString = Object.prototype.toString.call(this.body) === "[object String]";
+      const contentTypeIsJson = this.headers["Content-Type"] === "application/json";
+      if (contentTypeIsJson && !bodyIsAString) {
+        return JSON.stringify(this.body);
+      }
+      return this.body;
+    }
+  };
+
+  // node_modules/@rails/request.js/src/verbs.js
+  async function get(url, options) {
+    const request = new FetchRequest2("get", url, options);
+    return request.perform();
+  }
+
+  // node_modules/@github/combobox-nav/dist/index.js
+  var Combobox = class {
+    constructor(input, list, { tabInsertsSuggestions, firstOptionSelectionMode, scrollIntoViewOptions } = {}) {
+      this.input = input;
+      this.list = list;
+      this.tabInsertsSuggestions = tabInsertsSuggestions !== null && tabInsertsSuggestions !== void 0 ? tabInsertsSuggestions : true;
+      this.firstOptionSelectionMode = firstOptionSelectionMode !== null && firstOptionSelectionMode !== void 0 ? firstOptionSelectionMode : "none";
+      this.scrollIntoViewOptions = scrollIntoViewOptions !== null && scrollIntoViewOptions !== void 0 ? scrollIntoViewOptions : { block: "nearest", inline: "nearest" };
+      this.isComposing = false;
+      if (!list.id) {
+        list.id = `combobox-${Math.random().toString().slice(2, 6)}`;
+      }
+      this.ctrlBindings = !!navigator.userAgent.match(/Macintosh/);
+      this.keyboardEventHandler = (event) => keyboardBindings(event, this);
+      this.compositionEventHandler = (event) => trackComposition(event, this);
+      this.inputHandler = this.clearSelection.bind(this);
+      input.setAttribute("role", "combobox");
+      input.setAttribute("aria-controls", list.id);
+      input.setAttribute("aria-expanded", "false");
+      input.setAttribute("aria-autocomplete", "list");
+      input.setAttribute("aria-haspopup", "listbox");
+    }
+    destroy() {
+      this.clearSelection();
+      this.stop();
+      this.input.removeAttribute("role");
+      this.input.removeAttribute("aria-controls");
+      this.input.removeAttribute("aria-expanded");
+      this.input.removeAttribute("aria-autocomplete");
+      this.input.removeAttribute("aria-haspopup");
+    }
+    start() {
+      this.input.setAttribute("aria-expanded", "true");
+      this.input.addEventListener("compositionstart", this.compositionEventHandler);
+      this.input.addEventListener("compositionend", this.compositionEventHandler);
+      this.input.addEventListener("input", this.inputHandler);
+      this.input.addEventListener("keydown", this.keyboardEventHandler);
+      this.list.addEventListener("click", commitWithElement);
+      this.resetSelection();
+    }
+    stop() {
+      this.clearSelection();
+      this.input.setAttribute("aria-expanded", "false");
+      this.input.removeEventListener("compositionstart", this.compositionEventHandler);
+      this.input.removeEventListener("compositionend", this.compositionEventHandler);
+      this.input.removeEventListener("input", this.inputHandler);
+      this.input.removeEventListener("keydown", this.keyboardEventHandler);
+      this.list.removeEventListener("click", commitWithElement);
+    }
+    indicateDefaultOption() {
+      var _a;
+      if (this.firstOptionSelectionMode === "active") {
+        (_a = Array.from(this.list.querySelectorAll('[role="option"]:not([aria-disabled="true"])')).filter(visible)[0]) === null || _a === void 0 ? void 0 : _a.setAttribute("data-combobox-option-default", "true");
+      } else if (this.firstOptionSelectionMode === "selected") {
+        this.navigate(1);
+      }
+    }
+    navigate(indexDiff = 1) {
+      const focusEl = Array.from(this.list.querySelectorAll('[aria-selected="true"]')).filter(visible)[0];
+      const els = Array.from(this.list.querySelectorAll('[role="option"]')).filter(visible);
+      const focusIndex = els.indexOf(focusEl);
+      if (focusIndex === els.length - 1 && indexDiff === 1 || focusIndex === 0 && indexDiff === -1) {
+        this.clearSelection();
+        this.input.focus();
+        return;
+      }
+      let indexOfItem = indexDiff === 1 ? 0 : els.length - 1;
+      if (focusEl && focusIndex >= 0) {
+        const newIndex = focusIndex + indexDiff;
+        if (newIndex >= 0 && newIndex < els.length)
+          indexOfItem = newIndex;
+      }
+      const target = els[indexOfItem];
+      if (!target)
+        return;
+      for (const el of els) {
+        el.removeAttribute("data-combobox-option-default");
+        if (target === el) {
+          this.input.setAttribute("aria-activedescendant", target.id);
+          target.setAttribute("aria-selected", "true");
+          fireSelectEvent(target);
+          target.scrollIntoView(this.scrollIntoViewOptions);
+        } else {
+          el.removeAttribute("aria-selected");
+        }
+      }
+    }
+    clearSelection() {
+      this.input.removeAttribute("aria-activedescendant");
+      for (const el of this.list.querySelectorAll('[aria-selected="true"], [data-combobox-option-default="true"]')) {
+        el.removeAttribute("aria-selected");
+        el.removeAttribute("data-combobox-option-default");
+      }
+    }
+    resetSelection() {
+      this.clearSelection();
+      this.indicateDefaultOption();
+    }
+  };
+  function keyboardBindings(event, combobox) {
+    if (event.shiftKey || event.metaKey || event.altKey)
+      return;
+    if (!combobox.ctrlBindings && event.ctrlKey)
+      return;
+    if (combobox.isComposing)
+      return;
+    switch (event.key) {
+      case "Enter":
+        if (commit(combobox.input, combobox.list)) {
+          event.preventDefault();
+        }
+        break;
+      case "Tab":
+        if (combobox.tabInsertsSuggestions && commit(combobox.input, combobox.list)) {
+          event.preventDefault();
+        }
+        break;
+      case "Escape":
+        combobox.clearSelection();
+        break;
+      case "ArrowDown":
+        combobox.navigate(1);
+        event.preventDefault();
+        break;
+      case "ArrowUp":
+        combobox.navigate(-1);
+        event.preventDefault();
+        break;
+      case "n":
+        if (combobox.ctrlBindings && event.ctrlKey) {
+          combobox.navigate(1);
+          event.preventDefault();
+        }
+        break;
+      case "p":
+        if (combobox.ctrlBindings && event.ctrlKey) {
+          combobox.navigate(-1);
+          event.preventDefault();
+        }
+        break;
+      default:
+        if (event.ctrlKey)
+          break;
+        combobox.resetSelection();
+    }
+  }
+  function commitWithElement(event) {
+    if (!(event.target instanceof Element))
+      return;
+    const target = event.target.closest('[role="option"]');
+    if (!target)
+      return;
+    if (target.getAttribute("aria-disabled") === "true")
+      return;
+    fireCommitEvent(target, { event });
+  }
+  function commit(input, list) {
+    const target = list.querySelector('[aria-selected="true"], [data-combobox-option-default="true"]');
+    if (!target)
+      return false;
+    if (target.getAttribute("aria-disabled") === "true")
+      return true;
+    target.click();
+    return true;
+  }
+  function fireCommitEvent(target, detail) {
+    target.dispatchEvent(new CustomEvent("combobox-commit", { bubbles: true, detail }));
+  }
+  function fireSelectEvent(target) {
+    target.dispatchEvent(new Event("combobox-select", { bubbles: true }));
+  }
+  function visible(el) {
+    return !el.hidden && !(el instanceof HTMLInputElement && el.type === "hidden") && (el.offsetWidth > 0 || el.offsetHeight > 0);
+  }
+  function trackComposition(event, combobox) {
+    combobox.isComposing = event.type === "compositionstart";
+    const list = document.getElementById(combobox.input.getAttribute("aria-controls") || "");
+    if (!list)
+      return;
+    combobox.clearSelection();
+  }
+
+  // app/assets/javascripts/controllers/fields/belongs_to_controller.js
+  var belongs_to_controller_default = class extends Controller {
+    static debounces = ["handleChange"];
+    static targets = ["id", "dropdown", "input", "label", "list"];
+    static values = {
+      backendUrl: String
+    };
+    buildCombobox() {
+      return new Combobox(this.inputTarget, this.listTarget);
+    }
+    clickOutside(event) {
+      if (!this.dropdownTarget.hidden) {
+        this.closeDropdown();
+      }
+    }
+    closeDropdown() {
+      this.combobox.stop();
+      this.dropdownTarget.hidden = true;
+    }
+    connect() {
+      useClickOutside(this, { element: this.dropdownTarget });
+      useDebounce(this);
+      this.combobox = this.buildCombobox();
+      this.listTarget.addEventListener("combobox-commit", this.handleComboboxCommit.bind(this));
+      this.dropdownTarget.hidden = true;
+    }
+    disconnect() {
+      this.listTarget.removeEventListener("combobox-commit", this.handleComboboxCommit);
+      this.combobox.destroy();
+    }
+    fetchOptions(options) {
+      get(this.backendUrlValue, {
+        query: { query: this.inputTarget.value }
+      }).then(({ response }) => {
+        return response.text();
+      }).then((html) => {
+        this.listTarget.innerHTML = html;
+        this.openDropdown();
+        this.markSelectedOption();
+        if (options?.scrollToSelected) {
+          this.scrollToSelectedOption();
+        }
+      }).catch((error2) => {
+        console.error("Failed to fetch options:", error2);
+        this.dropdownTarget.hidden = true;
+      });
+    }
+    handleChange() {
+      this.combobox.stop();
+      this.fetchOptions();
+    }
+    handleComboboxCommit(event) {
+      this.setValuesFromElement(event.target);
+      this.closeDropdown();
+    }
+    handleFocus() {
+      this.fetchOptions({ scrollToSelected: true });
+    }
+    markSelectedOption() {
+      const options = this.listTarget.querySelectorAll('[role="option"]');
+      options.forEach((option) => {
+        option.removeAttribute("aria-selected");
+        const recordId = option.getAttribute("data-id");
+        if (recordId === this.idTarget.value) {
+          option.setAttribute("aria-selected", "true");
+        }
+      });
+    }
+    openDropdown() {
+      this.combobox.start();
+      this.dropdownTarget.hidden = false;
+      this.inputTarget.focus();
+    }
+    scrollToSelectedOption() {
+      const selectedOption = this.listTarget.querySelector('[aria-selected="true"]');
+      if (selectedOption) {
+        selectedOption.scrollIntoView({
+          // Aligns the element at the center of the scrollable container,
+          // positioning it in the middle of the visible area.
+          block: "center",
+          inline: "center",
+          // Only the nearest scrollable container is impacted by the scroll.
+          container: "nearest"
+        });
+      }
+    }
+    selectOption(event) {
+      this.combobox.clearSelection();
+      event.target.setAttribute("aria-selected", "true");
+      this.setValuesFromElement(event.target);
+    }
+    setValuesFromElement(element) {
+      const recordId = element.getAttribute("data-id");
+      this.idTarget.value = recordId;
+      this.labelTarget.textContent = element.textContent.trim();
+    }
+    toggle() {
+      if (this.dropdownTarget.hidden) {
+        this.openDropdown();
+      } else {
+        this.closeDropdown();
+      }
+    }
+  };
+
   // app/assets/javascripts/uchi.js
   var application = Application.start();
+  application.register("belongs-to", belongs_to_controller_default);
   application.register("dropdown", Dropdown);
   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
     document.documentElement.classList.add("dark");

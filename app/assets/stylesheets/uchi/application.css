@@ -113,6 +113,7 @@
     --color-neutral-secondary-soft: var(--color-gray-50);
     --color-neutral-secondary: var(--color-gray-50);
     --color-neutral-secondary-medium: var(--color-gray-50);
+    --color-neutral-secondary-strong: var(--color-gray-50);
     --color-neutral-tertiary-soft: var(--color-gray-100);
     --color-neutral-tertiary: var(--color-gray-100);
     --color-neutral-tertiary-medium: var(--color-gray-100);
@@ -136,6 +137,7 @@
     --color-light: var(--color-gray-100);
     --color-default: var(--color-gray-200);
     --color-default-medium: var(--color-gray-200);
+    --color-default-strong: var(--color-gray-200);
     --color-danger-subtle: var(--color-rose-200);
   }
 }
@@ -470,6 +472,12 @@
   .h-full {
     height: 100%;
   }
+  .max-h-96 {
+    max-height: calc(var(--spacing) * 96);
+  }
+  .min-h-\[1em\] {
+    min-height: 1em;
+  }
   .w-3 {
     width: calc(var(--spacing) * 3);
   }
@@ -666,6 +674,10 @@
     border-start-end-radius: var(--radius-base);
     border-end-end-radius: var(--radius-base);
   }
+  .rounded-t-base {
+    border-top-left-radius: var(--radius-base);
+    border-top-right-radius: var(--radius-base);
+  }
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
@@ -740,6 +752,9 @@
   .border-default-medium {
     border-color: var(--color-default-medium);
   }
+  .border-default-strong {
+    border-color: var(--color-default-strong);
+  }
   .border-fg-danger {
     border-color: var(--color-fg-danger);
   }
@@ -787,6 +802,9 @@
   }
   .bg-neutral-secondary-soft {
     background-color: var(--color-neutral-secondary-soft);
+  }
+  .bg-neutral-secondary-strong {
+    background-color: var(--color-neutral-secondary-strong);
   }
   .bg-neutral-tertiary-medium {
     background-color: var(--color-neutral-tertiary-medium);
@@ -1203,6 +1221,16 @@
     &:focus {
       --tw-outline-style: none;
       outline-style: none;
+    }
+  }
+  .aria-selected\:bg-brand {
+    &[aria-selected="true"] {
+      background-color: var(--color-brand);
+    }
+  }
+  .aria-selected\:text-white {
+    &[aria-selected="true"] {
+      color: var(--color-white);
     }
   }
   .sm\:grid {
