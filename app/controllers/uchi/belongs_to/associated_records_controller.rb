@@ -62,6 +62,8 @@ module Uchi
       end
 
       def parent_record
+        return nil unless params[:record_id].present?
+
         source_repository.find(params[:record_id])
       end
 

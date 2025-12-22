@@ -5,7 +5,7 @@ module Uchi
     module Configuration
       class Unset; end
 
-      DEFAULT_READER = ->(record, field_name) { record.public_send(field_name) }
+      DEFAULT_READER = ->(record, field_name) { record&.public_send(field_name) }
 
       def initialize(*args)
         super
