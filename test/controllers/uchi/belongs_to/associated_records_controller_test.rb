@@ -116,10 +116,7 @@ module Uchi
       end
 
       test "GET index raises error when association does not exist on model" do
-        # Create a repository with a field that doesn't have a corresponding association
         assert_raises NameError do
-          # This would require a field defined in repository but not in the model
-          # For this test, we'll use an invalid field name which will fail at field lookup
           get uchi.belongs_to_associated_records_path(
             field: "invalid_association",
             model: "Title",
