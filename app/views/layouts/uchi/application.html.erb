@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html class="h-full">
   <head>
     <title>
       <%= content_for?(:page_title) ? yield(:page_title) : "Uchi" %>
@@ -15,8 +15,8 @@
     <%= stylesheet_link_tag "uchi/application", media: "all", "data-turbo-track": "reload" %>
   </head>
 
-  <body class="antialiased bg-neutral-secondary-medium p-2">
-    <div class="md:flex">
+  <body class="antialiased bg-neutral-secondary-medium h-full p-2">
+    <div class="h-full md:flex">
       <%= render(partial: "uchi/navigation/main") %>
 
       <main class="py-6 overflow-x-hidden grow md:px-6"><%= yield %></main>
