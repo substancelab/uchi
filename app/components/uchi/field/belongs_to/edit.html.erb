@@ -4,7 +4,7 @@
   data-controller="belongs-to"
   data-belongs-to-backend-url-value="<%= helpers.belongs_to_associated_records_path(field: field.name, model: repository.model, record_id: record&.id) %>"
 >
-  <%= render(Uchi::Flowbite::Input::Label.new(attribute: field.name, form: form, options: {for: dom_id_for_toggle})) %>
+  <%= render(Uchi::Flowbite::Input::Label.new(attribute: field.name, form: form, options: {for: dom_id_for_toggle})) { label } %>
 
   <%# Actual input. This is the hidden part which is what is sent to the server %>
   <%= form.hidden_field "#{field.name}_id",
@@ -66,4 +66,8 @@
       </div>
     </div>
   </div>
+
+  <% if hint.present? %>
+    <%= render(Uchi::Flowbite::Input::Hint.new(attribute: field.name, form: form)) { hint } %>
+  <% end %>
 </div>
