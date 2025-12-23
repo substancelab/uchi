@@ -15,7 +15,7 @@ module Uchi
         @current_value = field.value(parent_record)
 
         @field_name = params[:field]
-        @records = find_all_records_from_association
+        @records = field.collection_query.call(find_all_records_from_association)
       end
 
       protected
@@ -76,8 +76,7 @@ module Uchi
         repository
           .find_all(
             scope: scope,
-            search: params[:query],
-            sort_order: current_sort_order
+            search: params[:query]
           )
       end
 

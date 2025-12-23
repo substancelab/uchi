@@ -80,3 +80,20 @@ Field::BelongsTo.new(:company).sortable(lambda { |query, direction|
   query.joins(:office).order(:offices => {:name => direction})
 })
 ```
+
+## Field::BelongsTo
+
+### How to control the order of records in dropdowns
+
+When opening the record selector of a BelongsTo field the records are returned in the default order defined by the repository. To do something else, pass a lambda to the `collection_query` method:
+
+```ruby
+Field::BelongsTo.new(:person)
+  .collection_query(lambda { |query|
+    query.reorder(:first_name, :last_names) }
+  )
+```
+
+The lambda receives an `ActiveRecord::Relation` with all records returned from the repository. Note that you might have to use `#reorder`, not just `#order`, since the relation may already have an order defined.
+
+You can also use `#collection_query` to limit what records are returned. Remember you have access to the currently logged in user in `Current.user`.
