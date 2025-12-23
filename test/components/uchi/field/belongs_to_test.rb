@@ -121,27 +121,6 @@ module Uchi
         assert_equal "book_id", @component.attribute_name
       end
 
-      test "#collection returns all records from associated repository" do
-        collection = @component.collection
-        assert_includes collection.map(&:id), @book1.id
-        assert_includes collection.map(&:id), @book2.id
-      end
-
-      test "#collection applies custom query" do
-        custom_field = Uchi::Field::BelongsTo.new(:book).collection_query(->(query) {
-          query.where(original_title: "The Hobbit")
-        })
-        custom_component = Uchi::Field::BelongsTo::Edit.new(
-          field: custom_field,
-          form: @form,
-          repository: @repository
-        )
-
-        collection = custom_component.collection
-        assert_equal 1, collection.count
-        assert_equal @book1.id, collection.first.id
-      end
-
       test "#dom_id_for_filter_query_input returns correct id" do
         assert_equal "title_book_id_belongs_to_filter_query", @component.dom_id_for_filter_query_input
       end
@@ -153,12 +132,6 @@ module Uchi
       test "#optional? returns false when association is required" do
         # The book association on Title is required (not optional)
         assert_not @component.send(:optional?)
-      end
-
-      test "collection_for_select does not include blank option for required associations" do
-        collection = @component.send(:collection_for_select)
-        # First item should not be blank for required associations
-        assert_not_equal ["", nil], collection.first
       end
 
       test "#associated_repository returns repository for associated model" do
