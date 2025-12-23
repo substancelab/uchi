@@ -44,11 +44,6 @@ module Uchi
           reflection.foreign_key
         end
 
-        def collection
-          query = associated_repository.find_all
-          field.collection_query.call(query)
-        end
-
         def dom_id_for_filter_query_input
           "#{form.object_name}_#{attribute_name}_belongs_to_filter_query"
         end
@@ -65,29 +60,9 @@ module Uchi
 
         private
 
-        def collection_for_select
-          repository = associated_repository
-          items = []
-          items << ["", nil] if optional?
-          items + collection.map do |item|
-            [repository.title(item), item.id]
-          end
-        end
-
         # Returns true if the association is optional.
         def optional?
           reflection.options[:optional] == true
-        end
-
-        def options
-          options = {
-            attribute: attribute_name,
-            collection: collection_for_select,
-            form: form,
-            label: {content: label}
-          }
-          options[:hint] = {content: hint} if hint.present?
-          options
         end
 
         def reflection
