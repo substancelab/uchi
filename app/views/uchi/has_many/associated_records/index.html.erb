@@ -1,21 +1,21 @@
-<ul class="p-2 text-sm text-body font-medium">
+<ul class="p-4 text-sm text-body font-medium space-y-4">
   <% @records.each do |record| %>
     <li
-      class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded aria-selected:bg-brand aria-selected:text-white"
       data-action="has-many#selectOption"
       data-id="<%= record.id %>"
       id="<%= dom_id(record, [source_repository.model, @field_name].join("-")) %>"
-      role="option"
     >
-      <label class="inline-flex items-center w-full cursor-pointer">
+      <div class="flex items-center">
         <input
           type="checkbox"
-          class="w-4 h-4 text-brand bg-neutral-primary-medium border-default-medium rounded focus:ring-brand focus:ring-2 me-2"
+          class="w-4 h-4 border border-default-strong rounded-xs bg-neutral-secondary-strong focus:ring-2 focus:ring-brand-soft"
           data-has-many-target="checkbox"
           <%= 'checked' if @current_values.include?(record) %>
         >
-        <span class="flex-1"><%= record_title(record) %></span>
-      </label>
+        <label class="ms-2 text-sm font-medium text-heading cursor-pointer">
+          <%= record_title(record) %>
+        </label>
+      </div>
     </li>
   <% end %>
 </ul>

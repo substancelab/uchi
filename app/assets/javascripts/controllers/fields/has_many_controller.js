@@ -25,13 +25,10 @@ export default class extends Controller {
     useClickOutside(this, {element: this.dropdownTarget})
     useDebounce(this)
 
-    console.log("HasManyController connected. Backend URL:", this.backendUrlValue)
-    console.log(this.dropdownTarget)
     this.dropdownTarget.hidden = true
   }
 
   fetchOptions() {
-    console.log("Fetching options for query:", this.inputTarget.value)
     get(this.backendUrlValue, {
       query: { query: this.inputTarget.value }
     }).then(({response}) => {
