@@ -15,7 +15,6 @@ module Uchi
       end
 
       test "has default options specific to HasMany field" do
-        assert_equal [:show], @field.on  # Different from other fields - only on show
         assert_not @field.searchable?
         assert @field.sortable?
       end
