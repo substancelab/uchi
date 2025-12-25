@@ -5,4 +5,7 @@ Uchi::Engine.routes.draw do
   namespace :belongs_to do
     resources :associated_records, only: [:index]
   end
+  namespace :has_many do
+    resources :associated_records, only: [:index]
+  end
 end

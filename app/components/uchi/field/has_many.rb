@@ -6,6 +6,52 @@ module Uchi
       DEFAULT_COLLECTION_QUERY = ->(query) { query }.freeze
 
       class Edit < Uchi::Field::Base::Edit
+        def associated_records
+          records = field.value(record)
+          return [] if records.nil?
+
+          associated_repository.find_all(scope: records)
+        end
+
+        def associated_repository
+          @associated_repository ||= begin
+            model = reflection.klass
+            repository_class = Uchi::Repository.for_model(model)
+            repository_class.new
+          end
+        end
+
+        def attribute_name
+          "#{field.name.to_s.singularize}_ids"
+        end
+
+        def dom_id_for_filter_query_input
+          "#{form.object_name}_#{attribute_name}_has_many_filter_query"
+        end
+
+        def dom_id_for_toggle
+          "#{form.object_name}_#{attribute_name}_has_many_toggle"
+        end
+
+        def field_name_for_input
+          "#{form.object_name}[#{attribute_name}][]"
+        end
+
+        def record_title(record)
+          return "" if record.nil?
+
+          associated_repository.title(record)
+        end
+
+        def selected_titles
+          associated_records.map { |record| record_title(record) }.join(", ")
+        end
+
+        private
+
+        def reflection
+          @reflection ||= record.class.reflect_on_association(field.name)
+        end
       end
 
       class Index < Uchi::Field::Base::Index
@@ -94,13 +140,11 @@ module Uchi
       def param_key
         # TODO: This is too naive. We need to match this to the actual foreign
         # key of the model.
-        :"#{name}_id"
+        :"#{name.to_s.singularize}_ids"
       end
 
-      protected
-
-      def default_on
-        [:show]
+      def permitted_param
+        {param_key => []}
       end
     end
   end
