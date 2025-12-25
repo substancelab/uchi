@@ -33,6 +33,10 @@ module Uchi
           "#{form.object_name}_#{attribute_name}_has_many_toggle"
         end
 
+        def field_name_for_input
+          "#{form.object_name}[#{attribute_name}][]"
+        end
+
         def record_title(record)
           return "" if record.nil?
 
@@ -136,7 +140,11 @@ module Uchi
       def param_key
         # TODO: This is too naive. We need to match this to the actual foreign
         # key of the model.
-        :"#{name}_id"
+        :"#{name.to_s.singularize}_ids"
+      end
+
+      def permitted_param
+        {param_key => []}
       end
     end
   end
