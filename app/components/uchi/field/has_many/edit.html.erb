@@ -3,10 +3,11 @@
   data-action="keydown.esc->has-many#closeDropdown"
   data-controller="has-many"
   data-has-many-backend-url-value="<%= helpers.has_many_associated_records_path(field: field.name, model: repository.model, record_id: record&.id) %>"
+  data-has-many-field-name-value="<%= field_name_for_input %>"
 >
   <%= render(Uchi::Flowbite::Input::Label.new(attribute: field.name, form: form, options: {for: dom_id_for_toggle})) { label } %>
 
-  <%# Hidden field to store selected IDs as an array %>
+  <%# Hidden fields to store selected IDs as an array %>
   <div data-has-many-target="idsContainer">
     <% associated_records.each do |assoc_record| %>
       <%= form.hidden_field attribute_name,

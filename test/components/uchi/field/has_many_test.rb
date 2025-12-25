@@ -30,7 +30,7 @@ module Uchi
       end
 
       test "#param_key returns foreign key name" do
-        assert_equal :titles_id, @field.param_key
+        assert_equal :title_ids, @field.param_key
       end
 
       test "#group_as returns :associations" do

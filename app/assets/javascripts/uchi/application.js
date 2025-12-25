@@ -9400,7 +9400,8 @@
     static debounces = ["handleChange"];
     static targets = ["checkbox", "dropdown", "idField", "idsContainer", "input", "label", "list"];
     static values = {
-      backendUrl: String
+      backendUrl: String,
+      fieldName: String
     };
     clickOutside(event) {
       if (!this.dropdownTarget.hidden) {
@@ -9442,39 +9443,27 @@
       this.dropdownTarget.hidden = false;
       this.inputTarget.focus();
     }
-    selectOption(event) {
-      const listItem = event.currentTarget;
-      const checkbox = listItem.querySelector('input[type="checkbox"]');
-      const recordId = listItem.getAttribute("data-id");
-      if (!checkbox || !recordId) return;
-      checkbox.checked = !checkbox.checked;
+    handleCheckboxChange(event) {
+      const checkbox = event.target;
+      const listItem = checkbox.closest("li[data-id]");
+      const recordId = listItem?.getAttribute("data-id");
+      if (!recordId) return;
       if (checkbox.checked) {
         this.addId(recordId);
       } else {
         this.removeId(recordId);
       }
       this.updateLabel();
-      this.updateCheckboxStates();
     }
     addId(id) {
       const selectedIds = this.getSelectedIds();
       if (selectedIds.includes(id)) return;
       const hiddenField = document.createElement("input");
       hiddenField.type = "hidden";
-      hiddenField.name = this.idFieldTargets[0]?.name || this.generateFieldName();
+      hiddenField.name = this.fieldNameValue;
       hiddenField.value = id;
       hiddenField.setAttribute("data-has-many-target", "idField");
       this.idsContainerTarget.appendChild(hiddenField);
-    }
-    generateFieldName() {
-      const formName = this.element.closest("form")?.querySelector('input[type="hidden"]')?.name;
-      if (formName) {
-        const match = formName.match(/^([^\[]+\[)([^\]]+)(\]\[\])$/);
-        if (match) {
-          return formName;
-        }
-      }
-      return "ids[]";
     }
     removeId(id) {
       const field = this.idFieldTargets.find((f) => f.value === id);
@@ -9513,10 +9502,10 @@
       const selectedTexts = [];
       this.checkboxTargets.forEach((checkbox) => {
         if (checkbox.checked) {
-          const label = checkbox.closest("label");
-          const span = label?.querySelector("span");
-          if (span) {
-            selectedTexts.push(span.textContent.trim());
+          const listItem = checkbox.closest("li[data-id]");
+          const label = listItem?.querySelector("label");
+          if (label) {
+            selectedTexts.push(label.textContent.trim());
           }
         }
       });
