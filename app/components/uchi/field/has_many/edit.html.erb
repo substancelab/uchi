@@ -10,13 +10,13 @@
   <%# Hidden fields to store selected IDs as an array %>
   <div data-has-many-target="idsContainer">
     <% associated_records.each do |assoc_record| %>
-      <%= form.hidden_field attribute_name,
-        value: assoc_record.id,
-        multiple: true,
-        data: {
-          'has-many-target': 'idField',
-        }
-      %>
+      <input
+        type="hidden"
+        name="<%= field_name_for_input %>"
+        value="<%= assoc_record.id %>"
+        data-has-many-target="idField"
+        data-title="<%= record_title(assoc_record) %>"
+      >
     <% end %>
   </div>
 

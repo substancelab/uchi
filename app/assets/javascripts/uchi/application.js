@@ -9449,13 +9449,15 @@
       const recordId = listItem?.getAttribute("data-id");
       if (!recordId) return;
       if (checkbox.checked) {
-        this.addId(recordId);
+        const label = listItem?.querySelector("label");
+        const title = label ? label.textContent.trim() : "";
+        this.addId(recordId, title);
       } else {
         this.removeId(recordId);
       }
       this.updateLabel();
     }
-    addId(id) {
+    addId(id, title) {
       const selectedIds = this.getSelectedIds();
       if (selectedIds.includes(id)) return;
       const hiddenField = document.createElement("input");
@@ -9463,6 +9465,7 @@
       hiddenField.name = this.fieldNameValue;
       hiddenField.value = id;
       hiddenField.setAttribute("data-has-many-target", "idField");
+      hiddenField.setAttribute("data-title", title);
       this.idsContainerTarget.appendChild(hiddenField);
     }
     removeId(id) {
@@ -9494,26 +9497,12 @@
       });
     }
     updateLabel() {
-      const selectedIds = this.getSelectedIds();
-      if (selectedIds.length === 0) {
+      const titles = this.idFieldTargets.map((field) => field.getAttribute("data-title")).filter((title) => title);
+      if (titles.length === 0) {
         this.labelTarget.innerHTML = '<span class="text-body-subtle">Select items...</span>';
         return;
       }
-      const selectedTexts = [];
-      this.checkboxTargets.forEach((checkbox) => {
-        if (checkbox.checked) {
-          const listItem = checkbox.closest("li[data-id]");
-          const label = listItem?.querySelector("label");
-          if (label) {
-            selectedTexts.push(label.textContent.trim());
-          }
-        }
-      });
-      if (selectedTexts.length > 0) {
-        this.labelTarget.textContent = selectedTexts.join(", ");
-      } else {
-        this.labelTarget.innerHTML = `<span class="text-body-subtle">${selectedIds.length} selected</span>`;
-      }
+      this.labelTarget.textContent = titles.join(", ");
     }
   };
 
