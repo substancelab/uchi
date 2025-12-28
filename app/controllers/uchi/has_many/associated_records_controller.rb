@@ -56,10 +56,6 @@ module Uchi
         end
       end
 
-      def current_sort_order
-        Uchi::SortOrder.new(:id, :asc)
-      end
-
       def field
         @field ||= begin
           field_name = params[:field]
