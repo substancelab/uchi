@@ -65,10 +65,15 @@ module Uchi
         end
 
         def associated_repository
-          reflection = record.class.reflect_on_association(field.name)
-          model = reflection.klass
-          repository_class = Uchi::Repository.for_model(model)
-          raise NameError, "No repository found for associated model #{model}" unless repository_class
+          raise NameError, "No association named #{field.name.inspect} found on #{record.class}" unless reflection
+
+          associated_model = reflection.klass
+          repository_class = Uchi::Repository.for_model(associated_model)
+          unless repository_class
+            raise \
+              NameError,
+              "No repository found for associated model #{associated_model}"
+          end
 
           repository_class.new
         end
@@ -92,13 +97,12 @@ module Uchi
         #
         # @return [ActiveRecord::Reflection, nil]
         def inverse_association
-          reflection = record.class.reflect_on_association(field.name)
           reflection&.inverse_of
         end
 
         # Returns the ActiveRecord::Reflection for this association.
         #
-        # @return [ActiveRecord::Reflection]
+        # @return [ActiveRecord::Reflection, nil]
         def reflection
           @reflection ||= record.class.reflect_on_association(field.name)
         end
