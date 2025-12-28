@@ -72,7 +72,6 @@ module Uchi
 
       def find_all_records(repository:, scope: nil)
         # Duplicated from Uchi::RepositoryController; consider refactoring.
-        Rails.logger.debug("Scope: #{scope.inspect}")
         repository
           .find_all(
             scope: scope,
