@@ -1,0 +1,26 @@
+<ul class="p-4 text-sm text-body font-medium space-y-4">
+  <% @records.each do |record| %>
+    <%
+      checkbox_id = dom_id(record, [source_repository.model, @field_name, 'checkbox'].join("-"))
+    %>
+    <li
+      data-id="<%= record.id %>"
+      id="<%= dom_id(record, [source_repository.model, @field_name].join("-")) %>"
+      role="option"
+    >
+      <div class="flex items-center">
+        <input
+          type="checkbox"
+          id="<%= checkbox_id %>"
+          class="w-4 h-4 border border-default-strong rounded-xs bg-neutral-secondary-strong focus:ring-2 focus:ring-brand-soft cursor-pointer"
+          data-action="change->has-many#handleCheckboxChange"
+          data-has-many-target="checkbox"
+          <%= 'checked' if @current_values.include?(record) %>
+        >
+        <label for="<%= checkbox_id %>" class="ms-2 text-sm font-medium text-heading cursor-pointer">
+          <%= record_title(record) %>
+        </label>
+      </div>
+    </li>
+  <% end %>
+</ul>

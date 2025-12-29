@@ -3,16 +3,16 @@
 require "uchi/pagination/controller"
 
 module Uchi
-  module BelongsTo
-    # Companion controller for the Stimulus-based belongs_to_controller.
+  module HasMany
+    # Companion controller for the Stimulus-based has_many_controller.
     #
-    # Provides backend support for fetching associated records for a belongs_to
+    # Provides backend support for fetching associated records for a has_many
     # field via AJAX.
     class AssociatedRecordsController < Uchi::ApplicationController
       layout false
 
       def index
-        @current_value = field.value(parent_record)
+        @current_values = field.value(parent_record) || []
 
         @field_name = params[:field]
         @records = field.collection_query.call(find_all_records_from_association)
