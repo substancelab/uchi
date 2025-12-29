@@ -45,7 +45,7 @@ export default class extends Controller {
   }
 
   getSelectedIds() {
-    return this.idFieldTargets.map(field => field.value)
+    return this.idFieldTargets.map(field => String(field.value))
   }
 
   handleChange() {

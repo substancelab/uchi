@@ -9431,7 +9431,7 @@
       });
     }
     getSelectedIds() {
-      return this.idFieldTargets.map((field) => field.value);
+      return this.idFieldTargets.map((field) => String(field.value));
     }
     handleChange() {
       this.fetchOptions();
