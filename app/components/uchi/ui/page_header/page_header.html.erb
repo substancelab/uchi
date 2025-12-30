@@ -1,13 +1,13 @@
-<header class="px-4 mb-6 space-y-6 md:px-0">
-  <div>
-    <% if breadcrumb? %>
+<header class="px-0 mb-6 space-y-6 md:px-0">
+  <% if breadcrumb? %>
+    <div class="px-2">
       <%= breadcrumb %>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 
-  <div class="items-start justify-between space-x-6 md:flex md:px-0">
+  <div class="items-start justify-between space-y-2 space-x-6 md:flex md:px-0 md:space-y-0">
     <div>
-      <h1 class="text-3xl font-semibold tracking-tight text-heading group">
+      <h1 class="px-1 text-3xl font-semibold tracking-tight text-heading group">
         <%= title %>
       </h1>
 
