@@ -2,8 +2,91 @@
   class="
     w-64 h-full px-3 py-4 overflow-y-auto shrink-0
     bg-neutral-secondary-medium
+    hidden md:block
   "
   aria-label="Main"
 >
   <%= render Uchi::Ui::Navigation.new %>
+</nav>
+
+<div
+  class="md:hidden">
+  <button
+    aria-controls="main-navigation"
+    class="
+      text-body bg-transparent hover:text-heading
+      hover:bg-neutral-tertiary rounded-base w-9 h-9
+      flex items-center justify-center
+    "
+    popovertarget="main-navigation"
+    type="button"
+  >
+    <svg
+      aria-hidden="true"
+      class="w-6 h-6"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-width="2"
+        d="M5 7h14M5 12h14M5 17h14"
+      />
+    </svg>
+  </button>
+</div>
+
+<nav
+  aria-label="Main"
+  class="
+    fixed top-0 left-0 z-40 h-screen p-2
+    flex-col
+    bg-neutral-primary-soft w-80
+    border-e border-default
+    backdrop:bg-dark-backdrop/70
+  "
+  id="main-navigation"
+  popover
+  tabindex="-1"
+>
+  <div>
+    <button
+      aria-controls="main-navigation"
+      class="
+        text-body bg-transparent hover:text-heading
+        hover:bg-neutral-tertiary rounded-base w-9 h-9
+        flex items-center justify-center
+      "
+      popovertarget="main-navigation"
+      type="button"
+    >
+      <svg
+        aria-hidden="true"
+        class="w-5 h-5"
+        fill="none"
+        height="24"
+        viewBox="0 0 24 24"
+        width="24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18 17.94 6M18 18 6.06 6"
+        />
+      </svg>
+
+      <span class="sr-only">Close menu</span>
+    </button>
+  </div>
+
+  <div class="overflow-y-auto max-h-full">
+    <%= render Uchi::Ui::Navigation.new %>
+  </div>
 </nav>
