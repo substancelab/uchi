@@ -216,6 +216,10 @@ Rely on defaults whenever possible. If something has already been decided for us
 
 We don't want to force you to translate everything. If a field doesn't need a translation, don't add one, we'll just fall back to the fields name.
 
+### Edits happen on the edit page
+
+This includes both attributes and associations as much as feasible.
+
 ## Credits
 
 * Uchi contains parts of [Pagy](https://github.com/ddnexus/pagy), Copyright (c) 2017-2025 Domizio Demichelis
