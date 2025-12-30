@@ -114,9 +114,9 @@ Field::BelongsTo.new(:person)
 
 ### How to limit what records are returned
 
-You can use [`#collection_query`](#collection_query) to limit what records are returned. Remember you have access to the currently logged in user in `Current.user`.
+You can use [`#collection_query`](#collection_query) to limit what records are returned. Remember you have access to the currently logged-in user in `Current.user`.
 
-For example, if your `User` model has an `authorized_people` method that returns the people records the currently logged in user is allowed to access, you could do something like:
+For example, if your `User` model has an `authorized_people` method that returns the people records the current user is allowed to access, you could do something like:
 
 ```ruby
 Field::BelongsTo.new(:person)
@@ -176,9 +176,9 @@ Field::HasMany.new(:projects)
 
 ### How to limit what records are returned
 
-You can use [`#collection_query`](#collection_query) to limit what records are returned. Remember you have access to the currently logged in user in `Current.user`.
+You can use [`#collection_query`](#collection_query) to limit what records are returned. Remember you have access to the currently logged-in user in `Current.user`.
 
-For example, if your `User` model has a `projects` method that returns the `Project` records the currently logged-in user is allowed to access, you could do something like:
+For example, if your `User` model has a `projects` method that returns the `Project` records the current user is allowed to access, you could do something like:
 
 ```ruby
 Field::HasMany.new(:projects)
