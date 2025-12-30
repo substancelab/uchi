@@ -1024,9 +1024,6 @@
   .text-fg-disabled {
     color: var(--color-fg-disabled);
   }
-  .text-gray-800 {
-    color: var(--color-gray-800);
-  }
   .text-green-500 {
     color: var(--color-green-500);
   }
@@ -1427,11 +1424,6 @@
   .dark\:text-red-500 {
     @media (prefers-color-scheme: dark) {
       color: var(--color-red-500);
-    }
-  }
-  .dark\:text-white {
-    @media (prefers-color-scheme: dark) {
-      color: var(--color-white);
     }
   }
   .hover\:dark\:text-blue-500 {
