@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Editing BelongsTo fields now use a more powerful and user-friendly widget than the standard select dropdown to fetch relevant records from the backend.
+- Mounting Uchi is now done by adding `Uchi.routes.mount(self)` to `config/routes.rb`. The old explicit mount syntax still works, but you won't reap some of the future benefits using the old syntax.
 
 ### Fixed
 
