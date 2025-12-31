@@ -8,9 +8,5 @@ module Uchi
       destination = File.join("app/controllers/uchi")
       template "controller.rb", File.join(destination, "#{plural_file_name}_controller.rb")
     end
-
-    def add_route
-      route "resources :#{plural_file_name}", namespace: :uchi
-    end
   end
 end
