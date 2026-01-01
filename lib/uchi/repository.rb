@@ -12,6 +12,13 @@ module Uchi
         }
       end
 
+      # Returns the "name" of the controller that handles requests for this
+      # repository. Note that this is different from the controllers class name
+      # and is intended for generating URLs.
+      def controller_name
+        model_param_key.pluralize
+      end
+
       # Returns the repository for the given model, or nil if none is found.
       def for_model(model)
         all.find { |repository| repository.model.to_s == model.to_s }
@@ -20,6 +27,10 @@ module Uchi
       # Returns the model class this repository manages.
       def model
         @model ||= name.demodulize.constantize
+      end
+
+      def model_param_key
+        model.model_name.param_key
       end
     end
 
@@ -32,7 +43,7 @@ module Uchi
     # repository. Note that this is different from the controllers class name
     # and is intended for generating URLs.
     def controller_name
-      model_param_key.pluralize
+      self.class.controller_name
     end
 
     def default_sort_order
@@ -104,7 +115,7 @@ module Uchi
     end
 
     def model_param_key
-      model.model_name.param_key
+      self.class.model_param_key
     end
 
     # Returns an instance of Uchi::Repository::Routes for this repository,

@@ -7,7 +7,7 @@ module Uchi
     end
 
     def mount_engine
-      route "mount Uchi::Engine, at: \"/uchi\""
+      route "Uchi.routes.mount(self)"
     end
   end
 end
