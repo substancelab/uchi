@@ -16,6 +16,14 @@ module Uchi
       draw_repository_routes(host_routes, at: at)
     end
 
+    def draw_root_route(routes, repository:, at: default_at)
+      return unless repository
+
+      routes.namespace(at) do
+        routes.root to: "#{repository.controller_name}#index"
+      end
+    end
+
     def draw_repository_routes(routes, at: default_at)
       repositories = Uchi::Repository.all
       repositories.each do |repository_class|
@@ -24,6 +32,8 @@ module Uchi
           routes.resources(resources_name)
         end
       end
+
+      draw_root_route(routes, at: at, repository: repositories.first)
     end
 
     private

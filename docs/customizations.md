@@ -32,3 +32,21 @@ See [ViewComponent docs](https://viewcomponent.org/) for more details.
 If you want even more control over the navigation menu, including being able to remove it entirely, you can add a partial in your application at `app/views/uchi/navigation/_main.html.erb`.
 
 Creating your own navigation partial gives you full control over the navigation menu, including the `nav` element that wraps the navigation area, allowing you to remove the menu entirely by rendering an empty partial.
+
+## Routes
+
+Uchi automatically adds routes for each repository and uses whichever repository is defined first as the root route (ie what you'll get at `/uchi`).
+
+### How to change the root URL
+
+If you want another repository to be displayed at the root URL (ie `/uchi`), you can add the relevant route to `config/routes.rb`:
+
+```ruby
+# config/routes.rb
+Rails.application.routes.draw do
+  Uchi.routes.mount(self)
+  namespace :uchi do
+    root to: "projects#index"
+  end
+end
+```
