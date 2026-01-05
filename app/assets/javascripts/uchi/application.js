@@ -9511,6 +9511,8 @@
   application.register("belongs-to", belongs_to_controller_default);
   application.register("dropdown", Dropdown);
   application.register("has-many", has_many_controller_default);
+  window.uchi ||= {};
+  window.uchi.application ||= application;
   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
     document.documentElement.classList.add("dark");
   }

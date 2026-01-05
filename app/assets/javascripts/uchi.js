@@ -15,6 +15,10 @@ application.register('belongs-to', BelongsTo)
 application.register('dropdown', Dropdown)
 application.register('has-many', HasMany)
 
+// Expose application for extensibility
+window.uchi ||= {}
+window.uchi.application ||= application
+
 if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
   document.documentElement.classList.add('dark')
 }

@@ -11,8 +11,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <%= javascript_include_tag "uchi/application", "data-turbo-track" => "reload" %>
-    <%= stylesheet_link_tag "uchi/application", media: "all", "data-turbo-track": "reload" %>
+    <%= render "layouts/uchi/javascript" %>
+    <%= render "layouts/uchi/stylesheets" %>
   </head>
 
   <body class="antialiased bg-neutral-secondary-medium h-full p-2">
