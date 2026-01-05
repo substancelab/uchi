@@ -45,3 +45,23 @@ in `app/views/layouts/uchi/_stylesheets.html.erb` to still include the default s
   }
 </style>
 ```
+
+### Theming
+
+Uchis UI is built on [Flowbite](https://flowbite.com) and [Tailwind](https://tailwindcss.com) (using [flowbite-components for Rails](https://flowbite-components.substancelab.com/)).
+
+This means you have access to all of [Flowbites theme variables](https://flowbite.com/docs/customize/variables/) to customize colors and fonts and even all of [Tailwinds theme variables](https://tailwindcss.com/docs/theme#theme-variable-namespaces), which allow you to modify pretty much every design token in Uchi.
+
+For example, to create a... unique... theme, you could add the following to `app/views/layouts/uchi/_stylesheets.html.erb`:
+
+```erb
+<%= stylesheet_link_tag "uchi/application", media: "all", "data-turbo-track": "reload" %>
+<style>
+  * {
+    --color-brand: red;
+    --color-neutral-secondary-soft: yellow;
+    --radius-base: 100px;
+    --tracking-tight: 1em;
+  }
+</style>
+```
