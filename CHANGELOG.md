@@ -9,14 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Fixed
+
+### Removed
+
+
+## [0.1.7]
+
+### Added
+
 - BelongsTo and HasMany fields now use a more powerful and user-friendly widget than the standard select dropdown to fetch relevant records from the backend.
 - Mounting Uchi is now done by adding `Uchi.routes.mount(self)` to `config/routes.rb`. The old explicit mount syntax still works, you won't reap some of the future benefits by doing so.
 - Routes for RepositoryControllers are now automatically added to the host app's routes.
 - It is now possible to customize the JavaScript and stylesheet assets that Uchi loads.
-
-### Fixed
-
-### Removed
 
 
 ## [0.1.6]
