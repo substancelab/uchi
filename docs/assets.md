@@ -9,7 +9,7 @@ The script tags for the default JavaScript are rendered by `app/views/layouts/uc
 If you want to extend the existing Uchi client-side code, include a
 
 ```erb
-<%= javascript_include_tag "uchi/application", "data-turbo-track" => "reload" %>
+<%= javascript_include_tag "uchi/application", "data-turbo-track": "reload" %>
 ```
 
 in `app/views/layouts/uchi/_javascript.html.erb` to still include the default scripts.
