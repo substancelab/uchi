@@ -20,7 +20,7 @@ module Uchi::Flowbite
 
     class << self
       def classes(size: :default, state: :default, style: :default)
-        style = styles.fetch(style) or raise "wut"
+        style = styles.fetch(style)
         classes = style.fetch(state)
         classes + sizes.fetch(size)
       end
