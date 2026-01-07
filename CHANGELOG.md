@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Allow UI to use the full height of the viewport to prevent clipping popovers and dialogs.
+
 ### Removed
 
 
