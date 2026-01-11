@@ -8,12 +8,14 @@ import Dropdown from '@stimulus-components/dropdown'
 
 import BelongsTo from './controllers/fields/belongs_to_controller.js'
 import HasMany from './controllers/fields/has_many_controller.js'
+import NestedMany from './controllers/fields/nested_many_controller.js'
 
 // Start Stimulus and register components
 const application = Application.start()
 application.register('belongs-to', BelongsTo)
 application.register('dropdown', Dropdown)
 application.register('has-many', HasMany)
+application.register('nested-many', NestedMany)
 
 // Expose application for extensibility
 window.uchi ||= {}

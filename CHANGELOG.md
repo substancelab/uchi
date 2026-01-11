@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- New `Field::NestedMany` for inline editing of HasMany associations using Rails nested attributes. Allows creating, editing, and deleting associated records directly within the parent form. Supports String, Text, Number, Boolean, Date, and DateTime fields.
+
 ### Fixed
 
 - Index views were not scrollable on mobile viewports.

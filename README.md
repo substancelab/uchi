@@ -65,6 +65,7 @@ Uchi comes with a bunch of fields that you can choose from, fx:
 - `Field::Date`
 - `Field::DateTime`
 - `Field::HasMany`
+- `Field::NestedMany`
 - `Field::Number`
 - `Field::String`
 

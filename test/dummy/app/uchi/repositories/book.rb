@@ -4,7 +4,8 @@ module Uchi
       def fields
         [
           Field::HasMany.new(:titles),
-          Field::String.new(:original_title)
+          Field::String.new(:original_title),
+          Field::NestedMany.new(:titles).fields(:title, :locale).on(:edit, :show)
         ]
       end
 

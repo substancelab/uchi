@@ -297,3 +297,170 @@ The lambda receives an `ActiveRecord::Relation` with all records returned from t
 ### How to change titles in the dropdown
 
 The dropdown displays the `title` of the record. For example, a `Person` repository may use the `name` attribute as its title. To customize the title for a record, implement `Repository#title`, see [repositories documentation](repositories/#customizing-the-title-of-a-record) for details.
+
+
+## Field::NestedMany
+
+The `NestedMany` field enables inline editing of `has_many` associations using Rails' nested attributes pattern. Unlike `HasMany` which allows selecting existing records, `NestedMany` allows creating, editing, and deleting associated records directly within the parent form.
+
+### When to use NestedMany
+
+Use `NestedMany` when you want to manage associated records inline within the parent form:
+
+- ✅ Small, manageable number of nested records (typically < 20)
+- ✅ Simple fields only (String, Text, Number, Boolean, Date, DateTime)
+- ✅ Tight coupling between parent and children (e.g., Invoice -> Line Items)
+
+Use standard `HasMany` field when:
+
+- ❌ Large number of associated records
+- ❌ Need to assign existing records (not create new ones)
+- ❌ Complex nested relationships or file uploads
+
+### How to add a NestedMany field
+
+#### 1. Model Configuration
+
+Your model must use `accepts_nested_attributes_for`:
+
+```ruby
+class Book < ApplicationRecord
+  has_many :titles
+  accepts_nested_attributes_for :titles, allow_destroy: true
+end
+```
+
+#### 2. Repository Configuration
+
+Define the field with the nested fields you want to edit:
+
+```ruby
+module Uchi
+  module Repositories
+    class Book < Repository
+      def fields
+        [
+          Field::String.new(:original_title),
+          Field::NestedMany.new(:titles).fields([
+            :title,
+            :locale
+          ])
+        ]
+      end
+    end
+  end
+end
+```
+
+### The `#fields` method
+
+The chainable `#fields` method configures which attributes to display inline for each nested record. It accepts an array of symbols representing the field names:
+
+```ruby
+Field::NestedMany.new(:titles).fields(:title, :locale, :published_on)
+```
+
+Or with an array:
+
+```ruby
+Field::NestedMany.new(:titles).fields([:title, :locale])
+```
+
+### Supported nested field types
+
+- ✅ `String` - single-line text
+- ✅ `Text` - multi-line text
+- ✅ `Number` - integers, decimals
+- ✅ `Boolean` - checkboxes
+- ✅ `Date` - date picker
+- ✅ `DateTime` - datetime picker
+
+### Unsupported types
+
+- ❌ `File` / `Image` - use dedicated file upload approach
+- ❌ `HasMany` / `BelongsTo` / `HasAndBelongsToMany` - no nested relationships
+
+### Advanced model options
+
+**Reject blank records** to avoid creating empty associated records:
+
+```ruby
+class Book < ApplicationRecord
+  accepts_nested_attributes_for :titles,
+    allow_destroy: true,
+    reject_if: :all_blank
+end
+```
+
+**Limit nested records** to prevent abuse:
+
+```ruby
+accepts_nested_attributes_for :titles,
+  allow_destroy: true,
+  limit: 10
+```
+
+### Error handling
+
+Validation errors on nested records are displayed inline below each invalid field:
+
+```ruby
+class Title < ApplicationRecord
+  belongs_to :book
+  validates :title, presence: true
+  validates :locale, length: {is: 2}
+end
+```
+
+### Performance considerations
+
+NestedMany renders all associated records at once. For large associations (50+ records):
+
+1. Consider limiting displayed records in the model:
+   ```ruby
+   def recent_titles
+     titles.order(created_at: :desc).limit(20)
+   end
+   ```
+
+2. Use `HasMany` field for better performance with large datasets
+
+### Complete example
+
+```ruby
+# app/models/book.rb
+class Book < ApplicationRecord
+  has_many :titles, dependent: :destroy
+  accepts_nested_attributes_for :titles,
+    allow_destroy: true,
+    reject_if: :all_blank
+end
+
+# app/models/title.rb
+class Title < ApplicationRecord
+  belongs_to :book
+  validates :title, presence: true
+  validates :locale, presence: true, length: {is: 2}
+end
+
+# app/uchi/repositories/book.rb
+module Uchi
+  module Repositories
+    class Book < Repository
+      def fields
+        [
+          Field::String.new(:original_title),
+          Field::NestedMany.new(:titles).fields([
+            :title,
+            :locale
+          ]).on(:edit, :new, :show)
+        ]
+      end
+
+      def title(model)
+        model.original_title
+      end
+    end
+  end
+end
+```
