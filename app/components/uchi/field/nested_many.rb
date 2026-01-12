@@ -24,62 +24,11 @@ module Uchi
         end
 
         def nested_field_components
-          @nested_field_components ||= build_nested_field_components
+          field.nested_fields
         end
 
         def reflection
           @reflection ||= record.class.reflect_on_association(field.name)
-        end
-
-        private
-
-        def build_nested_field_components
-          field.nested_fields.map do |field_def|
-            case field_def
-            when Symbol
-              infer_field_type(field_def)
-            when Hash
-              field_name = field_def.keys.first
-              field_options = field_def.values.first
-              build_custom_field(field_name, field_options)
-            end
-          end.compact
-        end
-
-        def build_custom_field(field_name, options)
-          field_type = options[:type] || :string
-          field_class = "Uchi::Field::#{field_type.to_s.camelize}".constantize
-          field_class.new(field_name).tap do |field|
-            field.on(*options[:on]) if options[:on]
-            field.searchable(options[:searchable]) if options.key?(:searchable)
-          end
-        end
-
-        def infer_field_type(field_name)
-          # Try to get field from associated repository first
-          if associated_repository&.respond_to?(:fields)
-            repo_field = associated_repository.fields.find { |f| f.name == field_name }
-            return repo_field if repo_field
-          end
-
-          # Fall back to column type inference
-          column = reflection.klass.columns_hash[field_name.to_s]
-          return nil unless column
-
-          case column.type
-          when :string then Field::String.new(field_name)
-          when :text then Field::Text.new(field_name)
-          when :integer, :decimal, :float then Field::Number.new(field_name)
-          when :boolean then Field::Boolean.new(field_name)
-          when :date then Field::Date.new(field_name)
-          when :datetime, :timestamp then Field::DateTime.new(field_name)
-          else
-            Rails.logger.warn(
-              "Field::NestedMany: Could not infer field type for #{field_name} " \
-              "on #{reflection.klass.name}, using String"
-            )
-            Field::String.new(field_name)
-          end
         end
       end
 
@@ -103,62 +52,11 @@ module Uchi
         end
 
         def nested_field_components
-          @nested_field_components ||= build_nested_field_components
+          field.nested_fields
         end
 
         def reflection
           @reflection ||= record.class.reflect_on_association(field.name)
-        end
-
-        private
-
-        def build_nested_field_components
-          field.nested_fields.map do |field_def|
-            case field_def
-            when Symbol
-              infer_field_type(field_def)
-            when Hash
-              field_name = field_def.keys.first
-              field_options = field_def.values.first
-              build_custom_field(field_name, field_options)
-            end
-          end.compact
-        end
-
-        def build_custom_field(field_name, options)
-          field_type = options[:type] || :string
-          field_class = "Uchi::Field::#{field_type.to_s.camelize}".constantize
-          field_class.new(field_name).tap do |field|
-            field.on(*options[:on]) if options[:on]
-            field.searchable(options[:searchable]) if options.key?(:searchable)
-          end
-        end
-
-        def infer_field_type(field_name)
-          # Try to get field from associated repository first
-          if associated_repository&.respond_to?(:fields)
-            repo_field = associated_repository.fields.find { |f| f.name == field_name }
-            return repo_field if repo_field
-          end
-
-          # Fall back to column type inference
-          column = reflection.klass.columns_hash[field_name.to_s]
-          return nil unless column
-
-          case column.type
-          when :string then Field::String.new(field_name)
-          when :text then Field::Text.new(field_name)
-          when :integer, :decimal, :float then Field::Number.new(field_name)
-          when :boolean then Field::Boolean.new(field_name)
-          when :date then Field::Date.new(field_name)
-          when :datetime, :timestamp then Field::DateTime.new(field_name)
-          else
-            Rails.logger.warn(
-              "Field::NestedMany: Could not infer field type for #{field_name} " \
-              "on #{reflection.klass.name}, using String"
-            )
-            Field::String.new(field_name)
-          end
         end
       end
 
@@ -171,22 +69,29 @@ module Uchi
 
       # Configures which fields to display inline for the nested records.
       #
-      # @param field_definitions [Array<Symbol, Hash>] Field names or configurations
+      # @param field_definitions [Array<Uchi::Field>] Field instances
       # @return [self, Array] Returns self for method chaining when setting,
       #   or the nested_fields array when getting
       #
-      # @example Setting with symbols
-      #   Field::NestedMany.new(:titles).fields(:title, :language, :published_on)
+      # @example Setting with field instances
+      #   Field::NestedMany.new(:titles).fields(
+      #     Field::String.new(:title),
+      #     Field::String.new(:locale)
+      #   )
       #
       # @example Setting with array
-      #   Field::NestedMany.new(:titles).fields([:title, :language])
+      #   Field::NestedMany.new(:titles).fields([
+      #     Field::String.new(:title),
+      #     Field::String.new(:locale)
+      #   ])
       #
       # @example Getting
-      #   field.fields # => [:title, :language]
+      #   field.fields # => [#<Uchi::Field::String>, #<Uchi::Field::String>]
       def fields(*field_definitions)
         return @nested_fields if field_definitions.empty?
 
         @nested_fields = field_definitions.flatten
+        validate_nested_fields!
         self
       end
 
@@ -208,16 +113,21 @@ module Uchi
         # Base params: :id for existing records, :_destroy for deletion
         base_params = [:id, :_destroy]
 
-        # Add each configured nested field
-        field_params = @nested_fields.map do |field_def|
-          if field_def.is_a?(Symbol)
-            field_def
-          elsif field_def.is_a?(Hash)
-            field_def.keys.first
-          end
-        end
+        # Add each configured nested field's permitted param
+        field_params = @nested_fields.map(&:permitted_param)
 
         base_params + field_params
+      end
+
+      def validate_nested_fields!
+        @nested_fields.each do |field|
+          unless field.is_a?(Uchi::Field)
+            raise ArgumentError,
+              "Field::NestedMany#fields expects Uchi::Field instances, " \
+              "got #{field.class} (#{field.inspect}). " \
+              "Example: Field::NestedMany.new(:titles).fields(Field::String.new(:title))"
+          end
+        end
       end
     end
   end

@@ -5,7 +5,10 @@ module Uchi
         [
           Field::HasMany.new(:titles),
           Field::String.new(:original_title),
-          Field::NestedMany.new(:titles).fields(:title, :locale).on(:edit, :show)
+          Field::NestedMany.new(:titles).fields(
+            Field::String.new(:title),
+            Field::String.new(:locale)
+          ).on(:edit, :show)
         ]
       end
 

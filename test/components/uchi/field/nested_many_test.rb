@@ -23,24 +23,39 @@ module Uchi
         assert_equal [], @field.nested_fields
       end
 
-      test "#fields configures nested fields with symbols" do
-        field = Uchi::Field::NestedMany.new(:titles).fields(:title, :language)
-        assert_equal [:title, :language], field.nested_fields
+      test "#fields configures nested fields with Field instances" do
+        field = Uchi::Field::NestedMany.new(:titles).fields(
+          Field::String.new(:title),
+          Field::String.new(:locale)
+        )
+        assert_equal 2, field.nested_fields.size
+        assert_kind_of Field::String, field.nested_fields[0]
+        assert_equal :title, field.nested_fields[0].name
+        assert_kind_of Field::String, field.nested_fields[1]
+        assert_equal :locale, field.nested_fields[1].name
       end
 
       test "#fields configures nested fields with array" do
-        field = Uchi::Field::NestedMany.new(:titles).fields([:title, :language, :published_on])
-        assert_equal [:title, :language, :published_on], field.nested_fields
+        field = Uchi::Field::NestedMany.new(:titles).fields([
+          Field::String.new(:title),
+          Field::String.new(:locale)
+        ])
+        assert_equal 2, field.nested_fields.size
       end
 
       test "#fields returns nested_fields when called without arguments" do
-        field = Uchi::Field::NestedMany.new(:titles).fields(:title, :language)
-        assert_equal [:title, :language], field.fields
+        field = Uchi::Field::NestedMany.new(:titles).fields(
+          Field::String.new(:title),
+          Field::String.new(:locale)
+        )
+        assert_equal field.nested_fields, field.fields
       end
 
-      test "#fields returns self for method chaining" do
-        field = Uchi::Field::NestedMany.new(:titles).fields(:title)
-        assert_equal field, field.fields(:language)
+      test "#fields raises error for non-Field instances" do
+        error = assert_raises(ArgumentError) do
+          Uchi::Field::NestedMany.new(:titles).fields(:title, :language)
+        end
+        assert_match(/expects Uchi::Field instances/, error.message)
       end
 
       test "#param_key returns nested attributes key" do
@@ -48,9 +63,12 @@ module Uchi
       end
 
       test "#permitted_param returns nested hash structure" do
-        field = Uchi::Field::NestedMany.new(:titles).fields(:title, :language)
+        field = Uchi::Field::NestedMany.new(:titles).fields(
+          Field::String.new(:title),
+          Field::String.new(:locale)
+        )
         expected = {
-          titles_attributes: [:id, :_destroy, :title, :language]
+          titles_attributes: [:id, :_destroy, :title, :locale]
         }
         assert_equal expected, field.permitted_param
       end
@@ -62,24 +80,13 @@ module Uchi
         assert_equal expected, @field.permitted_param
       end
 
-      test "#permitted_param handles hash field definitions" do
-        field = Uchi::Field::NestedMany.new(:titles).fields(
-          :title,
-          {language: {type: :string}}
-        )
-        expected = {
-          titles_attributes: [:id, :_destroy, :title, :language]
-        }
-        assert_equal expected, field.permitted_param
-      end
-
       test "#group_as returns :associations" do
         assert_equal :associations, @field.group_as(:show)
         assert_equal :associations, @field.group_as(:edit)
       end
 
       test "#edit_component returns an instance of Edit component" do
-        field = Uchi::Field::NestedMany.new(:titles).fields(:title)
+        field = Uchi::Field::NestedMany.new(:titles).fields(Field::String.new(:title))
         component = field.edit_component(
           form: @form,
           hint: "Custom hint",
@@ -123,7 +130,10 @@ module Uchi
 
     class NestedManyEditTest < ViewComponent::TestCase
       def setup
-        @field = Uchi::Field::NestedMany.new(:titles).fields(:title, :language)
+        @field = Uchi::Field::NestedMany.new(:titles).fields(
+          Field::String.new(:title),
+          Field::String.new(:locale)
+        )
         @book = Book.new(original_title: "The Hobbit")
         @repository = Uchi::Repositories::Book.new
         @view_context = ActionController::Base.new.view_context
@@ -160,7 +170,7 @@ module Uchi
 
     class NestedManyIndexTest < ViewComponent::TestCase
       def setup
-        @field = Uchi::Field::NestedMany.new(:titles).fields(:title)
+        @field = Uchi::Field::NestedMany.new(:titles).fields(Field::String.new(:title))
         @book = Book.new(original_title: "The Hobbit")
         @repository = Uchi::Repositories::Book.new
 
@@ -178,7 +188,7 @@ module Uchi
 
     class NestedManyShowTest < ViewComponent::TestCase
       def setup
-        @field = Uchi::Field::NestedMany.new(:titles).fields(:title)
+        @field = Uchi::Field::NestedMany.new(:titles).fields(Field::String.new(:title))
         @book = Book.new(original_title: "The Hobbit")
         @repository = Uchi::Repositories::Book.new
 

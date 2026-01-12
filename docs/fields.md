@@ -341,10 +341,10 @@ module Uchi
       def fields
         [
           Field::String.new(:original_title),
-          Field::NestedMany.new(:titles).fields([
-            :title,
-            :locale
-          ])
+          Field::NestedMany.new(:titles).fields(
+            Field::String.new(:title),
+            Field::String.new(:locale)
+          )
         ]
       end
     end
@@ -354,16 +354,23 @@ end
 
 ### The `#fields` method
 
-The chainable `#fields` method configures which attributes to display inline for each nested record. It accepts an array of symbols representing the field names:
+The chainable `#fields` method configures which fields to display inline for each nested record. It accepts Field instances, just like `Repository#fields`:
 
 ```ruby
-Field::NestedMany.new(:titles).fields(:title, :locale, :published_on)
+Field::NestedMany.new(:titles).fields(
+  Field::String.new(:title),
+  Field::String.new(:locale),
+  Field::Date.new(:published_on)
+)
 ```
 
 Or with an array:
 
 ```ruby
-Field::NestedMany.new(:titles).fields([:title, :locale])
+Field::NestedMany.new(:titles).fields([
+  Field::String.new(:title),
+  Field::String.new(:locale)
+])
 ```
 
 ### Supported nested field types
@@ -450,10 +457,10 @@ module Uchi
       def fields
         [
           Field::String.new(:original_title),
-          Field::NestedMany.new(:titles).fields([
-            :title,
-            :locale
-          ]).on(:edit, :new, :show)
+          Field::NestedMany.new(:titles).fields(
+            Field::String.new(:title),
+            Field::String.new(:locale)
+          ).on(:edit, :new, :show)
         ]
       end
 
