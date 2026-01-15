@@ -19,7 +19,14 @@ module Uchi
               "No association named #{field.name.inspect} found on #{record.class}"
           end
 
-          model = reflection.klass
+          model = if reflection.polymorphic?
+            associated_record&.class
+          else
+            reflection.klass
+          end
+
+          return nil if model.nil?
+
           repository_class = Uchi::Repository.for_model(model)
           repository_class.new
         end
@@ -34,7 +41,14 @@ module Uchi
 
         def associated_repository
           @associated_repository ||= begin
-            model = reflection.klass
+            model = if reflection.polymorphic?
+              associated_record&.class
+            else
+              reflection.klass
+            end
+
+            return nil if model.nil?
+
             repository_class = Uchi::Repository.for_model(model)
             repository_class.new
           end
@@ -125,10 +139,30 @@ module Uchi
         :attributes
       end
 
+      # Returns the actions this field should appear on.
+      #
+      # For polymorphic associations, excludes :edit and :new to prevent showing
+      # the field on forms where the type cannot be determined.
+      def on(*actions)
+        on = super
+        return on - [:edit, :new] if polymorphic? && actions.empty?
+
+        on
+      end
+
       def param_key
         # TODO: This is too naive. We need to match this to the actual foreign
         # key of the model.
         :"#{name}_id"
+      end
+
+      private
+
+      def polymorphic?
+        return false unless repository
+
+        reflection = repository.model.reflect_on_association(name)
+        reflection&.polymorphic? || false
       end
     end
   end

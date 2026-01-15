@@ -149,7 +149,7 @@ module Uchi
         assert_kind_of Uchi::Repositories::Book, repo
       end
 
-      test "handles polymorphic associations" do
+      test "handles polymorphic associations with existing record" do
         # Create an ActiveStorage::Attachment which has a polymorphic belongs_to :record
         book = Book.create!(original_title: "Test Book")
         book.samples.attach(io: StringIO.new("fake image data"), filename: "sample.jpg")
@@ -169,10 +169,40 @@ module Uchi
         )
 
         # This should not raise "Polymorphic associations do not support computing the class"
-        error = assert_raises(ArgumentError) do
-          component.associated_repository
+        assert_nothing_raised do
+          repo = component.associated_repository
+          assert_kind_of Uchi::Repositories::Book, repo
         end
-        assert_match(/Polymorphic associations do not support computing the class/, error.message)
+      end
+
+      test "excludes :edit and :new for polymorphic associations" do
+        # ActiveStorage::Attachment has a polymorphic belongs_to :record
+        field = Uchi::Field::BelongsTo.new(:record)
+
+        # Need to create a repository for ActiveStorage::Attachment
+        # Since we don't have one, we'll create a mock-like structure
+        repository = Object.new
+        def repository.model
+          ActiveStorage::Attachment
+        end
+        field.repository = repository
+
+        assert_not field.on.include?(:edit)
+        assert_not field.on.include?(:new)
+        assert field.on.include?(:index)
+        assert field.on.include?(:show)
+      end
+
+      test "includes :edit and :new for non-polymorphic associations" do
+        # Title has a non-polymorphic belongs_to :book
+        field = Uchi::Field::BelongsTo.new(:book)
+        repository = Uchi::Repositories::Title.new
+        field.repository = repository
+
+        assert field.on.include?(:edit)
+        assert field.on.include?(:index)
+        assert field.on.include?(:new)
+        assert field.on.include?(:show)
       end
     end
 
@@ -260,10 +290,10 @@ module Uchi
         )
 
         # This should not raise "Polymorphic associations do not support computing the class"
-        error = assert_raises(ArgumentError) do
-          component.associated_repository
+        assert_nothing_raised do
+          repo = component.associated_repository
+          assert_kind_of Uchi::Repositories::Book, repo
         end
-        assert_match(/Polymorphic associations do not support computing the class/, error.message)
       end
     end
 
@@ -356,10 +386,10 @@ module Uchi
         )
 
         # This should not raise "Polymorphic associations do not support computing the class"
-        error = assert_raises(ArgumentError) do
-          component.associated_repository
+        assert_nothing_raised do
+          repo = component.associated_repository
+          assert_kind_of Uchi::Repositories::Book, repo
         end
-        assert_match(/Polymorphic associations do not support computing the class/, error.message)
       end
     end
   end
