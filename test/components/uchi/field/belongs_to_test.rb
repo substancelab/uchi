@@ -148,6 +148,32 @@ module Uchi
         repo = @component.associated_repository
         assert_kind_of Uchi::Repositories::Book, repo
       end
+
+      test "handles polymorphic associations" do
+        # Create an ActiveStorage::Attachment which has a polymorphic belongs_to :record
+        book = Book.create!(original_title: "Test Book")
+        book.samples.attach(io: StringIO.new("fake image data"), filename: "sample.jpg")
+        attachment = book.samples.attachments.first
+
+        field = Uchi::Field::BelongsTo.new(:record)
+        repository = Uchi::Repositories::Title.new
+        view_context = ActionController::Base.new.view_context
+        form = ActionView::Helpers::FormBuilder.new(:active_storage_attachment, attachment, view_context, {})
+
+        component = Uchi::Field::BelongsTo::Edit.new(
+          field: field,
+          form: form,
+          hint: "Record hint",
+          label: "Record label",
+          repository: repository
+        )
+
+        # This should not raise "Polymorphic associations do not support computing the class"
+        error = assert_raises(ArgumentError) do
+          component.associated_repository
+        end
+        assert_match(/Polymorphic associations do not support computing the class/, error.message)
+      end
     end
 
     class BelongsToIndexTest < ViewComponent::TestCase
@@ -216,6 +242,28 @@ module Uchi
           component.associated_repository
         end
         assert_match(/No association named :nonexistent_association found/, error.message)
+      end
+
+      test "handles polymorphic associations" do
+        # Create an ActiveStorage::Attachment which has a polymorphic belongs_to :record
+        book = Book.create!(original_title: "Test Book")
+        book.samples.attach(io: StringIO.new("fake image data"), filename: "sample.jpg")
+        attachment = book.samples.attachments.first
+
+        field = Uchi::Field::BelongsTo.new(:record)
+        repository = Uchi::Repositories::Title.new
+
+        component = Uchi::Field::BelongsTo::Index.new(
+          field: field,
+          record: attachment,
+          repository: repository
+        )
+
+        # This should not raise "Polymorphic associations do not support computing the class"
+        error = assert_raises(ArgumentError) do
+          component.associated_repository
+        end
+        assert_match(/Polymorphic associations do not support computing the class/, error.message)
       end
     end
 
@@ -290,6 +338,28 @@ module Uchi
           component.associated_repository
         end
         assert_match(/No association named :nonexistent_association found/, error.message)
+      end
+
+      test "handles polymorphic associations" do
+        # Create an ActiveStorage::Attachment which has a polymorphic belongs_to :record
+        book = Book.create!(original_title: "Test Book")
+        book.samples.attach(io: StringIO.new("fake image data"), filename: "sample.jpg")
+        attachment = book.samples.attachments.first
+
+        field = Uchi::Field::BelongsTo.new(:record)
+        repository = Uchi::Repositories::Title.new
+
+        component = Uchi::Field::BelongsTo::Show.new(
+          field: field,
+          record: attachment,
+          repository: repository
+        )
+
+        # This should not raise "Polymorphic associations do not support computing the class"
+        error = assert_raises(ArgumentError) do
+          component.associated_repository
+        end
+        assert_match(/Polymorphic associations do not support computing the class/, error.message)
       end
     end
   end
