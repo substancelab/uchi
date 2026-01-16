@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Allow UI to use the full height of the viewport to prevent clipping popovers and dialogs.
+- BelongsTo fields for polymorphic associations no longer cause an error on edit and new pages. Instead, they just don't show up. This isn't exactly optimal, but for now we don't have an automated way of actually figuring out what ActiveRecord class they are associated with.
 
 ### Removed
 
