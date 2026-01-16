@@ -52,22 +52,22 @@ module Uchi
 
     # Returns an array of fields to show on the edit page.
     def fields_for_edit
-      fields.select { |field| field.on.include?(:edit) }.each { |field| field.repository = self }
+      fields.each { |field| field.repository = self }.select { |field| field.on.include?(:edit) }
     end
 
     # Returns an array of fields to show on the index page.
     def fields_for_index
-      fields.select { |field| field.on.include?(:index) }.each { |field| field.repository = self }
+      fields.each { |field| field.repository = self }.select { |field| field.on.include?(:index) }
     end
 
     # Returns an array of fields to show on the new page.
     def fields_for_new
-      fields.select { |field| field.on.include?(:new) }.each { |field| field.repository = self }
+      fields.each { |field| field.repository = self }.select { |field| field.on.include?(:new) }
     end
 
     # Returns an array of fields to show on the show page.
     def fields_for_show
-      fields.select { |field| field.on.include?(:show) }.each { |field| field.repository = self }
+      fields.each { |field| field.repository = self }.select { |field| field.on.include?(:show) }
     end
 
     def find_all(search: nil, scope: model.all, sort_order: default_sort_order)
