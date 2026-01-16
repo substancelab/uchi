@@ -21,7 +21,7 @@
     "@rails/request.js": "^0.0.13",
     "@stimulus-components/dropdown": "^3.0.0",
     "@tailwindcss/cli": "^4.1.13",
-    "esbuild": "0.27.2",
+    "esbuild": "^0.27.2",
     "flowbite": "^4.0.1",
     "tailwindcss": "^4.1.13"
   }
