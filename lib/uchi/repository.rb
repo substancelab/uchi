@@ -60,6 +60,11 @@ module Uchi
       fields.select { |field| field.on.include?(:index) }.each { |field| field.repository = self }
     end
 
+    # Returns an array of fields to show on the new page.
+    def fields_for_new
+      fields.select { |field| field.on.include?(:new) }.each { |field| field.repository = self }
+    end
+
     # Returns an array of fields to show on the show page.
     def fields_for_show
       fields.select { |field| field.on.include?(:show) }.each { |field| field.repository = self }

@@ -18,7 +18,7 @@ module Uchi
       end
 
       test "has default options" do
-        assert_equal [:edit, :index, :show], @field.on
+        assert_equal [:edit, :index, :new, :show], @field.on
         assert_not @field.searchable?
         assert_not @field.sortable?
       end

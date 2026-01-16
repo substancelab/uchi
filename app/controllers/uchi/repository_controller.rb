@@ -9,7 +9,7 @@ module Uchi
     before_action :set_repository
 
     def create
-      @record = build_record
+      @record = build_record_for_new
       if @record.save
         flash[:success] = @repository.translate.successful_create
         redirect_to(@repository.routes.path_for(:show, id: @record.id), status: :see_other)
@@ -54,7 +54,7 @@ module Uchi
     end
 
     def new
-      @record = build_record
+      @record = build_record_for_new
     end
 
     def show
@@ -63,7 +63,7 @@ module Uchi
 
     def update
       @record = find_record
-      if @record.update(record_params)
+      if @record.update(record_params_for_update)
         flash[:success] = @repository.translate.successful_update
         redirect_to(@repository.routes.path_for(:show, id: @record.id, uniq: rand), status: :see_other)
       else
@@ -73,8 +73,8 @@ module Uchi
 
     private
 
-    def build_record
-      @repository.build(record_params)
+    def build_record_for_new
+      @repository.build(record_params_for_new)
     end
 
     # Returns the path to use for the cancel link
@@ -128,10 +128,26 @@ module Uchi
       25
     end
 
-    def record_params
-      permitted_params = @repository.fields_for_edit.map(&:permitted_param)
+    def permitted_params_for_edit
+      @repository.fields_for_edit.map(&:permitted_param)
+    end
+
+    def permitted_params_for_new
+      @repository.fields_for_new.map(&:permitted_param)
+    end
+
+    def record_params_for_edit
       (params[@repository.model_param_key] || ActionController::Parameters.new)
-        .permit(*permitted_params)
+        .permit(*permitted_params_for_edit)
+    end
+
+    def record_params_for_update
+      record_params_for_edit
+    end
+
+    def record_params_for_new
+      (params[@repository.model_param_key] || ActionController::Parameters.new)
+        .permit(*permitted_params_for_new)
     end
 
     # Returns the repository class associated with this controller.

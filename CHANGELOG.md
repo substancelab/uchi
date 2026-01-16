@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Fields can now be configured to appear on :new pages, but not on :edit, and vice versa. Either add or remove `:new` from the fields `on()` configuration as needed.
+
 ### Fixed
 
 - Allow UI to use the full height of the viewport to prevent clipping popovers and dialogs.
