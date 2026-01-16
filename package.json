@@ -18,17 +18,15 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "@github/combobox-nav": "^3.0.1",
+    "@herb-tools/linter": "^0.8.2",
     "@hotwired/turbo-rails": "^8.0.16",
     "@rails/request.js": "^0.0.13",
     "@stimulus-components/dropdown": "^3.0.0",
     "@tailwindcss/cli": "^4.1.13",
+    "esbuild": "0.27.2",
     "flowbite": "^4.0.1",
     "tailwindcss": "^4.1.13"
-  },
-  "devDependencies": {
-    "@herb-tools/linter": "^0.8.2",
-    "esbuild": "0.27.2"
   }
 }
