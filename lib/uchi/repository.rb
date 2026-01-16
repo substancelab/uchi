@@ -51,23 +51,31 @@ module Uchi
     end
 
     # Returns an array of fields to show on the edit page.
+    #
+    # @return [Array<Uchi::Field>]
     def fields_for_edit
-      fields_with_repository.select { |field| field.on.include?(:edit) }
+      fields_for(:edit)
     end
 
     # Returns an array of fields to show on the index page.
+    #
+    # @return [Array<Uchi::Field>]
     def fields_for_index
-      fields_with_repository.select { |field| field.on.include?(:index) }
+      fields_for(:index)
     end
 
     # Returns an array of fields to show on the new page.
+    #
+    # @return [Array<Uchi::Field>]
     def fields_for_new
-      fields_with_repository.select { |field| field.on.include?(:new) }
+      fields_for(:new)
     end
 
     # Returns an array of fields to show on the show page.
+    #
+    # @return [Array<Uchi::Field>]
     def fields_for_show
-      fields_with_repository.select { |field| field.on.include?(:show) }
+      fields_for(:show)
     end
 
     def find_all(search: nil, scope: model.all, sort_order: default_sort_order)
@@ -190,8 +198,18 @@ module Uchi
       end
     end
 
+    # Returns an array of fields to show for the given action.
+    #
+    # @param action [Symbol] The action to get fields for. One of :index, :show,
+    # :new, :edit.
+    #
+    # @return [Array<Uchi::Field>]
+    def fields_for(action)
+      fields_with_repository.select { |field| field.on.include?(action) }
+    end
+
     def fields_with_repository
-      @fields_with_repository ||= fields.each { |field| field.repository = self }
+      fields.each { |field| field.repository = self }
     end
 
     def searchable_fields
