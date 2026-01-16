@@ -17,7 +17,7 @@ class UchiFieldTest < ActiveSupport::TestCase
   end
 
   test "has default options" do
-    assert_equal [:edit, :index, :show], @field.on
+    assert_equal [:edit, :index, :new, :show], @field.on
     assert_equal true, @field.sortable
   end
 

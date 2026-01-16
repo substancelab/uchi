@@ -51,6 +51,17 @@ module Uchi
       @name = name.to_sym
     end
 
+    def new_component(form:, repository:, label: nil, hint: nil)
+      # For now all components use the same component for Edit and New. Override
+      # this method in a subclass to provide a different component.
+      edit_component(
+        form: form,
+        hint: hint,
+        label: label,
+        repository: repository
+      )
+    end
+
     # Returns the key that this field is expected to use in params
     def param_key
       name.to_sym

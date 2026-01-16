@@ -142,6 +142,23 @@ The lambda receives an `ActiveRecord::Relation` with all records returned from t
 
 The dropdown displays the `title` of the record. For example, a `Person` repository may use the `name` attribute as its title. To customize the title for a record, implement `Repository#title`, see [repositories documentation](repositories/#customizing-the-title-of-a-record) for details.
 
+### BelongsTo field for polymorphic associations
+
+Out of the box, `Field::BelongsTo` works for regular `belongs_to` associations as well as polymorphic ones. However, for polymorphic associations the field cannot be shown on `new` pages since Uchi cannot guess what models to show in the associated record dropdown, which causes an exception.
+
+For now, the best workaround is to remove the `BelongsTo` field from `:new` and add explicit fields for the polymorphic attributes instead, ie:
+
+```ruby
+def fields
+  [
+    Field::BelongsTo.new(:owner).on(:edit, :index, :show),
+    Field::String.new(:owner_type).on(:new),
+    Field::Number.new(:owner_id).on(:new),
+  ]
+end
+```
+
+or create a custom field that provides a user interface to select whatever models you want to choose between.
 
 ## Field::HasMany
 

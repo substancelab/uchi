@@ -15,7 +15,7 @@ module Uchi
       end
 
       test "has default options" do
-        assert_equal [:edit, :index, :show], @field.on
+        assert_equal [:edit, :index, :new, :show], @field.on
         assert_not @field.searchable?
         assert @field.sortable?
       end
@@ -58,6 +58,16 @@ module Uchi
         assert_equal @form.object, component.record
         assert_equal @repository, component.repository
         assert_kind_of Uchi::Field::BelongsTo::Index, component
+      end
+
+      test "#new_component returns an instance of Edit component" do
+        component = @field.new_component(form: @form, hint: "Custom hint", label: "Custom label", repository: @repository)
+        assert_equal "Custom hint", component.hint
+        assert_equal "Custom label", component.label
+        assert_equal @field, component.field
+        assert_equal @form, component.form
+        assert_equal @repository, component.repository
+        assert_kind_of Uchi::Field::BelongsTo::Edit, component
       end
 
       test "#searchable? returns false when explicitly set" do

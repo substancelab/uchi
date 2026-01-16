@@ -15,10 +15,10 @@
 <%= render(Uchi::Flowbite::Card.new) do %>
   <%= form_with model: @record, url: @repository.routes.path_for(:create) do |form| %>
     <div class="space-y-6">
-      <% @repository.fields_for_edit.each do |field| %>
+      <% @repository.fields_for_new.each do |field| %>
         <div>
           <%= render(
-            field.edit_component(
+            field.new_component(
               form: form,
               repository: @repository,
               label: @repository.translate.field_label(field),
