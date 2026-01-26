@@ -7,8 +7,8 @@ module Uchi
   class Field
     class FileTest < ActiveSupport::TestCase
       def setup
-        @book = Book.new(sample: nil)
-        @field = Uchi::Field::File.new(:sample)
+        @book = Book.new(cover: nil)
+        @field = Uchi::Field::File.new(:cover)
         @form = OpenStruct.new(object: @book)
         @repository = Uchi::Repositories::Book.new
       end
@@ -60,8 +60,8 @@ module Uchi
 
     class FileEditTest < ViewComponent::TestCase
       def setup
-        @field = Uchi::Field::File.new(:sample)
-        @record = Book.new(sample: nil)
+        @field = Uchi::Field::File.new(:cover)
+        @record = Book.new(cover: nil)
         @repository = Uchi::Repositories::Book.new
         @view_context = ActionController::Base.new.view_context
 
@@ -83,24 +83,24 @@ module Uchi
       test "renders a file input field" do
         render_inline(@component)
 
-        assert_selector("input[type='file'][name='book[sample]']")
+        assert_selector("input[type='file'][name='book[cover]']")
       end
 
       test "renders label with specified text" do
         render_inline(@component)
 
-        assert_selector("label[for='book_sample']", text: "Custom label")
+        assert_selector("label[for='book_cover']", text: "Custom label")
       end
 
       test "renders hint when provided" do
         render_inline(@component)
 
-        assert_selector("p[id=book_sample_hint]", text: "Custom hint")
+        assert_selector("p[id=book_cover_hint]", text: "Custom hint")
       end
 
       test "initializes the input component with the correct options" do
         expected_options = {
-          attribute: :sample,
+          attribute: :cover,
           form: @form,
           label: {content: "Custom label"},
           hint: {content: "Custom hint"}
@@ -111,7 +111,7 @@ module Uchi
 
     class FileIndexTest < ViewComponent::TestCase
       def setup
-        @field = Uchi::Field::File.new(:sample)
+        @field = Uchi::Field::File.new(:cover)
         @record = Book.new
         @repository = Uchi::Repositories::Book.new
 
@@ -135,7 +135,7 @@ module Uchi
       test "renders filename when file is attached" do
         # Create a record with an attached file
         file = ::File.open(Rails.root.join("test/fixtures/files/pdf.pdf"))
-        @record = Book.new(sample: file)
+        @record = Book.new(cover: file)
 
         @component = Uchi::Field::File::Index.new(
           field: @field,
@@ -151,9 +151,9 @@ module Uchi
 
     class FileShowTest < ViewComponent::TestCase
       def setup
-        @field = Uchi::Field::File.new(:sample)
+        @field = Uchi::Field::File.new(:cover)
         file = ::File.open(Rails.root.join("test/fixtures/files/pdf.pdf"))
-        @record = Book.create!(sample: file)
+        @record = Book.create!(cover: file)
         @repository = Uchi::Repositories::Book.new
 
         @component = Uchi::Field::File::Show.new(
@@ -168,7 +168,7 @@ module Uchi
       end
 
       test "renders a dash when no file is attached" do
-        @record.sample.detach
+        @record.cover.detach
 
         result = render_inline(@component)
 
