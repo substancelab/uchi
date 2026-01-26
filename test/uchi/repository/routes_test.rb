@@ -1,7 +1,10 @@
 require "test_helper"
+require "support/mount_helper"
 require_relative "../../dummy/app/uchi/repositories/author"
 
 class UchiRepositoryRoutesTest < ActiveSupport::TestCase
+  include MountHelper
+
   def setup
     @repository = Uchi::Repositories::Author.new
     @routes = @repository.routes
@@ -52,60 +55,29 @@ class UchiRepositoryRoutesTest < ActiveSupport::TestCase
   end
 
   test "#root_path respects custom mount path" do
-    # Simulate mounting at a custom path
-    original_mount_at = Uchi.routes.instance_variable_get(:@mount_at)
-    begin
-      Uchi.routes.instance_variable_set(:@mount_at, :admin)
+    when_mounted(at: :admin) do
       repository = Uchi::Repositories::Author.new
       routes = repository.routes
 
       assert_equal "/admin/", routes.root_path
-    ensure
-      # Restore original mount path
-      if original_mount_at
-        Uchi.routes.instance_variable_set(:@mount_at, original_mount_at)
-      else
-        Uchi.routes.instance_variable_set(:@mount_at, nil)
-      end
     end
   end
 
   test "uchi_path uses mount_at when set" do
-    original_mount_path = Uchi.routes.instance_variable_get(:@mount_at)
-    begin
-      Uchi.routes.instance_variable_set(:@mount_at, :admin)
-
+    when_mounted(at: :admin) do
       repository = Uchi::Repositories::Author.new
       routes = repository.routes
 
       assert_equal :admin, routes.send(:uchi_path)
-    ensure
-      # Restore original mount path
-      if original_mount_path
-        Uchi.routes.instance_variable_set(:@mount_at, original_mount_path)
-      else
-        Uchi.routes.instance_variable_set(:@mount_at, nil)
-      end
     end
   end
 
   test "uchi_path defaults to :uchi when mount_at is not set" do
-    # Ensure mount_path is not set
-    original_mount_at = Uchi.routes.instance_variable_get(:@mount_at)
-    begin
-      Uchi.routes.instance_variable_set(:@mount_at, nil)
-
+    when_mounted(at: nil) do
       repository = Uchi::Repositories::Author.new
       routes = repository.routes
 
       assert_equal :uchi, routes.send(:uchi_path)
-    ensure
-      # Restore original mount path
-      if original_mount_at
-        Uchi.routes.instance_variable_set(:@mount_at, original_mount_at)
-      else
-        Uchi.routes.instance_variable_set(:@mount_at, nil)
-      end
     end
   end
 end
