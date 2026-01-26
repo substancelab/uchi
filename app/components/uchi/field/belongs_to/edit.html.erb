@@ -2,7 +2,7 @@
   class="relative"
   data-action="keydown.esc->belongs-to#closeDropdown"
   data-controller="belongs-to"
-  data-belongs-to-backend-url-value="<%= helpers.belongs_to_associated_records_path(field: field.name, model: repository.model, record_id: record&.id) %>"
+  data-belongs-to-backend-url-value="<%= helpers.uchi.belongs_to_associated_records_path(field: field.name, model: repository.model, record_id: record&.id) %>"
 >
   <%= render(Uchi::Flowbite::Input::Label.new(attribute: field.name, form: form, options: {for: dom_id_for_toggle})) { label } %>
 
