@@ -22,7 +22,7 @@ module Uchi
       end
 
       def root_path
-        "/#{uchi_namespace}/"
+        "/#{uchi_path}/"
       end
 
       private
@@ -34,7 +34,7 @@ module Uchi
 
       def plural_path_for(_action, **options)
         parts = [
-          uchi_namespace,
+          uchi_as,
           plural,
           "path"
         ].compact
@@ -47,15 +47,19 @@ module Uchi
         action = nil if action == :destroy
         parts = [
           action,
-          uchi_namespace,
+          uchi_as,
           singular,
           "path"
         ].compact
         call_url_helper_in_main_app(parts, **options)
       end
 
-      def uchi_namespace
-        :uchi
+      def uchi_as
+        Uchi.routes.mount_as
+      end
+
+      def uchi_path
+        Uchi.routes.mount_at
       end
     end
   end
