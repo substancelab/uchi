@@ -36,6 +36,8 @@ module Uchi::Flowbite
       end
 
       def errors?
+        return false unless @object
+
         @object.errors.include?(@attribute.intern)
       end
 
