@@ -11,12 +11,17 @@ require "uchi/action"
 require "uchi/action_response"
 require "uchi/field"
 require "uchi/i18n"
+require "uchi/plugins"
 require "uchi/repository"
 require "uchi/routes"
 require "uchi/sort_order"
 require "uchi/repository/translate"
 
 module Uchi
+  def self.plugins
+    @plugins ||= Plugins.new
+  end
+
   def self.routes
     @routes ||= Routes.new
   end
