@@ -19,6 +19,11 @@ module Uchi
       if uchi_directory.exist?
         Rails.autoloaders.main.push_dir(uchi_directory, namespace: Uchi)
       end
+
+      config.autoload_paths = [
+        "#{root}/app/components",
+        "#{root}/app/controllers",
+      ]
     end
   end
 end
