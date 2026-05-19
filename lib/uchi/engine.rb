@@ -24,6 +24,7 @@ module Uchi
         "#{root}/app/components",
         "#{root}/app/controllers",
       ]
+      p config.autoload_paths
     end
   end
 end
