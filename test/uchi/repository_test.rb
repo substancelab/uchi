@@ -1,6 +1,8 @@
 require "test_helper"
 
 require_relative "../dummy/app/uchi/repositories/author"
+require_relative "../dummy/app/uchi/repositories/book"
+require_relative "../dummy/app/uchi/repositories/title"
 
 class UchiRepositoryTest < ActiveSupport::TestCase
   test ".all returns all Uchi::Repository's" do
