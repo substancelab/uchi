@@ -1,4 +1,4 @@
-version: 0.8.7
+version: 0.10.1
 files:
   include:
     - "**/*.html"
@@ -13,7 +13,13 @@ files:
 
 linter:
   enabled: true
-  rules: {}
+  rules:
+    {
+      erb-no-output-in-attribute-position: { enabled: false },
+      erb-no-unsafe-raw: { enabled: false },
+      html-require-script-nonce: { enabled: false },
+      source-indentation: { enabled: false }
+    }
 
 formatter:
   enabled: true
