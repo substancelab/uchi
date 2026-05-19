@@ -20,8 +20,12 @@ module Uchi
         Rails.autoloaders.main.push_dir(uchi_directory, namespace: Uchi)
       end
 
+      fields_directory = Rails.root.join("app/components/uchi")
+      if fields_directory.exist?
+        Rails.autoloaders.main.push_dir(fields_directory, namespace: Uchi::Field)
+      end
+
       config.autoload_paths = [
-        "#{root}/app/components",
         "#{root}/app/controllers",
       ]
       p config.autoload_paths
