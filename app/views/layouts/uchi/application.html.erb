@@ -15,8 +15,8 @@
     <%= render "layouts/uchi/stylesheets" %>
   </head>
 
-  <body class="antialiased bg-neutral-secondary-medium h-full p-2">
-    <div class="md:flex h-full">
+  <body class="antialiased bg-neutral-secondary-medium h-full">
+    <div class="h-full p-2 md:p-0 md:flex">
       <%= render(partial: "uchi/navigation/main") %>
 
       <main class="py-6 overflow-x-hidden grow md:px-6"><%= yield %></main>
