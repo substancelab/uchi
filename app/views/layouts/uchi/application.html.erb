@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html class="h-full">
+<html lang="en">
   <head>
     <title>
       <%= content_for?(:page_title) ? yield(:page_title) : "Uchi" %>
@@ -15,12 +15,10 @@
     <%= render "layouts/uchi/stylesheets" %>
   </head>
 
-  <body class="antialiased bg-neutral-secondary-medium h-full p-2">
-    <div class="md:flex h-full">
-      <%= render(partial: "uchi/navigation/main") %>
+  <body class="antialiased bg-neutral-secondary-medium p-2 h-screen overflow-hidden md:flex md:p-0">
+    <%= render(partial: "uchi/navigation/main") %>
 
-      <main class="py-6 overflow-x-hidden grow md:px-6"><%= yield %></main>
-    </div>
+    <main class="py-6 overflow-x-hidden grow md:px-6"><%= yield %></main>
 
     <%= render "layouts/uchi/flash_messages" %>
   </body>

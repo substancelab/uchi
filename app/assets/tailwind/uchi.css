@@ -19,3 +19,8 @@ running the following command:
 
 /* Don't include classes used in docs into Uchis stylesheet */
 @source not "docs";
+
+/* Don't include classes from the the Tailwind-generated stylesheet into the
+list of classes to preserve in the Tailwind-generated stylesheet. Doing so means
+that classes would never be purged */
+@source not "app/assets/stylesheets/uchi/application.css";
