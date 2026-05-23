@@ -13,6 +13,12 @@ module Uchi
           @record = record
           @repository = repository
         end
+
+        # Returns the raw value of the field as returned by the field's value
+        # method.
+        def value
+          @value ||= field.value(record)
+        end
       end
 
       # Uchi::Field::Base::Edit components render fields in the edit view.
