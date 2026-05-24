@@ -17,7 +17,9 @@ module Uchi
         # Returns the raw value of the field as returned by the field's value
         # method.
         def value
-          @value ||= field.value(record)
+          return @value if instance_variable_defined?(:@value)
+
+          @value = field.value(record)
         end
       end
 
