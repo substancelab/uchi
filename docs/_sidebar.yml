@@ -35,6 +35,10 @@
     text: Fields
     icon: table
 
+- customizations:
+    text: Customizations
+    icon: paint-brush
+
 - translations:
     text: Translations
     icon: globe-hemisphere-east
