@@ -35,6 +35,10 @@
     text: Fields
     icon: table
 
+- actions:
+    text: Actions
+    icon: lightning
+
 - customizations:
     text: Customizations
     icon: paint-brush
