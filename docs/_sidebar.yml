@@ -46,3 +46,7 @@
 - translations:
     text: Translations
     icon: globe-hemisphere-east
+
+- assets:
+    text: Assets
+    icon: image
