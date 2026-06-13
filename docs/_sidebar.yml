@@ -27,6 +27,10 @@
     text: Getting Started
     icon: rocket-launch
 
+- repositories:
+    text: Repositories
+    icon: database
+
 - fields:
     text: Fields
     icon: table
