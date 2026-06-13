@@ -34,3 +34,5 @@ search:
 build:
   output: "dist"
   base: "/"
+
+sidebar: "config"
