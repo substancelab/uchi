@@ -27,17 +27,24 @@
     text: Getting Started
     icon: rocket-launch
 
-- repositories:
-    text: Repositories
-    icon: database
+- basics:
+    text: Basics
+    icon: book
+    group: true
+    collapsed: false
+    items:
+        - repositories:
+            text: Repositories
+            icon: database
 
-- fields:
-    text: Fields
-    icon: table
+        - fields:
+            text: Fields
+            icon: table
 
-- actions:
-    text: Actions
-    icon: lightning
+        - actions:
+            text: Actions
+            icon: lightning
+
 
 - customizations:
     text: Customizations
