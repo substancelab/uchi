@@ -27,7 +27,7 @@ description: "Documentation for Uchi"
 
 # Search (enabled by default)
 search:
-  enabled: true
+  enabled: false
   placeholder: "Search..."
 
 # Build output
