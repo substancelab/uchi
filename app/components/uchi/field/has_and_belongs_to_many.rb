@@ -25,7 +25,7 @@ module Uchi
 
       class Show < Uchi::Field::Base::Show
         def associated_records
-          records = field.value(record)
+          records = value
 
           associated_repository.find_all(scope: records)
         end

@@ -1,4 +1,4 @@
-<% attachment = field.value(record) %>
+<% attachment = value %>
 
 <% if attachment.attached? %>
   <%= render Uchi::Flowbite::Link.new(href: Rails.application.routes.url_helpers.rails_blob_path(attachment, only_path: true)) do %>
