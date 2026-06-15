@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fields can now be configured to appear on :new pages, but not on :edit, and vice versa. Either add or remove `:new` from the fields `on()` configuration as needed.
 - Uchi can now be mounted at a path other than /uchi. If you want it to live at fx. /admin, use the `at:` argument: `Uchi.routes.mount(self, at: :admin)`.
 - Inklings of a plugin-system. For now, it's for internal use only.
+- A bunch of documentation with more to come.
 
 ### Fixed
 
