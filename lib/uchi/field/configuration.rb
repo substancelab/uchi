@@ -6,13 +6,14 @@ module Uchi
       class Unset; end
 
       DEFAULT_READER = ->(record, field_name) { record&.public_send(field_name) }
+      DEFAULT_VISIBLE = ->(_record) { true }
 
       def initialize(*args)
         super
         @on = default_on
         @reader = DEFAULT_READER
         @searchable = default_searchable?
-        @visible = nil
+        @visible = DEFAULT_VISIBLE
         @sortable = default_sortable?
       end
 
@@ -106,8 +107,8 @@ module Uchi
       #
       # @example Getting
       #   field.visible # => #<Proc...>
-      def visible(visible_proc = nil)
-        return @visible if visible_proc.nil?
+      def visible(visible_proc = Configuration::Unset)
+        return @visible if visible_proc == Configuration::Unset
 
         @visible = visible_proc
         self
@@ -157,8 +158,6 @@ module Uchi
       # @param record [Object] The record to check visibility for
       # @return [Boolean] Whether the field should be visible
       def visible_for?(record)
-        return true if @visible.nil?
-
         @visible.call(record)
       end
 

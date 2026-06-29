@@ -75,8 +75,8 @@ class UchiFieldTest < ActiveSupport::TestCase
     assert_equal "Custom: Test", field.value(record)
   end
 
-  test "#visible returns nil by default" do
-    assert_nil @field.visible
+  test "#visible returns DEFAULT_VISIBLE by default" do
+    assert_equal Uchi::Field::Configuration::DEFAULT_VISIBLE, @field.visible
   end
 
   test "#visible sets a proc and returns self for chaining" do
