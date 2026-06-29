@@ -1,6 +1,8 @@
 # Fields
 
-## Only show a field on specific pages
+## Visibility
+
+### Only show a field on specific pages
 
 Use the `on` method to control what pages to show a field on. For example if your id field should only be visible on the index listing, you can configure it as
 
@@ -16,6 +18,16 @@ Possible actions are
 - `:edit`
 
 The default is to show all fields on all pages.
+
+### Only show a field for specific records
+
+Giving the field a `visible` lambda gives you more control over when to render a field.
+
+```ruby
+Field::Number.new(:discount).visible(->(record) { record.discountable? })
+```
+
+The lambda is passed the actual record and the field will be rendered if the lambda returns a truthy value.
 
 ## Search
 
