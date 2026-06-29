@@ -74,4 +74,34 @@ class UchiFieldTest < ActiveSupport::TestCase
 
     assert_equal "Custom: Test", field.value(record)
   end
+
+  test "#visible returns nil by default" do
+    assert_nil @field.visible
+  end
+
+  test "#visible sets a proc and returns self for chaining" do
+    proc = ->(record) { record.id.even? }
+    result = @field.visible(proc)
+
+    assert_equal @field, result
+    assert_equal proc, @field.visible
+  end
+
+  test "#visible_for? returns true by default" do
+    record = OpenStruct.new(id: 1)
+
+    assert @field.visible_for?(record)
+  end
+
+  test "#visible_for? returns true when visible proc returns true" do
+    @field.visible(->(record) { record.id.even? })
+
+    assert @field.visible_for?(OpenStruct.new(id: 2))
+  end
+
+  test "#visible_for? returns false when visible proc returns false" do
+    @field.visible(->(record) { record.id.even? })
+
+    assert_not @field.visible_for?(OpenStruct.new(id: 1))
+  end
 end

@@ -12,6 +12,7 @@ module Uchi
         @on = default_on
         @reader = DEFAULT_READER
         @searchable = default_searchable?
+        @visible = nil
         @sortable = default_sortable?
       end
 
@@ -89,6 +90,29 @@ module Uchi
         !!@searchable
       end
 
+      # Sets or gets a conditional proc that determines whether this field should
+      # be visible for a given record.
+      #
+      # When called with a proc argument, sets the visibility condition and returns
+      # self for chaining. When called without arguments, returns the current proc.
+      #
+      # @param visible_proc [Proc, nil] A callable that receives the record and returns
+      #   a boolean indicating whether the field should be visible.
+      # @return [self, Proc, nil] Returns self for method chaining when setting,
+      #   or the proc (or nil) when getting
+      #
+      # @example Setting
+      #   Field::String.new(:id).visible(lambda { |record| record.id.even? })
+      #
+      # @example Getting
+      #   field.visible # => #<Proc...>
+      def visible(visible_proc = nil)
+        return @visible if visible_proc.nil?
+
+        @visible = visible_proc
+        self
+      end
+
       # Sets or gets whether and how this field is sortable.
       #
       # When called with an argument, sets sortable and returns self for chaining.
@@ -122,6 +146,20 @@ module Uchi
         return default_sortable? if @sortable.nil?
 
         !!@sortable
+      end
+
+      # Returns whether this field should be visible for the given record.
+      #
+      # When no visible proc is configured, this always returns true.
+      # When a visible proc is configured, it is called with the record and its
+      # return value determines visibility.
+      #
+      # @param record [Object] The record to check visibility for
+      # @return [Boolean] Whether the field should be visible
+      def visible_for?(record)
+        return true if @visible.nil?
+
+        @visible.call(record)
       end
 
       protected
