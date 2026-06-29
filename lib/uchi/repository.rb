@@ -52,9 +52,10 @@ module Uchi
 
     # Returns an array of fields to show on the edit page.
     #
+    # @param record [Object] The record being edited, used to evaluate field visibility.
     # @return [Array<Uchi::Field>]
-    def fields_for_edit
-      fields_for(:edit)
+    def fields_for_edit(record:)
+      fields_for(:edit).select { |field| field.visible_for?(record) }
     end
 
     # Returns an array of fields to show on the index page.
@@ -66,9 +67,10 @@ module Uchi
 
     # Returns an array of fields to show on the new page.
     #
+    # @param record [Object] The record being created, used to evaluate field visibility.
     # @return [Array<Uchi::Field>]
-    def fields_for_new
-      fields_for(:new)
+    def fields_for_new(record:)
+      fields_for(:new).select { |field| field.visible_for?(record) }
     end
 
     # Returns an array of fields to show on the show page.
