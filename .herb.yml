@@ -15,10 +15,6 @@ files:
 
 linter:
   enabled: true
-  rules:
-    {
-      source-indentation: { enabled: false }
-    }
 
 formatter:
   enabled: true
