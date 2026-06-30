@@ -158,7 +158,7 @@ module Uchi
       # @param record [Object] The record to check visibility for
       # @return [Boolean] Whether the field should be visible
       def visible_for?(record)
-        @visible.call(record)
+        !!@visible.call(record)
       end
 
       protected
