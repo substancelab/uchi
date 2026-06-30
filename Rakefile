@@ -23,7 +23,7 @@ end
 namespace :herb do
   desc "Automatically fix Herb offenses in erb files"
   task :fix do
-    sh "npm run herb:lint --fix"
+    sh "npm run herb:lint -- --fix"
   end
 
   desc "Lint erb files using Herb"
