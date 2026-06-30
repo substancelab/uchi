@@ -17,7 +17,6 @@ linter:
   enabled: true
   rules:
     {
-      html-require-script-nonce: { enabled: false },
       source-indentation: { enabled: false }
     }
 
