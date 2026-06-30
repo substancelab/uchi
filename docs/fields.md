@@ -29,6 +29,8 @@ Field::Number.new(:discount).visible(->(record) { record.discountable? })
 
 The lambda is passed the actual record and the field will be rendered if the lambda returns a truthy value.
 
+Note that this is not usable for index pages. The index table header always shows all configured columns — since there's no single record to evaluate visibility against. To remove a column from the index page use `on([:edit, :new, :show])` instead.
+
 ## Search
 
 If a repository contains at least one searchable `Field` a search field appears on the index page. By default all text-based fields are considered searchable.
