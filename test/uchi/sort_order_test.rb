@@ -8,14 +8,14 @@ class UchiSortOrderTest < ActiveSupport::TestCase
   test ".from_params defaults to ascending when direction isn't given" do
     sort_order = Uchi::SortOrder.from_params(sort: {by: :name})
     assert_instance_of Uchi::SortOrder, sort_order
-    assert_equal :name, sort_order.name
+    assert_equal :name, sort_order.attribute
     assert_equal :asc, sort_order.direction
   end
 
   test ".from_params returns a new SortOrder when both 'by' and 'direction' are given" do
     sort_order = Uchi::SortOrder.from_params(sort: {by: :born_on, direction: :desc})
     assert_instance_of Uchi::SortOrder, sort_order
-    assert_equal :born_on, sort_order.name
+    assert_equal :born_on, sort_order.attribute
     assert_equal :desc, sort_order.direction
   end
 
