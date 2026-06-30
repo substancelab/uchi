@@ -11,12 +11,12 @@ module Uchi
         end
 
         def associated_repository
-          reflection = record.class.reflect_on_association(field.name)
+          reflection = record.class.reflect_on_association(field.attribute)
 
           unless reflection
             raise \
               ArgumentError,
-              "No association named #{field.name.inspect} found on #{record.class}"
+              "No association named #{field.attribute.inspect} found on #{record.class}"
           end
 
           model = if reflection.polymorphic?
@@ -80,7 +80,7 @@ module Uchi
         end
 
         def reflection
-          @reflection ||= record.class.reflect_on_association(field.name)
+          @reflection ||= record.class.reflect_on_association(field.attribute)
         end
       end
 
@@ -153,7 +153,7 @@ module Uchi
       def param_key
         # TODO: This is too naive. We need to match this to the actual foreign
         # key of the model.
-        :"#{name}_id"
+        :"#{attribute}_id"
       end
 
       private
@@ -161,7 +161,7 @@ module Uchi
       def polymorphic?
         return false unless repository
 
-        reflection = repository.model.reflect_on_association(name)
+        reflection = repository.model.reflect_on_association(attribute)
         reflection&.polymorphic? || false
       end
     end

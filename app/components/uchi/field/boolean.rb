@@ -8,7 +8,7 @@ module Uchi
 
         def options
           options = {
-            attribute: field.name,
+            attribute: field.attribute,
             form: form,
             label: {content: label}
           }

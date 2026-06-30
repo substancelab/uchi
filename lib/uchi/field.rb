@@ -64,7 +64,7 @@ module Uchi
 
     # Returns the key that this field is expected to use in params
     def param_key
-      name.to_sym
+      attribute
     end
 
     # Returns the values to use for permitting this field in strong parameters
@@ -85,7 +85,7 @@ module Uchi
     end
 
     def value(record)
-      reader.call(record, name)
+      reader.call(record, attribute)
     end
   end
 end
