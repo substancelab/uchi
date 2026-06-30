@@ -97,10 +97,11 @@ module Uchi
       # When called with a proc argument, sets the visibility condition and returns
       # self for chaining. When called without arguments, returns the current proc.
       #
-      # @param visible_proc [Proc, nil] A callable that receives the record and returns
+      # @param visible_proc [Proc] A callable that receives the record and returns
       #   a boolean indicating whether the field should be visible.
-      # @return [self, Proc, nil] Returns self for method chaining when setting,
-      #   or the proc (or nil) when getting
+      #   Raises ArgumentError for non-callables.
+      # @return [self, Proc] Returns self for method chaining when setting,
+      #   or the current proc when getting
       #
       # @example Setting
       #   Field::String.new(:id).visible(lambda { |record| record.id.even? })
@@ -109,6 +110,8 @@ module Uchi
       #   field.visible # => #<Proc...>
       def visible(visible_proc = Configuration::Unset)
         return @visible if visible_proc == Configuration::Unset
+
+        raise ArgumentError, "visible must be callable" unless visible_proc.respond_to?(:call)
 
         @visible = visible_proc
         self
@@ -151,9 +154,8 @@ module Uchi
 
       # Returns whether this field should be visible for the given record.
       #
-      # When no visible proc is configured, this always returns true.
-      # When a visible proc is configured, it is called with the record and its
-      # return value determines visibility.
+      # Calls the visible proc with the record. Defaults to DEFAULT_VISIBLE,
+      # which always returns true.
       #
       # @param record [Object] The record to check visibility for
       # @return [Boolean] Whether the field should be visible

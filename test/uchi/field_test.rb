@@ -87,6 +87,12 @@ class UchiFieldTest < ActiveSupport::TestCase
     assert_equal proc, @field.visible
   end
 
+  test "#visible raises ArgumentError when passed a non-callable" do
+    assert_raises(ArgumentError) { @field.visible(nil) }
+    assert_raises(ArgumentError) { @field.visible(true) }
+    assert_raises(ArgumentError) { @field.visible("always") }
+  end
+
   test "#visible_for? returns true by default" do
     record = OpenStruct.new(id: 1)
 
