@@ -6,12 +6,14 @@ module Uchi
       class Unset; end
 
       DEFAULT_READER = ->(record, field_name) { record&.public_send(field_name) }
+      DEFAULT_VISIBLE = ->(_record) { true }
 
       def initialize(*args)
         super
         @on = default_on
         @reader = DEFAULT_READER
         @searchable = default_searchable?
+        @visible = DEFAULT_VISIBLE
         @sortable = default_sortable?
       end
 
@@ -89,6 +91,32 @@ module Uchi
         !!@searchable
       end
 
+      # Sets or gets a conditional proc that determines whether this field should
+      # be visible for a given record.
+      #
+      # When called with a proc argument, sets the visibility condition and returns
+      # self for chaining. When called without arguments, returns the current proc.
+      #
+      # @param visible_proc [Proc] A callable that receives the record and returns
+      #   a boolean indicating whether the field should be visible.
+      #   Raises ArgumentError for non-callables.
+      # @return [self, Proc] Returns self for method chaining when setting,
+      #   or the current proc when getting
+      #
+      # @example Setting
+      #   Field::String.new(:id).visible(lambda { |record| record.id.even? })
+      #
+      # @example Getting
+      #   field.visible # => #<Proc...>
+      def visible(visible_proc = Configuration::Unset)
+        return @visible if visible_proc == Configuration::Unset
+
+        raise ArgumentError, "visible must be callable" unless visible_proc.respond_to?(:call)
+
+        @visible = visible_proc
+        self
+      end
+
       # Sets or gets whether and how this field is sortable.
       #
       # When called with an argument, sets sortable and returns self for chaining.
@@ -122,6 +150,17 @@ module Uchi
         return default_sortable? if @sortable.nil?
 
         !!@sortable
+      end
+
+      # Returns whether this field should be visible for the given record.
+      #
+      # Calls the visible proc with the record. Defaults to DEFAULT_VISIBLE,
+      # which always returns true.
+      #
+      # @param record [Object] The record to check visibility for
+      # @return [Boolean] Whether the field should be visible
+      def visible_for?(record)
+        !!@visible.call(record)
       end
 
       protected

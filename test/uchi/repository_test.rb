@@ -1,4 +1,5 @@
 require "test_helper"
+require "ostruct"
 
 require_relative "../dummy/app/uchi/repositories/author"
 
@@ -42,9 +43,39 @@ class UchiRepositoryTest < ActiveSupport::TestCase
   end
 
   test "#fields_for_edit returns fields to include on the edit page" do
-    fields = author_repository.fields_for_edit
+    fields = author_repository.fields_for_edit(record: Author.new)
 
     assert_equal [:name, :born_on, :biography], fields.map(&:name)
+  end
+
+  test "#fields_for_edit excludes fields where visible returns false for the record" do
+    always_visible = Uchi::Field::String.new(:name)
+    conditionally_visible = Uchi::Field::String.new(:secret).visible(->(record) { record.admin })
+
+    repository = visibility_repository(always_visible, conditionally_visible)
+
+    assert_equal [:name], repository.fields_for_edit(record: OpenStruct.new(admin: false)).map(&:name)
+    assert_equal [:name, :secret], repository.fields_for_edit(record: OpenStruct.new(admin: true)).map(&:name)
+  end
+
+  test "#fields_for_new excludes fields where visible returns false for the record" do
+    always_visible = Uchi::Field::String.new(:name)
+    conditionally_visible = Uchi::Field::String.new(:secret).visible(->(record) { record.admin })
+
+    repository = visibility_repository(always_visible, conditionally_visible)
+
+    assert_equal [:name], repository.fields_for_new(record: OpenStruct.new(admin: false)).map(&:name)
+    assert_equal [:name, :secret], repository.fields_for_new(record: OpenStruct.new(admin: true)).map(&:name)
+  end
+
+  test "#fields_for_show excludes fields where visible returns false for the record" do
+    always_visible = Uchi::Field::String.new(:name)
+    conditionally_visible = Uchi::Field::String.new(:secret).visible(->(record) { record.admin })
+
+    repository = visibility_repository(always_visible, conditionally_visible)
+
+    assert_equal [:name], repository.fields_for_show(record: OpenStruct.new(admin: false)).map(&:name)
+    assert_equal [:name, :secret], repository.fields_for_show(record: OpenStruct.new(admin: true)).map(&:name)
   end
 
   test "#fields_for_index returns fields to include on the index page" do
@@ -54,7 +85,7 @@ class UchiRepositoryTest < ActiveSupport::TestCase
   end
 
   test "#fields_for_show returns fields to include on the show page" do
-    fields = author_repository.fields_for_show
+    fields = author_repository.fields_for_show(record: Author.new)
 
     assert_equal [:id, :name, :born_on, :biography], fields.map(&:name)
   end
@@ -153,5 +184,11 @@ class UchiRepositoryTest < ActiveSupport::TestCase
 
   def title_repository
     Uchi::Repositories::Title.new
+  end
+
+  def visibility_repository(*fields)
+    Class.new(Uchi::Repository) do
+      define_method(:fields) { fields }
+    end.new
   end
 end

@@ -39,14 +39,14 @@
     ]) %>
 <% end %>
 
+<% visible_fields = @repository.fields_for_show(record: @record) %>
+
 <%= render(Uchi::Ui::Show::AttributeFields.new(
-  attribute_fields: @repository.fields_for_show.select { |field| field.group_as(:show) == :attributes },
+  attribute_fields: visible_fields.select { |field| field.group_as(:show) == :attributes },
   record: @record,
   repository: @repository
 )) %>
 
-<% association_fields = @repository.fields_for_show.select{ |field| field.group_as(:show) == :associations } %>
-
-<% association_fields.each do |field| %>
+<% visible_fields.select { |field| field.group_as(:show) == :associations }.each do |field| %>
   <%= render(field.show_component(record: @record, repository: @repository)) %>
 <% end %>

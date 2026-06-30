@@ -52,9 +52,13 @@ module Uchi
 
     # Returns an array of fields to show on the edit page.
     #
+    # @param record [Object, nil] The record being edited. When provided, fields with a
+    #   visibility condition are filtered by it. When omitted, all edit fields are returned.
     # @return [Array<Uchi::Field>]
-    def fields_for_edit
-      fields_for(:edit)
+    def fields_for_edit(record: nil)
+      return fields_for(:edit) if record.nil?
+
+      fields_for(:edit).select { |field| field.visible_for?(record) }
     end
 
     # Returns an array of fields to show on the index page.
@@ -66,16 +70,24 @@ module Uchi
 
     # Returns an array of fields to show on the new page.
     #
+    # @param record [Object, nil] The record being created. When provided, fields with a
+    #   visibility condition are filtered by it. When omitted, all new fields are returned.
     # @return [Array<Uchi::Field>]
-    def fields_for_new
-      fields_for(:new)
+    def fields_for_new(record: nil)
+      return fields_for(:new) if record.nil?
+
+      fields_for(:new).select { |field| field.visible_for?(record) }
     end
 
     # Returns an array of fields to show on the show page.
     #
+    # @param record [Object, nil] The record being shown. When provided, fields with a
+    #   visibility condition are filtered by it. When omitted, all show fields are returned.
     # @return [Array<Uchi::Field>]
-    def fields_for_show
-      fields_for(:show)
+    def fields_for_show(record: nil)
+      return fields_for(:show) if record.nil?
+
+      fields_for(:show).select { |field| field.visible_for?(record) }
     end
 
     def find_all(search: nil, scope: model.all, sort_order: default_sort_order)
