@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Inklings of a plugin-system. For now, it's for internal use only.
 - A bunch of documentation with more to come.
 - Add `visible` configuration option to fields. This gives finer control over which fields are displayed for a given record, allowing for more dynamic and context-sensitive UIs.
+- Add `attribute` configuration option to fields. This allows you to have a field that is named one thing (for UI purposes, perhaps) while reading and writing a differently named attribute on the model.
 
 ### Fixed
 
