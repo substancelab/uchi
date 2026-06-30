@@ -39,7 +39,7 @@
     ]) %>
 <% end %>
 
-<% visible_fields = @repository.fields_for_show.select { |field| field.visible_for?(@record) } %>
+<% visible_fields = @repository.fields_for_show(record: @record) %>
 
 <%= render(Uchi::Ui::Show::AttributeFields.new(
   attribute_fields: visible_fields.select { |field| field.group_as(:show) == :attributes },

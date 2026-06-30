@@ -54,7 +54,7 @@ class UchiRepositoryTest < ActiveSupport::TestCase
   end
 
   test "#fields_for_show returns fields to include on the show page" do
-    fields = author_repository.fields_for_show
+    fields = author_repository.fields_for_show(record: Author.new)
 
     assert_equal [:id, :name, :born_on, :biography], fields.map(&:name)
   end

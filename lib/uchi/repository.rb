@@ -75,9 +75,10 @@ module Uchi
 
     # Returns an array of fields to show on the show page.
     #
+    # @param record [Object] The record being shown, used to evaluate field visibility.
     # @return [Array<Uchi::Field>]
-    def fields_for_show
-      fields_for(:show)
+    def fields_for_show(record:)
+      fields_for(:show).select { |field| field.visible_for?(record) }
     end
 
     def find_all(search: nil, scope: model.all, sort_order: default_sort_order)
