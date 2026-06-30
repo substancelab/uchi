@@ -127,11 +127,15 @@ module Uchi
         @association ||= repository.model.reflect_on_association(name)
       end
 
-
       protected
 
       def default_sortable?
-        false
+        lambda { |query, direction|
+          query
+            .left_outer_joins(name)
+            .group("#{query.klass.table_name}.#{query.klass.primary_key}")
+            .order(Arel.sql("COUNT(*) #{direction}"))
+        }
       end
     end
   end

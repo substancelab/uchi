@@ -120,6 +120,60 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_equal [bob, alice], authors
   end
 
+  test "#find_all sorts by has_many association count ascending" do
+    book_two = Book.create!(original_title: "Two Titles")
+    book_zero = Book.create!(original_title: "Zero Titles")
+    book_one = Book.create!(original_title: "One Title")
+    Title.create!(book: book_two, title: "A")
+    Title.create!(book: book_two, title: "B")
+    Title.create!(book: book_one, title: "C")
+
+    books = book_repository.find_all(sort_order: Uchi::SortOrder.new(:titles, :asc))
+
+    assert_equal [book_zero, book_one, book_two], books
+  end
+
+  test "#find_all sorts by has_many association count descending" do
+    book_two = Book.create!(original_title: "Two Titles")
+    book_zero = Book.create!(original_title: "Zero Titles")
+    book_one = Book.create!(original_title: "One Title")
+    Title.create!(book: book_two, title: "A")
+    Title.create!(book: book_two, title: "B")
+    Title.create!(book: book_one, title: "C")
+
+    books = book_repository.find_all(sort_order: Uchi::SortOrder.new(:titles, :desc))
+
+    assert_equal [book_two, book_one, book_zero], books
+  end
+
+  test "#find_all sorts by has_and_belongs_to_many association count ascending" do
+    author_two = Author.create!(name: "Two Books")
+    author_zero = Author.create!(name: "Zero Books")
+    author_one = Author.create!(name: "One Book")
+    book_a = Book.create!(original_title: "Book A")
+    book_b = Book.create!(original_title: "Book B")
+    author_two.books = [book_a, book_b]
+    author_one.books = [book_a]
+
+    authors = habtm_author_repository.find_all(sort_order: Uchi::SortOrder.new(:books, :asc))
+
+    assert_equal [author_zero, author_one, author_two], authors
+  end
+
+  test "#find_all sorts by has_and_belongs_to_many association count descending" do
+    author_two = Author.create!(name: "Two Books")
+    author_zero = Author.create!(name: "Zero Books")
+    author_one = Author.create!(name: "One Book")
+    book_a = Book.create!(original_title: "Book A")
+    book_b = Book.create!(original_title: "Book B")
+    author_two.books = [book_a, book_b]
+    author_one.books = [book_a]
+
+    authors = habtm_author_repository.find_all(sort_order: Uchi::SortOrder.new(:books, :desc))
+
+    assert_equal [author_two, author_one, author_zero], authors
+  end
+
   test "#find returns a single record by its ID" do
     alice = Author.create!(name: "Alice")
 
@@ -184,6 +238,13 @@ class UchiRepositoryTest < ActiveSupport::TestCase
 
   def title_repository
     Uchi::Repositories::Title.new
+  end
+
+  def habtm_author_repository
+    Class.new(Uchi::Repository) do
+      define_singleton_method(:model) { Author }
+      define_method(:fields) { [Uchi::Field::HasAndBelongsToMany.new(:books)] }
+    end.new
   end
 
   def visibility_repository(*fields)
