@@ -150,6 +150,12 @@ module Uchi
       def permitted_param
         {param_key => []}
       end
+
+      protected
+
+      def default_sortable?
+        false
+      end
     end
   end
 end

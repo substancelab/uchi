@@ -126,6 +126,13 @@ module Uchi
       def association
         @association ||= repository.model.reflect_on_association(name)
       end
+
+
+      protected
+
+      def default_sortable?
+        false
+      end
     end
   end
 end
