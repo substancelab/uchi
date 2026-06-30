@@ -129,7 +129,7 @@ module Uchi
 
       protected
 
-      def default_sortable?
+      def default_sortable
         lambda { |query, direction|
           query
             .left_outer_joins(name)

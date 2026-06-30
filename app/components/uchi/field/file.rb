@@ -29,7 +29,7 @@ module Uchi
         false
       end
 
-      def default_sortable?
+      def default_sortable
         false
       end
     end
