@@ -52,9 +52,12 @@ module Uchi
 
     # Returns an array of fields to show on the edit page.
     #
-    # @param record [Object] The record being edited, used to evaluate field visibility.
+    # @param record [Object, nil] The record being edited. When provided, fields with a
+    #   visibility condition are filtered by it. When omitted, all edit fields are returned.
     # @return [Array<Uchi::Field>]
-    def fields_for_edit(record:)
+    def fields_for_edit(record: nil)
+      return fields_for(:edit) if record.nil?
+
       fields_for(:edit).select { |field| field.visible_for?(record) }
     end
 
@@ -67,17 +70,23 @@ module Uchi
 
     # Returns an array of fields to show on the new page.
     #
-    # @param record [Object] The record being created, used to evaluate field visibility.
+    # @param record [Object, nil] The record being created. When provided, fields with a
+    #   visibility condition are filtered by it. When omitted, all new fields are returned.
     # @return [Array<Uchi::Field>]
-    def fields_for_new(record:)
+    def fields_for_new(record: nil)
+      return fields_for(:new) if record.nil?
+
       fields_for(:new).select { |field| field.visible_for?(record) }
     end
 
     # Returns an array of fields to show on the show page.
     #
-    # @param record [Object] The record being shown, used to evaluate field visibility.
+    # @param record [Object, nil] The record being shown. When provided, fields with a
+    #   visibility condition are filtered by it. When omitted, all show fields are returned.
     # @return [Array<Uchi::Field>]
-    def fields_for_show(record:)
+    def fields_for_show(record: nil)
+      return fields_for(:show) if record.nil?
+
       fields_for(:show).select { |field| field.visible_for?(record) }
     end
 
