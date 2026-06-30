@@ -15,7 +15,9 @@
           class="w-4 h-4 border border-default-strong rounded-xs bg-neutral-secondary-strong focus:ring-2 focus:ring-brand-soft cursor-pointer"
           data-action="change->has-many#handleCheckboxChange"
           data-has-many-target="checkbox"
-          <%= 'checked' if @current_values.include?(record) %>
+          <% if @current_values.include?(record) %>
+            checked
+          <% end %>
         >
         <label for="<%= checkbox_id %>" class="ms-2 text-sm font-medium text-heading cursor-pointer">
           <%= record_title(record) %>
