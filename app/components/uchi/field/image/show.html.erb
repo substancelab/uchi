@@ -1,7 +1,7 @@
 <% attachment = value %>
 
 <% if attachment.attached? %>
-  <%= image_tag attachment, class: "max-w-full h-auto rounded-lg shadow-md" %>
+  <%= image_tag attachment, alt: repository.translate.field_label(field),class: "max-w-full h-auto rounded-lg shadow-md" %>
 <% else %>
   <%= render(Uchi::Ui::NoValue.new) %>
 <% end %>
