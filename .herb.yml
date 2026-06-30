@@ -7,6 +7,7 @@ files:
     - "**/*.html+*.erb"
     - "**/*.turbo_stream.erb"
   exclude:
+    - app/components/uchi/flowbite/**/*
     - doc/**/*
     - node_modules/**/*
     - vendor/bundle/**/*
