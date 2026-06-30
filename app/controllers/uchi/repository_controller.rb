@@ -133,7 +133,7 @@ module Uchi
     end
 
     def permitted_params_for_new
-      @repository.fields_for_new(record: @record).map(&:permitted_param)
+      @repository.fields_for_new(record: @record || @repository.build).map(&:permitted_param)
     end
 
     def record_params_for_edit
