@@ -190,7 +190,7 @@ module Uchi
 
       search = search.strip
       conditions = searchable_fields.map { |field|
-        arel_field = model.arel_table[field.name]
+        arel_field = model.arel_table[field.attribute]
         Arel::Nodes::NamedFunction.new(
           "CAST",
           [arel_field.as(Arel::Nodes::SqlLiteral.new("VARCHAR"))]
