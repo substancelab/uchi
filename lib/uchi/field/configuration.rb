@@ -139,7 +139,7 @@ module Uchi
       # @example Getting
       #   field.sortable # => true
       def sortable(value = Configuration::Unset)
-        return @sortable if value == Configuration::Unset
+        return @sortable.nil? ? default_sortable? : @sortable if value == Configuration::Unset
 
         @sortable = value
         self
@@ -147,9 +147,7 @@ module Uchi
 
       # Returns true if the field is sortable
       def sortable?
-        return default_sortable? if @sortable.nil?
-
-        !!@sortable
+        !!sortable
       end
 
       # Returns whether this field should be visible for the given record.
