@@ -36,6 +36,11 @@ module Uchi
         assert_equal :book_id, @field.param_key
       end
 
+      test "#param_key uses configured attribute when set" do
+        field = Uchi::Field::BelongsTo.new(:publication).attribute(:book)
+        assert_equal :book_id, field.param_key
+      end
+
       test "#edit_component returns an instance of Edit component" do
         component = @field.edit_component(form: @form, hint: "Custom hint", label: "Custom label", repository: @repository)
         assert_equal "Custom hint", component.hint

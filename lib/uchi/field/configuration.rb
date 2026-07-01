@@ -17,6 +17,28 @@ module Uchi
         @sortable = default_sortable?
       end
 
+      # Sets or gets the model attribute name this field reads from.
+      #
+      # When called with an argument, sets the attribute and returns self for chaining.
+      # When called without arguments, returns the configured attribute name, or falls
+      # back to the field's name if no attribute has been configured.
+      #
+      # @param attribute_name [Symbol, String] The name of the model attribute
+      # @return [self, Symbol] Returns self for method chaining when setting,
+      #   or the attribute name when getting
+      #
+      # @example Setting
+      #   Field::BelongsTo.new(:company).attribute(:owner)
+      #
+      # @example Getting
+      #   field.attribute # => :company (default) or :owner (if explicitly set)
+      def attribute(attribute_name = Configuration::Unset)
+        return @attribute || name if attribute_name == Configuration::Unset
+
+        @attribute = attribute_name.to_sym
+        self
+      end
+
       # Sets or gets which actions this field should appear on.
       #
       # When called with arguments, sets the actions and returns self for chaining.

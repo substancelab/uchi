@@ -6,6 +6,26 @@ class UchiFieldTest < ActiveSupport::TestCase
     @field = Uchi::Field.new(:name)
   end
 
+  test "#attribute defaults to name" do
+    field = Uchi::Field.new(:title)
+    assert_equal :title, field.attribute
+  end
+
+  test "#attribute returns configured attribute when set" do
+    field = Uchi::Field.new(:company).attribute(:owner)
+    assert_equal :owner, field.attribute
+  end
+
+  test "#attribute name is still accessible after setting attribute" do
+    field = Uchi::Field.new(:company).attribute(:owner)
+    assert_equal :company, field.name
+  end
+
+  test "#attribute returns self for method chaining" do
+    field = Uchi::Field.new(:company)
+    assert_equal field, field.attribute(:owner)
+  end
+
   test "initializes with name" do
     field = Uchi::Field.new(:title)
     assert_equal :title, field.name
@@ -28,6 +48,11 @@ class UchiFieldTest < ActiveSupport::TestCase
 
   test "#param_key returns name as symbol" do
     assert_equal :name, @field.param_key
+  end
+
+  test "#param_key returns configured attribute when set" do
+    field = Uchi::Field.new(:company).attribute(:owner)
+    assert_equal :owner, field.param_key
   end
 
   test "#permitted_param returns name as symbol" do
@@ -65,6 +90,12 @@ class UchiFieldTest < ActiveSupport::TestCase
   test "#value uses reader to get value from record" do
     record = OpenStruct.new(name: "Test Name")
     assert_equal "Test Name", @field.value(record)
+  end
+
+  test "#value uses configured attribute when set" do
+    field = Uchi::Field.new(:company).attribute(:owner)
+    record = OpenStruct.new(owner: "Acme Corp")
+    assert_equal "Acme Corp", field.value(record)
   end
 
   test "#value uses custom reader when provided" do

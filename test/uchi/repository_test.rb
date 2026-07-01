@@ -38,7 +38,7 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     sort_order = author_repository.default_sort_order
 
     assert sort_order.is_a?(Uchi::SortOrder)
-    assert_equal :id, sort_order.name
+    assert_equal :id, sort_order.attribute
     assert_equal :asc, sort_order.direction
   end
 
