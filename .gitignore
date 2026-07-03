@@ -2,10 +2,10 @@
 /.bundle/
 /.yardoc
 /coverage/
+/dist
 /doc/
 /docs/*.yml
 !/docs/_sidebar.yml
-/Gemfile.lock
 /node_modules/
 /package-lock.json
 /pkg/
