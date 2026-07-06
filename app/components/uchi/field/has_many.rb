@@ -159,14 +159,15 @@ module Uchi
           return query unless reflection
 
           associated_table = reflection.klass.table_name
-          associated_pk = reflection.klass.primary_key
-          count = Arel.sql("COUNT(#{associated_table}.#{associated_pk})")
+          associated_primary_key = reflection.klass.primary_key
+          count = Arel.sql("COUNT(#{associated_table}.#{associated_primary_key})")
+          primary_key = query.klass.arel_table[query.klass.primary_key]
 
           SortOrder.new(count, direction).apply(
             query
               .left_outer_joins(name)
-              .group("#{query.klass.table_name}.#{query.klass.primary_key}")
-          )
+              .group(primary_key)
+          ).order(primary_key.asc)
         }
       end
     end
