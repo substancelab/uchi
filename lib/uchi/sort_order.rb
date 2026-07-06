@@ -1,6 +1,6 @@
 module Uchi
   class SortOrder
-    attr_reader :name, :direction
+    attr_reader :column, :direction
 
     class << self
       def from_params(params)
@@ -20,15 +20,15 @@ module Uchi
     end
 
     def apply(query)
-      query.order(name => direction)
+      query.order(column => direction)
     end
 
     def descending?
       direction == :desc
     end
 
-    def initialize(name, direction)
-      @name = name.to_sym
+    def initialize(column, direction)
+      @column = column.to_sym
       @direction = direction.to_sym
     end
   end
