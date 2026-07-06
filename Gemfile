@@ -10,7 +10,7 @@ gem "ostruct"
 gem "rake", "~> 13.0"
 
 gem "capybara"
-gem "standard", "~> 1.3"
+gem "standard", "~> 1.55"
 
 # Stuff for running the tests and the dummy app
 gem "rails-controller-testing"
