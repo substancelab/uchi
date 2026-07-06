@@ -155,17 +155,18 @@ module Uchi
 
       def default_sortable?
         lambda { |query, direction|
-          safe_direction = (direction.to_s.upcase == "DESC") ? "DESC" : "ASC"
           reflection = query.klass.reflect_on_association(name)
           return query unless reflection
 
           associated_table = reflection.klass.table_name
           associated_pk = reflection.klass.primary_key
+          count = Arel.sql("COUNT(#{associated_table}.#{associated_pk})")
 
-          query
-            .left_outer_joins(name)
-            .group("#{query.klass.table_name}.#{query.klass.primary_key}")
-            .order(Arel.sql("COUNT(#{associated_table}.#{associated_pk}) #{safe_direction}"))
+          SortOrder.new(count, direction).apply(
+            query
+              .left_outer_joins(name)
+              .group("#{query.klass.table_name}.#{query.klass.primary_key}")
+          )
         }
       end
     end

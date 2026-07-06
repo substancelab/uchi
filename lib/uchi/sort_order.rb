@@ -21,7 +21,11 @@ module Uchi
     end
 
     def apply(query)
-      query.order(column => direction)
+      if column.respond_to?(:asc)
+        query.order(ascending? ? column.asc : column.desc)
+      else
+        query.order(column => direction)
+      end
     end
 
     def descending?
@@ -29,7 +33,7 @@ module Uchi
     end
 
     def initialize(column, direction)
-      @column = column.to_sym
+      @column = column.respond_to?(:asc) ? column : column.to_sym
       @direction = direction.to_sym
     end
   end
