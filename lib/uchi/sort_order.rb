@@ -1,4 +1,5 @@
 module Uchi
+  # Encapsulates the sort order selected by a user.
   class SortOrder
     attr_reader :column, :direction
 
