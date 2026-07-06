@@ -15,7 +15,7 @@
           class="px-6 py-3 font-medium whitespace-nowrap <%= component_class.classes_for_table_cell.join(" ") %>"
         >
           <% if field.sortable? %>
-            <% if field.name == sort_order&.name %>
+            <% if field.name == sort_order&.column %>
               <% if sort_order&.ascending? %>
                 <%= link_to(repository.routes.path_for(:index, query: query, scope: scope, sort: {:by => field.name, :direction => :desc})) do %>
                   <%= repository.translate.field_label(field) %>

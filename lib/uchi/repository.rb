@@ -200,7 +200,7 @@ module Uchi
     end
 
     def apply_sort_order(query, sort_order)
-      field_to_sort_by = fields.find { |field| field.name == sort_order.name }
+      field_to_sort_by = fields.find { |field| field.name == sort_order.column }
       return query unless field_to_sort_by
 
       if field_to_sort_by.sortable.respond_to?(:call)

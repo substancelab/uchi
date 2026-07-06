@@ -58,14 +58,14 @@ Uchi casts whatever datatype the field uses into a string when searching and per
 
 ## Sorting
 
-All fields are considered sortable by default. This means that a link to toggle the order of a column appears for all columns on index pages. How to sort a specific field - or to disable it entirely - is configured using the `:sortable` option.
+When a `sortable` field appears on the index page, it gets a link to toggle the order of the records based on the field. How to sort a specific field - or to disable it entirely - is configured using the `sortable` method.
 
-### Disable sorting
+### Enable sorting
 
-To disable sorting a specific field:
+Most fields are sortable by default, but if you need to enable sortable for a given field you can set it to `true`:
 
 ```ruby
-Field::Number.new(:calculated_sum).sortable(false)
+Field::String.new(:name).sortable(true)
 ```
 
 ### Customize sorting
@@ -73,8 +73,8 @@ Field::Number.new(:calculated_sum).sortable(false)
 To customize the query used to sort by a given field, pass a lambda to the `sortable` method:
 
 ```ruby
-Field::Number.new(:users_count).sortable(lambda { |query, direction|
-  query.joins(:users).group(:id).order("COUNT(users.id) #{direction}")
+Field::String.new(:name).sortable(lambda { |query, direction|
+  query.order(first_name: direction, last_names: direction)
 })
 ```
 
@@ -85,6 +85,14 @@ The lambda receives 2 arguments:
 
 The lambda should return an `ActiveRecord::Relation` with the desired sort order added.
 
+You can even use this to sort by computed columns via SQL:
+
+```ruby
+Field::Number.new(:users_count).sortable(lambda { |query, direction|
+  query.joins(:users).group(:id).order("COUNT(users.id) #{direction}")
+})
+```
+
 ### Sorting by columns in another table
 
 Thanks to ActiveRecord we can even sort by columns in other tables/models. If you have an `Employee` model that belongs to a `Company` and you want to allow your users to sort the employee list by company name, you can configure the field like this:
@@ -93,6 +101,14 @@ Thanks to ActiveRecord we can even sort by columns in other tables/models. If yo
 Field::BelongsTo.new(:company).sortable(lambda { |query, direction|
   query.joins(:office).order(:offices => {:name => direction})
 })
+```
+
+### Disable sorting
+
+To disable sorting a specific field:
+
+```ruby
+Field::Number.new(:calculated_sum).sortable(false)
 ```
 
 ## Field::BelongsTo

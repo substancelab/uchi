@@ -1,6 +1,7 @@
 module Uchi
+  # Encapsulates the sort order selected by a user.
   class SortOrder
-    attr_reader :name, :direction
+    attr_reader :column, :direction
 
     class << self
       def from_params(params)
@@ -20,15 +21,19 @@ module Uchi
     end
 
     def apply(query)
-      query.order(name => direction)
+      if column.respond_to?(:asc)
+        query.order(ascending? ? column.asc : column.desc)
+      else
+        query.order(column => direction)
+      end
     end
 
     def descending?
       direction == :desc
     end
 
-    def initialize(name, direction)
-      @name = name.to_sym
+    def initialize(column, direction)
+      @column = column.respond_to?(:asc) ? column : column.to_sym
       @direction = direction.to_sym
     end
   end
