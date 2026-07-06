@@ -127,7 +127,7 @@ module Uchi
         @association ||= repository.model.reflect_on_association(name)
       end
 
-      def default_sortable?
+      def default_sortable
         lambda { |query, direction|
           reflection = query.klass.reflect_on_association(name)
           return query unless reflection

@@ -14,7 +14,7 @@ module Uchi
         @reader = DEFAULT_READER
         @searchable = default_searchable?
         @visible = DEFAULT_VISIBLE
-        @sortable = default_sortable?
+        @sortable = default_sortable
       end
 
       # Sets or gets which actions this field should appear on.
@@ -139,7 +139,7 @@ module Uchi
       # @example Getting
       #   field.sortable # => true
       def sortable(value = Configuration::Unset)
-        return @sortable.nil? ? default_sortable? : @sortable if value == Configuration::Unset
+        return @sortable.nil? ? default_sortable : @sortable if value == Configuration::Unset
 
         @sortable = value
         self
@@ -171,7 +171,7 @@ module Uchi
         false
       end
 
-      def default_sortable?
+      def default_sortable
         true
       end
     end

@@ -153,7 +153,7 @@ module Uchi
 
       protected
 
-      def default_sortable?
+      def default_sortable
         lambda { |query, direction|
           reflection = query.klass.reflect_on_association(name)
           return query unless reflection
