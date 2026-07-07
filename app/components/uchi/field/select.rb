@@ -92,26 +92,48 @@ module Uchi
         return resolved_options if options == Configuration::Unset
 
         @options = options
+        @resolved_options = nil
+        @flat_options = nil
         self
       end
 
       private
 
+      # Resolves and memoizes the options as a flat value => label Hash,
+      # merging grouped options together. Memoized for the same reason as
+      # #resolved_options - see there for details.
+      #
+      # When the same value appears in more than one group, the first
+      # matching label wins - matching how a browser's `<select>` element
+      # only ever selects the first option with a matching value.
       def flat_options
-        resolved_options.each_with_object({}) { |(key, value), flat|
-          value.is_a?(Hash) ? flat.merge!(value) : flat[key] = value
+        @flat_options ||= resolved_options.each_with_object({}) { |(key, value), flat|
+          if value.is_a?(Hash)
+            value.each { |group_key, group_label| flat[group_key] = group_label unless flat.key?(group_key) }
+          else
+            flat[key] = value unless flat.key?(key)
+          end
         }
       end
 
       def normalize(options)
-        return options.to_h { |option| [option, option] } if options.is_a?(Array)
-        return options unless options.is_a?(Hash)
-
-        options.transform_values { |value| value.is_a?(Array) ? value.to_h { |option| [option, option] } : value }
+        case options
+        when Array
+          options.to_h { |option| [option, option] }
+        when Hash
+          options.transform_values { |value| value.is_a?(Array) ? value.to_h { |option| [option, option] } : value }
+        else
+          raise ArgumentError, "Field::Select options must be a Hash, an Array, or a Proc returning one of those, got #{options.class}"
+        end
       end
 
+      # Resolves and memoizes the configured options. Memoized so that a Proc
+      # given to #options is only called once per field instance, even though
+      # #options, #grouped?, and #label_for are all called multiple times
+      # while rendering a single page (e.g. once per row on an index page).
+      # The memo is cleared whenever #options is called with a new value.
       def resolved_options
-        normalize(@options.respond_to?(:call) ? @options.call : @options)
+        @resolved_options ||= normalize(@options.respond_to?(:call) ? @options.call : @options)
       end
     end
   end

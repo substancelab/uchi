@@ -109,6 +109,70 @@ module Uchi
         }, field.options)
       end
 
+      test "#label_for only resolves options once across multiple calls" do
+        calls = 0
+        field = Uchi::Field::Select.new(:biography).options(-> {
+          calls += 1
+          {"fiction" => "Fiction", "nonfiction" => "Non-fiction"}
+        })
+
+        field.label_for("fiction")
+        field.label_for("nonfiction")
+        field.label_for("unknown")
+
+        assert_equal 1, calls
+      end
+
+      test "#label_for re-resolves options after being reconfigured" do
+        field = Uchi::Field::Select.new(:biography).options({"fiction" => "Fiction"})
+        field.label_for("fiction")
+
+        field.options({"fiction" => "Fiction, again"})
+
+        assert_equal "Fiction, again", field.label_for("fiction")
+      end
+
+      test "#options given a Proc only calls it once across multiple reads" do
+        calls = 0
+        field = Uchi::Field::Select.new(:biography).options(-> {
+          calls += 1
+          {"fiction" => "Fiction"}
+        })
+
+        field.options
+        field.grouped?
+        field.label_for("fiction")
+
+        assert_equal 1, calls
+      end
+
+      test "#options re-evaluates the Proc after being reconfigured" do
+        calls = 0
+        field = Uchi::Field::Select.new(:biography).options(-> {
+          calls += 1
+          {"fiction" => "Fiction"}
+        })
+        field.options
+
+        field.options(-> {
+          calls += 1
+          {"fiction" => "Fiction, again"}
+        })
+
+        assert_equal "Fiction, again", field.label_for("fiction")
+        assert_equal 2, calls
+      end
+
+      test "#options raises ArgumentError for an unsupported type" do
+        field = Uchi::Field::Select.new(:biography).options("not a hash or array")
+        assert_raises(ArgumentError) { field.options }
+      end
+
+      test "#options raises ArgumentError when a Proc returns an unsupported type" do
+        field = Uchi::Field::Select.new(:biography).options(-> { "not a hash or array" })
+        assert_raises(ArgumentError) { field.options }
+      end
+
       test "#show_component returns an instance of Show component" do
         component = @field.show_component(record: @form.object, repository: @repository)
         assert_equal @field, component.field
