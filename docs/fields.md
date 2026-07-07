@@ -190,6 +190,28 @@ end
 
 or create a custom field that provides a user interface to select whatever models you want to choose between.
 
+## Field::Select
+
+The `Select` field renders a dropdown letting users pick a value from a fixed set of options. On display pages it shows the label for the record's current value.
+
+### How to add a Select field
+
+Add a `Select` field to a repository's `#fields` method, configuring the available options with `#options`:
+
+```ruby
+def fields
+  [
+    Field::Select.new(:size).options({
+      "s" => "Small",
+      "m" => "Medium",
+      "l" => "Large"
+    })
+  ]
+end
+```
+
+`#options` accepts a hash mapping the values stored on the record to the labels shown to users.
+
 ## Field::HasMany
 
 ![HasMany field for a Project association filtered by "bi" input](https://res.cloudinary.com/substancelab/image/upload/v1767108606/uchi/docs/v1.0/has_many/filtered_light.png)
