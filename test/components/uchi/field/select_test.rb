@@ -75,6 +75,18 @@ module Uchi
         assert field.grouped?
       end
 
+      test "#grouped? returns false for an empty Hash" do
+        assert_not Uchi::Field::Select.new(:biography).options({}).grouped?
+      end
+
+      test "#grouped? returns false when only some values are Hashes" do
+        field = Uchi::Field::Select.new(:biography).options({
+          "Fiction" => {"fantasy" => "Fantasy"},
+          "fiction" => "Fiction"
+        })
+        assert_not field.grouped?
+      end
+
       test "#options defaults to an empty hash" do
         assert_equal({}, Uchi::Field::Select.new(:biography).options)
       end

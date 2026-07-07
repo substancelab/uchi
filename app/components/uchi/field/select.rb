@@ -32,10 +32,10 @@ module Uchi
       class Show < Uchi::Field::Base::Show
       end
 
-      # Returns true if the configured options are grouped, ie. a Hash whose
-      # values are themselves Hashes of options.
+      # Returns true if the configured options are grouped, ie. a non-empty
+      # Hash whose values are all themselves Hashes of options.
       def grouped?
-        resolved_options.values.first.is_a?(Hash)
+        resolved_options.present? && resolved_options.values.all? { |value| value.is_a?(Hash) }
       end
 
       def initialize(name)
