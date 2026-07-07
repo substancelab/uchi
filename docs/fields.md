@@ -194,6 +194,8 @@ or create a custom field that provides a user interface to select whatever model
 
 The `Select` field renders a dropdown letting users pick a value from a fixed set of options. On display pages it shows the label for the record's current value.
 
+Values are matched against option keys by their string representation, so e.g. a persisted string of `"fiction"` matches an option keyed by the symbol `:fiction` - the same way a `<select>` element matches its options against the persisted attribute value.
+
 ### How to add a Select field
 
 Add a `Select` field to a repository's `#fields` method, configuring the available options with `#options`:

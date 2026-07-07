@@ -43,8 +43,12 @@ module Uchi
         @options = {}
       end
 
-      # Returns the label to display for the given value, falling back to the
-      # raw value itself if it isn't found among the configured options.
+      # Returns the label to display for the given value, or nil if the value
+      # doesn't match any of the configured options.
+      #
+      # Values are compared using their string representation, matching how
+      # a `<select>` element compares its options' values against the
+      # persisted attribute value.
       def label_for(value)
         _key, label = flat_options.find { |option_value, _label| option_value.to_s == value.to_s }
         label

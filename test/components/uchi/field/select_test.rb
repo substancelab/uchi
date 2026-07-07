@@ -42,8 +42,17 @@ module Uchi
         assert_equal "Fiction", @field.label_for("fiction")
       end
 
-      test "#label_for falls back to the raw value for an unknown value" do
-        assert_equal "unknown", @field.label_for("unknown")
+      test "#label_for matches values regardless of Symbol vs String, like <select> does" do
+        field = Uchi::Field::Select.new(:biography).options({fiction: "Fiction and stuff"})
+        assert_equal "Fiction and stuff", field.label_for("fiction")
+      end
+
+      test "#label_for returns nil for an unknown value" do
+        assert_nil @field.label_for("unknown")
+      end
+
+      test "#label_for returns nil for a nil value" do
+        assert_nil @field.label_for(nil)
       end
 
       test "#label_for finds the label for a value nested in a group" do
@@ -252,6 +261,49 @@ module Uchi
         result = render_inline(@component)
 
         assert_includes result.to_html, "Fiction"
+      end
+    end
+
+    class SelectShowSymbolOptionsTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::Select.new(:biography).options({fiction: "Fiction and stuff"})
+        @record = Author.new(name: "Test Author")
+        @record.define_singleton_method(:biography) { "fiction" }
+        @repository = Uchi::Repositories::Author.new
+
+        @component = Uchi::Field::Select::Show.new(
+          field: @field,
+          record: @record,
+          repository: @repository
+        )
+      end
+
+      test "renders the label for a Symbol-keyed option matching a String value" do
+        result = render_inline(@component)
+
+        assert_includes result.to_html, "Fiction and stuff"
+      end
+    end
+
+    class SelectShowUnknownValueTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::Select.new(:biography).options({"fiction" => "Fiction", "nonfiction" => "Non-fiction"})
+        @record = Author.new(name: "Test Author")
+        @record.define_singleton_method(:biography) { "unsaved" }
+        @repository = Uchi::Repositories::Author.new
+
+        @component = Uchi::Field::Select::Show.new(
+          field: @field,
+          record: @record,
+          repository: @repository
+        )
+      end
+
+      test "renders nothing, since the saved value doesn't match any option" do
+        result = render_inline(@component)
+
+        assert_not_includes result.to_html, "Fiction"
+        assert_not_includes result.to_html, "unsaved"
       end
     end
   end
