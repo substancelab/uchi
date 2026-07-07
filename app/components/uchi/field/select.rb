@@ -52,9 +52,7 @@ module Uchi
       def label_for(value)
         return if value.nil?
 
-        value = value.to_s
-        _key, label = flat_options.find { |option_value, _label| option_value.to_s == value }
-        label
+        flat_options[value.to_s]
       end
 
       # Sets or gets the options to choose between.
@@ -102,8 +100,9 @@ module Uchi
 
       private
 
-      # Resolves and memoizes the options as a flat value => label Hash,
-      # merging grouped options together. Memoized for the same reason as
+      # Resolves and memoizes the options as a flat value => label Hash, keyed
+      # by the string representation of each option's value so #label_for
+      # can look up a label in constant time. Memoized for the same reason as
       # #resolved_options - see there for details.
       #
       # When the same value appears in more than one group, the first
@@ -112,9 +111,9 @@ module Uchi
       def flat_options
         @flat_options ||= resolved_options.each_with_object({}) { |(key, value), flat|
           if value.is_a?(Hash)
-            value.each { |group_key, group_label| flat[group_key] = group_label unless flat.key?(group_key) }
+            value.each { |group_key, group_label| flat[group_key.to_s] = group_label unless flat.key?(group_key.to_s) }
           else
-            flat[key] = value unless flat.key?(key)
+            flat[key.to_s] = value unless flat.key?(key.to_s)
           end
         }
       end
