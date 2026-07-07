@@ -212,6 +212,12 @@ end
 
 `#options` accepts a hash mapping the values stored on the record to the labels shown to users.
 
+If the values and labels are the same, pass an array instead:
+
+```ruby
+Field::Select.new(:size).options(["Small", "Medium", "Large"])
+```
+
 ## Field::HasMany
 
 ![HasMany field for a Project association filtered by "bi" input](https://res.cloudinary.com/substancelab/image/upload/v1767108606/uchi/docs/v1.0/has_many/filtered_light.png)

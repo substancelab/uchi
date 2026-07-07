@@ -44,20 +44,24 @@ module Uchi
       # When called with an argument, sets the options and returns self for
       # chaining. When called without arguments, returns the current options.
       #
-      # @param options [Hash] A hash mapping stored values to their
-      #   human-readable labels.
+      # @param options [Hash, Array] A hash mapping stored values to their
+      #   human-readable labels. An array can be given instead, in which case
+      #   each item is used as both the stored value and its label.
       # @return [self, Hash] Returns self for method chaining when setting,
       #   or the options hash when getting
       #
-      # @example Setting
+      # @example Setting with a Hash
       #   Field::Select.new(:size).options({s: "Small", m: "Medium", l: "Large"})
+      #
+      # @example Setting with an Array
+      #   Field::Select.new(:size).options(["Small", "Medium", "Large"])
       #
       # @example Getting
       #   field.options # => {s: "Small", m: "Medium", l: "Large"}
       def options(options = Configuration::Unset)
         return @options if options == Configuration::Unset
 
-        @options = options
+        @options = options.is_a?(Array) ? options.to_h { |option| [option, option] } : options
         self
       end
     end

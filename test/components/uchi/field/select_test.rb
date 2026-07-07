@@ -54,6 +54,11 @@ module Uchi
         assert_equal({"fiction" => "Fiction", "nonfiction" => "Non-fiction"}, @field.options)
       end
 
+      test "#options given an Array uses each item as both value and label" do
+        field = Uchi::Field::Select.new(:biography).options(["Fiction", "Non-fiction"])
+        assert_equal({"Fiction" => "Fiction", "Non-fiction" => "Non-fiction"}, field.options)
+      end
+
       test "#show_component returns an instance of Show component" do
         component = @field.show_component(record: @form.object, repository: @repository)
         assert_equal @field, component.field
