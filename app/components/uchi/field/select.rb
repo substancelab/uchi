@@ -8,7 +8,7 @@ module Uchi
           if field.grouped?
             field.options.map { |group, group_options| [group, group_options.map { |value, label| [label, value] }] }
           else
-            field.options.map { |value, label| [label, value] }
+            field.flat_options.map { |value, label| [label, value] }
           end
         end
 
@@ -30,6 +30,26 @@ module Uchi
       end
 
       class Show < Uchi::Field::Base::Show
+      end
+
+      # Resolves and memoizes the options as a flat value => label Hash, keyed
+      # by the string representation of each option's value so #label_for
+      # can look up a label in constant time. Memoized so that a Proc given
+      # to #options is only called once per field instance - see
+      # #resolved_options for details. The memo is cleared whenever #options
+      # is called with a new value.
+      #
+      # When the same value appears in more than one group, the first
+      # matching label wins - matching how a browser's `<select>` element
+      # only ever selects the first option with a matching value.
+      def flat_options
+        @flat_options ||= resolved_options.each_with_object({}) { |(key, value), flat|
+          if value.is_a?(Hash)
+            value.each { |group_key, group_label| flat[group_key.to_s] = group_label unless flat.key?(group_key.to_s) }
+          else
+            flat[key.to_s] = value unless flat.key?(key.to_s)
+          end
+        }
       end
 
       # Returns true if the configured options are grouped, ie. a non-empty
@@ -99,24 +119,6 @@ module Uchi
       end
 
       private
-
-      # Resolves and memoizes the options as a flat value => label Hash, keyed
-      # by the string representation of each option's value so #label_for
-      # can look up a label in constant time. Memoized for the same reason as
-      # #resolved_options - see there for details.
-      #
-      # When the same value appears in more than one group, the first
-      # matching label wins - matching how a browser's `<select>` element
-      # only ever selects the first option with a matching value.
-      def flat_options
-        @flat_options ||= resolved_options.each_with_object({}) { |(key, value), flat|
-          if value.is_a?(Hash)
-            value.each { |group_key, group_label| flat[group_key.to_s] = group_label unless flat.key?(group_key.to_s) }
-          else
-            flat[key.to_s] = value unless flat.key?(key.to_s)
-          end
-        }
-      end
 
       def normalize(options)
         case options

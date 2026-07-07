@@ -295,6 +295,40 @@ module Uchi
       end
     end
 
+    class SelectEditMixedOptionsTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::Select.new(:biography).options({
+          "Fiction" => {"fantasy" => "Fantasy"},
+          "fiction" => "Fiction"
+        })
+        @record = Author.new(name: "Test Author")
+        @record.define_singleton_method(:biography) { "fantasy" }
+        @record.define_singleton_method(:biography=) { |val| @biography = val }
+        @repository = Uchi::Repositories::Author.new
+        @view_context = ActionController::Base.new.view_context
+
+        @form = ActionView::Helpers::FormBuilder.new(:author, @record, @view_context, {})
+
+        @component = Uchi::Field::Select::Edit.new(
+          field: @field,
+          form: @form,
+          repository: @repository
+        )
+      end
+
+      test "#collection flattens nested groups instead of rendering a Hash as a label" do
+        assert_equal [["Fantasy", "fantasy"], ["Fiction", "fiction"]], @component.collection
+      end
+
+      test "renders plain options, not a Hash turned into a label" do
+        render_inline(@component)
+
+        assert_selector("option", text: "Fantasy")
+        assert_selector("option", text: "Fiction")
+        assert_no_selector("optgroup")
+      end
+    end
+
     class SelectIndexTest < ViewComponent::TestCase
       def setup
         @field = Uchi::Field::Select.new(:biography).options({"fiction" => "Fiction", "nonfiction" => "Non-fiction"})
