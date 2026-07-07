@@ -55,6 +55,11 @@ module Uchi
         assert_nil @field.label_for(nil)
       end
 
+      test "#label_for returns nil for a nil value even if an option is keyed by an empty string" do
+        field = Uchi::Field::Select.new(:biography).options({"" => "Blank"})
+        assert_nil field.label_for(nil)
+      end
+
       test "#label_for finds the label for a value nested in a group" do
         field = Uchi::Field::Select.new(:biography).options({
           "Fiction" => {"fantasy" => "Fantasy"},

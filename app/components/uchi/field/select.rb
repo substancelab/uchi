@@ -50,7 +50,10 @@ module Uchi
       # a `<select>` element compares its options' values against the
       # persisted attribute value.
       def label_for(value)
-        _key, label = flat_options.find { |option_value, _label| option_value.to_s == value.to_s }
+        return if value.nil?
+
+        value = value.to_s
+        _key, label = flat_options.find { |option_value, _label| option_value.to_s == value }
         label
       end
 
