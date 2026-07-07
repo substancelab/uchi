@@ -5,7 +5,11 @@ module Uchi
     class Select < Field
       class Edit < Uchi::Field::Base::Edit
         def collection
-          field.options.map { |value, label| [label, value] }
+          if field.grouped?
+            field.options.map { |group, group_options| [group, group_options.map { |value, label| [label, value] }] }
+          else
+            field.options.map { |value, label| [label, value] }
+          end
         end
 
         private
@@ -28,6 +32,12 @@ module Uchi
       class Show < Uchi::Field::Base::Show
       end
 
+      # Returns true if the configured options are grouped, ie. a Hash whose
+      # values are themselves Hashes of options.
+      def grouped?
+        resolved_options.values.first.is_a?(Hash)
+      end
+
       def initialize(name)
         super
         @options = {}
@@ -36,7 +46,8 @@ module Uchi
       # Returns the label to display for the given value, falling back to the
       # raw value itself if it isn't found among the configured options.
       def label_for(value)
-        options.fetch(value, value)
+        _key, label = flat_options.find { |option_value, _label| option_value.to_s == value.to_s }
+        label
       end
 
       # Sets or gets the options to choose between.
@@ -50,6 +61,9 @@ module Uchi
       #   case each item is used as both the stored value and its label. A
       #   proc can also be given; it's called with no arguments and should
       #   return a Hash or an Array as described above.
+      #
+      #   To group options, pass a Hash whose values are themselves a Hash or
+      #   Array of options, keyed by the group label.
       # @return [self, Hash] Returns self for method chaining when setting,
       #   or the options hash when getting
       #
@@ -62,6 +76,12 @@ module Uchi
       # @example Setting with a Proc
       #   Field::Select.new(:size).options(-> { Size.pluck(:key, :name).to_h })
       #
+      # @example Setting grouped options
+      #   Field::Select.new(:size).options({
+      #     "Letters" => {s: "Small", m: "Medium", l: "Large"},
+      #     "Numbers" => ["32", "34", "36"]
+      #   })
+      #
       # @example Getting
       #   field.options # => {s: "Small", m: "Medium", l: "Large"}
       def options(options = Configuration::Unset)
@@ -73,9 +93,21 @@ module Uchi
 
       private
 
+      def flat_options
+        resolved_options.each_with_object({}) { |(key, value), flat|
+          value.is_a?(Hash) ? flat.merge!(value) : flat[key] = value
+        }
+      end
+
+      def normalize(options)
+        return options.to_h { |option| [option, option] } if options.is_a?(Array)
+        return options unless options.is_a?(Hash)
+
+        options.transform_values { |value| value.is_a?(Array) ? value.to_h { |option| [option, option] } : value }
+      end
+
       def resolved_options
-        options = @options.respond_to?(:call) ? @options.call : @options
-        options.is_a?(Array) ? options.to_h { |option| [option, option] } : options
+        normalize(@options.respond_to?(:call) ? @options.call : @options)
       end
     end
   end

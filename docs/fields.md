@@ -224,6 +224,17 @@ To compute the options dynamically, pass a lambda. It's called with no arguments
 Field::Select.new(:size).options(-> { Size.pluck(:key, :name).to_h })
 ```
 
+### Grouped options
+
+To group options under labeled optgroups, pass a hash whose values are themselves a hash or array of options, keyed by the group label:
+
+```ruby
+Field::Select.new(:size).options({
+  "Letters" => {s: "Small", m: "Medium", l: "Large"},
+  "Numbers" => ["32", "34", "36"]
+})
+```
+
 ## Field::HasMany
 
 ![HasMany field for a Project association filtered by "bi" input](https://res.cloudinary.com/substancelab/image/upload/v1767108606/uchi/docs/v1.0/has_many/filtered_light.png)

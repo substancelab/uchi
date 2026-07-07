@@ -46,6 +46,26 @@ module Uchi
         assert_equal "unknown", @field.label_for("unknown")
       end
 
+      test "#label_for finds the label for a value nested in a group" do
+        field = Uchi::Field::Select.new(:biography).options({
+          "Fiction" => {"fantasy" => "Fantasy"},
+          "Non-fiction" => ["Biography"]
+        })
+        assert_equal "Fantasy", field.label_for("fantasy")
+        assert_equal "Biography", field.label_for("Biography")
+      end
+
+      test "#grouped? returns false for a flat Hash" do
+        assert_not @field.grouped?
+      end
+
+      test "#grouped? returns true when values are Hashes" do
+        field = Uchi::Field::Select.new(:biography).options({
+          "Fiction" => {"fantasy" => "Fantasy"}
+        })
+        assert field.grouped?
+      end
+
       test "#options defaults to an empty hash" do
         assert_equal({}, Uchi::Field::Select.new(:biography).options)
       end
@@ -67,6 +87,17 @@ module Uchi
       test "#options given a Proc returning an Array uses each item as both value and label" do
         field = Uchi::Field::Select.new(:biography).options(-> { ["Fiction", "Non-fiction"] })
         assert_equal({"Fiction" => "Fiction", "Non-fiction" => "Non-fiction"}, field.options)
+      end
+
+      test "#options given grouped options normalizes each group's Array values" do
+        field = Uchi::Field::Select.new(:biography).options({
+          "Fiction" => {"fantasy" => "Fantasy"},
+          "Non-fiction" => ["Biography"]
+        })
+        assert_equal({
+          "Fiction" => {"fantasy" => "Fantasy"},
+          "Non-fiction" => {"Biography" => "Biography"}
+        }, field.options)
       end
 
       test "#show_component returns an instance of Show component" do
@@ -135,6 +166,42 @@ module Uchi
           hint: {content: "Custom hint"}
         }
         assert_equal expected_options, @component.send(:options)
+      end
+    end
+
+    class SelectEditGroupedTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::Select.new(:biography).options({
+          "Fiction" => {"fantasy" => "Fantasy"},
+          "Non-fiction" => ["Biography"]
+        })
+        @record = Author.new(name: "Test Author")
+        @record.define_singleton_method(:biography) { "fantasy" }
+        @record.define_singleton_method(:biography=) { |val| @biography = val }
+        @repository = Uchi::Repositories::Author.new
+        @view_context = ActionController::Base.new.view_context
+
+        @form = ActionView::Helpers::FormBuilder.new(:author, @record, @view_context, {})
+
+        @component = Uchi::Field::Select::Edit.new(
+          field: @field,
+          form: @form,
+          repository: @repository
+        )
+      end
+
+      test "#collection returns the configured options grouped by label" do
+        assert_equal [
+          ["Fiction", [["Fantasy", "fantasy"]]],
+          ["Non-fiction", [["Biography", "Biography"]]]
+        ], @component.collection
+      end
+
+      test "renders optgroups" do
+        render_inline(@component)
+
+        assert_selector("optgroup[label='Fiction'] option", text: "Fantasy")
+        assert_selector("optgroup[label='Non-fiction'] option", text: "Biography")
       end
     end
 
