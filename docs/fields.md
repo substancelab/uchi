@@ -218,6 +218,12 @@ If the values and labels are the same, pass an array instead:
 Field::Select.new(:size).options(["Small", "Medium", "Large"])
 ```
 
+To compute the options dynamically, pass a lambda. It's called with no arguments and should return a hash or an array as described above:
+
+```ruby
+Field::Select.new(:size).options(-> { Size.pluck(:key, :name).to_h })
+```
+
 ## Field::HasMany
 
 ![HasMany field for a Project association filtered by "bi" input](https://res.cloudinary.com/substancelab/image/upload/v1767108606/uchi/docs/v1.0/has_many/filtered_light.png)
