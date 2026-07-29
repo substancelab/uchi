@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## 0.2.0
 
 ### Breaking
 
@@ -26,8 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - BelongsTo fields for polymorphic associations no longer cause an error on edit and new pages. Instead, they just don't show up. This isn't exactly optimal, but for now we don't have an automated way of actually figuring out what ActiveRecord class they are associated with.
 - Scrolling could result in scrolling entirely past all the content. The inline scrolling of each individidual pane should now be much more robust.
 - Field::Text now renders on :new actions by default as expected.
-
-### Removed
 
 
 ## [0.1.7]

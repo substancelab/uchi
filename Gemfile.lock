@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    uchi (0.1.8)
+    uchi (0.2.0)
       rails (>= 7.2)
       turbo-rails
       view_component (>= 4.0)
