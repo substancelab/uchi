@@ -6,18 +6,36 @@ order: 100
 
 ## Installation
 
-### 1. Install the gem
+### 1. Add the gem to your bundle
 
-Add this line to your application's Gemfile:
+Add the following to your application's Gemfile:
 
 ```ruby
-gem "uchi"
+source "https://gems.uchiadmin.com" do
+  gem "uchi"
+end
 ```
+
+### 2. Authenticate
+
+You need your private gem server token to download Uchi from the gem server. You can find the token on your project page on [uchiadmin.com/projects](https://www.uchiadmin.com/projects).
+
+You have a few options for authentication with the gem server.
+
+    bundle config set --global gems.uchiadmin.com <your_token_goes_here>
+
+or you can set it as an environment variable:
+
+    BUNDLE_GEMS__UCHIADMIN__COM = <your_token_goes_here>
+
+The latter is probably the easiest and works on your CI and production servers as well.
+
+### 3. Install the gem
 
 And then execute:
 
 ```bash
-$ bundle
+$ bundle install
 ```
 
 ### 2. Create a repository
