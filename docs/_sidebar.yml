@@ -27,6 +27,10 @@
     text: Getting Started
     icon: rocket-launch
 
+- installation:
+    text: Installation
+    icon: download
+
 - basics:
     text: Basics
     icon: book
