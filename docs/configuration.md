@@ -2,13 +2,11 @@
 order: 100
 ---
 
-# Getting started
+# Add Uchi to your application
 
-### 1. Install the gem
+After having installed the gem to your application (See [installation](/installation) instructions) you are ready to configure Uchi.
 
-See [installation](/installation) instructions.
-
-### 2. Create a repository
+## 1. Create a repository
 
 Add a repository for one of your models in `app/uchi/repositories/customer.rb`:
 
@@ -28,7 +26,7 @@ module Uchi
 end
 ```
 
-### 3. Create a controller to handle requests
+## 2. Create a controller to handle requests
 
 In `app/controllers/uchi/customers_controller.rb`:
 
@@ -39,7 +37,7 @@ module Uchi
 end
 ```
 
-### 4. Route requests to the controller
+## 3. Route requests to the controller
 
 Add to `config/routes.rb`:
 
