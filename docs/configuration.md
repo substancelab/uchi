@@ -6,15 +6,23 @@ order: 100
 
 After having installed the gem to your application (See [installation](/installation) instructions) you are ready to configure Uchi.
 
-## 1. Create a repository
+:::steps
+### Mount Uchi in your application
 
-Add a repository for one of your models in `app/uchi/repositories/customer.rb`:
+Add to `config/routes.rb`:
+
+```ruby
+  Uchi.routes.mount(self)
+```
+
+### Add a repository for one of your models
+
+Assuming you have a `Customer` model with an `id` and a `name` attribute, add the following in `app/uchi/repositories/customer.rb`:
 
 ```ruby
 module Uchi
   module Repositories
     class Customer < Repository
-      # Returns an array of fields to show for this resource.
       def fields
         [
           Field::Number.new(:id),
@@ -26,7 +34,9 @@ module Uchi
 end
 ```
 
-## 2. Create a controller to handle requests
+You can learn more about Uchi Repositories in the [Repositories documentation](/repositories).
+
+### Create a controller to handle requests
 
 In `app/controllers/uchi/customers_controller.rb`:
 
@@ -36,16 +46,9 @@ module Uchi
   end
 end
 ```
+:::
 
-## 3. Route requests to the controller
-
-Add to `config/routes.rb`:
-
-```ruby
-  Uchi.routes.mount(self)
-```
-
-Now start your Rails server and visit http://localhost:3000/uchi/customers. Welcome to Uchi 😁
+Now start your Rails server and visit [http://localhost:3000/uchi/customers](http://localhost:3000/uchi/customers). Welcome to Uchi 😁
 
 ### Mounting at a Custom Path
 
