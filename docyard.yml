@@ -34,4 +34,10 @@ build:
   output: "dist"
   base: "/"
 
+navigation:
+  cta:
+    - text: Your projects
+      href: https://www.uchiadmin.com/projects
+      variant: primary
+
 sidebar: "config"

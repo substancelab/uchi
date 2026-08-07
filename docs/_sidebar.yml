@@ -26,6 +26,15 @@
 - getting-started:
     text: Getting Started
     icon: rocket-launch
+    group: true
+    collapsed: false
+    items:
+        - installation:
+            text: Installation
+            icon: download
+        - configuration:
+            text: Configuration
+            icon: gear-six
 
 - basics:
     text: Basics
