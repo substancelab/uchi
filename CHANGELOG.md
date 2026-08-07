@@ -22,20 +22,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Fields can now be configured to appear on :new pages, but not on :edit, and vice versa. Either add or remove `:new` from the fields `on()` configuration as needed.
-- Uchi can now be mounted at a path other than /uchi. If you want it to live at fx. /admin, use the `at:` argument: `Uchi.routes.mount(self, at: :admin)`.
-- Inklings of a plugin-system. For now, it's for internal use only.
 - A bunch of documentation with more to come.
 - Add `visible` configuration option to fields. This gives finer control over which fields are displayed for a given record, allowing for more dynamic and context-sensitive UIs.
 - New field type: `Field::Select` for fixed lists of options.
 
 ### Fixed
 
-- Allow UI to use the full height of the viewport to prevent clipping popovers and dialogs.
-- BelongsTo fields for polymorphic associations no longer cause an error on edit and new pages. Instead, they just don't show up. This isn't exactly optimal, but for now we don't have an automated way of actually figuring out what ActiveRecord class they are associated with.
 - Scrolling could result in scrolling entirely past all the content. The inline scrolling of each individidual pane should now be much more robust.
 - Field::Text now renders on :new actions by default as expected.
 
+## 0.1.8
+
+### Added
+
+- Fields can now be configured to appear on :new pages, but not on :edit, and vice versa. Either add or remove `:new` from the fields `on()` configuration as needed.
+- Uchi can now be mounted at a path other than /uchi. If you want it to live at fx. /admin, use the `at:` argument: `Uchi.routes.mount(self, at: :admin)`.
+- Inklings of a plugin-system. For now, it's for internal use only.
+
+
+### Fixed
+
+- Allow UI to use the full height of the viewport to prevent clipping popovers and dialogs.
+- BelongsTo fields for polymorphic associations no longer cause an error on edit and new pages. Instead, they just don't show up. This isn't exactly optimal, but for now we don't have an automated way of actually figuring out what ActiveRecord class they are associated with.
 
 ## [0.1.7]
 
