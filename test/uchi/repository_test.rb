@@ -22,6 +22,21 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_equal Author, Uchi::Repositories::Author.model
   end
 
+  test ".any_searchable? returns true if at least one repository has a searchable field" do
+    assert Uchi::Repository.any_searchable?
+  end
+
+  test ".any_searchable? returns false if no repository has a searchable field" do
+    unsearchable_repository = Class.new(Uchi::Repository) do
+      define_singleton_method(:model) { Author }
+      define_method(:fields) { [Uchi::Field::Number.new(:id)] }
+    end
+
+    with_repositories([unsearchable_repository]) do
+      assert_not Uchi::Repository.any_searchable?
+    end
+  end
+
   test "#build returns a new, unsaved instance of the model the repository manages" do
     author = author_repository.build(name: "Alice")
 
@@ -251,5 +266,13 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     Class.new(Uchi::Repository) do
       define_method(:fields) { fields }
     end.new
+  end
+
+  def with_repositories(repositories)
+    original = Uchi::Repository.method(:all)
+    Uchi::Repository.define_singleton_method(:all) { repositories }
+    yield
+  ensure
+    Uchi::Repository.define_singleton_method(:all, original)
   end
 end

@@ -18,7 +18,11 @@
   <body class="antialiased bg-neutral-secondary-medium p-2 md:h-screen md:overflow-hidden md:flex md:p-0">
     <%= render(partial: "uchi/navigation/main") %>
 
-    <main class="py-6 overflow-x-hidden overflow-y-auto grow md:px-6"><%= yield %></main>
+    <main class="py-6 overflow-x-hidden overflow-y-auto grow md:px-6">
+      <%= render(Uchi::Ui::SearchForm.new(query: params[:query])) %>
+
+      <%= yield %>
+    </main>
 
     <%= render "layouts/uchi/flash_messages" %>
   </body>

@@ -12,6 +12,13 @@ module Uchi
         }
       end
 
+      # Returns true if at least one repository has a searchable field.
+      #
+      # @return [Boolean]
+      def any_searchable?
+        all.any? { |repository_class| repository_class.new.searchable? }
+      end
+
       # Returns the "name" of the controller that handles requests for this
       # repository. Note that this is different from the controllers class name
       # and is intended for generating URLs.

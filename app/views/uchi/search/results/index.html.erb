@@ -1,0 +1,16 @@
+<%= turbo_frame_tag("search_results_#{@repository.controller_name}", class: ("block" if @records.any?)) do %>
+  <% if @records.any? %>
+    <h2 class="mb-2 text-lg font-semibold text-heading">
+      <%= @repository.translate.plural_name %>
+    </h2>
+
+    <div class="relative overflow-x-auto bg-neutral-primary-soft rounded-base border border-default shadow-xs">
+      <%= render(Uchi::Ui::Index::RecordsTable.new(
+        columns: @repository.fields_for_index,
+        query: @query,
+        records: @records,
+        repository: @repository
+      )) %>
+    </div>
+  <% end %>
+<% end %>
