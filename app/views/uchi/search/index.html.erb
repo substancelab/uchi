@@ -10,22 +10,15 @@
 <% if @query.present? %>
   <div class="mx-0 space-y-6">
     <% @repositories.each do |repository| %>
-      <div>
-        <h2 class="mb-2 text-lg font-semibold text-heading">
-          <%= repository.translate.plural_name %>
-        </h2>
-
-        <div class="relative overflow-x-auto bg-neutral-primary-soft rounded-base border border-default shadow-xs">
-          <%= turbo_frame_tag(
-            "search_results_#{repository.controller_name}",
-            src: Uchi.routes.search_results_path(repository: repository.controller_name, query: @query)
-          ) do %>
-            <p class="p-6 text-center text-body-subtle">
-              <%= repository.translate.loading_message %>
-            </p>
-          <% end %>
-        </div>
-      </div>
+      <%= turbo_frame_tag(
+        "search_results_#{repository.controller_name}",
+        src: Uchi.routes.search_results_path(repository: repository.controller_name, query: @query),
+        class: "block"
+      ) do %>
+        <p class="p-6 text-center text-body-subtle">
+          <%= repository.translate.loading_message %>
+        </p>
+      <% end %>
     <% end %>
   </div>
 <% else %>

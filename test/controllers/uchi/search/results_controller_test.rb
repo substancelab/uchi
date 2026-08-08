@@ -20,9 +20,16 @@ module Uchi
         assert_select "a[href=?]", uchi_book_path(id: @silmarillion.id), count: 0
       end
 
-      test "GET index shows a message when there are no matches" do
+      test "GET index shows a heading with the repository name when there are matches" do
+        get uchi_search_results_url(repository: "books", query: "Hobbit")
+
+        assert_select "h2", text: "Books"
+      end
+
+      test "GET index renders nothing when there are no matches" do
         get uchi_search_results_url(repository: "books", query: "nonexistent")
 
+        assert_select "h2", count: 0
         assert_select "a", count: 0
       end
 

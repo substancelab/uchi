@@ -237,10 +237,6 @@ module Uchi
         translate("no_records_found", default: "No records found", scope: "uchi.common")
       end
 
-      def no_search_results
-        translate("no_search_results", default: "No matches found", scope: "uchi.common")
-      end
-
       def search_label
         translate("common.search", default: "Search")
       end

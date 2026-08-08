@@ -1,20 +1,22 @@
-<%= turbo_frame_tag("search_results_#{@repository.controller_name}") do %>
+<%= turbo_frame_tag("search_results_#{@repository.controller_name}", class: ("block" if @records.any?)) do %>
   <% if @records.any? %>
-    <ul class="divide-y divide-default">
-      <% @records.each do |record| %>
-        <li>
-          <%= link_to(
-            @repository.title(record),
-            @repository.routes.path_for(:show, id: record.id),
-            class: "block px-6 py-4 text-heading hover:bg-neutral-secondary-soft",
-            data: {turbo_frame: "_top"}
-          ) %>
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p class="p-6 text-center text-body-subtle">
-      <%= @repository.translate.no_search_results %>
-    </p>
+    <h2 class="mb-2 text-lg font-semibold text-heading">
+      <%= @repository.translate.plural_name %>
+    </h2>
+
+    <div class="relative overflow-x-auto bg-neutral-primary-soft rounded-base border border-default shadow-xs">
+      <ul class="divide-y divide-default">
+        <% @records.each do |record| %>
+          <li>
+            <%= link_to(
+              @repository.title(record),
+              @repository.routes.path_for(:show, id: record.id),
+              class: "block px-6 py-4 text-heading hover:bg-neutral-secondary-soft",
+              data: {turbo_frame: "_top"}
+            ) %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
 <% end %>
