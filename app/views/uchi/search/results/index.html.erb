@@ -5,18 +5,12 @@
     </h2>
 
     <div class="relative overflow-x-auto bg-neutral-primary-soft rounded-base border border-default shadow-xs">
-      <ul class="divide-y divide-default">
-        <% @records.each do |record| %>
-          <li>
-            <%= link_to(
-              @repository.title(record),
-              @repository.routes.path_for(:show, id: record.id),
-              class: "block px-6 py-4 text-heading hover:bg-neutral-secondary-soft",
-              data: {turbo_frame: "_top"}
-            ) %>
-          </li>
-        <% end %>
-      </ul>
+      <%= render(Uchi::Ui::Index::RecordsTable.new(
+        columns: @repository.fields_for_index,
+        query: @query,
+        records: @records,
+        repository: @repository
+      )) %>
     </div>
   <% end %>
 <% end %>
