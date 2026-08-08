@@ -4,7 +4,7 @@ module Uchi
   module Ui
     # Renders the global search form shown in the application layout.
     #
-    # Based on Flowbites Simple search input
+    # Based on Flowbite's Simple search input
     # (https://flowbite.com/docs/forms/search-input/#simple-search-input)
     class SearchForm < ViewComponent::Base
       attr_reader :query

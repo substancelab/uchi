@@ -6,7 +6,7 @@ module Uchi
     # `form_tag`. This is the shared building block behind both the global
     # search form and each repository's index page search form.
     #
-    # Based on Flowbites Simple search input
+    # Based on Flowbite's Simple search input
     # (https://flowbite.com/docs/forms/search-input/#simple-search-input)
     class SearchInput < ViewComponent::Base
       attr_reader :label, :query
