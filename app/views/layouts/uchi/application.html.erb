@@ -19,9 +19,11 @@
     <%= render(partial: "uchi/navigation/main") %>
 
     <main class="py-6 overflow-x-hidden overflow-y-auto grow md:px-6">
-      <div class="mb-6">
-        <%= render(Uchi::Ui::SearchForm.new(query: params[:query])) %>
-      </div>
+      <% if Uchi::Repository.any_searchable? %>
+        <div class="mb-6">
+          <%= render(Uchi::Ui::SearchForm.new(query: params[:query])) %>
+        </div>
+      <% end %>
 
       <%= yield %>
     </main>
