@@ -3,7 +3,21 @@
 module Uchi::Flowbite
   # Renders a card element.
   #
-  # See https://flowbite.com/docs/components/cards/
+  # To render a title in the card, use the title argument or the title slot.
+  #
+  # @example Using the title slot
+  #     <%= render(Uchi::Flowbite::Card.new) do |card| %>
+  #       <% card.with_title do %>
+  #         <div><%= parent_category.name %></div>
+  #         <%= render(Uchi::Flowbite::Card::Title.new) { category.name } %>
+  #       <% end %>
+  #     <% end %>
+  #
+  # @viewcomponent_slot [Uchi::Flowbite::Card::Title] title The title of the card,
+  #   rendered at the top. Use +with_title+ to set custom content.
+  #
+  # @see https://flowbite.com/docs/components/cards/
+  # @lookbook_embed CardPreview
   class Card < ViewComponent::Base
     renders_one :title
 
@@ -15,11 +29,13 @@ module Uchi::Flowbite
 
       # rubocop:disable Layout/LineLength
       def styles
-        {
-          default: Uchi::Flowbite::Style.new(
-            default: ["p-6", "bg-neutral-primary-soft", "border", "border-default", "rounded-base", "shadow-xs"]
-          )
-        }.freeze
+        Uchi::Flowbite::Styles.from_hash(
+          {
+            default: {
+              default: ["p-6", "bg-neutral-primary-soft", "border", "border-default", "rounded-base", "shadow-xs"]
+            }
+          }.freeze
+        )
       end
       # rubocop:enable Layout/LineLength
     end

@@ -19,7 +19,7 @@ module Uchi::Flowbite
             form: @form,
             include_blank: @include_blank,
             multiple: @multiple,
-            options: input_options,
+            options: default_input_options,
             size: @size
           )
         )
@@ -28,7 +28,7 @@ module Uchi::Flowbite
       private
 
       def input_component
-        Uchi::Flowbite::Input::Select
+        ::Uchi::Flowbite::Input::Select
       end
     end
   end

@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 module Uchi::Flowbite
-  module Input
+  class Input
+    # A hint element for input fields.
+    #
+    # Provides additional context or instructions for the user.
+    #
+    # See https://flowbite.com/docs/forms/input-field/#helper-text
     class Hint < ViewComponent::Base
       STATES = [
         DEFAULT = :default
@@ -14,11 +19,13 @@ module Uchi::Flowbite
         end
 
         def styles
-          {
-            default: Uchi::Flowbite::Style.new(
-              default: ["mt-2.5", "text-sm", "text-body"]
-            )
-          }.freeze
+          Uchi::Flowbite::Styles.from_hash(
+            {
+              default: {
+                default: ["mt-2.5", "text-sm", "text-body"]
+              }
+            }.freeze
+          )
         end
       end
 

@@ -26,6 +26,15 @@ module Uchi::Flowbite
         input_component.new(**args)
       end
 
+      def default_hint_options
+        return {} unless @hint
+
+        {
+          class: hint_classes,
+          id: id_for_hint_element
+        }.merge(@hint[:options] || {})
+      end
+
       # Returns options for the default label element. This includes CSS classes
       # since they are specific to RadioButton labels (and Checkbox ones).
       def default_label_options
@@ -37,23 +46,8 @@ module Uchi::Flowbite
         })
       end
 
-      # Returns the HTML to use for the hint element if any
-      def hint
-        return unless hint?
-
-        component = Uchi::Flowbite::Input::Hint.new(
-          attribute: @attribute,
-          form: @form,
-          options: {
-            class: hint_classes,
-            id: id_for_hint_element
-          }
-        ).with_content(@hint)
-        render(component)
-      end
-
       def input_component
-        Uchi::Flowbite::Input::RadioButton
+        ::Uchi::Flowbite::Input::RadioButton
       end
 
       private

@@ -6,7 +6,7 @@ module Uchi::Flowbite
       protected
 
       def input_component
-        Uchi::Flowbite::Input::Textarea
+        ::Uchi::Flowbite::Input::Textarea
       end
     end
   end

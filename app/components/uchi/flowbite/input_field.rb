@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Uchi::Flowbite
-  # A form element for a single field, containing label, input field, error
-  # messages, helper text and whatever else is needed for a user friendly input
-  # experience.
+  # A fully fledged form element for an attribute containing label, input field,
+  # error messages, helper text and whatever else is needed for a user-friendly
+  # input experience.
   #
   # @see https://flowbite.com/docs/forms/input-field/
   #
@@ -13,54 +13,55 @@ module Uchi::Flowbite
   # more.
   #
   # Usually you'd use one of the subclasses of this class which implement the
-  # different input types, like `Flowbite::InputField::Text`,
-  # `Flowbite::InputField::Email`, etc.
+  # different input types, like {Uchi::Flowbite::InputField::Text},
+  # {Uchi::Flowbite::InputField::Email}, etc.
   #
-  # Expects 2 arguments:
+  # To render an input without labels or error messages etc, see
+  # {Uchi::Flowbite::Input} instead and one of its subclasses.
   #
-  # @param attribute [Symbol] The name of the attribute to render in this input
-  # field.
+  # @example Basic usage
+  #   <% form_for @person do |form| %>
+  #     <%= render(
+  #       Uchi::Flowbite::InputField::Number.new(
+  #         attribute: :name,
+  #         form: form
+  #       )
+  #     ) %>
+  #   <% end %>
   #
-  # @param form [ActionView::Helpers::FormBuilder] The form builder object that
-  # will be used to generate the input field.
+  # @example Kitchen sink
+  #   <% form_for @person do |form| %>
+  #     <%= render(
+  #       Uchi::Flowbite::InputField::Number.new(
+  #         attribute: :name,
+  #         class: ["mb-4", "w-full"],
+  #         disabled: true,
+  #         form: form,
+  #         hint: {
+  #           content: "Please enter your full name.",
+  #           options: {id: "name-helper-text"}
+  #         },
+  #         input: {
+  #           options: {placeholder: "All of your names here"}
+  #         },
+  #         label: {
+  #           content: "Full name",
+  #           options: {class: ["mb-2", "font-medium"]}
+  #         },
+  #         options: {data: {controller: "form-field"}},
+  #         size: :lg
+  #       )
+  #     ) %>
+  #   <% end %>
   #
-  # Supports additional arguments:
+  # @viewcomponent_slot [Uchi::Flowbite::Input::Hint] hint Helper text displayed
+  #   below the input field to provide additional context or instructions.
+  # @viewcomponent_slot [Uchi::Flowbite::Input] input The input element itself.
+  #   Usually auto-generated based on the input type subclass.
+  # @viewcomponent_slot [Uchi::Flowbite::Input::Label] label The label for the input
+  #   field, rendered above the input element.
   #
-  # @param hint [String] A hint to display below the input field, providing
-  # additional context or instructions for the user. This is optional. See
-  # https://flowbite.com/docs/forms/input-field/#helper-text
-  #
-  # @param label [Hash] A hash with options for the label. These are passed to
-  # Flowbite::Input::Label, see that for details. Can contain:
-  # - `content`: The content of the label. If not provided, the label will
-  #   default to the attribute name.
-  # - `options`: A hash of additional options to pass to the label component.
-  #   This can be used to set the class, for example.
-  #
-  # @param disabled [Boolean] Whether the input field should be disabled.
-  # Defaults to `false`.
-  #
-  # @param input [Hash] A hash with options for the default input component.
-  # These are passed to the input components constructor, so see whatever
-  # component is being used for details. Can contain:
-  # - `options`: Additional HTML attributes to pass to the input element.
-  #
-  # @param size [Symbol] The size of the input field. Can be one of `:sm`,
-  # `:md`, or `:lg`. Defaults to `:md`.
-  #
-  # Sample usage
-  #
-  #     <% form_for @person do |form| %>
-  #       <%= render(
-  #         Flowbite::InputField::Number.new(
-  #           :attribute => :name,
-  #           :form => form
-  #         )
-  #       ) %>
-  #     <% end %>
-  #
-  # To render an input without labels or error messages etc, use
-  # `Flowbite::Input::Field` instead.
+  # @lookbook_embed InputFieldPreview
   class InputField < ViewComponent::Base
     renders_one :hint
     renders_one :input
@@ -75,6 +76,45 @@ module Uchi::Flowbite
       @object.errors[@attribute] || []
     end
 
+    # @param attribute [Symbol] The name of the attribute to render in this
+    #   input field.
+    #
+    # @param form [ActionView::Helpers::FormBuilder] The form builder object that
+    #   will be used to generate the input field.
+    #
+    # @param class [String, Array<String>] Additional CSS classes to apply to
+    #   the input field container, i.e. the outermost element. To add classes to
+    #   individual components of the InputField, use the +input+, +label+ and
+    #   +hint+ arguments.
+    #
+    # @param disabled [Boolean] Whether the input field should be disabled.
+    #
+    # @param hint [Hash] A hint to display below the input field, providing
+    #   additional context or instructions for the user. If provided, this Hash
+    #   is passed to the {Uchi::Flowbite::Input::Hint} constructor.
+    # @option hint [String] content The content of the hint element.
+    # @option hint [Hash] options Additional options to pass to the hint
+    #   component. This can be used to set the class, for example.
+    #
+    # @param input [Hash] A hash with options for the input component.
+    #   These are passed to the input component's constructor, see the
+    #   documentation for whatever input component is being used.
+    #   See {Uchi::Flowbite::Input}.
+    # @option input [Hash] options Additional HTML attributes to pass to
+    #   the input element.
+    #
+    # @param label [Hash] A hash with options for the label element. If
+    #   provided, this Hash is passed to the {Uchi::Flowbite::Input::Label}
+    #   constructor.
+    # @option label [String] content The content of the label element.
+    # @option label [Hash] options Additional options to pass to the label
+    #   component. This can be used to set the class, for example.
+    #
+    # @param options [Hash] Additional HTML attributes to pass to the input
+    #   field container element.
+    #
+    # @param size [Symbol] The size of the input field. Can be one of +:sm+,
+    #   +:default+, or +:lg+.
     def initialize(attribute:, form:, class: nil, disabled: false, hint: nil, input: {}, label: {}, options: {}, size: :default)
       @attribute = attribute
       @class = Array.wrap(binding.local_variable_get(:class))
@@ -89,7 +129,7 @@ module Uchi::Flowbite
     end
 
     def input_component
-      Uchi::Flowbite::Input::Field
+      ::Uchi::Flowbite::Input
     end
 
     protected
@@ -102,6 +142,10 @@ module Uchi::Flowbite
       end
     end
 
+    def container_options
+      @options.merge({class: classes.join(" ")})
+    end
+
     def default_container_classes
       []
     end
@@ -111,11 +155,19 @@ module Uchi::Flowbite
       return unless hint?
 
       component = Uchi::Flowbite::Input::Hint.new(
-        attribute: @attribute,
-        form: @form,
-        options: default_hint_options
+        **default_hint_arguments
       ).with_content(default_hint_content)
       render(component)
+    end
+
+    # @return [Hash] The keyword arguments for the hint component.
+    def default_hint_arguments
+      {
+        attribute: @attribute,
+        class: @hint[:class],
+        form: @form,
+        options: default_hint_options
+      }
     end
 
     def default_hint_content
@@ -136,23 +188,37 @@ module Uchi::Flowbite
       }.merge(@hint[:options] || {})
     end
 
+    # Returns the HTML to use for the default input element.
+    def default_input
+      render(input_component.new(**default_input_arguments))
+    end
+
+    # @return [Hash] The keyword arguments for the default input component.
+    def default_input_arguments
+      {
+        attribute: @attribute,
+        class: @input[:class],
+        disabled: @disabled,
+        form: @form,
+        options: default_input_options,
+        size: @size
+      }
+    end
+
     # Returns a Hash with the default attributes to apply to the input element.
     #
     # The default attributes can be overriden by passing the `input[options]`
     # argument to the constructor.
     def default_input_options
-      if hint?
+      options = if hint?
         {
           "aria-describedby": id_for_hint_element
         }
       else
         {}
       end
-    end
 
-    # Returns the HTML to use for the default input element.
-    def default_input
-      render(input_component.new(**input_arguments))
+      options.merge(@input[:options] || {})
     end
 
     def default_label
@@ -196,21 +262,6 @@ module Uchi::Flowbite
       ]
         .compact_blank
         .join("_")
-    end
-
-    # @return [Hash] The keyword arguments for the input component.
-    def input_arguments
-      {
-        attribute: @attribute,
-        disabled: @disabled,
-        form: @form,
-        options: input_options,
-        size: @size
-      }
-    end
-
-    def input_options
-      default_input_options.merge(@input[:options] || {})
     end
   end
 end
