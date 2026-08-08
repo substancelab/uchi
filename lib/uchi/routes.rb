@@ -33,6 +33,14 @@ module Uchi
 
     def draw_repository_routes(routes, at: default_at)
       repositories = Uchi::Repository.all
+
+      routes.namespace(at, as: mount_as) do
+        routes.get "search", to: "search#index"
+        routes.namespace :search do
+          routes.resources :results, only: [:index]
+        end
+      end
+
       repositories.each do |repository_class|
         resources_name = repository_class.controller_name
         routes.namespace(at, as: mount_as) do
@@ -46,6 +54,16 @@ module Uchi
     # Returns the name to use when generating routing helper method names
     def mount_as
       :uchi
+    end
+
+    # Returns the path to the global search page.
+    def search_path(**options)
+      Rails.application.routes.url_helpers.send("#{mount_as}_search_path", **options)
+    end
+
+    # Returns the path to the global search results for a single repository.
+    def search_results_path(**options)
+      Rails.application.routes.url_helpers.send("#{mount_as}_search_results_path", **options)
     end
 
     # Returns the path prefix for the routes, i.e. the first URL segment where

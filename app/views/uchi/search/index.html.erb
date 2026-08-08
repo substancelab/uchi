@@ -1,0 +1,35 @@
+<%- title = Uchi::I18n.translate("search.title", default: "Search") -%>
+<%- content_for(:page_title) { title } %>
+
+<%= render(Uchi::Ui::PageHeader.new(title: title)) do |header| %>
+  <% header.with_breadcrumb(items: [
+    {href: Uchi.routes.search_path, label: title}
+  ]) %>
+<% end %>
+
+<% if @query.present? %>
+  <div class="mx-0 space-y-6">
+    <% @repositories.each do |repository| %>
+      <div>
+        <h2 class="mb-2 text-lg font-semibold text-heading">
+          <%= repository.translate.plural_name %>
+        </h2>
+
+        <div class="relative overflow-x-auto bg-neutral-primary-soft rounded-base border border-default shadow-xs">
+          <%= turbo_frame_tag(
+            "search_results_#{repository.controller_name}",
+            src: Uchi.routes.search_results_path(repository: repository.controller_name, query: @query)
+          ) do %>
+            <p class="p-6 text-center text-body-subtle">
+              <%= repository.translate.loading_message %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p class="text-body-subtle">
+    <%= Uchi::I18n.translate("search.prompt", default: "Enter a search term above to search.") %>
+  </p>
+<% end %>
