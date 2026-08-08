@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Uchi::Flowbite
-  module Input
+  class Input
     # https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-label
     class Label < ViewComponent::Base
       STATES = [
@@ -17,13 +17,15 @@ module Uchi::Flowbite
         end
 
         def styles
-          {
-            default: Uchi::Flowbite::Style.new(
-              default: ["block", "mb-2.5", "text-sm", "font-medium", "text-heading"],
-              disabled: ["block", "mb-2.5", "text-sm", "font-medium", "text-fg-disabled"],
-              error: ["block", "mb-2.5", "text-sm", "font-medium", "text-fg-danger-strong"]
-            )
-          }.freeze
+          Uchi::Flowbite::Styles.from_hash(
+            {
+              default: {
+                default: ["block", "mb-2.5", "text-sm", "font-medium", "text-heading"],
+                disabled: ["block", "mb-2.5", "text-sm", "font-medium", "text-fg-disabled"],
+                error: ["block", "mb-2.5", "text-sm", "font-medium", "text-fg-danger-strong"]
+              }
+            }.freeze
+          )
         end
       end
 

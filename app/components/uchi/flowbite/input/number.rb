@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Uchi::Flowbite
-  module Input
-    class Number < Field
+  class Input
+    class Number < Input
       def input_field_type
         :number_field
       end

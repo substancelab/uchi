@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 module Uchi::Flowbite
-  # Renders a HTML button element.
-  #
-  # See https://flowbite.com/docs/components/buttons/
-  #
-  # @param label [String] The text to display on the button.
+  # Renders a HTML button element. See https://flowbite.com/docs/components/buttons/
   #
   # All other parameters are optional and are passed directly to the button tag
   # as HTML attributes.
+  #
+  # @example Basic usage
+  #  <%= render Uchi::Flowbite::Button.new { "Click me" } %>
+  #
+  # @lookbook_embed ButtonPreview
   class Button < ViewComponent::Base
     SIZES = {
       xs: ["text-xs", "px-3", "py-1.5"],
@@ -31,32 +32,34 @@ module Uchi::Flowbite
 
       # rubocop:disable Layout/LineLength
       def styles
-        {
-          danger: Uchi::Flowbite::Style.new(
-            default: ["focus:outline-none", "text-white", "bg-danger", "box-border", "border", "border-transparent", "hover:bg-danger-strong", "focus:ring-4", "focus:ring-danger-medium", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
-          ),
-          dark: Uchi::Flowbite::Style.new(
-            default: ["focus:outline-none", "text-white", "bg-dark", "box-border", "border", "border-transparent", "hover:bg-dark-strong", "focus:ring-4", "focus:ring-neutral-tertiary", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
-          ),
-          default: Uchi::Flowbite::Style.new(
-            default: ["focus:outline-none", "text-white", "bg-brand", "box-border", "border", "border-transparent", "hover:bg-brand-strong", "focus:ring-4", "focus:ring-brand-medium", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
-          ),
-          ghost: Uchi::Flowbite::Style.new(
-            default: ["focus:outline-none", "text-heading", "bg-transparent", "box-border", "border", "border-transparent", "hover:bg-neutral-secondary-medium", "focus:ring-4", "focus:ring-neutral-tertiary", "font-medium", "leading-5", "rounded-base"]
-          ),
-          secondary: Uchi::Flowbite::Style.new(
-            default: ["focus:outline-none", "text-body", "bg-neutral-secondary-medium", "box-border", "border", "border-default-medium", "hover:bg-neutral-tertiary-medium", "focus:ring-4", "focus:ring-neutral-tertiary", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
-          ),
-          success: Uchi::Flowbite::Style.new(
-            default: ["focus:outline-none", "text-white", "bg-success", "box-border", "border", "border-transparent", "hover:bg-success-strong", "focus:ring-4", "focus:ring-success-medium", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
-          ),
-          tertiary: Uchi::Flowbite::Style.new(
-            default: ["focus:outline-none", "text-body", "bg-neutral-primary-soft", "box-border", "border", "border-default", "hover:bg-neutral-secondary-medium", "focus:ring-4", "focus:ring-neutral-tertiary-soft", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
-          ),
-          warning: Uchi::Flowbite::Style.new(
-            default: ["focus:outline-none", "text-white", "bg-warning", "box-border", "border", "border-transparent", "hover:bg-warning-strong", "focus:ring-4", "focus:ring-warning-medium", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
-          )
-        }.freeze
+        Uchi::Flowbite::Styles.from_hash(
+          {
+            danger: {
+              default: ["focus:outline-none", "text-white", "bg-danger", "box-border", "border", "border-transparent", "hover:bg-danger-strong", "focus:ring-4", "focus:ring-danger-medium", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
+            },
+            dark: {
+              default: ["focus:outline-none", "text-white", "bg-dark", "box-border", "border", "border-transparent", "hover:bg-dark-strong", "focus:ring-4", "focus:ring-neutral-tertiary", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
+            },
+            default: {
+              default: ["focus:outline-none", "text-white", "bg-brand", "box-border", "border", "border-transparent", "hover:bg-brand-strong", "focus:ring-4", "focus:ring-brand-medium", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
+            },
+            ghost: {
+              default: ["focus:outline-none", "text-heading", "bg-transparent", "box-border", "border", "border-transparent", "hover:bg-neutral-secondary-medium", "focus:ring-4", "focus:ring-neutral-tertiary", "font-medium", "leading-5", "rounded-base"]
+            },
+            secondary: {
+              default: ["focus:outline-none", "text-body", "bg-neutral-secondary-medium", "box-border", "border", "border-default-medium", "hover:bg-neutral-tertiary-medium", "focus:ring-4", "focus:ring-neutral-tertiary", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
+            },
+            success: {
+              default: ["focus:outline-none", "text-white", "bg-success", "box-border", "border", "border-transparent", "hover:bg-success-strong", "focus:ring-4", "focus:ring-success-medium", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
+            },
+            tertiary: {
+              default: ["focus:outline-none", "text-body", "bg-neutral-primary-soft", "box-border", "border", "border-default", "hover:bg-neutral-secondary-medium", "focus:ring-4", "focus:ring-neutral-tertiary-soft", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
+            },
+            warning: {
+              default: ["focus:outline-none", "text-white", "bg-warning", "box-border", "border", "border-transparent", "hover:bg-warning-strong", "focus:ring-4", "focus:ring-warning-medium", "shadow-xs", "font-medium", "leading-5", "rounded-base"]
+            }
+          }.freeze
+        )
       end
       # rubocop:enable Layout/LineLength
     end

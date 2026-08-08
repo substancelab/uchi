@@ -6,7 +6,7 @@ module Uchi::Flowbite
       protected
 
       def input_component
-        Uchi::Flowbite::Input::Password
+        ::Uchi::Flowbite::Input::Password
       end
     end
   end

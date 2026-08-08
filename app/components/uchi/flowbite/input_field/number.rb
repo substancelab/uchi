@@ -6,7 +6,7 @@ module Uchi::Flowbite
       protected
 
       def input_component
-        Uchi::Flowbite::Input::Number
+        ::Uchi::Flowbite::Input::Number
       end
     end
   end

@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 module Uchi::Flowbite
-  module Input
+  class Input
     # The checkbox component can be used to receive one or more selected options
     # from the user in the form of a square box available in multiple styles,
     # sizes, colors, and variants coded with the utility classes from Tailwind
     # CSS and with support for dark mode.
     #
     # https://flowbite.com/docs/forms/checkbox/
-    class Checkbox < Field
+    class Checkbox < Input
       DEFAULT_CHECKED_VALUE = "1"
       DEFAULT_UNCHECKED_VALUE = "0"
 
@@ -22,13 +22,15 @@ module Uchi::Flowbite
 
         # rubocop:disable Layout/LineLength
         def styles
-          {
-            default: Uchi::Flowbite::Style.new(
-              default: ["text-brand", "bg-neutral-secondary-medium", "border-default-medium", "rounded-sm", "focus:ring-brand", "focus:ring-2"],
-              disabled: ["text-brand", "bg-neutral-secondary-medium", "border-default-medium", "rounded-sm", "focus:ring-brand", "focus:ring-2", "cursor-not-allowed"],
-              error: ["text-danger", "bg-danger-soft", "border-danger-subtle", "rounded-sm", "focus:ring-danger", "focus:ring-2"]
-            )
-          }.freeze
+          Uchi::Flowbite::Styles.from_hash(
+            {
+              default: {
+                default: ["text-brand", "bg-neutral-secondary-medium", "border-default-medium", "rounded-sm", "focus:ring-brand", "focus:ring-2"],
+                disabled: ["text-brand", "bg-neutral-secondary-medium", "border-default-medium", "rounded-sm", "focus:ring-brand", "focus:ring-2", "cursor-not-allowed"],
+                error: ["text-danger", "bg-danger-soft", "border-danger-subtle", "rounded-sm", "focus:ring-danger", "focus:ring-2"]
+              }
+            }.freeze
+          )
         end
       end
 

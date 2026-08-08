@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module Uchi::Flowbite
-  module Input
+  class Input
     # The radio button component can be used to allow the user to choose a
     # single option from one or more available options.
     #
     # https://flowbite.com/docs/forms/radio/
-    class RadioButton < Field
+    class RadioButton < Input
       class << self
         # Radio buttons only have their default size.
         def sizes
@@ -17,13 +17,15 @@ module Uchi::Flowbite
 
         # rubocop:disable Layout/LineLength
         def styles
-          {
-            default: Uchi::Flowbite::Style.new(
-              default: ["text-brand", "bg-neutral-secondary-medium", "border-default-medium", "focus:ring-brand", "focus:ring-2"],
-              disabled: ["text-brand", "bg-neutral-secondary-medium", "border-default-medium", "focus:ring-brand", "focus:ring-2", "cursor-not-allowed"],
-              error: ["text-danger", "bg-danger-soft", "border-danger-subtle", "focus:ring-danger", "focus:ring-2"]
-            )
-          }.freeze
+          Uchi::Flowbite::Styles.from_hash(
+            {
+              default: {
+                default: ["text-brand", "bg-neutral-secondary-medium", "border-default-medium", "focus:ring-brand", "focus:ring-2"],
+                disabled: ["text-brand", "bg-neutral-secondary-medium", "border-default-medium", "focus:ring-brand", "focus:ring-2", "cursor-not-allowed"],
+                error: ["text-danger", "bg-danger-soft", "border-danger-subtle", "focus:ring-danger", "focus:ring-2"]
+              }
+            }.freeze
+          )
         end
       end
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Uchi::Flowbite
-  module Input
+  class Input
     class ValidationError < ViewComponent::Base
       class << self
         def classes(state: :default, style: :default)
@@ -11,11 +11,13 @@ module Uchi::Flowbite
 
         # rubocop:disable Layout/LineLength
         def styles
-          {
-            default: Uchi::Flowbite::Style.new(
-              default: ["mt-2", "text-sm", "text-red-600", "dark:text-red-500"]
-            )
-          }.freeze
+          Uchi::Flowbite::Styles.from_hash(
+            {
+              default: {
+                default: ["mt-2", "text-sm", "text-red-600", "dark:text-red-500"]
+              }
+            }.freeze
+          )
         end
         # rubocop:enable Layout/LineLength
       end

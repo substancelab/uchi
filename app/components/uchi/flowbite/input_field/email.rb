@@ -6,7 +6,7 @@ module Uchi::Flowbite
       protected
 
       def input_component
-        Uchi::Flowbite::Input::Email
+        ::Uchi::Flowbite::Input::Email
       end
     end
   end

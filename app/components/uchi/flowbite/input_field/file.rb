@@ -6,7 +6,7 @@ module Uchi::Flowbite
       protected
 
       def input_component
-        Uchi::Flowbite::Input::File
+        ::Uchi::Flowbite::Input::File
       end
     end
   end
