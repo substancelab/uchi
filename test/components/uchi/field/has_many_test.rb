@@ -119,7 +119,7 @@ module Uchi
     class HasManyShowTest < ViewComponent::TestCase
       def setup
         @field = Uchi::Field::HasMany.new(:titles)
-        @book = Book.new(original_title: "The Hobbit")
+        @book = Book.create!(original_title: "The Hobbit")
         @repository = Uchi::Repositories::Book.new
 
         @component = Uchi::Field::HasMany::Show.new(
@@ -131,6 +131,15 @@ module Uchi
 
       test "inherits from Base component" do
         assert_kind_of Uchi::Field::Base::Show, @component
+      end
+
+      test "renders a link to add a new associated record, scoped to the parent record" do
+        render_inline(@component)
+
+        expected_href = Rails.application.routes.url_helpers.new_uchi_title_path(
+          scope: {field: "titles", id: @book.id, inverse_of: "book", model: "Book"}
+        )
+        assert_selector("a[href='#{expected_href}']")
       end
     end
   end

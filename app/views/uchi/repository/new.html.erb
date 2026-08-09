@@ -13,9 +13,9 @@
 <% end %>
 
 <%= render(Uchi::Flowbite::Card.new) do %>
-  <%= form_with model: @record, url: @repository.routes.path_for(:create) do |form| %>
+  <%= form_with model: @record, url: @repository.routes.path_for(:create, scope: (scoped? ? scope_params : nil)) do |form| %>
     <div class="space-y-6">
-      <% @repository.fields_for_new(record: @record).each do |field| %>
+      <% @fields.each do |field| %>
         <div>
           <%= render(
             field.new_component(
