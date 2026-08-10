@@ -74,17 +74,28 @@ module Uchi
       assert_select "form[action=?]", uchi_book_path(id: @book.id), text: "Delete"
     end
 
-    test "GET show includes a turbo-frame that loads the titles in a scoped index view" do
+    test "GET show renders titles inline instead of a turbo-frame, since Book's titles field has nested_fields configured" do
+      title = @book.titles.create!(title: "The Hobbit", locale: "en")
+
       get uchi_book_url(id: @book.id)
+
+      assert_select "turbo-frame", count: 0
+      assert_select "dd", text: title.title
+    end
+
+    test "GET show includes a turbo-frame that loads associated records in a scoped index view, for HasMany fields without nested_fields configured" do
+      company = Company.create!(name: "Acme, Inc.")
+
+      get uchi_company_url(id: company.id)
 
       assert_select "turbo-frame[src]" do |node_set|
         tag = node_set.first
         src = tag.attributes["src"].value
-        expected_src = uchi_titles_path(scope: {
-          model: "Book",
-          id: @book.id,
-          field: "titles",
-          inverse_of: "book"
+        expected_src = uchi_people_path(scope: {
+          model: "Company",
+          id: company.id,
+          field: "people",
+          inverse_of: nil
         })
         assert_equal expected_src, src
       end

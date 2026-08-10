@@ -3,12 +3,11 @@ module Uchi
     class Book < Repository
       def fields
         [
-          Field::HasMany.new(:titles),
-          Field::String.new(:original_title),
-          Field::NestedMany.new(:titles).fields(
+          Field::HasMany.new(:titles).nested_fields(
             Field::String.new(:title),
             Field::String.new(:locale)
-          ).on(:edit, :show)
+          ),
+          Field::String.new(:original_title)
         ]
       end
 

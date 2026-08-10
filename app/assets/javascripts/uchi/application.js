@@ -9573,8 +9573,8 @@
     }
   };
 
-  // app/assets/javascripts/controllers/fields/nested_many_controller.js
-  var nested_many_controller_default = class extends Controller {
+  // app/assets/javascripts/controllers/fields/nested_fields_controller.js
+  var nested_fields_controller_default = class extends Controller {
     static targets = ["container", "item", "template", "destroyField"];
     static values = {
       associationName: String
@@ -9598,13 +9598,13 @@
     // Remove an existing nested item
     removeItem(event) {
       event.preventDefault();
-      const item = event.target.closest('[data-nested-many-target="item"]');
+      const item = event.target.closest('[data-nested-fields-target="item"]');
       if (!item) return;
       const isNewRecord = item.dataset.newRecord === "true";
       if (isNewRecord) {
         item.remove();
       } else {
-        const destroyField = item.querySelector('[data-nested-many-target="destroyField"]');
+        const destroyField = item.querySelector('[data-nested-fields-target="destroyField"]');
         if (destroyField) {
           destroyField.value = "1";
         }
@@ -9618,7 +9618,7 @@
   application.register("belongs-to", belongs_to_controller_default);
   application.register("dropdown", Dropdown);
   application.register("has-many", has_many_controller_default);
-  application.register("nested-many", nested_many_controller_default);
+  application.register("nested-fields", nested_fields_controller_default);
   window.uchi ||= {};
   window.uchi.application ||= application;
   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {

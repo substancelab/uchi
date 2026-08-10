@@ -33,6 +33,63 @@ module Uchi
         assert_equal :title_ids, @field.param_key
       end
 
+      test "#param_key returns nested attributes key when nested_fields are configured" do
+        field = Uchi::Field::HasMany.new(:titles).nested_fields(Field::String.new(:title))
+        assert_equal :titles_attributes, field.param_key
+      end
+
+      test "#permitted_param returns ids array by default" do
+        assert_equal({title_ids: []}, @field.permitted_param)
+      end
+
+      test "#permitted_param returns nested hash structure when nested_fields are configured" do
+        field = Uchi::Field::HasMany.new(:titles).nested_fields(
+          Field::String.new(:title),
+          Field::String.new(:locale)
+        )
+        expected = {
+          titles_attributes: [:id, :_destroy, :title, :locale]
+        }
+        assert_equal expected, field.permitted_param
+      end
+
+      test "initializes with empty nested_fields" do
+        assert_equal [], @field.nested_fields
+      end
+
+      test "#nested_fields configures nested fields with Field instances" do
+        field = Uchi::Field::HasMany.new(:titles).nested_fields(
+          Field::String.new(:title),
+          Field::String.new(:locale)
+        )
+        assert_equal 2, field.nested_fields.size
+        assert_kind_of Field::String, field.nested_fields[0]
+        assert_equal :title, field.nested_fields[0].name
+        assert_kind_of Field::String, field.nested_fields[1]
+        assert_equal :locale, field.nested_fields[1].name
+      end
+
+      test "#nested_fields configures nested fields with array" do
+        field = Uchi::Field::HasMany.new(:titles).nested_fields([
+          Field::String.new(:title),
+          Field::String.new(:locale)
+        ])
+        assert_equal 2, field.nested_fields.size
+      end
+
+      test "#nested_fields returns configured fields when called without arguments" do
+        field = Uchi::Field::HasMany.new(:titles).nested_fields(Field::String.new(:title))
+        assert_equal 1, field.nested_fields.size
+        assert_kind_of Field::String, field.nested_fields.first
+      end
+
+      test "#nested_fields raises error for non-Field instances" do
+        error = assert_raises(ArgumentError) do
+          Uchi::Field::HasMany.new(:titles).nested_fields(:title, :language)
+        end
+        assert_match(/expects Uchi::Field instances/, error.message)
+      end
+
       test "#group_as returns :associations" do
         assert_equal :associations, @field.group_as(:show)
         assert_equal :associations, @field.group_as(:edit)
@@ -132,6 +189,32 @@ module Uchi
       end
     end
 
+    class HasManyEditWithNestedFieldsTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::HasMany.new(:titles).nested_fields(
+          Field::String.new(:title),
+          Field::String.new(:locale)
+        )
+        @book = Book.new(original_title: "The Hobbit")
+        @repository = Uchi::Repositories::Book.new
+        @view_context = ActionController::Base.new.view_context
+
+        @form = ActionView::Helpers::FormBuilder.new(:book, @book, @view_context, {})
+
+        @component = Uchi::Field::HasMany::Edit.new(
+          field: @field,
+          form: @form,
+          hint: "Custom hint",
+          label: "Custom label",
+          repository: @repository
+        )
+      end
+
+      test "#associated_records returns empty array for new record" do
+        assert_equal [], @component.associated_records
+      end
+    end
+
     class HasManyIndexTest < ViewComponent::TestCase
       def setup
         @field = Uchi::Field::HasMany.new(:titles)
@@ -180,6 +263,34 @@ module Uchi
         render_inline(@component)
 
         assert_selector("a.bg-transparent", text: "Add")
+      end
+    end
+
+    class HasManyShowWithNestedFieldsTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::HasMany.new(:titles).nested_fields(
+          Field::String.new(:title),
+          Field::String.new(:locale)
+        )
+        @book = Book.new(original_title: "The Hobbit")
+        @repository = Uchi::Repositories::Book.new
+
+        @component = Uchi::Field::HasMany::Show.new(
+          field: @field,
+          record: @book,
+          repository: @repository
+        )
+      end
+
+      test "#associated_records returns empty array for new record" do
+        assert_equal [], @component.associated_records
+      end
+
+      test "renders configured nested fields for each associated record" do
+        title = @book.titles.build(title: "The Hobbit", locale: "en")
+        render_inline(@component)
+
+        assert_text title.title
       end
     end
 

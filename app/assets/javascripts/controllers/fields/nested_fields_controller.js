@@ -40,7 +40,7 @@ export default class extends Controller {
   removeItem(event) {
     event.preventDefault()
 
-    const item = event.target.closest('[data-nested-many-target="item"]')
+    const item = event.target.closest('[data-nested-fields-target="item"]')
     if (!item) return
 
     const isNewRecord = item.dataset.newRecord === "true"
@@ -50,7 +50,7 @@ export default class extends Controller {
       item.remove()
     } else {
       // Existing records need to be marked for destruction
-      const destroyField = item.querySelector('[data-nested-many-target="destroyField"]')
+      const destroyField = item.querySelector('[data-nested-fields-target="destroyField"]')
       if (destroyField) {
         destroyField.value = "1"
       }
