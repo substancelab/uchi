@@ -164,6 +164,12 @@ module Uchi
         )
         assert_selector("a[href='#{expected_href}']")
       end
+
+      test "renders the link as an outline button labeled Add" do
+        render_inline(@component)
+
+        assert_selector("a.bg-transparent", text: "Add")
+      end
     end
 
     class HasManyShowThroughAssociationTest < ViewComponent::TestCase

@@ -5,9 +5,9 @@
     </h2>
 
     <%= link_to(
-      associated_repository.translate.link_to_new,
+      associated_repository.translate.link_to_add,
       associated_repository.routes.path_for(:new, scope: attach_scope),
-      class: Uchi::Flowbite::Button.classes
+      class: Uchi::Flowbite::Button::Outline.classes(style: :tertiary)
     ) %>
   </div>
 
