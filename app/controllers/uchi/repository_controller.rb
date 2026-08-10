@@ -93,6 +93,13 @@ module Uchi
       reflection = scoped_reflection
       return unless reflection
 
+      # Guard against a scope whose field resolves to an association that
+      # doesn't actually target this record's model -- e.g. a crafted scope
+      # naming some other has_many on the parent, which could otherwise be
+      # used to set an unrelated foreign key that happens to share a column
+      # name with the intended association.
+      return unless reflection.klass == record.class
+
       foreign_key = reflection.foreign_key
       if record.class.column_names.include?(foreign_key)
         record.public_send(:"#{foreign_key}=", scope_params[:id])
@@ -102,7 +109,11 @@ module Uchi
       child_association = scoped_child_association(record)
       return unless child_association
 
-      record.public_send(:"#{child_association.name.to_s.singularize}_ids=", [scope_params[:id]])
+      ids_attribute = :"#{child_association.name.to_s.singularize}_ids"
+      # Merge with whatever's already selected so the scoped record isn't
+      # the only one that ends up associated.
+      existing_ids = record.public_send(ids_attribute)
+      record.public_send(:"#{ids_attribute}=", existing_ids + [scope_params[:id]])
     end
 
     # Returns the association reflection, on the scoped parent record's

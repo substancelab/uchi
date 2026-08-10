@@ -43,5 +43,15 @@ module Uchi
 
       assert_redirected_to uchi_company_path(id: @company.id)
     end
+
+    test "POST create preserves other companies selected in the form in addition to the scoped one" do
+      other_company = Company.create!(name: "Wayne Enterprises")
+
+      post uchi_people_url(scope: @scope), params: {
+        person: {name: "Bilbo Baggins", company_ids: [other_company.id]}
+      }
+
+      assert_equal [other_company, @company].map(&:id).sort, Person.last.company_ids.sort
+    end
   end
 end

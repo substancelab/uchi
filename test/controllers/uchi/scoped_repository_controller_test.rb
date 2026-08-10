@@ -80,6 +80,17 @@ module Uchi
       assert_equal [@book], Author.last.books
     end
 
+    test "POST create does not associate the new record when the scoped field targets a different model" do
+      # Book has_many :titles targets Title, not Author, but Author does
+      # happen to have a has_and_belongs_to_many :books association -- a
+      # crafted scope like this shouldn't be able to piggyback on that.
+      post uchi_authors_url(scope: {model: "Book", id: @book.id, field: "titles"}), params: {
+        author: {name: "Suspicious Author"}
+      }
+
+      assert_empty Author.last.books
+    end
+
     test "GET index responds successfully" do
       get uchi_titles_url(scope: @scope)
       assert_response :success
