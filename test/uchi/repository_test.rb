@@ -9,7 +9,7 @@ class UchiRepositoryTest < ActiveSupport::TestCase
 
     assert_equal \
       repositories.sort_by(&:name),
-      [Uchi::Repositories::Author, Uchi::Repositories::Book, Uchi::Repositories::Title]
+      [Uchi::Repositories::Author, Uchi::Repositories::Book, Uchi::Repositories::Company, Uchi::Repositories::Person, Uchi::Repositories::Title]
   end
 
   test ".for_model returns the repository for the given model" do

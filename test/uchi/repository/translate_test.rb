@@ -206,6 +206,26 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Edit", result
   end
 
+  test "#link_to_add returns translation from uchi.repository.author.button.link_to_add" do
+    I18n.with_locale(:da) do
+      result = @translate.link_to_add
+      assert_equal "Tilføj forfatter", result
+    end
+  end
+
+  test "#link_to_add falls back to common.add when .button.link_to_add isn't present" do
+    I18n.with_locale(:da) do
+      repository = Uchi::Repositories::Book.new
+      result = repository.translate.link_to_add
+      assert_equal "Tilføj", result
+    end
+  end
+
+  test "#link_to_add falls back to Add when common.add isn't present" do
+    result = @translate.link_to_add
+    assert_equal "Add", result
+  end
+
   test "#link_to_new returns translation from uchi.repository.author.button.link_to_new" do
     I18n.with_locale(:da) do
       result = @translate.link_to_new

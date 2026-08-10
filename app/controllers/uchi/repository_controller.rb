@@ -12,7 +12,7 @@ module Uchi
       @record = build_record_for_new
       if @record.save
         flash[:success] = @repository.translate.successful_create
-        redirect_to(@repository.routes.path_for(:show, id: @record.id), status: :see_other)
+        redirect_to(path_for_cancel(default: @repository.routes.path_for(:show, id: @record.id)), status: :see_other)
       else
         render :new, status: :unprocessable_entity
       end
@@ -74,7 +74,82 @@ module Uchi
     private
 
     def build_record_for_new
-      @repository.build(record_params_for_new)
+      record = @repository.build(record_params_for_new)
+      assign_scope_to_record(record)
+      record
+    end
+
+    # Associates the new record with the scoped parent record, so that e.g.
+    # creating a Title from a Book's show page automatically associates the
+    # new Title with that Book.
+    #
+    # For a plain has_many/belongs_to, this sets the foreign key column
+    # directly. For a collection-based association without one (has_many
+    # :through, has_and_belongs_to_many), it assigns the matching *_ids=
+    # writer instead (e.g. company_ids=) -- Rails persists that as part of
+    # the record's own save, so no separate join record needs to be created
+    # here.
+    def assign_scope_to_record(record)
+      reflection = scoped_reflection
+      return unless reflection
+
+      # Guard against a scope whose field resolves to an association that
+      # doesn't actually target this record's model -- e.g. a crafted scope
+      # naming some other has_many on the parent, which could otherwise be
+      # used to set an unrelated foreign key that happens to share a column
+      # name with the intended association.
+      return unless reflection.klass == record.class
+
+      foreign_key = reflection.foreign_key
+      if record.class.column_names.include?(foreign_key)
+        record.public_send(:"#{foreign_key}=", scope_params[:id])
+        return
+      end
+
+      child_association = scoped_child_association(record)
+      return unless child_association
+
+      ids_attribute = :"#{child_association.name.to_s.singularize}_ids"
+      # Merge with whatever's already selected so the scoped record isn't
+      # the only one that ends up associated.
+      existing_ids = record.public_send(ids_attribute)
+      record.public_send(:"#{ids_attribute}=", existing_ids + [scope_params[:id]])
+    end
+
+    # Returns the association reflection, on the scoped parent record's
+    # model, for the scoped field (e.g. Company#reflect_on_association(:people)).
+    #
+    # The parent model is validated through the registered repositories.
+    #
+    # @return [ActiveRecord::Reflection::AssociationReflection, nil]
+    def scoped_reflection
+      return nil unless scoped?
+      return @scoped_reflection if defined?(@scoped_reflection)
+
+      parent_model = Uchi::Repository.for_model(scope_params[:model])&.model
+      @scoped_reflection = parent_model&.reflect_on_association(scope_params[:field]&.to_sym)
+    end
+
+    # Returns the association, on the given record's model, that mirrors the
+    # scoped parent's association back to it (e.g. Person#companies, when the
+    # scoped association is Company#people).
+    #
+    # Assumes conventional Rails naming: that the association is named after
+    # the pluralized parent model. This avoids having to identify the
+    # has_many :through join model, or has_and_belongs_to_many join table,
+    # since Rails only needs the association name to persist either on save.
+    #
+    # @return [ActiveRecord::Reflection::AssociationReflection, nil]
+    def scoped_child_association(record)
+      reflection = scoped_reflection
+      return nil unless reflection
+
+      guessed_name = reflection.active_record.model_name.plural.to_sym
+      child_reflection = record.class.reflect_on_association(guessed_name)
+      return nil unless child_reflection&.collection?
+      return nil unless child_reflection.klass == reflection.active_record
+
+      child_reflection
     end
 
     # Returns the path to use for the cancel link

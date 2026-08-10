@@ -98,6 +98,40 @@ module Uchi
       end
     end
 
+    class HasManyEditPrefilledOnNewRecordTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::HasMany.new(:companies)
+        @company = Company.create!(name: "Acme, Inc.")
+        @person = Person.new(name: "Bilbo Baggins")
+        @person.company_ids = [@company.id]
+        @repository = Uchi::Repositories::Person.new
+        @view_context = ActionController::Base.new.view_context
+
+        @form = ActionView::Helpers::FormBuilder.new(:person, @person, @view_context, {})
+
+        @component = Uchi::Field::HasMany::Edit.new(
+          field: @field,
+          form: @form,
+          repository: @repository
+        )
+      end
+
+      test "#associated_records returns the in-memory selection for a new record, without querying the database" do
+        assert_equal [@company], @component.associated_records
+      end
+
+      test "#associated_records reads the association's in-memory target, rather than loading it from the database" do
+        # There is no Role linking @person to @other_company, so a real query
+        # would find nothing. Populating the target directly proves the
+        # value returned is whatever's already in memory, not the result of
+        # querying with @person's (nil) id.
+        other_company = Company.create!(name: "Wayne Enterprises")
+        @person.association(:companies).target = [other_company]
+
+        assert_equal [other_company], @component.associated_records
+      end
+    end
+
     class HasManyIndexTest < ViewComponent::TestCase
       def setup
         @field = Uchi::Field::HasMany.new(:titles)
@@ -119,7 +153,7 @@ module Uchi
     class HasManyShowTest < ViewComponent::TestCase
       def setup
         @field = Uchi::Field::HasMany.new(:titles)
-        @book = Book.new(original_title: "The Hobbit")
+        @book = Book.create!(original_title: "The Hobbit")
         @repository = Uchi::Repositories::Book.new
 
         @component = Uchi::Field::HasMany::Show.new(
@@ -131,6 +165,44 @@ module Uchi
 
       test "inherits from Base component" do
         assert_kind_of Uchi::Field::Base::Show, @component
+      end
+
+      test "renders a link to add a new associated record, scoped to the parent record" do
+        render_inline(@component)
+
+        expected_href = Rails.application.routes.url_helpers.new_uchi_title_path(
+          scope: {model: "Book", id: @book.id, field: "titles"}
+        )
+        assert_selector("a[href='#{expected_href}']")
+      end
+
+      test "renders the link as an outline button labeled Add" do
+        render_inline(@component)
+
+        assert_selector("a.bg-transparent", text: "Add")
+      end
+    end
+
+    class HasManyShowThroughAssociationTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::HasMany.new(:people)
+        @company = Company.create!(name: "Acme, Inc.")
+        @repository = Uchi::Repositories::Company.new
+
+        @component = Uchi::Field::HasMany::Show.new(
+          field: @field,
+          record: @company,
+          repository: @repository
+        )
+      end
+
+      test "renders a link to add a new associated record, scoped to the parent record" do
+        render_inline(@component)
+
+        expected_href = Rails.application.routes.url_helpers.new_uchi_person_path(
+          scope: {model: "Company", id: @company.id, field: "people"}
+        )
+        assert_selector("a[href='#{expected_href}']")
       end
     end
   end

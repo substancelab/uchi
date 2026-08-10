@@ -6,6 +6,7 @@ da:
         label: "Hjem"
     common:
       actions: "Handlinger"
+      add: "Tilføj"
       cancel: "Annuller"
       destroy: "Slet"
       edit: "Rediger"
@@ -29,6 +30,7 @@ da:
             label: "Vis %{record}"
         button:
           actions: "Forfatter-handlinger"
+          link_to_add: "Tilføj forfatter"
           link_to_destroy: "Slet %{record}"
           link_to_edit: "Rediger forfatter"
           link_to_new: "Ny forfatter"

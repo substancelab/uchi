@@ -147,6 +147,23 @@ module Uchi
         )
       end
 
+      # Returns the text for the "add" action link, used when linking to
+      # create a new record already associated with another (e.g. adding a
+      # Title from a Book's show page).
+      #
+      # Returns the first of the following translations that is present:
+      # 1. Translation from "uchi.repository.[name].button.link_to_add"
+      # 2. Translation from "uchi.common.add"
+      # 3. Default string "Add"
+      def link_to_add
+        translate(
+          "link_to_add",
+          default: translate("common.add", default: "Add"),
+          model: singular_name,
+          scope: i18n_scope("button")
+        )
+      end
+
       def link_to_cancel
         translate("common.cancel", default: "Cancel")
       end
