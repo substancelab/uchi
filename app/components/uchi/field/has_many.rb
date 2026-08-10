@@ -10,11 +10,12 @@ module Uchi
           records = field.value(record)
           return [] if records.nil?
 
-          # For a new, unsaved record, querying the association (e.g. to apply
-          # sorting/includes) always returns no results, since nothing in the
-          # database can reference an owner that doesn't exist yet. Use
-          # whatever's already in memory instead.
-          return records.to_a if record.new_record?
+          # For a new, unsaved record, loading the association (e.g. via
+          # #to_a, to apply sorting/includes) would query using a nil foreign
+          # key, which can match unrelated rows with a NULL value there
+          # instead of just returning none. Use the association's in-memory
+          # target instead
+          return record.association(field.name).target if record.new_record?
 
           associated_repository.find_all(scope: records)
         end

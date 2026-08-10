@@ -119,6 +119,17 @@ module Uchi
       test "#associated_records returns the in-memory selection for a new record, without querying the database" do
         assert_equal [@company], @component.associated_records
       end
+
+      test "#associated_records reads the association's in-memory target, rather than loading it from the database" do
+        # There is no Role linking @person to @other_company, so a real query
+        # would find nothing. Populating the target directly proves the
+        # value returned is whatever's already in memory, not the result of
+        # querying with @person's (nil) id.
+        other_company = Company.create!(name: "Wayne Enterprises")
+        @person.association(:companies).target = [other_company]
+
+        assert_equal [other_company], @component.associated_records
+      end
     end
 
     class HasManyIndexTest < ViewComponent::TestCase
