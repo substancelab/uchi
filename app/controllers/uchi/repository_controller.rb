@@ -10,11 +10,10 @@ module Uchi
 
     def create
       @record = build_record_for_new
-      if save_record_for_new(@record)
+      if @record.save
         flash[:success] = @repository.translate.successful_create
         redirect_to(path_for_cancel(default: @repository.routes.path_for(:show, id: @record.id)), status: :see_other)
       else
-        @fields = fields_for_new(record: @record)
         render :new, status: :unprocessable_entity
       end
     end
@@ -56,7 +55,6 @@ module Uchi
 
     def new
       @record = build_record_for_new
-      @fields = fields_for_new(record: @record)
     end
 
     def show
@@ -81,142 +79,66 @@ module Uchi
       record
     end
 
-    # Assigns the foreign key of the scoped parent record to the new record,
-    # so that e.g. creating a Title from a Book's show page automatically
-    # associates the new Title with that Book.
+    # Associates the new record with the scoped parent record, so that e.g.
+    # creating a Title from a Book's show page automatically associates the
+    # new Title with that Book.
     #
-    # This only applies when the scoped association is backed by a plain
-    # foreign key column on the new record (see #scoped_foreign_key). Other
-    # kinds of associations (e.g. has_many :through) are handled after the
-    # record is saved, by #create_scoped_join_record, since they require the
-    # new record to already have an id.
+    # For a plain has_many/belongs_to, this sets the foreign key column
+    # directly. For a collection-based association without one (has_many
+    # :through, has_and_belongs_to_many), it assigns the matching *_ids=
+    # writer instead (e.g. company_ids=) -- Rails persists that as part of
+    # the record's own save, so no separate join record needs to be created
+    # here.
     def assign_scope_to_record(record)
-      foreign_key = scoped_foreign_key(record)
-      return unless foreign_key
+      reflection = scoped_reflection
+      return unless reflection
 
-      record.public_send(:"#{foreign_key}=", scope_params[:id])
-    end
+      foreign_key = reflection.foreign_key
+      if record.class.column_names.include?(foreign_key)
+        record.public_send(:"#{foreign_key}=", scope_params[:id])
+        return
+      end
 
-    # Creates the join record associating the scoped parent record with the
-    # given, already saved, record, when the scoped association is a
-    # has_many :through (e.g. Company has_many :people, through: :roles).
-    #
-    # @return [Boolean] true unless creation of the join record was attempted
-    #   and failed.
-    def create_scoped_join_record(record)
-      through = scoped_through_association(record)
-      return true unless through
+      child_association = scoped_child_association(record)
+      return unless child_association
 
-      through[:model].create!(
-        through[:parent_key] => scope_params[:id],
-        through[:child_key] => record.id
-      )
-      true
-    rescue ActiveRecord::RecordInvalid
-      false
-    end
-
-    # Returns the fields to show on the new page, excluding the field that
-    # represents the scoped parent record's association, since its value is
-    # already known and set by #assign_scope_to_record or
-    # #create_scoped_join_record.
-    def fields_for_new(record:)
-      @repository.fields_for_new(record: record).reject { |field| scoped_field?(field: field, record: record) }
-    end
-
-    # Returns true if the given field represents the association back to the
-    # scoped parent record, whether that's a plain foreign key or a
-    # has_many :through join.
-    def scoped_field?(field:, record:)
-      return true if field.param_key.to_s == scoped_foreign_key(record)
-
-      through = scoped_through_association(record)
-      return false unless through
-
-      field_reflection = record.class.reflect_on_association(field.name)
-      return false unless field_reflection&.options&.[](:through)
-
-      field_reflection.through_reflection&.klass == through[:model] &&
-        field_reflection.klass == scoped_reflection.active_record
+      record.public_send(:"#{child_association.name.to_s.singularize}_ids=", [scope_params[:id]])
     end
 
     # Returns the association reflection, on the scoped parent record's
-    # model, for the scoped field (e.g. Company#reflect_on_association(:people)),
-    # or nil if we're not scoped.
+    # model, for the scoped field (e.g. Company#reflect_on_association(:people)).
+    #
+    # The parent model is validated through the registered repositories.
     #
     # @return [ActiveRecord::Reflection::AssociationReflection, nil]
     def scoped_reflection
       return nil unless scoped?
+      return @scoped_reflection if defined?(@scoped_reflection)
 
-      parent_model = scope_params[:model]&.safe_constantize
-      return nil unless parent_model
-
-      parent_model.reflect_on_association(scope_params[:field]&.to_sym)
+      parent_model = Uchi::Repository.for_model(scope_params[:model])&.model
+      @scoped_reflection = parent_model&.reflect_on_association(scope_params[:field]&.to_sym)
     end
 
-    # Returns the name of the foreign key column, on the given record, that
-    # points back to the scoped parent record, or nil if the association
-    # can't be represented by a plain foreign key column on this record (e.g.
-    # a has_many :through or has_and_belongs_to_many association).
+    # Returns the association, on the given record's model, that mirrors the
+    # scoped parent's association back to it (e.g. Person#companies, when the
+    # scoped association is Company#people).
     #
-    # The foreign key is derived from the parent record's own association
-    # reflection, so it works regardless of whether Rails can automatically
-    # infer the inverse association on this side.
+    # Assumes conventional Rails naming: that the association is named after
+    # the pluralized parent model. This avoids having to identify the
+    # has_many :through join model, or has_and_belongs_to_many join table,
+    # since Rails only needs the association name to persist either on save.
     #
-    # @return [String, nil]
-    def scoped_foreign_key(record)
+    # @return [ActiveRecord::Reflection::AssociationReflection, nil]
+    def scoped_child_association(record)
       reflection = scoped_reflection
       return nil unless reflection
-      return nil if reflection.options[:through]
 
-      foreign_key = reflection.foreign_key
-      return nil unless record.class.column_names.include?(foreign_key)
+      guessed_name = reflection.active_record.model_name.plural.to_sym
+      child_reflection = record.class.reflect_on_association(guessed_name)
+      return nil unless child_reflection&.collection?
+      return nil unless child_reflection.klass == reflection.active_record
 
-      foreign_key
-    end
-
-    # Returns the join model and foreign keys needed to associate the given
-    # record with the scoped parent record, when the scoped association is a
-    # has_many :through (e.g. Company has_many :people, through: :roles).
-    #
-    # @return [Hash, nil]
-    def scoped_through_association(record)
-      reflection = scoped_reflection
-      return nil unless reflection&.options&.[](:through)
-
-      through_reflection = reflection.through_reflection
-      source_reflection = reflection.source_reflection
-      return nil unless through_reflection && source_reflection
-      return nil unless source_reflection.klass == record.class
-
-      {
-        model: through_reflection.klass,
-        parent_key: through_reflection.foreign_key,
-        child_key: source_reflection.foreign_key
-      }
-    end
-
-    # Saves the given, newly built, record and, if scoped, associates it with
-    # the scoped parent record.
-    #
-    # Note: does not rely on record.persisted? after the transaction, since
-    # ActiveRecord::Rollback does not undo the in-memory state a prior
-    # successful #save already set on the record.
-    #
-    # @return [Boolean] true if the record (and, if applicable, its
-    #   association with the scoped parent record) was saved successfully.
-    def save_record_for_new(record)
-      saved = false
-      ActiveRecord::Base.transaction do
-        saved = record.save
-        raise ActiveRecord::Rollback unless saved
-
-        unless create_scoped_join_record(record)
-          saved = false
-          raise ActiveRecord::Rollback
-        end
-      end
-      saved
+      child_reflection
     end
 
     # Returns the path to use for the cancel link

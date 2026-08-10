@@ -40,16 +40,6 @@ module Uchi
       assert_select "a[href=?]", uchi_book_path(id: @book.id), text: "Cancel"
     end
 
-    test "GET new does not render a field for the scoped parent record" do
-      get new_uchi_title_url(scope: @scope)
-      assert_select "select[name='title[book_id]']", count: 0
-    end
-
-    test "GET new does not render a field for the scoped parent record even without inverse_of" do
-      get new_uchi_title_url(scope: @scope.except(:inverse_of))
-      assert_select "select[name='title[book_id]']", count: 0
-    end
-
     test "submitting the rendered new form associates the new record with the scoped parent record" do
       get new_uchi_title_url(scope: @scope)
       form_action = Nokogiri::HTML5(response.body).at_css("form[method='post']")["action"]
@@ -67,14 +57,6 @@ module Uchi
       assert_equal @book, Title.last.book
     end
 
-    test "POST create associates the new record with the scoped parent record even without inverse_of" do
-      post uchi_titles_url(scope: @scope.except(:inverse_of)), params: {
-        title: {locale: "en-US", title: "The Hobbit"}
-      }
-
-      assert_equal @book, Title.last.book
-    end
-
     test "POST create redirects back to the scoped parent record on success" do
       post uchi_titles_url(scope: @scope), params: {
         title: {locale: "en-US", title: "The Hobbit"}
@@ -83,9 +65,19 @@ module Uchi
       assert_redirected_to uchi_book_path(id: @book.id)
     end
 
-    test "GET new does not raise when the scoped association has no plain foreign key column, e.g. has_and_belongs_to_many" do
+    test "GET new prefills the scoped parent record for a has_and_belongs_to_many association" do
       get new_uchi_author_url(scope: {model: "Book", id: @book.id, field: "authors"})
+
       assert_response :success
+      assert_equal [@book], assigns(:record).books
+    end
+
+    test "POST create associates the new record with the scoped parent record for a has_and_belongs_to_many association" do
+      post uchi_authors_url(scope: {model: "Book", id: @book.id, field: "authors"}), params: {
+        author: {name: "J.R.R. Tolkien"}
+      }
+
+      assert_equal [@book], Author.last.books
     end
 
     test "GET index responds successfully" do

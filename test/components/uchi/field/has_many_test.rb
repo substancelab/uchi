@@ -98,6 +98,29 @@ module Uchi
       end
     end
 
+    class HasManyEditPrefilledOnNewRecordTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::HasMany.new(:companies)
+        @company = Company.create!(name: "Acme, Inc.")
+        @person = Person.new(name: "Bilbo Baggins")
+        @person.company_ids = [@company.id]
+        @repository = Uchi::Repositories::Person.new
+        @view_context = ActionController::Base.new.view_context
+
+        @form = ActionView::Helpers::FormBuilder.new(:person, @person, @view_context, {})
+
+        @component = Uchi::Field::HasMany::Edit.new(
+          field: @field,
+          form: @form,
+          repository: @repository
+        )
+      end
+
+      test "#associated_records returns the in-memory selection for a new record, without querying the database" do
+        assert_equal [@company], @component.associated_records
+      end
+    end
+
     class HasManyIndexTest < ViewComponent::TestCase
       def setup
         @field = Uchi::Field::HasMany.new(:titles)
@@ -137,7 +160,30 @@ module Uchi
         render_inline(@component)
 
         expected_href = Rails.application.routes.url_helpers.new_uchi_title_path(
-          scope: {field: "titles", id: @book.id, inverse_of: "book", model: "Book"}
+          scope: {model: "Book", id: @book.id, field: "titles"}
+        )
+        assert_selector("a[href='#{expected_href}']")
+      end
+    end
+
+    class HasManyShowThroughAssociationTest < ViewComponent::TestCase
+      def setup
+        @field = Uchi::Field::HasMany.new(:people)
+        @company = Company.create!(name: "Acme, Inc.")
+        @repository = Uchi::Repositories::Company.new
+
+        @component = Uchi::Field::HasMany::Show.new(
+          field: @field,
+          record: @company,
+          repository: @repository
+        )
+      end
+
+      test "renders a link to add a new associated record, scoped to the parent record" do
+        render_inline(@component)
+
+        expected_href = Rails.application.routes.url_helpers.new_uchi_person_path(
+          scope: {model: "Company", id: @company.id, field: "people"}
         )
         assert_selector("a[href='#{expected_href}']")
       end

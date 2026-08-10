@@ -7,15 +7,16 @@ module Uchi
       @scope = {model: "Company", id: @company.id, field: "people"}
     end
 
-    test "GET new does not render a field for the scoped parent record" do
-      get new_uchi_person_url(scope: @scope)
-      assert_select "input[name='person[company_ids][]']", count: 0
-    end
-
     test "GET new renders a form that posts back with the scope preserved" do
       get new_uchi_person_url(scope: @scope)
 
       assert_select "form[action=?]", uchi_people_path(scope: @scope)
+    end
+
+    test "GET new prefills the scoped parent record as a selected company" do
+      get new_uchi_person_url(scope: @scope)
+
+      assert_select "input[type='hidden'][name='person[company_ids][]'][value=?]", @company.id.to_s
     end
 
     test "submitting the rendered new form associates the new record with the scoped parent record" do

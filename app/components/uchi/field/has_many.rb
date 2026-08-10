@@ -10,6 +10,12 @@ module Uchi
           records = field.value(record)
           return [] if records.nil?
 
+          # For a new, unsaved record, querying the association (e.g. to apply
+          # sorting/includes) always returns no results, since nothing in the
+          # database can reference an owner that doesn't exist yet. Use
+          # whatever's already in memory instead.
+          return records.to_a if record.new_record?
+
           associated_repository.find_all(scope: records)
         end
 
@@ -76,6 +82,19 @@ module Uchi
           end
 
           repository_class.new
+        end
+
+        # Returns the scope to pass when linking to create a new record for
+        # this association (e.g. from Company#show, to Person#new), so that
+        # the new record ends up associated with this record.
+        #
+        # @return [Hash]
+        def attach_scope
+          {
+            field: field.name,
+            id: record.id,
+            model: record.model_name.to_s
+          }
         end
 
         private
