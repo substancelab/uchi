@@ -9584,7 +9584,7 @@
       event.preventDefault();
       const template = this.templateTarget;
       const content = template.innerHTML;
-      const newId = (/* @__PURE__ */ new Date()).getTime();
+      const newId = this.generateId();
       const newContent = content.replace(/NEW_RECORD/g, newId);
       const temp = document.createElement("div");
       temp.innerHTML = newContent;
@@ -9594,6 +9594,13 @@
       if (firstInput) {
         firstInput.focus();
       }
+    }
+    // Generate a collision-resistant id for a new nested record
+    generateId() {
+      if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+        return crypto.randomUUID();
+      }
+      return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
     }
     // Remove an existing nested item
     removeItem(event) {

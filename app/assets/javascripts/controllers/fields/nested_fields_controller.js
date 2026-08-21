@@ -15,8 +15,8 @@ export default class extends Controller {
     const template = this.templateTarget
     const content = template.innerHTML
 
-    // Replace NEW_RECORD with unique timestamp
-    const newId = new Date().getTime()
+    // Replace NEW_RECORD with a collision-resistant id
+    const newId = this.generateId()
     const newContent = content.replace(/NEW_RECORD/g, newId)
 
     // Create a temporary container to parse the HTML
@@ -34,6 +34,15 @@ export default class extends Controller {
     if (firstInput) {
       firstInput.focus()
     }
+  }
+
+  // Generate a collision-resistant id for a new nested record
+  generateId() {
+    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+      return crypto.randomUUID()
+    }
+
+    return `${Date.now()}-${Math.random().toString(36).slice(2)}`
   }
 
   // Remove an existing nested item
