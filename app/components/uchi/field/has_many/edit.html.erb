@@ -39,10 +39,11 @@
             <%# Remove button %>
             <div class="absolute top-2 right-2">
               <button
-                type="button"
+                aria-label="<%= I18n.t("uchi.field.has_many.nested.remove_item", default: "Remove") %>"
                 class="text-danger hover:text-danger-emphasis p-1 rounded hover:bg-danger/10"
                 data-action="nested-fields#removeItem"
                 title="<%= I18n.t("uchi.field.has_many.nested.remove_item", default: "Remove") %>"
+                type="button"
               >
                 <svg
                   class="w-5 h-5"
@@ -93,10 +94,11 @@
             <%# Remove button %>
             <div class="absolute top-2 right-2">
               <button
-                type="button"
+                aria-label="<%= I18n.t("uchi.field.has_many.nested.remove_item", default: "Remove") %>"
                 class="text-danger hover:text-danger-emphasis p-1 rounded hover:bg-danger/10"
                 data-action="nested-fields#removeItem"
                 title="<%= I18n.t("uchi.field.has_many.nested.remove_item", default: "Remove") %>"
+                type="button"
               >
                 <svg
                   class="w-5 h-5"
