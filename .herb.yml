@@ -11,6 +11,7 @@ files:
     - dist/**/*
     - doc/**/*
     - node_modules/**/*
+    - test/dummy/**/*
     - vendor/bundle/**/*
     - coverage/**/*
 
