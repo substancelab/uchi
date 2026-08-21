@@ -10,7 +10,7 @@
     "build:js": "node_modules/.bin/esbuild --bundle --outfile=app/assets/javascripts/uchi/application.js app/assets/javascripts/uchi.js",
     "herb:format:check": "herb-format --check",
     "herb:format": "herb-format",
-    "herb:lint": "herb-lint '**/*.html.erb'",
+    "herb:lint": "herb-lint",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch:css": "node_modules/.bin/tailwindcss --watch -i ./app/assets/tailwind/uchi.css -o ./app/assets/stylesheets/uchi/application.css",
     "watch:js": "node_modules/.bin/esbuild --watch --bundle --outfile=app/assets/javascripts/uchi/application.js app/assets/javascripts/uchi.js"
