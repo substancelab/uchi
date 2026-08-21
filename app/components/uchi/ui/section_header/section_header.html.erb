@@ -1,0 +1,17 @@
+<% if actions.any? %>
+  <div class="flex items-center justify-between">
+    <h2 class="text-2xl font-semibold tracking-tight text-heading">
+      <%= title %>
+    </h2>
+
+    <div class="flex items-center space-x-2">
+      <% actions.each do |action| %>
+        <%= action %>
+      <% end %>
+    </div>
+  </div>
+<% else %>
+  <h2 class="text-2xl font-semibold tracking-tight text-heading">
+    <%= title %>
+  </h2>
+<% end %>
