@@ -1,8 +1,8 @@
 <% if field.nested_fields.any? %>
   <div class="my-6">
-    <h2 class="text-2xl font-semibold tracking-tight text-heading mb-3">
-      <%= repository.translate.field_label(field) %>
-    </h2>
+    <div class="mb-3">
+      <%= render(Uchi::Ui::SectionHeader.new(title: repository.translate.field_label(field))) %>
+    </div>
 
     <% if associated_records.empty? %>
       <p class="text-body-subtle italic">
@@ -40,16 +40,16 @@
   </div>
 <% else %>
   <div class="my-10">
-    <div class="flex items-center justify-between px-4 my-6 md:px-0">
-      <h2 class="text-2xl font-semibold tracking-tight text-heading">
-        <%= repository.translate.field_label(field) %>
-      </h2>
-
-      <%= link_to(
-        associated_repository.translate.link_to_add,
-        associated_repository.routes.path_for(:new, scope: attach_scope),
-        class: Uchi::Flowbite::Button::Outline.classes(style: :tertiary)
-      ) %>
+    <div class="px-4 my-6 md:px-0">
+      <%= render(Uchi::Ui::SectionHeader.new(title: repository.translate.field_label(field))) do |section_header| %>
+        <% section_header.with_action do %>
+          <%= link_to(
+            associated_repository.translate.link_to_add,
+            associated_repository.routes.path_for(:new, scope: attach_scope),
+            class: Uchi::Flowbite::Button::Outline.classes(style: :tertiary)
+          ) %>
+        <% end %>
+      <% end %>
     </div>
 
     <%= render(Uchi::Ui::Index::TurboFrame.new(

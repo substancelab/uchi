@@ -1,8 +1,8 @@
 <%= turbo_frame_tag("search_results_#{@repository.controller_name}", class: ("block" if @records.any?)) do %>
   <% if @records.any? %>
-    <h2 class="mb-2 text-lg font-semibold text-heading">
-      <%= @repository.translate.plural_name %>
-    </h2>
+    <div class="mb-2">
+      <%= render(Uchi::Ui::SectionHeader.new(title: @repository.translate.plural_name)) %>
+    </div>
 
     <div
       class="
