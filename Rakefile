@@ -43,4 +43,4 @@ namespace :herb do
   end
 end
 
-task default: ["app:test", "standard", "herb:lint"]
+task default: ["app:test", "standard", "herb:lint", "herb:format:check"]
