@@ -19,7 +19,7 @@
   "devDependencies": {
     "@github/combobox-nav": "^3.0.1",
     "@herb-tools/formatter": "^0.10.3",
-    "@herb-tools/linter": "^0.10.1",
+    "@herb-tools/linter": "^0.10.3",
     "@hotwired/turbo-rails": "^8.0.16",
     "@rails/request.js": "^0.0.13",
     "@stimulus-components/dropdown": "^3.0.0",
