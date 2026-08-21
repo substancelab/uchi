@@ -10,8 +10,7 @@
   <%= form.hidden_field "#{field.name}_id",
     data: {
       'belongs-to-target': 'id',
-    }
-  %>
+    } %>
 
   <button
     class="<%= Uchi::Flowbite::Input.classes.join(" ") %> text-left"
@@ -20,7 +19,10 @@
     type="button"
   >
     <div class="inline-flex items-center justify-between w-full">
-      <div class="min-h-[1em]" data-belongs-to-target="label"><%= record_title(associated_record) %></div>
+      <div class="min-h-[1em]" data-belongs-to-target="label">
+        <%= record_title(associated_record) %>
+      </div>
+
       <svg
         class="w-4 h-4 ms-1.5 -me-0.5"
         aria-hidden="true"
@@ -41,12 +43,23 @@
     </div>
   </button>
 
-  <div class="absolute z-10 bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-full mt-1" data-belongs-to-target="dropdown">
-    <div class="bg-neutral-primary-medium border-b border-default-medium p-2 rounded-t-base">
+  <div
+    class="
+      absolute z-10 bg-neutral-primary-medium border border-default-medium
+      rounded-base shadow-lg w-full mt-1
+    "
+    data-belongs-to-target="dropdown"
+  >
+    <div
+      class="
+        bg-neutral-primary-medium border-b border-default-medium p-2
+        rounded-t-base
+      "
+    >
       <%# Search input. This is the visible part that users type into %>
       <label for="<%= dom_id_for_filter_query_input %>" class="sr-only">Search</label>
-      <%=
-        text_field_tag(
+
+      <%= text_field_tag(
           "filter_query",
           nil,
           class: "bg-neutral-secondary-strong border border-default-strong text-heading text-sm rounded focus:ring-brand focus:border-brand block w-full px-2.5 py-2 shadow-xs placeholder:text-body",
@@ -56,9 +69,9 @@
             autocomplete: 'off'
           },
           id: dom_id_for_filter_query_input,
-        )
-      %>
+        ) %>
     </div>
+
     <div class="max-h-96 overflow-y-auto" data-belongs-to-target="list">
       <!-- Options will be dynamically inserted here -->
       <div class="grid place-items-center p-8">

@@ -4,7 +4,12 @@
       <%= @repository.translate.plural_name %>
     </h2>
 
-    <div class="relative overflow-x-auto bg-neutral-primary-soft rounded-base border border-default shadow-xs">
+    <div
+      class="
+        relative overflow-x-auto bg-neutral-primary-soft rounded-base border
+        border-default shadow-xs
+      "
+    >
       <%= render(Uchi::Ui::Index::RecordsTable.new(
         columns: @repository.fields_for_index,
         query: @query,
