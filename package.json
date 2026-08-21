@@ -8,6 +8,8 @@
     "assets:build": "npm run build:css && npm run build:js",
     "build:css": "node_modules/.bin/tailwindcss -i ./app/assets/tailwind/uchi.css -o ./app/assets/stylesheets/uchi/application.css",
     "build:js": "node_modules/.bin/esbuild --bundle --outfile=app/assets/javascripts/uchi/application.js app/assets/javascripts/uchi.js",
+    "herb:format:check": "herb-format --check",
+    "herb:format": "herb-format",
     "herb:lint": "herb-lint '**/*.html.erb'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch:css": "node_modules/.bin/tailwindcss --watch -i ./app/assets/tailwind/uchi.css -o ./app/assets/stylesheets/uchi/application.css",
@@ -16,6 +18,7 @@
   "license": "ISC",
   "devDependencies": {
     "@github/combobox-nav": "^3.0.1",
+    "@herb-tools/formatter": "^0.10.3",
     "@herb-tools/linter": "^0.10.1",
     "@hotwired/turbo-rails": "^8.0.16",
     "@rails/request.js": "^0.0.13",
