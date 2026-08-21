@@ -1,8 +1,7 @@
 <ul class="p-4 space-y-4 text-sm font-medium text-body">
   <% @records.each do |record| %>
-    <%
-      checkbox_id = dom_id(record, [source_repository.model, @field_name, 'checkbox'].join("-"))
-    %>
+    <% checkbox_id = dom_id(record, [source_repository.model, @field_name, 'checkbox'].join("-")) %>
+
     <li
       data-id="<%= record.id %>"
       id="<%= dom_id(record, [source_repository.model, @field_name].join("-")) %>"
@@ -10,16 +9,23 @@
     >
       <div class="flex items-center">
         <input
-          type="checkbox"
-          id="<%= checkbox_id %>"
-          class="w-4 h-4 border cursor-pointer border-default-strong rounded-xs bg-neutral-secondary-strong focus:ring-2 focus:ring-brand-soft"
-          data-action="change->has-many#handleCheckboxChange"
-          data-has-many-target="checkbox"
           <% if @current_values.include?(record) %>
             checked
           <% end %>
+          class="
+              w-4 h-4 border cursor-pointer border-default-strong rounded-xs
+              bg-neutral-secondary-strong focus:ring-2 focus:ring-brand-soft
+            "
+          data-action="change->has-many#handleCheckboxChange"
+          data-has-many-target="checkbox"
+          id="<%= checkbox_id %>"
+          type="checkbox"
         >
-        <label for="<%= checkbox_id %>" class="text-sm font-medium cursor-pointer ms-2 text-heading">
+
+        <label
+          class="text-sm font-medium cursor-pointer ms-2 text-heading"
+          for="<%= checkbox_id %>"
+        >
           <%= record_title(record) %>
         </label>
       </div>

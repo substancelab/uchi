@@ -9,13 +9,18 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <%= render "layouts/uchi/javascript" %>
     <%= render "layouts/uchi/stylesheets" %>
   </head>
 
-  <body class="antialiased bg-neutral-secondary-medium p-2 md:h-screen md:overflow-hidden md:flex md:p-0">
+  <body
+    class="
+      antialiased bg-neutral-secondary-medium p-2 md:h-screen
+      md:overflow-hidden md:flex md:p-0
+    "
+  >
     <%= render(partial: "uchi/navigation/main") %>
 
     <main class="py-6 overflow-x-hidden overflow-y-auto grow md:px-6">

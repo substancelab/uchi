@@ -11,13 +11,19 @@
     <% else %>
       <div class="space-y-3">
         <% associated_records.each do |assoc_record| %>
-          <div class="border border-default-medium rounded-base p-4 bg-neutral-primary-medium">
+          <div
+            class="
+              border border-default-medium rounded-base p-4
+              bg-neutral-primary-medium
+            "
+          >
             <dl class="grid grid-cols-1 gap-3">
               <% field.nested_fields.each do |nested_field| %>
                 <div>
                   <dt class="text-sm font-medium text-heading mb-1">
                     <%= associated_repository.translate.field_label(nested_field) %>
                   </dt>
+
                   <dd class="text-sm text-body">
                     <%= render(nested_field.show_component(
                       record: assoc_record,

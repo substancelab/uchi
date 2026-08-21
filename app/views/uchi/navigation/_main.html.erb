@@ -1,16 +1,15 @@
 <nav
+  aria-label="Main"
   class="
     w-64 h-full px-3 py-4 overflow-y-auto shrink-0
     bg-neutral-secondary-medium
     hidden md:block
   "
-  aria-label="Main"
 >
   <%= render Uchi::Ui::Navigation.new %>
 </nav>
 
-<div
-  class="md:hidden">
+<div class="md:hidden">
   <button
     aria-controls="main-navigation"
     class="
@@ -24,17 +23,17 @@
     <svg
       aria-hidden="true"
       class="w-6 h-6"
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
       fill="none"
+      height="24"
       viewBox="0 0 24 24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
     >
       <path
+        d="M5 7h14M5 12h14M5 17h14"
         stroke="currentColor"
         stroke-linecap="round"
         stroke-width="2"
-        d="M5 7h14M5 12h14M5 17h14"
       />
     </svg>
   </button>
@@ -74,11 +73,11 @@
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
+          d="M6 18 17.94 6M18 18 6.06 6"
           stroke="currentColor"
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-width="2"
-          d="M6 18 17.94 6M18 18 6.06 6"
         />
       </svg>
 
