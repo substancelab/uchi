@@ -297,3 +297,78 @@ The lambda receives an `ActiveRecord::Relation` with all records returned from t
 ### How to change titles in the dropdown
 
 The dropdown displays the `title` of the record. For example, a `Person` repository may use the `name` attribute as its title. To customize the title for a record, implement `Repository#title`, see [repositories documentation](repositories/#customizing-the-title-of-a-record) for details.
+
+### `#nested_fields`
+
+By default, a `HasMany` field lets users pick from *existing* associated records. The chainable `#nested_fields` method switches it into an inline editor instead: it creates, edits, and deletes associated records directly within the parent form.
+
+Your model must use `accepts_nested_attributes_for` for this to work:
+
+```ruby
+class Book < ApplicationRecord
+  has_many :titles
+  accepts_nested_attributes_for :titles, allow_destroy: true
+end
+```
+
+Configure `#nested_fields` with the fields you want to edit for each associated record:
+
+```ruby
+module Uchi
+  module Repositories
+    class Book < Repository
+      def fields
+        [
+          Field::String.new(:original_title),
+          Field::HasMany.new(:titles).nested_fields(
+            Field::String.new(:title),
+            Field::String.new(:locale)
+          )
+        ]
+      end
+    end
+  end
+end
+```
+
+This also accepts an array:
+
+```ruby
+Field::HasMany.new(:titles).nested_fields([
+  Field::String.new(:title),
+  Field::String.new(:locale)
+])
+```
+
+Once `#nested_fields` is configured, the field switches its rendering on both the edit and the show pages: the show page lists each associated record's configured fields inline instead of loading a scoped index view in a turbo-frame, and the edit/new pages render an inline editor instead of the searchable dropdown. `#collection_query` has no effect when `#nested_fields` is configured.
+
+#### Supported nested field types
+
+- `String` - single-line text
+- `Text` - multi-line text
+- `Number` - integers, decimals
+- `Boolean` - checkboxes
+- `Date` - date picker
+- `DateTime` - datetime picker
+
+#### Advanced model options
+
+**Reject blank records** to avoid creating empty associated records:
+
+```ruby
+class Book < ApplicationRecord
+  accepts_nested_attributes_for :titles,
+    allow_destroy: true,
+    reject_if: :all_blank
+end
+```
+
+**Limit nested records** to prevent abuse:
+
+```ruby
+accepts_nested_attributes_for :titles,
+  allow_destroy: true,
+  limit: 10
+```
+
+Read more in [Rails' NestedAttributes](https://api.rubyonrails.org/classes/ActiveRecord/NestedAttributes/ClassMethods.html) documentation.

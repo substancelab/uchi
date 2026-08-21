@@ -9573,11 +9573,59 @@
     }
   };
 
+  // app/assets/javascripts/controllers/fields/nested_fields_controller.js
+  var nested_fields_controller_default = class extends Controller {
+    static targets = ["container", "item", "template", "destroyField"];
+    static values = {
+      associationName: String
+    };
+    // Add a new nested item
+    addItem(event) {
+      event.preventDefault();
+      const template = this.templateTarget;
+      const content = template.innerHTML;
+      const newId = this.generateId();
+      const newContent = content.replace(/NEW_RECORD/g, newId);
+      const temp = document.createElement("div");
+      temp.innerHTML = newContent;
+      const newItem = temp.firstElementChild;
+      this.containerTarget.insertBefore(newItem, template);
+      const firstInput = newItem.querySelector('input[type="text"], input[type="number"], textarea, select');
+      if (firstInput) {
+        firstInput.focus();
+      }
+    }
+    // Generate a collision-resistant id for a new nested record
+    generateId() {
+      if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+        return crypto.randomUUID();
+      }
+      return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    }
+    // Remove an existing nested item
+    removeItem(event) {
+      event.preventDefault();
+      const item = event.target.closest('[data-nested-fields-target="item"]');
+      if (!item) return;
+      const isNewRecord = item.dataset.newRecord === "true";
+      if (isNewRecord) {
+        item.remove();
+      } else {
+        const destroyField = item.querySelector('[data-nested-fields-target="destroyField"]');
+        if (destroyField) {
+          destroyField.value = "1";
+        }
+        item.style.display = "none";
+      }
+    }
+  };
+
   // app/assets/javascripts/uchi.js
   var application = Application.start();
   application.register("belongs-to", belongs_to_controller_default);
   application.register("dropdown", Dropdown);
   application.register("has-many", has_many_controller_default);
+  application.register("nested-fields", nested_fields_controller_default);
   window.uchi ||= {};
   window.uchi.application ||= application;
   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {

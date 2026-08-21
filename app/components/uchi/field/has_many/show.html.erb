@@ -1,38 +1,74 @@
-<div class="my-10">
-  <div class="flex items-center justify-between px-4 my-6 md:px-0">
-    <h2 class="text-2xl font-semibold tracking-tight text-heading">
+<% if field.nested_fields.any? %>
+  <div class="my-6">
+    <h2 class="text-2xl font-semibold tracking-tight text-heading mb-3">
       <%= repository.translate.field_label(field) %>
     </h2>
 
-    <%= link_to(
-      associated_repository.translate.link_to_add,
-      associated_repository.routes.path_for(:new, scope: attach_scope),
-      class: Uchi::Flowbite::Button::Outline.classes(style: :tertiary)
-    ) %>
+    <% if associated_records.empty? %>
+      <p class="text-body-subtle italic">
+        <%= I18n.t("uchi.field.has_many.nested.no_items", default: "No items") %>
+      </p>
+    <% else %>
+      <div class="space-y-3">
+        <% associated_records.each do |assoc_record| %>
+          <div class="border border-default-medium rounded-base p-4 bg-neutral-primary-medium">
+            <dl class="grid grid-cols-1 gap-3">
+              <% field.nested_fields.each do |nested_field| %>
+                <div>
+                  <dt class="text-sm font-medium text-heading mb-1">
+                    <%= associated_repository.translate.field_label(nested_field) %>
+                  </dt>
+                  <dd class="text-sm text-body">
+                    <%= render(nested_field.show_component(
+                      record: assoc_record,
+                      repository: associated_repository
+                    )) %>
+                  </dd>
+                </div>
+              <% end %>
+            </dl>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
+<% else %>
+  <div class="my-10">
+    <div class="flex items-center justify-between px-4 my-6 md:px-0">
+      <h2 class="text-2xl font-semibold tracking-tight text-heading">
+        <%= repository.translate.field_label(field) %>
+      </h2>
 
-  <%= render(Uchi::Ui::Index::TurboFrame.new(
-    repository: associated_repository,
-    scope: {
-      field: field.name,
-      id: record.id,
-      inverse_of: inverse_association&.name,
-      model: record.model_name,
-    },
-    src: associated_repository.routes.path_for(
-      :index,
+      <%= link_to(
+        associated_repository.translate.link_to_add,
+        associated_repository.routes.path_for(:new, scope: attach_scope),
+        class: Uchi::Flowbite::Button::Outline.classes(style: :tertiary)
+      ) %>
+    </div>
+
+    <%= render(Uchi::Ui::Index::TurboFrame.new(
+      repository: associated_repository,
       scope: {
         field: field.name,
         id: record.id,
         inverse_of: inverse_association&.name,
         model: record.model_name,
       },
-    )
-  )) do %>
-    <%= render(Uchi::Ui::Frame.new) do %>
-      <div class="grid place-items-center p-8">
-        <%= render(Uchi::Ui::Spinner.new(message: repository.translate.loading_message)) %>
-      </div>
+      src: associated_repository.routes.path_for(
+        :index,
+        scope: {
+          field: field.name,
+          id: record.id,
+          inverse_of: inverse_association&.name,
+          model: record.model_name,
+        },
+      )
+    )) do %>
+      <%= render(Uchi::Ui::Frame.new) do %>
+        <div class="grid place-items-center p-8">
+          <%= render(Uchi::Ui::Spinner.new(message: repository.translate.loading_message)) %>
+        </div>
+      <% end %>
     <% end %>
-  <% end %>
-</div>
+  </div>
+<% end %>

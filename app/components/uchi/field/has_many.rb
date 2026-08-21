@@ -10,6 +10,8 @@ module Uchi
           records = field.value(record)
           return [] if records.nil?
 
+          return Array(records) if field.nested_fields.any?
+
           # For a new, unsaved record, loading the association (e.g. via
           # #to_a, to apply sorting/includes) would query using a nil foreign
           # key, which can match unrelated rows with a NULL value there
@@ -67,6 +69,9 @@ module Uchi
       class Show < Uchi::Field::Base::Show
         def associated_records
           records = field.value(record)
+          return [] if records.nil?
+
+          return Array(records) if field.nested_fields.any?
 
           associated_repository.find_all(scope: records)
         end
@@ -131,6 +136,7 @@ module Uchi
       def initialize(name)
         super
         @collection_query = DEFAULT_COLLECTION_QUERY
+        @nested_fields = []
       end
 
       # Sets or gets a custom query for filtering the collection of associated records.
@@ -161,13 +167,54 @@ module Uchi
         :associations
       end
 
+      # Sets or gets the fields to display inline for each associated record.
+      #
+      # Configuring nested_fields switches this field from a select-and-link
+      # UI (for choosing existing records) to an inline editor that creates,
+      # edits, and deletes associated records directly within the parent form,
+      # using Rails' nested attributes pattern. The model must declare
+      # `accepts_nested_attributes_for` for this association.
+      #
+      # When called with an argument, sets the fields and returns self for
+      # chaining. When called without arguments, returns the current fields.
+      #
+      # @param field_definitions [Array<Uchi::Field>] Field instances
+      # @return [self, Array] Returns self for method chaining when setting,
+      #   or the nested_fields array when getting
+      #
+      # @example Setting with field instances
+      #   Field::HasMany.new(:titles).nested_fields(
+      #     Field::String.new(:title),
+      #     Field::String.new(:locale)
+      #   )
+      #
+      # @example Setting with array
+      #   Field::HasMany.new(:titles).nested_fields([
+      #     Field::String.new(:title),
+      #     Field::String.new(:locale)
+      #   ])
+      #
+      # @example Getting
+      #   field.nested_fields # => [#<Uchi::Field::String>, #<Uchi::Field::String>]
+      def nested_fields(*field_definitions)
+        return @nested_fields if field_definitions.empty?
+
+        @nested_fields = field_definitions.flatten
+        validate_nested_fields!
+        self
+      end
+
       def param_key
+        return :"#{name}_attributes" if nested_fields.any?
+
         # TODO: This is too naive. We need to match this to the actual foreign
         # key of the model.
         :"#{name.to_s.singularize}_ids"
       end
 
       def permitted_param
+        return {param_key => nested_permitted_params} if nested_fields.any?
+
         {param_key => []}
       end
 
@@ -189,6 +236,29 @@ module Uchi
               .group(primary_key)
           ).order(primary_key.asc)
         }
+      end
+
+      private
+
+      def nested_permitted_params
+        # Base params: :id for existing records, :_destroy for deletion
+        base_params = [:id, :_destroy]
+
+        # Add each configured nested field's permitted param
+        field_params = @nested_fields.map(&:permitted_param)
+
+        base_params + field_params
+      end
+
+      def validate_nested_fields!
+        @nested_fields.each do |field|
+          unless field.is_a?(Uchi::Field)
+            raise ArgumentError,
+              "Field::HasMany#nested_fields expects Uchi::Field instances, " \
+              "got #{field.class} (#{field.inspect}). " \
+              "Example: Field::HasMany.new(:titles).nested_fields(Field::String.new(:title))"
+          end
+        end
       end
     end
   end

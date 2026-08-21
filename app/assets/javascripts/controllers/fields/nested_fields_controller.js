@@ -1,0 +1,71 @@
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
+  static targets = ["container", "item", "template", "destroyField"]
+
+  static values = {
+    associationName: String
+  }
+
+  // Add a new nested item
+  addItem(event) {
+    event.preventDefault()
+
+    // Get the template
+    const template = this.templateTarget
+    const content = template.innerHTML
+
+    // Replace NEW_RECORD with a collision-resistant id
+    const newId = this.generateId()
+    const newContent = content.replace(/NEW_RECORD/g, newId)
+
+    // Create a temporary container to parse the HTML
+    const temp = document.createElement('div')
+    temp.innerHTML = newContent
+
+    // Get the new item element
+    const newItem = temp.firstElementChild
+
+    // Insert before the template (which is the last child of container)
+    this.containerTarget.insertBefore(newItem, template)
+
+    // Focus the first input in the new item
+    const firstInput = newItem.querySelector('input[type="text"], input[type="number"], textarea, select')
+    if (firstInput) {
+      firstInput.focus()
+    }
+  }
+
+  // Generate a collision-resistant id for a new nested record
+  generateId() {
+    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+      return crypto.randomUUID()
+    }
+
+    return `${Date.now()}-${Math.random().toString(36).slice(2)}`
+  }
+
+  // Remove an existing nested item
+  removeItem(event) {
+    event.preventDefault()
+
+    const item = event.target.closest('[data-nested-fields-target="item"]')
+    if (!item) return
+
+    const isNewRecord = item.dataset.newRecord === "true"
+
+    if (isNewRecord) {
+      // New records can be completely removed from DOM
+      item.remove()
+    } else {
+      // Existing records need to be marked for destruction
+      const destroyField = item.querySelector('[data-nested-fields-target="destroyField"]')
+      if (destroyField) {
+        destroyField.value = "1"
+      }
+
+      // Hide the item visually
+      item.style.display = "none"
+    }
+  }
+}
