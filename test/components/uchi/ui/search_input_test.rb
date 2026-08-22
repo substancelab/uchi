@@ -10,6 +10,12 @@ module Uchi
         assert_selector("input[type='search'][name='query'][placeholder='Search books']")
       end
 
+      test "defaults the label to the translated search label" do
+        render_inline(SearchInput.new)
+
+        assert_selector("label.sr-only", text: "Search")
+      end
+
       test "renders the current query as the field value" do
         render_inline(SearchInput.new(query: "Hobbit"))
 

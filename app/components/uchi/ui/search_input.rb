@@ -11,10 +11,10 @@ module Uchi
     class SearchInput < ViewComponent::Base
       attr_reader :label, :query
 
-      def initialize(query: nil, label: "Search")
+      def initialize(query: nil, label: nil)
         super()
         @query = query
-        @label = label
+        @label = label || Uchi::I18n.translate("search.label", default: "Search")
       end
     end
   end
