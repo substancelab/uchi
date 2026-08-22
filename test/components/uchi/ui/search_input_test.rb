@@ -28,6 +28,18 @@ module Uchi
         assert_selector("button[type='submit']")
         assert_selector("button .sr-only", text: "Search books")
       end
+
+      test "does not autofocus the search field by default" do
+        render_inline(SearchInput.new)
+
+        assert_no_selector("input[autofocus]")
+      end
+
+      test "autofocuses the search field when autofocus is true" do
+        render_inline(SearchInput.new(autofocus: true))
+
+        assert_selector("input[autofocus]")
+      end
     end
   end
 end

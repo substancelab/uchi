@@ -6,10 +6,16 @@
     hidden md:block
   "
 >
+  <%# This is the main navigation for large viewports %>
+  <div class="flex flex-row-reverse justify-between">
+    <%= render Uchi::Ui::Navigation::SearchLink.new(html_class: "md:px-2") %>
+  </div>
+
   <%= render Uchi::Ui::Navigation.new %>
 </nav>
 
 <div class="md:hidden">
+  <%# This is the button that toggles the menu on small viewports %>
   <button
     aria-controls="main-navigation"
     class="
@@ -40,6 +46,7 @@
 </div>
 
 <nav
+  <%# This is the menu that appears on small viewports %>
   aria-label="Main"
   class="
     fixed top-0 left-0 z-40 h-screen p-2
@@ -52,7 +59,9 @@
   popover
   tabindex="-1"
 >
-  <div>
+  <div class="flex flex-row-reverse justify-between">
+    <%= render Uchi::Ui::Navigation::SearchLink.new(html_class: "px-2") %>
+
     <button
       aria-controls="main-navigation"
       class="

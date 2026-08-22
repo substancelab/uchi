@@ -9,12 +9,13 @@ module Uchi
     # Based on Flowbite's Simple search input
     # (https://flowbite.com/docs/forms/search-input/#simple-search-input)
     class SearchInput < ViewComponent::Base
-      attr_reader :label, :query
+      attr_reader :autofocus, :label, :query
 
-      def initialize(query: nil, label: nil)
+      def initialize(autofocus: false, label: nil, query: nil)
         super()
-        @query = query
+        @autofocus = autofocus
         @label = label || Uchi::I18n.translate("search.label", default: "Search")
+        @query = query
       end
     end
   end
