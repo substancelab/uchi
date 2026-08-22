@@ -7,7 +7,7 @@
   ]) %>
 <% end %>
 
-<%= render(Uchi::Ui::SearchForm.new(query: params[:query])) %>
+<%= render(Uchi::Ui::SearchForm.new(query: @query)) %>
 
 <% if @query.present? %>
   <div class="mx-0 space-y-6">
