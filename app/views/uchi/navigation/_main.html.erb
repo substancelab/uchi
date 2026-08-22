@@ -6,10 +6,13 @@
     hidden md:block
   "
 >
+  <%# This is the main navigation for large viewports %>
+
   <%= render Uchi::Ui::Navigation.new %>
 </nav>
 
 <div class="md:hidden">
+  <%# This is the button that toggles the menu on small viewports %>
   <button
     aria-controls="main-navigation"
     class="
@@ -40,6 +43,7 @@
 </div>
 
 <nav
+  <%# This is the menu that appears on small viewports %>
   aria-label="Main"
   class="
     fixed top-0 left-0 z-40 h-screen p-2
