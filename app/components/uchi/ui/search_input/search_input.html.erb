@@ -1,7 +1,7 @@
 <%= label_tag(:query, label, class: "sr-only") %>
 
 <div class="relative w-full">
-  <%= search_field_tag(:query, query, class: "px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium rounded-base text-heading text-sm focus:ring-brand focus:border-brand block w-full placeholder:text-body", placeholder: label) %>
+  <%= search_field_tag(:query, query, autofocus: autofocus, class: "px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium rounded-base text-heading text-sm focus:ring-brand focus:border-brand block w-full placeholder:text-body", placeholder: label) %>
 </div>
 
 <%= button_tag(class: "inline-flex items-center justify-center shrink-0 text-white bg-brand hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs rounded-base w-10 h-10 focus:outline-none") do %>

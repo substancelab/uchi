@@ -1,5 +1,5 @@
 <div class="mb-6">
   <%= form_tag(path, class: "flex items-center max-w-sm space-x-2", method: :get) do %>
-    <%= render(Uchi::Ui::SearchInput.new(query: query, label: label)) %>
+    <%= render(Uchi::Ui::SearchInput.new(autofocus: true, label: label, query: query)) %>
   <% end %>
 </div>

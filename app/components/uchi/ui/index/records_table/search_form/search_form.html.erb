@@ -1,5 +1,5 @@
 <%= form_tag(repository.routes.path_for(:index), class: "flex items-center max-w-sm space-x-2", method: :get) do %>
-  <%= render(Uchi::Ui::SearchInput.new(query: query, label: repository.translate.search_label)) %>
+  <%= render(Uchi::Ui::SearchInput.new(label: repository.translate.search_label, query: query)) %>
 
   <% if scoped? %>
     <%= hidden_field_tag("scope[field]", scope[:field]) %>
