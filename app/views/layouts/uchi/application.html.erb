@@ -24,8 +24,6 @@
     <%= render(partial: "uchi/navigation/main") %>
 
     <main class="py-6 overflow-x-hidden overflow-y-auto grow md:px-3 md:pr-6">
-      <%= render(Uchi::Ui::SearchForm.new(query: params[:query])) %>
-
       <%= yield %>
     </main>
 
