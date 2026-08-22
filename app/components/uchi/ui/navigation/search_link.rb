@@ -13,6 +13,10 @@ module Uchi
           @html_class = html_class
         end
 
+        def label
+          Uchi::I18n.translate("search.label", default: "Search")
+        end
+
         def path
           Uchi.routes.search_path
         end
