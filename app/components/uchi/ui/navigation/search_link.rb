@@ -20,6 +20,10 @@ module Uchi
         def path
           Uchi.routes.search_path
         end
+
+        def render?
+          Uchi::Repository.any_searchable?
+        end
       end
     end
   end
