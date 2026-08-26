@@ -48,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Scrolling could result in scrolling entirely past all the content. The inline scrolling of each individidual pane should now be much more robust.
+- Scrolling could result in scrolling entirely past all the content. The inline scrolling of each individual pane should now be much more robust.
 - Field::Text now renders on :new actions by default as expected.
 
 
