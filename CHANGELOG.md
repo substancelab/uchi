@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Index views were not scrollable on mobile viewports.
-
+- Repositories are now always returned in the same order from `Uchi::Repository.all`.
 
 ## 0.2.0
 
