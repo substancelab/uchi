@@ -7,20 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Breaking
-
 ### Added
 
 - New `Field::HasMany#nested_fields` for inline editing of `has_many` associations using Rails nested attributes. Switches the field from selecting existing records to creating, editing, and deleting associated records directly within the parent form. Accepts Field instances (like `Repository#fields`), supporting String, Text, Number, Boolean, Date, and DateTime fields.
 - If your repositories are searchable, a Global Search link appears so you can search across all searchable models.
 - New records can now be added to `has_many` associations directly from the record show page.
 
+### Changed
+
+- Repositories are now always returned in the same order from `Uchi::Repository.all`.
+
 ### Fixed
 
 - Index views were not scrollable on mobile viewports.
-- Repositories are now always returned in the same order from `Uchi::Repository.all`.
 
-## 0.2.0
+
+## [0.2.0]
 
 ### Breaking
 
@@ -34,10 +36,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Scrolling could result in scrolling entirely past all the content. The inline scrolling of each individidual pane should now be much more robust.
+- Scrolling could result in scrolling entirely past all the content. The inline scrolling of each individual pane should now be much more robust.
 - Field::Text now renders on :new actions by default as expected.
 
-## 0.1.8
+
+## [0.1.8]
 
 ### Added
 
@@ -45,11 +48,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Uchi can now be mounted at a path other than /uchi. If you want it to live at fx. /admin, use the `at:` argument: `Uchi.routes.mount(self, at: :admin)`.
 - Inklings of a plugin-system. For now, it's for internal use only.
 
-
 ### Fixed
 
 - Allow UI to use the full height of the viewport to prevent clipping popovers and dialogs.
 - BelongsTo fields for polymorphic associations no longer cause an error on edit and new pages. Instead, they just don't show up. This isn't exactly optimal, but for now we don't have an automated way of actually figuring out what ActiveRecord class they are associated with.
+
 
 ## [0.1.7]
 
@@ -61,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - It is now possible to customize the JavaScript and stylesheet assets that Uchi loads.
 
 
-## [0.1.6]
+## 0.1.6
 
 ### Added
 
@@ -78,7 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dark mode now applies properly based on the user's system settings (ie when `prefers-color-scheme: dark` is set).
 
 
-## [0.1.5]
+## 0.1.5
 
 ### Added
 
@@ -96,7 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - BelongsTo dropdowns for optional associations now include a blank option.
 
 
-## [0.1.4]
+## 0.1.4
 
 ### Added
 
@@ -106,7 +109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Breadcrumb labels for links to index pages now use the title for the index page if that's been translated. You can still specify a more precise text in `repository.[name].breadcrumb.index.label`.
 
 
-## [0.1.3]
+## 0.1.3
 
 ### Added
 
@@ -119,3 +122,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - uchi:controller generator now generates proper controller names when name contains multiple words.
+
+[0.2.0]: https://www.uchiadmin.com/releases/0.2.0
+[0.1.8]: https://www.uchiadmin.com/releases/0.1.8
+[0.1.7]: https://www.uchiadmin.com/releases/0.1.7
