@@ -136,10 +136,10 @@ module Uchi
         URI.join(host, "/api/v1/gems")
       end
 
-      def form_data
+      def form_data(file:)
         [
           ["changelog", changelog.to_s],
-          ["gem", File.open(path, "rb"), {filename: File.basename(path), content_type: "application/octet-stream"}],
+          ["gem", file, {filename: File.basename(path), content_type: "application/octet-stream"}],
           ["version", version]
         ]
       end
@@ -149,10 +149,13 @@ module Uchi
         request["Accept"] = "text/plain"
         request["Authorization"] = token
         request["User-Agent"] = "uchi-release/#{version}"
-        request.set_form(form_data, "multipart/form-data")
 
-        Net::HTTP.start(endpoint.host, endpoint.port, use_ssl: endpoint.scheme == "https") do |http|
-          http.request(request)
+        File.open(path, "rb") do |file|
+          request.set_form(form_data(file: file), "multipart/form-data")
+
+          Net::HTTP.start(endpoint.host, endpoint.port, use_ssl: endpoint.scheme == "https") do |http|
+            http.request(request)
+          end
         end
       end
     end
