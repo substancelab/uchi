@@ -7,18 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Breaking
-
 ### Added
 
 - New `Field::HasMany#nested_fields` for inline editing of `has_many` associations using Rails nested attributes. Switches the field from selecting existing records to creating, editing, and deleting associated records directly within the parent form. Accepts Field instances (like `Repository#fields`), supporting String, Text, Number, Boolean, Date, and DateTime fields.
 - If your repositories are searchable, a Global Search link appears so you can search across all searchable models.
 - New records can now be added to `has_many` associations directly from the record show page.
 
+### Changed
+
+- Repositories are now always returned in the same order from `Uchi::Repository.all`.
+
+### Deprecated
+
+- for soon-to-be removed features.
+
+### Removed
+
+- for now removed features.
+
 ### Fixed
 
 - Index views were not scrollable on mobile viewports.
-- Repositories are now always returned in the same order from `Uchi::Repository.all`.
+
+### Security
+
+- in case of vulnerabilities.
 
 
 ## [0.2.0]
