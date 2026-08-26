@@ -7,7 +7,7 @@ module Uchi
     class << self
       # Returns all defined Uchi::Repository classes
       def all
-        Uchi::Repositories.constants.map { |const_name|
+        Uchi::Repositories.constants.sort.map { |const_name|
           Uchi::Repositories.const_get(const_name)
         }
       end
