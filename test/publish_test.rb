@@ -66,6 +66,97 @@ module Uchi
         refute subject.unreleased?(version: "0.2.1")
       end
 
+      test "entry_for finds a bracketed heading" do
+        subject = changelog(<<~MARKDOWN)
+          ## [0.1.7]
+
+          - Bracketed news
+        MARKDOWN
+
+        assert_equal "- Bracketed news", subject.entry_for(version: "0.1.7")
+        refute subject.unreleased?(version: "0.1.7")
+      end
+
+      test "entry_for finds a bracketed heading with a release date" do
+        subject = changelog(<<~MARKDOWN)
+          ## [0.1.7] - 2026-01-05
+
+          - Dated news
+        MARKDOWN
+
+        assert_equal "- Dated news", subject.entry_for(version: "0.1.7")
+      end
+
+      test "entry_for finds an unbracketed heading with a release date" do
+        subject = changelog(<<~MARKDOWN)
+          ## 0.1.7 - 2026-01-05
+
+          - Dated news
+        MARKDOWN
+
+        assert_equal "- Dated news", subject.entry_for(version: "0.1.7")
+      end
+
+      test "entry_for finds a linked heading" do
+        subject = changelog(<<~MARKDOWN)
+          ## [0.1.7](https://github.com/substancelab/uchi/releases/tag/v0.1.7) - 2026-01-05
+
+          - Linked news
+        MARKDOWN
+
+        assert_equal "- Linked news", subject.entry_for(version: "0.1.7")
+      end
+
+      test "entry_for prefers a bracketed version heading over the Unreleased section" do
+        subject = changelog(<<~MARKDOWN)
+          ## Unreleased
+
+          - Something upcoming
+
+          ## [0.1.7] - 2026-01-05
+
+          - The notes we actually want
+        MARKDOWN
+
+        assert_equal "- The notes we actually want", subject.entry_for(version: "0.1.7")
+        refute subject.unreleased?(version: "0.1.7")
+      end
+
+      test "entry_for falls back to a bracketed Unreleased heading" do
+        subject = changelog(<<~MARKDOWN)
+          ## [Unreleased]
+
+          - Something upcoming
+        MARKDOWN
+
+        assert_equal "- Something upcoming", subject.entry_for(version: "0.2.1")
+        assert subject.unreleased?(version: "0.2.1")
+      end
+
+      test "entry_for keeps a prerelease version intact" do
+        subject = changelog(<<~MARKDOWN)
+          ## [1.0.0-rc.1] - 2026-01-05
+
+          - Release candidate news
+        MARKDOWN
+
+        assert_equal "- Release candidate news", subject.entry_for(version: "1.0.0-rc.1")
+      end
+
+      test "entry_for prefers the first of two headings naming the same version" do
+        subject = changelog(<<~MARKDOWN)
+          ## [0.1.7] - 2026-01-05
+
+          - The newest notes
+
+          ## 0.1.7
+
+          - Stale duplicate
+        MARKDOWN
+
+        assert_equal "- The newest notes", subject.entry_for(version: "0.1.7")
+      end
+
       test "entry_for returns nil when the changelog does not exist" do
         subject = Changelog.new(path: File.join(Dir.mktmpdir, "nope.md"))
 

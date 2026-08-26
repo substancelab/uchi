@@ -28,6 +28,13 @@ module Uchi
       # no heading matches the version itself.
       UNRELEASED_HEADINGS = ["Unreleased", "Unversioned", "Next"].freeze
 
+      # Matches a Markdown link, so "[0.1.7](https://...)" reduces to "0.1.7".
+      LINKED_HEADING = /\A\[([^\]]*)\]\([^)]*\)/
+      # Matches the trailing release date in "0.1.7 - 2026-01-05". The
+      # surrounding whitespace is required so prereleases like "1.0.0-rc.1"
+      # survive intact.
+      TRAILING_DATE = /\s+[-\u2013\u2014]\s+.*\z/
+
       def initialize(path:)
         @path = path
       end
@@ -56,20 +63,36 @@ module Uchi
         @contents ||= File.exist?(path) ? File.read(path) : ""
       end
 
-      # Splits the changelog into a Hash of heading => body, for every level 2
-      # heading in the document.
+      # Reduces a heading to the version or label it names, so that
+      # "[0.1.7] - 2026-01-05", "[0.1.7](https://...)", "[0.1.7]" and "0.1.7"
+      # all look up as "0.1.7".
+      #
+      # Keep a Changelog brackets the version and appends the release date, but
+      # both are optional in the wild and our own changelog mixes the styles.
+      def key_for(heading)
+        heading
+          .sub(LINKED_HEADING, '\1')
+          .delete("[]")
+          .sub(TRAILING_DATE, "")
+          .strip
+          .downcase
+      end
+
+      # Splits the changelog into a Hash of version => body, for every level 2
+      # heading in the document. Where two headings name the same version the
+      # first one wins, since Keep a Changelog lists the newest first.
       def sections
         @sections ||= contents
           .split(/^## +/)
           .drop(1)
-          .to_h { |section|
+          .each_with_object({}) { |section, result|
             heading, _newline, body = section.partition("\n")
-            [heading.strip, body.strip]
+            result[key_for(heading)] ||= body.strip
           }
       end
 
       def section_for(heading:)
-        body = sections[heading]
+        body = sections[key_for(heading)]
         return nil if body.nil? || body.empty?
 
         body
