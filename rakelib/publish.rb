@@ -13,6 +13,7 @@ module Uchi
   module Publish
     # The gem server we push releases to.
     HOST = "https://gems.uchiadmin.com"
+    # HOST = "http://gems.uchiadmin.test" # For local development
 
     # Environment variables we look for an API token in, in order of
     # precedence.
