@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## Unreleased
 
 ### Added
 
@@ -64,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - It is now possible to customize the JavaScript and stylesheet assets that Uchi loads.
 
 
-## [0.1.6]
+## 0.1.6
 
 ### Added
 
@@ -81,7 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dark mode now applies properly based on the user's system settings (ie when `prefers-color-scheme: dark` is set).
 
 
-## [0.1.5]
+## 0.1.5
 
 ### Added
 
@@ -99,7 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - BelongsTo dropdowns for optional associations now include a blank option.
 
 
-## [0.1.4]
+## 0.1.4
 
 ### Added
 
@@ -109,7 +109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Breadcrumb labels for links to index pages now use the title for the index page if that's been translated. You can still specify a more precise text in `repository.[name].breadcrumb.index.label`.
 
 
-## [0.1.3]
+## 0.1.3
 
 ### Added
 
@@ -122,3 +122,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - uchi:controller generator now generates proper controller names when name contains multiple words.
+
+[0.2.0]: https://www.uchiadmin.com/releases/0.2.0
+[0.1.8]: https://www.uchiadmin.com/releases/0.1.8
+[0.1.7]: https://www.uchiadmin.com/releases/0.1.7
