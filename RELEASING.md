@@ -47,7 +47,7 @@ Useful sub-tasks:
 | --- | --- |
 | `rake build` | Build the gem into `pkg/` without releasing it |
 | `rake release:changelog` | Print the release notes that would be published |
-| `rake release:push` | Upload an already built gem, e.g. after a failed push |
+| `rake release:rubygem_push` | Upload an already built gem, e.g. after a failed push |
 
 The implementation lives in `rakelib/publish.rb` and `rakelib/publish.rake`,
 which are deliberately outside `lib/` so they are not shipped in the gem.

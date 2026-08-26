@@ -204,7 +204,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/substa
 
 After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, rename the `## Unreleased` heading in `CHANGELOG.md` to the new version, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file and its release notes to the Uchi Mothership at [gems.uchiadmin.com](https://gems.uchiadmin.com). Uchi is not published to rubygems.org. See [RELEASING.md](RELEASING.md) for the required API token and details.
 
 ## Principles
 
