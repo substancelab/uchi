@@ -199,7 +199,7 @@ module Uchi
       lambda_fields, plain_fields = searchable_fields.partition { |field| field.searchable.respond_to?(:call) }
 
       conditions = lambda_fields.map { |field| id_in(lambda_field_scope(query, field, search)) }
-      conditions << id_in(plain_field_scope(plain_fields, search)) unless plain_fields.empty?
+      conditions += plain_field_conditions(plain_fields, search)
 
       query.where(conditions.inject(:or))
     end
@@ -215,15 +215,14 @@ module Uchi
       field.searchable.call(base, search)
     end
 
-    def plain_field_scope(fields, search)
-      conditions = fields.map { |field|
+    def plain_field_conditions(fields, search)
+      fields.map { |field|
         arel_field = model.arel_table[field.name]
         Arel::Nodes::NamedFunction.new(
           "CAST",
           [arel_field.as(Arel::Nodes::SqlLiteral.new("VARCHAR"))]
         ).matches("%#{search}%")
       }
-      model.where(conditions.inject(:or))
     end
 
     def apply_sort_order(query, sort_order)
