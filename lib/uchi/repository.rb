@@ -198,18 +198,24 @@ module Uchi
       search = search.strip
       lambda_fields, plain_fields = searchable_fields.partition { |field| field.searchable.respond_to?(:call) }
 
-      ids = lambda_fields.flat_map { |field| lambda_field_ids(field, search) }
-      ids += plain_field_ids(plain_fields, search) unless plain_fields.empty?
+      conditions = lambda_fields.map { |field| id_in(lambda_field_scope(field, search)) }
+      conditions << id_in(plain_field_scope(plain_fields, search)) unless plain_fields.empty?
 
-      query.where(id: ids.uniq)
+      query.where(conditions.inject(:or))
     end
 
-    def lambda_field_ids(field, search)
+    # Wraps a scope in an `id IN (subquery)` Arel condition, so it can be
+    # combined with other search conditions without running its own query.
+    def id_in(scope)
+      model.arel_table[:id].in(scope.select(:id).arel)
+    end
+
+    def lambda_field_scope(field, search)
       base = model.reflect_on_association(field.name) ? model.joins(field.name) : model.all
-      field.searchable.call(base, search).pluck(:id)
+      field.searchable.call(base, search)
     end
 
-    def plain_field_ids(fields, search)
+    def plain_field_scope(fields, search)
       conditions = fields.map { |field|
         arel_field = model.arel_table[field.name]
         Arel::Nodes::NamedFunction.new(
@@ -217,7 +223,7 @@ module Uchi
           [arel_field.as(Arel::Nodes::SqlLiteral.new("VARCHAR"))]
         ).matches("%#{search}%")
       }
-      model.where(conditions.inject(:or)).pluck(:id)
+      model.where(conditions.inject(:or))
     end
 
     def apply_sort_order(query, sort_order)
