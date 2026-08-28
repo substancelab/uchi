@@ -198,7 +198,7 @@ module Uchi
       search = search.strip
       lambda_fields, plain_fields = searchable_fields.partition { |field| field.searchable.respond_to?(:call) }
 
-      conditions = lambda_fields.map { |field| id_in(lambda_field_scope(field, search)) }
+      conditions = lambda_fields.map { |field| id_in(lambda_field_scope(query, field, search)) }
       conditions << id_in(plain_field_scope(plain_fields, search)) unless plain_fields.empty?
 
       query.where(conditions.inject(:or))
@@ -210,8 +210,8 @@ module Uchi
       model.arel_table[:id].in(scope.select(:id).arel)
     end
 
-    def lambda_field_scope(field, search)
-      base = model.reflect_on_association(field.name) ? model.joins(field.name) : model.all
+    def lambda_field_scope(query, field, search)
+      base = model.reflect_on_association(field.name) ? query.joins(field.name) : query
       field.searchable.call(base, search)
     end
 

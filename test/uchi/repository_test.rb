@@ -139,6 +139,18 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_equal [alice], people
   end
 
+  test "#find_all applies a search query using a lambda field within the given scope" do
+    company = Company.create!(name: "Acme")
+    alice = Person.create!(name: "Alice")
+    bob = Person.create!(name: "Bob")
+    Role.create!(person: alice, company: company)
+    Role.create!(person: bob, company: company)
+
+    people = searchable_companies_person_repository.find_all(scope: Person.where(id: alice.id), search: "Acme")
+
+    assert_equal [alice], people
+  end
+
   test "#find_all combines results from lambda and plain searchable fields" do
     company = Company.create!(name: "Acme")
     alice = Person.create!(name: "Alice")
