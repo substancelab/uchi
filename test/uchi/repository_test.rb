@@ -117,6 +117,15 @@ class UchiRepositoryTest < ActiveSupport::TestCase
   # TODO: How to test this?
   # test "#find_all applies includes if given"
 
+  test "#find_all ignores a whitespace-only search query" do
+    alice = Author.create!(name: "Alice")
+    bob = Author.create!(name: "Bob")
+
+    authors = author_repository.find_all(search: "   ")
+
+    assert_equal [alice, bob], authors
+  end
+
   test "#find_all applies a search query if given" do
     alice = Author.create!(name: "Alice")
     _bob = Author.create!(name: "Bob")

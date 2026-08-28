@@ -192,10 +192,10 @@ module Uchi
     private
 
     def apply_search(query, search)
-      return query unless search.present?
+      search = search&.strip
+      return query if search.blank?
       return query if searchable_fields.empty?
 
-      search = search.strip
       lambda_fields, plain_fields = searchable_fields.partition { |field| field.searchable.respond_to?(:call) }
 
       conditions = lambda_fields.map { |field| id_in(lambda_field_scope(query, field, search)) }
