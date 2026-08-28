@@ -126,6 +126,32 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_equal [alice], authors
   end
 
+  test "#find_all applies a search query using a lambda field, joining the association automatically" do
+    company = Company.create!(name: "Acme")
+    other_company = Company.create!(name: "Widgets Inc")
+    alice = Person.create!(name: "Alice")
+    bob = Person.create!(name: "Bob")
+    Role.create!(person: alice, company: company)
+    Role.create!(person: bob, company: other_company)
+
+    people = searchable_companies_person_repository.find_all(search: "Acme")
+
+    assert_equal [alice], people
+  end
+
+  test "#find_all combines results from lambda and plain searchable fields" do
+    company = Company.create!(name: "Acme")
+    alice = Person.create!(name: "Alice")
+    bob = Person.create!(name: "Bob Acme")
+    carol = Person.create!(name: "Carol")
+    Role.create!(person: alice, company: company)
+
+    people = searchable_companies_person_repository.find_all(search: "Acme")
+
+    assert_equal [alice, bob].sort_by(&:id), people.sort_by(&:id)
+    assert_not_includes people, carol
+  end
+
   test "#find_all applies a sort order if given" do
     alice = Author.create!(name: "Alice")
     bob = Author.create!(name: "Bob")
@@ -253,6 +279,20 @@ class UchiRepositoryTest < ActiveSupport::TestCase
 
   def title_repository
     Uchi::Repositories::Title.new
+  end
+
+  def searchable_companies_person_repository
+    Class.new(Uchi::Repository) do
+      define_singleton_method(:model) { Person }
+      define_method(:fields) {
+        [
+          Uchi::Field::String.new(:name),
+          Uchi::Field::HasMany.new(:companies).searchable(lambda { |query, term|
+            query.where("companies.name LIKE ?", "%#{term}%")
+          })
+        ]
+      }
+    end.new
   end
 
   def habtm_author_repository

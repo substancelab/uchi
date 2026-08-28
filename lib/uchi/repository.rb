@@ -196,14 +196,28 @@ module Uchi
       return query if searchable_fields.empty?
 
       search = search.strip
-      conditions = searchable_fields.map { |field|
+      lambda_fields, plain_fields = searchable_fields.partition { |field| field.searchable.respond_to?(:call) }
+
+      ids = lambda_fields.flat_map { |field| lambda_field_ids(field, search) }
+      ids += plain_field_ids(plain_fields, search) unless plain_fields.empty?
+
+      query.where(id: ids.uniq)
+    end
+
+    def lambda_field_ids(field, search)
+      base = model.reflect_on_association(field.name) ? model.joins(field.name) : model.all
+      field.searchable.call(base, search).pluck(:id)
+    end
+
+    def plain_field_ids(fields, search)
+      conditions = fields.map { |field|
         arel_field = model.arel_table[field.name]
         Arel::Nodes::NamedFunction.new(
           "CAST",
           [arel_field.as(Arel::Nodes::SqlLiteral.new("VARCHAR"))]
         ).matches("%#{search}%")
       }
-      query.where(conditions.inject(:or))
+      model.where(conditions.inject(:or)).pluck(:id)
     end
 
     def apply_sort_order(query, sort_order)
