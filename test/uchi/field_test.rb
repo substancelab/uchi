@@ -48,6 +48,11 @@ class UchiFieldTest < ActiveSupport::TestCase
     assert_not field.searchable?
   end
 
+  test "#searchable? returns true when set to a lambda" do
+    field = Uchi::Field.new(:name).searchable(->(query, _term) { query })
+    assert field.searchable?
+  end
+
   test "#sortable? returns true by default" do
     assert @field.sortable?
   end

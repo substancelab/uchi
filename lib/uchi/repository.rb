@@ -192,18 +192,37 @@ module Uchi
     private
 
     def apply_search(query, search)
-      return query unless search.present?
+      search = search&.strip
+      return query if search.blank?
       return query if searchable_fields.empty?
 
-      search = search.strip
-      conditions = searchable_fields.map { |field|
+      lambda_fields, plain_fields = searchable_fields.partition { |field| field.searchable.respond_to?(:call) }
+
+      conditions = lambda_fields.map { |field| id_in(lambda_field_scope(query, field, search)) }
+      conditions += plain_field_conditions(plain_fields, search)
+
+      query.where(conditions.inject(:or))
+    end
+
+    # Wraps a scope in an `id IN (subquery)` Arel condition, so it can be
+    # combined with other search conditions without running its own query.
+    def id_in(scope)
+      model.arel_table[:id].in(scope.select(:id).arel)
+    end
+
+    def lambda_field_scope(query, field, search)
+      base = model.reflect_on_association(field.name) ? query.joins(field.name) : query
+      field.searchable.call(base, search)
+    end
+
+    def plain_field_conditions(fields, search)
+      fields.map { |field|
         arel_field = model.arel_table[field.name]
         Arel::Nodes::NamedFunction.new(
           "CAST",
           [arel_field.as(Arel::Nodes::SqlLiteral.new("VARCHAR"))]
         ).matches("%#{search}%")
       }
-      query.where(conditions.inject(:or))
     end
 
     def apply_sort_order(query, sort_order)

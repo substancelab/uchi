@@ -63,19 +63,26 @@ module Uchi
         self
       end
 
-      # Sets or gets whether this field is searchable.
+      # Sets or gets whether and how this field is searchable.
       #
       # When called with an argument, sets searchable and returns self for chaining.
-      # When called without arguments, returns whether the field is searchable.
+      # When called without arguments, returns the searchable value.
       #
-      # @param value [Boolean, nil] Whether the field is searchable in index views.
-      #   Defaults to false for most fields, except text-based fields.
-      # @return [self, Boolean] Returns self for method chaining when setting,
-      #   or boolean when getting
+      # @param value [Boolean, Proc, nil] Whether the field is searchable in index views.
+      #   Defaults to false for most fields, except text-based fields. Pass a lambda
+      #   that receives the query and search term and returns an ActiveRecord::Relation
+      #   to search across an association.
+      # @return [self, Boolean, Proc] Returns self for method chaining when setting,
+      #   or the searchable value when getting
       #
-      # @example Setting
+      # @example Setting with boolean
       #   Field::String.new(:password).searchable(false)
       #   Field::Number.new(:id).searchable(true)
+      #
+      # @example Setting with lambda
+      #   Field::BelongsTo.new(:company).searchable(lambda { |query, term|
+      #     query.where("companies.name LIKE ?", "%#{term}%")
+      #   })
       def searchable(value = Configuration::Unset)
         return @searchable if value == Configuration::Unset
 
