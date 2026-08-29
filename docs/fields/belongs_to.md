@@ -57,7 +57,7 @@ The lambda receives an `ActiveRecord::Relation` with all records returned from t
 
 ## How to change titles in the dropdown
 
-The dropdown displays the `title` of the record. For example, a `Person` repository may use the `name` attribute as its title. To customize the title for a record, implement `Repository#title`, see [repositories documentation](repositories/#customizing-the-title-of-a-record) for details.
+The dropdown displays the `title` of the record. For example, a `Person` repository may use the `name` attribute as its title. To customize the title for a record, implement `Repository#title`, see [repositories documentation](/repositories/#customizing-the-title-of-a-record) for details.
 
 ## BelongsTo field for polymorphic associations
 

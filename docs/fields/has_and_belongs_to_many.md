@@ -46,4 +46,4 @@ Associated records are listed in a scoped index table below the record's other f
 
 ## How to change titles in the checkbox list
 
-The checkbox list and show page display the `title` of each associated record. For example, a `Tag` repository may use the `name` attribute as its title. To customize the title for a record, implement `Repository#title`, see [repositories documentation](repositories/#customizing-the-title-of-a-record) for details.
+The checkbox list and show page display the `title` of each associated record. For example, a `Tag` repository may use the `name` attribute as its title. To customize the title for a record, implement `Repository#title`, see [repositories documentation](/repositories/#customizing-the-title-of-a-record) for details.
