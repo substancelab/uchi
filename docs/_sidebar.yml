@@ -50,10 +50,13 @@
             text: Fields
             icon: table
 
+        - search:
+            text: Search
+            icon: magnifying-glass
+
         - actions:
             text: Actions
             icon: lightning
-
 
 - customizations:
     text: Customizations
