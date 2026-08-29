@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [0.3.0]
 
 ### Added
 
@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - If your repositories are searchable, a Global Search link appears so you can search across all searchable models.
 - New records can now be added to `has_many` associations directly from the record show page.
 - Searchable can receive a lambda in order to modify the search query. This makes it possible to normalize the search term or even join associated tables into the query and search across those.
+- Documentation for each Field type currently supported.
 
 ### Changed
 
@@ -124,6 +125,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - uchi:controller generator now generates proper controller names when name contains multiple words.
 
+[0.2.0]: https://www.uchiadmin.com/releases/0.3.0
 [0.2.0]: https://www.uchiadmin.com/releases/0.2.0
 [0.1.8]: https://www.uchiadmin.com/releases/0.1.8
 [0.1.7]: https://www.uchiadmin.com/releases/0.1.7
