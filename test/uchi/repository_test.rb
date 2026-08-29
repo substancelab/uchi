@@ -135,7 +135,51 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_equal [alice], authors
   end
 
-  test "#find_all applies a search query using a lambda field, joining the association automatically" do
+  test "#find_all applies a search query using a lambda field on a plain attribute" do
+    alice = Author.create!(name: "Alice")
+    _bob = Author.create!(name: "Bob")
+    repository = Class.new(Uchi::Repository) do
+      define_singleton_method(:model) { Author }
+      define_method(:fields) {
+        [
+          Uchi::Field::String.new(:name).searchable(lambda { |query, term|
+            query.where("name LIKE ?", "%#{term}%")
+          })
+        ]
+      }
+    end.new
+
+    authors = repository.find_all(search: "IC")
+
+    assert_equal [alice], authors
+  end
+
+  test "#find_all combines results from two lambda fields on plain attributes via OR" do
+    alice = Author.create!(name: "Alice", biography: "Nothing relevant")
+    bob = Author.create!(name: "Someone else", biography: "Bob's story")
+    _carol = Author.create!(name: "Carol", biography: "Not mentioned")
+    repository = Class.new(Uchi::Repository) do
+      define_singleton_method(:model) { Author }
+      define_method(:fields) {
+        [
+          Uchi::Field::String.new(:name).searchable(lambda { |query, term|
+            query.where("name LIKE ?", "%#{term}%")
+          }),
+          Uchi::Field::Text.new(:biography).searchable(lambda { |query, term|
+            query.where("biography LIKE ?", "%#{term}%")
+          })
+        ]
+      }
+    end.new
+
+    authors = repository.find_all(search: "Alice")
+    assert_equal [alice], authors
+
+    authors = repository.find_all(search: "Bob")
+    assert_equal [bob], authors
+  end
+
+  test "#find_all applies a search query using a lambda field that joins an association" do
     company = Company.create!(name: "Acme")
     other_company = Company.create!(name: "Widgets Inc")
     alice = Person.create!(name: "Alice")
@@ -309,7 +353,7 @@ class UchiRepositoryTest < ActiveSupport::TestCase
         [
           Uchi::Field::String.new(:name),
           Uchi::Field::HasMany.new(:companies).searchable(lambda { |query, term|
-            query.where("companies.name LIKE ?", "%#{term}%")
+            query.joins(:companies).where("companies.name LIKE ?", "%#{term}%")
           })
         ]
       }
