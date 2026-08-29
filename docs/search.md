@@ -12,7 +12,7 @@ Global search is accessible via the search icon in the navigation. It searches a
 
 ## Disable search
 
-By default all text-based fields are considered searchable. To toggle searchability for a field use the `searchable` option:
+By default all text-based fields are considered searchable. To toggle searchability for a field use the `searchable` method:
 
 ```ruby
 Field::String.new(:password).searchable(false)
