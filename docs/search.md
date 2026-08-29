@@ -4,7 +4,7 @@ Uchi offers search across your repositories and fields out of the box.
 
 Search is configured on a field-by-field basis. If a repository contains at least one searchable `Field`, a search field appears on the index page, and a global search page is enabled.
 
-The search is fairly naive and is a bunch of `LIKE '%query%'` (`ILIKE` in PostgreSQL) clauses strung together by `OR`, but this can be modified by passing lambdas to `searchable` for the given field.
+The search is fairly naive and is a bunch of `LIKE '%term%'` (`ILIKE` in PostgreSQL) clauses strung together by `OR`, but this can be modified by passing lambdas to `searchable` for the given field.
 
 ## Global search
 
