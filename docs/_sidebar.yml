@@ -58,6 +58,52 @@
             text: Actions
             icon: lightning
 
+- fields:
+    text: Field types
+    icon: table
+    collapsed: false
+    group: true
+    items:
+        - fields/belongs_to:
+            text: Belongs To
+            icon: arrows-merge
+        - fields/boolean:
+            text: Boolean
+            icon: check-square
+        - fields/date:
+            text: Date
+            icon: calendar
+        - fields/date_time:
+            text: Date Time
+            icon: calendar-blank
+        - fields/file:
+            text: File
+            icon: file
+        - fields/has_and_belongs_to_many:
+            text: Has And Belongs To Many
+            icon: arrows-out
+        - fields/has_many:
+            text: Has Many
+            icon: arrows-split
+        - fields/id:
+            text: ID
+            icon: hash
+        - fields/image:
+            text: Image
+            icon: image
+        - fields/number:
+            text: Number
+            icon: hash-straight
+        - fields/select:
+            text: Select
+            icon: caret-down
+        - fields/string:
+            text: String
+            icon: textbox
+        - fields/text:
+            text: Text
+            icon: text-align-left
+
 - customizations:
     text: Customizations
     icon: paint-brush
