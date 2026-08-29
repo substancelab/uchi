@@ -66,7 +66,7 @@
     items:
         - fields/belongs_to:
             text: Belongs To
-            icon: arrows-out-cardinal
+            icon: arrows-merge
         - fields/boolean:
             text: Boolean
             icon: check-square
@@ -81,10 +81,10 @@
             icon: file
         - fields/has_and_belongs_to_many:
             text: Has And Belongs To Many
-            icon: arrows-in-cardinal
+            icon: arrows-out
         - fields/has_many:
             text: Has Many
-            icon: arrows-in-cardinal
+            icon: arrows-split
         - fields/id:
             text: ID
             icon: hash
@@ -99,7 +99,7 @@
             icon: caret-down
         - fields/string:
             text: String
-            icon: cursor-text
+            icon: textbox
         - fields/text:
             text: Text
             icon: text-align-left
