@@ -9,3 +9,9 @@
 ## Instructions for Claude
 
 - Make sure all code quality checks pass by running `bundle exec rake default`.
+
+## Documentation
+
+- Documentation is written in Markdown, stored in docs/.
+- We use Docyard to generate and serve the documentation.
+- Use `rake docs:serve` to start a local documentation server.
