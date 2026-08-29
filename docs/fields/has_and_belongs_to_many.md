@@ -2,6 +2,8 @@
 
 The `HasAndBelongsToMany` field wraps a `has_and_belongs_to_many` association on your model. By default it adds a list of associated records to the show page and on edit and new pages it renders a checkbox list of available records.
 
+![HasAndBelongsToMany field showing a checkbox list on an edit page](/fields/images/has_and_belongs_to_many_edit.png)
+
 ## How to add a HasAndBelongsToMany field
 
 To add the basic `HasAndBelongsToMany` field to a repository, return it as part of the `#fields` method:
@@ -35,6 +37,12 @@ Field::HasAndBelongsToMany.new(:tags)
     query.where(id: Current.user.tags)
   })
 ```
+
+## Show page
+
+Associated records are listed in a scoped index table below the record's other fields.
+
+![HasAndBelongsToMany field showing an associated list of tags on a show page](/fields/images/has_and_belongs_to_many_show.png)
 
 ## How to change titles in the checkbox list
 

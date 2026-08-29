@@ -1,8 +1,8 @@
 # `Field::BelongsTo`
 
-![BelongsTo field for a Person association filtered by "be" input](https://res.cloudinary.com/substancelab/image/upload/v1767091341/uchi/docs/v1.0/belongs_to/filtered_light.png)
-
 The `BelongsTo` association field wraps a `belongs_to` association on your model. By default it shows a link to the associated record on display pages and on edit and new pages it renders a searchable dropdown field.
+
+![BelongsTo field for a Person association filtered by "be" input](https://res.cloudinary.com/substancelab/image/upload/v1767091341/uchi/docs/v1.0/belongs_to/filtered_light.png)
 
 ## How to add a BelongsTo field
 

@@ -1,8 +1,8 @@
 # `Field::HasMany`
 
-![HasMany field for a Project association filtered by "bi" input](https://res.cloudinary.com/substancelab/image/upload/v1767108606/uchi/docs/v1.0/has_many/filtered_light.png)
-
 The `HasMany` association field wraps a `has_many` association on your model. By default it adds a list of associated records to the show page and on edit and new pages it renders a searchable dropdown field with checkboxes to select multiple options.
+
+![HasMany field for a Project association filtered by "bi" input](https://res.cloudinary.com/substancelab/image/upload/v1767108606/uchi/docs/v1.0/has_many/filtered_light.png)
 
 ## How to add a HasMany field
 

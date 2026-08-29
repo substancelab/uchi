@@ -1,6 +1,9 @@
 # `Field::Select`
 
+
 The `Select` field renders a dropdown letting users pick a value from a fixed set of options. On display pages it shows the label for the record's current value.
+
+![Select field showing a dropdown on an edit page](/fields/images/select_edit.png)
 
 Values are matched against option keys by their string representation, so e.g. a persisted string of `"fiction"` matches an option keyed by the symbol `:fiction` - the same way a `<select>` element matches its options against the persisted attribute value.
 
