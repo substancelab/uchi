@@ -81,7 +81,7 @@ module Uchi
       #
       # @example Setting with lambda
       #   Field::BelongsTo.new(:company).searchable(lambda { |query, term|
-      #     query.where("companies.name LIKE ?", "%#{term}%")
+      #     query.joins(:company).where("companies.name LIKE ?", "%#{term}%")
       #   })
       def searchable(value = Configuration::Unset)
         return @searchable if value == Configuration::Unset

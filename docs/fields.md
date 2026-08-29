@@ -80,11 +80,9 @@ The `searchable` lambda isn't limited to the field's own attributes — it can a
 
 ```ruby
 Field::BelongsTo.new(:company).searchable(lambda { |query, term|
-  query.where("companies.name LIKE ?", "%#{term}%")
+  query.joins(:company).where("companies.name LIKE ?", "%#{term}%")
 })
 ```
-
-If the field's name matches an association on the model, as is the case here, that association is already joined onto `query` for you.
 
 ## Sorting
 

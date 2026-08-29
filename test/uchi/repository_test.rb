@@ -179,7 +179,7 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_equal [bob], authors
   end
 
-  test "#find_all applies a search query using a lambda field, joining the association automatically" do
+  test "#find_all applies a search query using a lambda field that joins an association" do
     company = Company.create!(name: "Acme")
     other_company = Company.create!(name: "Widgets Inc")
     alice = Person.create!(name: "Alice")
@@ -353,7 +353,7 @@ class UchiRepositoryTest < ActiveSupport::TestCase
         [
           Uchi::Field::String.new(:name),
           Uchi::Field::HasMany.new(:companies).searchable(lambda { |query, term|
-            query.where("companies.name LIKE ?", "%#{term}%")
+            query.joins(:companies).where("companies.name LIKE ?", "%#{term}%")
           })
         ]
       }
