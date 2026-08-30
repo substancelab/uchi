@@ -31,6 +31,11 @@ module Uchi
       assert_template :index
     end
 
+    test "GET index renders no record actions since none are configured" do
+      get uchi_authors_url
+      assert_select "tr td a", count: 0
+    end
+
     test "GET new renders successfully" do
       get new_uchi_author_url
       assert_response :success

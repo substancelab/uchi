@@ -107,9 +107,9 @@
 
         <td class="px-6 py-4 text-right">
           <div class="flex justify-end space-x-2">
-            <%= show_action.index_render(record: record, repository: repository, view: view_context) %>
-
-            <%= edit_action.index_render(record: record, repository: repository, view: view_context) %>
+            <% actions.each do |action| %>
+              <%= action.index_render(record: record, repository: repository, view: view_context) %>
+            <% end %>
           </div>
         </td>
       </tr>

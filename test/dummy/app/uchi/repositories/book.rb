@@ -1,6 +1,13 @@
 module Uchi
   module Repositories
     class Book < Repository
+      def actions
+        [
+          Action::Show.new.on(:index),
+          Action::Edit.new.on([:index, :show])
+        ]
+      end
+
       def fields
         [
           Field::HasMany.new(:titles).nested_fields(

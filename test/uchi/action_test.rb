@@ -101,4 +101,27 @@ class UchiActionTest < ActiveSupport::TestCase
     assert response.success?
     assert_includes response.message_text, "Test"
   end
+
+  test "#on returns [:index, :show] by default" do
+    action = TestPublishAction.new
+
+    assert_equal [:index, :show], action.on
+  end
+
+  test "#on sets the contexts and returns self for chaining" do
+    action = TestPublishAction.new
+
+    result = action.on(:index)
+
+    assert_same action, result
+    assert_equal [:index], action.on
+  end
+
+  test "#on flattens array arguments" do
+    action = TestPublishAction.new
+
+    action.on([:index, :show])
+
+    assert_equal [:index, :show], action.on
+  end
 end

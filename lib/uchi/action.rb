@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "action/configuration"
+
 module Uchi
   # Base class for all Uchi actions.
   #
@@ -24,6 +26,8 @@ module Uchi
   #     end
   #   end
   class Action
+    include Configuration
+
     # @return [Uchi::Context] the context in which the action is performed
     attr_accessor :context
 
