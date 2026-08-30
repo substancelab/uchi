@@ -26,6 +26,12 @@ module Uchi
           class: "block p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
         )
       end
+
+      protected
+
+      def default_on
+        [Uchi::View::SHOW]
+      end
     end
   end
 end

@@ -32,6 +32,12 @@ module Uchi
           method: :delete
         )
       end
+
+      protected
+
+      def default_on
+        [Uchi::View::SHOW]
+      end
     end
   end
 end

@@ -101,4 +101,31 @@ class UchiActionTest < ActiveSupport::TestCase
     assert response.success?
     assert_includes response.message_text, "Test"
   end
+
+  test "#on returns [:show] by default" do
+    action = TestPublishAction.new
+
+    assert_equal [Uchi::View::SHOW], action.on
+  end
+
+  test "#on sets the contexts and returns self for chaining" do
+    action = TestPublishAction.new
+
+    result = action.on(:index)
+
+    assert_same action, result
+    assert_equal [Uchi::View::INDEX], action.on
+  end
+
+  test "#on flattens array arguments" do
+    action = TestPublishAction.new
+
+    action.on([Uchi::View::INDEX, Uchi::View::SHOW])
+
+    assert_equal [Uchi::View::INDEX, Uchi::View::SHOW], action.on
+  end
+
+  test "Delete is only visible on :show by default" do
+    assert_equal [Uchi::View::SHOW], Uchi::Action::Delete.new.on
+  end
 end
