@@ -150,6 +150,14 @@ module Uchi
       []
     end
 
+    # Returns the actions configured to appear in the given view.
+    #
+    # @param view [Uchi::View, Symbol] The view to get actions for.
+    # @return [Array<Uchi::Action>]
+    def actions_for(view)
+      actions.select { |action| action.on.include?(view) }
+    end
+
     def model
       self.class.model
     end

@@ -24,6 +24,24 @@ class TestRepositoryWithActions < Uchi::Repository
   end
 end
 
+# Test repository with actions configured for specific contexts
+class TestRepositoryWithScopedActions < Uchi::Repository
+  def self.model
+    Author
+  end
+
+  def fields
+    [Uchi::Field::String.new(:name)]
+  end
+
+  def actions
+    [
+      TestRepositoryAction.new.on(:index),
+      TestRepositoryAction.new.on(:show)
+    ]
+  end
+end
+
 class UchiRepositoryActionsTest < ActiveSupport::TestCase
   test "#actions returns empty array by default" do
     repository = Uchi::Repositories::Author.new
@@ -44,5 +62,14 @@ class UchiRepositoryActionsTest < ActiveSupport::TestCase
     repository.actions.each do |action|
       assert_kind_of Uchi::Action, action
     end
+  end
+
+  test "#actions_for returns only actions configured for the given context" do
+    repository = TestRepositoryWithScopedActions.new
+
+    assert_equal 1, repository.actions_for(:index).size
+    assert_equal 1, repository.actions_for(:show).size
+    assert_equal [Uchi::View::INDEX], repository.actions_for(:index).first.on
+    assert_equal [Uchi::View::SHOW], repository.actions_for(:show).first.on
   end
 end
