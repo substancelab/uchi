@@ -9,6 +9,7 @@
 ## Instructions for Claude
 
 - Make sure all code quality checks pass by running `bundle exec rake default`.
+- Don't interpolate strings into CSS class names; it prevents Tailwind from picking them up.
 
 ## Documentation
 

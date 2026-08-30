@@ -124,4 +124,22 @@ class UchiActionTest < ActiveSupport::TestCase
 
     assert_equal [:index, :show], action.on
   end
+
+  test "#icon returns the play icon from Flowbite Icons by default" do
+    action = TestPublishAction.new
+
+    icon = action.icon(ActionController::Base.helpers)
+
+    assert_includes icon, "M8 18V6l8 6-8 6Z"
+  end
+
+  test "#style returns :default by default" do
+    action = TestPublishAction.new
+
+    assert_equal :default, action.style
+  end
+
+  test "Delete's style is :danger" do
+    assert_equal :danger, Uchi::Action::Delete.new.style
+  end
 end

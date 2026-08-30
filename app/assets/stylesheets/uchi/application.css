@@ -1321,17 +1321,17 @@
       }
     }
   }
-  .hover\:text-blue-600 {
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-blue-600);
-      }
-    }
-  }
   .hover\:text-fg-brand {
     &:hover {
       @media (hover: hover) {
         color: var(--color-fg-brand);
+      }
+    }
+  }
+  .hover\:text-fg-danger {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-fg-danger);
       }
     }
   }
@@ -1613,15 +1613,6 @@
   .dark\:text-red-500 {
     @media (prefers-color-scheme: dark) {
       color: var(--color-red-500);
-    }
-  }
-  .hover\:dark\:text-blue-500 {
-    &:hover {
-      @media (hover: hover) {
-        @media (prefers-color-scheme: dark) {
-          color: var(--color-blue-500);
-        }
-      }
     }
   }
 }

@@ -4,7 +4,8 @@ module Uchi
       def actions
         [
           Action::Show.new.on(:index),
-          Action::Edit.new.on([:index, :show])
+          Action::Edit.new.on([:index, :show]),
+          Action::Delete.new.on(:show)
         ]
       end
 
