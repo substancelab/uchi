@@ -87,6 +87,21 @@ module Uchi
       end
     end
 
+    # Returns the HTML necessary for executing the action, for use in a
+    # records table row (see Uchi::Ui::Index::RecordsTable).
+    #
+    # Defaults to the same rendering as #render. Override this method to
+    # render the action differently in a table row, e.g. as an icon-only
+    # link (see Uchi::Action::Edit).
+    #
+    # @param record [Object] - The record the action would apply to
+    # @param repository [Uchi::Repository] - The repository the record belongs to
+    # @param view [ActionView::Base] - The view context for rendering
+    # @return [String] HTML for executing the action
+    def index_render(record:, repository:, view:)
+      render(record: record, repository: repository, view: view)
+    end
+
     # Returns true if this action requires input fields.
     #
     # @return [Boolean]
