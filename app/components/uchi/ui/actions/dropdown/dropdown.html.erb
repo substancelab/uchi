@@ -42,16 +42,7 @@
     >
       <% actions.each do |action| %>
         <li role="menuitem">
-          <%= form_with url: helpers.uchi.actions_executions_path, method: :post, class: "block" do %>
-            <%= hidden_field_tag :model, repository.model.name %>
-            <%= hidden_field_tag :action_name, action.class.name %>
-            <%= hidden_field_tag :id, record.id %>
-
-            <%= button_tag type: "submit",
-                          class: "block inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" do %>
-              <%= action.name %>
-            <% end %>
-          <% end %>
+          <%= action.render(record: record, repository: repository, view: self.view_context) %>
         </li>
       <% end %>
     </ul>

@@ -59,6 +59,34 @@ module Uchi
       raise NotImplementedError, "#{self.class}#perform must be implemented"
     end
 
+    # Returns the HTML necessary for executing the action.
+    #
+    # By default, actions are rendered as a button that, when clicked, submits
+    # a POST request to execute the action (see #perform). Override this
+    # method to render the action differently, e.g. as a plain link (see
+    # Uchi::Action::Edit).
+    #
+    # @param record [Object] - The record the action would apply to
+    # @param repository [Uchi::Repository] - The repository the record belongs to
+    # @param view [ActionView::Base] - The view context for rendering
+    # @return [String] HTML for executing the action
+    def render(record:, repository:, view:)
+      view.form_with(url: view.uchi.actions_executions_path, method: :post, class: "block") do
+        view.safe_join([
+          view.hidden_field_tag(:model, repository.model.name),
+          view.hidden_field_tag(:action_name, self.class.name),
+          view.hidden_field_tag(:id, record.id),
+
+          view.button_tag(
+            type: "submit",
+            class: "block inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+          ) do
+            name
+          end
+        ])
+      end
+    end
+
     # Returns true if this action requires input fields.
     #
     # @return [Boolean]
