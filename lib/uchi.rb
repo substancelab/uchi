@@ -9,6 +9,7 @@ require "uchi/engine"
 
 require "uchi/action_response"
 require "uchi/action"
+require "uchi/action/delete"
 require "uchi/action/edit"
 require "uchi/context"
 require "uchi/field"
