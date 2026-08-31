@@ -52,7 +52,7 @@ $ bundle install
 
 On [GitHub Actions](https://docs.github.com/en/actions) you can add environment variables to your workflows fairly easily. However, you should treat your private gem server token as a secret, and therefore not expose it publicly. So for this we want to use GitHub Secrets.
 
-1. Under your projects "Settings" in GitHub, go to "Secrets and variables" > "Actions" in the menu.
+1. Under your project's "Settings" in GitHub, go to "Secrets and variables" > "Actions" in the menu.
 2. Add a "New repository secret"
 3. Use `BUNDLE_GEMS__UCHIADMIN__COM` as the name of the secret and paste your gem server token into the secret.
 4. Click "Add secret"
