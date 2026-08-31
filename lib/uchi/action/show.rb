@@ -30,6 +30,19 @@ module Uchi
         )
       end
 
+      # Renders as a primary button-styled link to the show page, for use
+      # when this is the only action available.
+      def button_render(record:, repository:, view:)
+        view.link_to(
+          name,
+          repository.routes.path_for(:show, id: record.id),
+          class: Uchi::Flowbite::Button.classes(style: style),
+          data: {
+            "turbo-frame": "_top"
+          }
+        )
+      end
+
       # Renders as an icon-only link to the show page, for use in a records
       # table row.
       def row_render(record:, repository:, view:)

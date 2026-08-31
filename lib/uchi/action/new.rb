@@ -28,6 +28,19 @@ module Uchi
         )
       end
 
+      # Renders as a primary button-styled link to the new-record page, for
+      # use when this is the only action available.
+      def button_render(record:, repository:, view:)
+        view.link_to(
+          name,
+          repository.routes.path_for(:new),
+          class: Uchi::Flowbite::Button.classes(style: style),
+          data: {
+            "turbo-frame": "_top"
+          }
+        )
+      end
+
       protected
 
       def default_on

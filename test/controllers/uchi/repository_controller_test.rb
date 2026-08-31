@@ -52,7 +52,7 @@ module Uchi
       assert_select "tr td a[data-turbo-frame='_top'][href=?]", edit_uchi_book_path(id: @book.id)
     end
 
-    test "GET index links to the new page from the index actions dropdown" do
+    test "GET index links to the new page from the index actions" do
       get uchi_books_url
 
       assert_select "a[data-turbo-frame='_top'][href=?]", new_uchi_book_path

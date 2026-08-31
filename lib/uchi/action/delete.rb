@@ -32,6 +32,20 @@ module Uchi
         )
       end
 
+      # Renders as a primary (danger-styled) button, for use when this is
+      # the only action available.
+      def button_render(record:, repository:, view:)
+        view.button_to(
+          repository.translate.link_to_destroy(record),
+          repository.routes.path_for(:destroy, id: record.id),
+          class: Uchi::Flowbite::Button.classes(style: style),
+          data: {
+            "turbo-confirm": repository.translate.destroy_dialog_title(record)
+          },
+          method: :delete
+        )
+      end
+
       def row_render(record:, repository:, view:)
         view.button_to(
           icon(view),

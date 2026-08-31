@@ -100,6 +100,32 @@ module Uchi
       end
     end
 
+    # Returns the HTML necessary for executing the action, styled as a
+    # standalone primary button/link, for use when it's the only action
+    # available (see Uchi::Ui::Actions::Dropdown).
+    #
+    # By default, this looks like #render but styled with the Flowbite
+    # button classes matching #style, instead of the menu item styling used
+    # when this action appears alongside others in a dropdown. Override
+    # this method to render the action differently, e.g. as a plain link
+    # (see Uchi::Action::Edit).
+    #
+    # @param record [Object] - The record the action would apply to
+    # @param repository [Uchi::Repository] - The repository the record belongs to
+    # @param view [ActionView::Base] - The view context for rendering
+    # @return [String] HTML for executing the action
+    def button_render(record:, repository:, view:)
+      view.form_with(url: view.actions_executions_path, method: :post, class: "inline-block") do
+        view.safe_join([
+          view.hidden_field_tag(:model, repository.model.name),
+          view.hidden_field_tag(:action_name, self.class.name),
+          view.hidden_field_tag(:id, record.id),
+
+          view.button_tag(name, type: "submit", class: Uchi::Flowbite::Button.classes(style: style))
+        ])
+      end
+    end
+
     # Returns the HTML necessary for executing the action, for use in a records
     # table row (see Uchi::Ui::Index::RecordsTable).
     #
