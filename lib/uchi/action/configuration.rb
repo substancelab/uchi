@@ -14,15 +14,15 @@ module Uchi
       # When called without arguments, returns the current contexts.
       #
       # @param contexts [Array<Symbol>] The contexts where this action should appear
-      #   (e.g., :index, :show)
+      #   (e.g., :row, :show)
       # @return [self, Array<Symbol>] Returns self for method chaining when setting,
       #   or the contexts array when getting
       #
       # @example Setting
-      #   Uchi::Action::Edit.new.on(:index, :show)
+      #   Uchi::Action::Edit.new.on(:row, :show)
       #
       # @example Getting
-      #   action.on # => [:index, :show]
+      #   action.on # => [:row, :show]
       def on(*contexts)
         return @on if contexts.empty?
 
@@ -33,7 +33,7 @@ module Uchi
       protected
 
       def default_on
-        [:index, :show]
+        [:row, :show]
       end
     end
   end

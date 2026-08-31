@@ -102,27 +102,27 @@ class UchiActionTest < ActiveSupport::TestCase
     assert_includes response.message_text, "Test"
   end
 
-  test "#on returns [:index, :show] by default" do
+  test "#on returns [:row, :show] by default" do
     action = TestPublishAction.new
 
-    assert_equal [:index, :show], action.on
+    assert_equal [:row, :show], action.on
   end
 
   test "#on sets the contexts and returns self for chaining" do
     action = TestPublishAction.new
 
-    result = action.on(:index)
+    result = action.on(:row)
 
     assert_same action, result
-    assert_equal [:index], action.on
+    assert_equal [:row], action.on
   end
 
   test "#on flattens array arguments" do
     action = TestPublishAction.new
 
-    action.on([:index, :show])
+    action.on([:row, :show])
 
-    assert_equal [:index, :show], action.on
+    assert_equal [:row, :show], action.on
   end
 
   test "#icon returns the play icon from Flowbite Icons by default" do
@@ -143,15 +143,15 @@ class UchiActionTest < ActiveSupport::TestCase
     assert_equal :danger, Uchi::Action::Delete.new.style
   end
 
-  test "Edit is visible on :index and :show by default" do
-    assert_equal [:index, :show], Uchi::Action::Edit.new.on
+  test "Edit is visible on :row and :show by default" do
+    assert_equal [:row, :show], Uchi::Action::Edit.new.on
   end
 
-  test "Show is only visible on :index by default" do
-    assert_equal [:index], Uchi::Action::Show.new.on
+  test "Show is only visible on :row by default" do
+    assert_equal [:row], Uchi::Action::Show.new.on
   end
 
-  test "Delete is only visible on :index by default" do
-    assert_equal [:index], Uchi::Action::Delete.new.on
+  test "Delete is only visible on :row by default" do
+    assert_equal [:row], Uchi::Action::Delete.new.on
   end
 end

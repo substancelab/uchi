@@ -32,7 +32,7 @@ module Uchi
         )
       end
 
-      def index_render(record:, repository:, view:)
+      def row_render(record:, repository:, view:)
         view.button_to(
           icon(view),
           repository.routes.path_for(:destroy, id: record.id),
@@ -68,7 +68,7 @@ module Uchi
       protected
 
       def default_on
-        [:index]
+        [:row]
       end
     end
   end

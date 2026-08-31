@@ -32,7 +32,7 @@ module Uchi
 
       # Renders as an icon-only link to the edit page, for use in a records
       # table row.
-      def index_render(record:, repository:, view:)
+      def row_render(record:, repository:, view:)
         view.link_to(
           repository.routes.path_for(:edit, id: record.id),
           class: icon_classes,

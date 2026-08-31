@@ -3,8 +3,8 @@ module Uchi
     class Book < Repository
       def actions
         [
-          Action::Show.new.on(:index),
-          Action::Edit.new.on([:index, :show]),
+          Action::Show.new.on(:row),
+          Action::Edit.new.on([:row, :show]),
           Action::Delete.new.on(:show)
         ]
       end

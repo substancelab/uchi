@@ -21,7 +21,7 @@ module Uchi
         end
 
         def actions
-          repository.actions_for(:index)
+          repository.actions_for(:row)
         end
       end
     end

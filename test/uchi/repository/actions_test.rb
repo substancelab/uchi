@@ -36,7 +36,7 @@ class TestRepositoryWithScopedActions < Uchi::Repository
 
   def actions
     [
-      TestRepositoryAction.new.on(:index),
+      TestRepositoryAction.new.on(:row),
       TestRepositoryAction.new.on(:show)
     ]
   end
@@ -67,9 +67,9 @@ class UchiRepositoryActionsTest < ActiveSupport::TestCase
   test "#actions_for returns only actions configured for the given context" do
     repository = TestRepositoryWithScopedActions.new
 
-    assert_equal 1, repository.actions_for(:index).size
+    assert_equal 1, repository.actions_for(:row).size
     assert_equal 1, repository.actions_for(:show).size
-    assert_equal [:index], repository.actions_for(:index).first.on
+    assert_equal [:row], repository.actions_for(:row).first.on
     assert_equal [:show], repository.actions_for(:show).first.on
   end
 end

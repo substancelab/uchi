@@ -32,7 +32,7 @@ module Uchi
 
       # Renders as an icon-only link to the show page, for use in a records
       # table row.
-      def index_render(record:, repository:, view:)
+      def row_render(record:, repository:, view:)
         view.link_to(
           repository.routes.path_for(:show, id: record.id),
           class: icon_classes,
@@ -73,7 +73,7 @@ module Uchi
       protected
 
       def default_on
-        [:index]
+        [:row]
       end
     end
   end

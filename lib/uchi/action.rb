@@ -103,7 +103,7 @@ module Uchi
     # Returns the HTML necessary for executing the action, for use in a records
     # table row (see Uchi::Ui::Index::RecordsTable).
     #
-    # By default, actions on the index page are rendered as an icon-only button
+    # By default, actions in a table row are rendered as an icon-only button
     # that, when clicked, submits a POST request to execute the action (see
     # #perform), using #icon for its appearance. Override this method to render
     # the action differently in a table row, e.g. as a link (see
@@ -113,7 +113,7 @@ module Uchi
     # @param repository [Uchi::Repository] - The repository the record belongs to
     # @param view [ActionView::Base] - The view context for rendering
     # @return [String] HTML for executing the action
-    def index_render(record:, repository:, view:)
+    def row_render(record:, repository:, view:)
       view.form_with(url: view.actions_executions_path, method: :post, class: "inline-block") do
         view.safe_join([
           view.hidden_field_tag(:model, repository.model.name),
@@ -132,7 +132,7 @@ module Uchi
     end
 
     # Returns the icon to display for this action in icon-only contexts
-    # (see #index_render).
+    # (see #row_render).
     #
     # Defaults to the "play" icon from Flowbite Icons
     # (https://flowbite.com/icons/). Override to use a different icon, e.g.

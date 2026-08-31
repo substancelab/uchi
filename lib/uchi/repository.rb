@@ -152,7 +152,7 @@ module Uchi
 
     # Returns the actions configured to appear in the given context.
     #
-    # @param context [Symbol] The context to get actions for. One of :index, :show.
+    # @param context [Symbol] The context to get actions for. One of :row, :show.
     # @return [Array<Uchi::Action>]
     def actions_for(context)
       actions.select { |action| action.on.include?(context) }
