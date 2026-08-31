@@ -2,6 +2,7 @@
 
 require_relative "../lib/uchi/version"
 require_relative "publish"
+require_relative "verify_release"
 
 CHANGELOG_PATH = File.expand_path("../CHANGELOG.md", __dir__)
 
@@ -32,6 +33,12 @@ Rake::Task["release:rubygem_push"].clear
 # against the Mothership.
 Rake::Task["release"].prerequisites.unshift("release:guard_token")
 
+# Fail before tagging and pushing to git if the dummy app doesn't actually
+# work against the gem we just built (see verify_release.rb for why this
+# can differ from "the test suite passed").
+build_index = Rake::Task["release"].prerequisites.index("build")
+Rake::Task["release"].prerequisites.insert(build_index + 1, "release:verify_dummy_app")
+
 namespace :release do
   desc "Show the release notes that will be published with #{Uchi::VERSION}"
   task :changelog do
@@ -42,6 +49,17 @@ namespace :release do
   task :guard_token do
     Uchi::Publish.token
   rescue Uchi::Publish::Error => error
+    abort error.message
+  end
+
+  desc "Verify the dummy app works against the gem as built, not just this checkout"
+  task :verify_dummy_app do
+    unless File.exist?(built_gem_path)
+      abort "#{built_gem_path} does not exist. Run `rake build` first."
+    end
+
+    Uchi::Release::DummyAppVerifier.new(gem_path: built_gem_path).verify!
+  rescue Uchi::Release::Error => error
     abort error.message
   end
 
