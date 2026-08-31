@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The built release is now verified against our test application before pushing it to the gem server.
 
+### Fixed
+
+- A bunch of internal routes were missing from the released gem causing errors like `NoMethodError (undefined method 'has_many_associated_records_path' for an instance of ActionDispatch::Routing::RoutesProxy)`. This release adds them back in.
+
 
 ## [0.3.0]
 
