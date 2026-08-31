@@ -1,50 +1,54 @@
-<div class="relative" data-controller="dropdown">
-  <%= render(Uchi::Flowbite::Button.new(style: :secondary, :data => {:action => "dropdown#toggle click@window->dropdown#hide"}, id: button_id)) do %>
-    <div class="inline-flex items-center">
-      <%= repository.translate.actions_button_label %>
+<% if actions.one? %>
+  <%= actions.first.button_render(record: record, repository: repository, view: self.view_context) %>
+<% else %>
+  <div class="relative" data-controller="dropdown">
+    <%= render(Uchi::Flowbite::Button.new(style: :secondary, :data => {:action => "dropdown#toggle click@window->dropdown#hide"}, id: button_id)) do %>
+      <div class="inline-flex items-center">
+        <%= repository.translate.actions_button_label %>
 
-      <svg
-        aria-hidden="true"
-        class="w-4 h-4 ms-1.5 -me-0.5"
-        fill="none"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="m19 9-7 7-7-7"
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-        />
-      </svg>
-    </div>
-  <% end %>
+        <svg
+          aria-hidden="true"
+          class="w-4 h-4 ms-1.5 -me-0.5"
+          fill="none"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="m19 9-7 7-7-7"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          />
+        </svg>
+      </div>
+    <% end %>
 
-  <!-- Dropdown menu -->
-  <div
-    aria-hidden="true"
-    aria-orientation="vertical"
-    class="
-      transition transform origin-top-right absolute z-10 hidden bg-neutral-primary-medium border border-default-medium
-      rounded-base shadow-lg w-44 mt-1 -ml-1/2
-    "
-    data-dropdown-target="menu"
-    id="actions-dropdown-<%= record_id %>"
-    role="menu"
-    tabindex="-1"
-  >
-    <ul
-      aria-labelledby="<%= button_id %>"
-      class="p-2 text-sm text-body font-medium"
+    <!-- Dropdown menu -->
+    <div
+      aria-hidden="true"
+      aria-orientation="vertical"
+      class="
+        transition transform origin-top-right absolute z-10 hidden bg-neutral-primary-medium border border-default-medium
+        rounded-base shadow-lg w-44 mt-1 -ml-1/2
+      "
+      data-dropdown-target="menu"
+      id="<%= dropdown_id %>"
+      role="menu"
+      tabindex="-1"
     >
-      <% actions.each do |action| %>
-        <li role="menuitem">
-          <%= action.render(record: record, repository: repository, view: self.view_context) %>
-        </li>
-      <% end %>
-    </ul>
+      <ul
+        aria-labelledby="<%= button_id %>"
+        class="p-2 text-sm text-body font-medium"
+      >
+        <% actions.each do |action| %>
+          <li role="menuitem">
+            <%= action.render(record: record, repository: repository, view: self.view_context) %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   </div>
-</div>
+<% end %>

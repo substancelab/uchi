@@ -7,12 +7,14 @@ module Uchi
       #
       # This component displays available actions for a repository in a dropdown
       # menu. Each action can be clicked to execute it on the specified record(s).
+      # When there's only a single action, it's rendered directly instead of
+      # being wrapped in a dropdown.
       class Dropdown < ViewComponent::Base
         include Uchi::RoutesHelper
 
         attr_reader :actions, :record, :repository
 
-        def initialize(actions:, record:, repository:)
+        def initialize(actions:, repository:, record: nil)
           super()
           @actions = actions
           @record = record
@@ -27,6 +29,10 @@ module Uchi
 
         def button_id
           "actions-dropdown-button-#{record_id}"
+        end
+
+        def dropdown_id
+          "actions-dropdown-#{record_id}"
         end
 
         def record_id
