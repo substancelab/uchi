@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
-require "fileutils"
 require "rubygems/package"
 require "tmpdir"
+
+# Gem::Package#extract_files shells out to FileUtils.mkdir_p internally
+# without requiring it itself, so this is needed even though nothing below
+# calls FileUtils directly.
+require "fileutils"
 
 module Uchi
   # Development-only support code for verifying a release before it goes
