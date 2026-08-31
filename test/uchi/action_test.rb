@@ -142,4 +142,16 @@ class UchiActionTest < ActiveSupport::TestCase
   test "Delete's style is :danger" do
     assert_equal :danger, Uchi::Action::Delete.new.style
   end
+
+  test "Edit is visible on :index and :show by default" do
+    assert_equal [:index, :show], Uchi::Action::Edit.new.on
+  end
+
+  test "Show is only visible on :index by default" do
+    assert_equal [:index], Uchi::Action::Show.new.on
+  end
+
+  test "Delete is only visible on :index by default" do
+    assert_equal [:index], Uchi::Action::Delete.new.on
+  end
 end

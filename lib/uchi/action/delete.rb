@@ -64,6 +64,12 @@ module Uchi
           )
         end
       end
+
+      protected
+
+      def default_on
+        [:index]
+      end
     end
   end
 end
