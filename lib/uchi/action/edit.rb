@@ -6,6 +6,19 @@ module Uchi
   class Action
     # Redirects to the edit page for a record.
     class Edit < Action
+      # Renders a button to trigger the action, linking to the edit page, for
+      # use when this is the only action available.
+      def button_render(record:, repository:, view:)
+        view.link_to(
+          name,
+          repository.routes.path_for(:edit, id: record.id),
+          class: Uchi::Flowbite::Button.classes(style: style),
+          data: {
+            "turbo-frame": "_top"
+          }
+        )
+      end
+
       def perform(records, input = {})
         # Theoretically, this action should never use its #perform method since
         # it renders a link directly to the edit page without even executing the

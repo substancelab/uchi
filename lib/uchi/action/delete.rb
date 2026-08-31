@@ -6,6 +6,20 @@ module Uchi
   class Action
     # Destroys the given records.
     class Delete < Action
+      # Renders as a primary (danger-styled) button, for use when this is
+      # the only action available.
+      def button_render(record:, repository:, view:)
+        view.button_to(
+          repository.translate.link_to_destroy(record),
+          repository.routes.path_for(:destroy, id: record.id),
+          class: Uchi::Flowbite::Button.classes(style: style),
+          data: {
+            "turbo-confirm": repository.translate.destroy_dialog_title(record)
+          },
+          method: :delete
+        )
+      end
+
       def perform(records, input = {})
         destroyed = records.map { |record| record.destroy }
 
@@ -31,6 +45,10 @@ module Uchi
           },
           method: :delete
         )
+      end
+
+      def style
+        :danger
       end
 
       protected
