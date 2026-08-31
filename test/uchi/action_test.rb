@@ -154,4 +154,8 @@ class UchiActionTest < ActiveSupport::TestCase
   test "Delete is only visible on :row by default" do
     assert_equal [:row], Uchi::Action::Delete.new.on
   end
+
+  test "New is only visible on :index by default" do
+    assert_equal [:index], Uchi::Action::New.new.on
+  end
 end

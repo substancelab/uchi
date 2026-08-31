@@ -10,7 +10,7 @@ module Uchi
       class Dropdown < ViewComponent::Base
         attr_reader :actions, :record, :repository
 
-        def initialize(actions:, record:, repository:)
+        def initialize(actions:, repository:, record: nil)
           super()
           @actions = actions
           @record = record
@@ -24,7 +24,17 @@ module Uchi
         private
 
         def button_id
-          "actions-dropdown-button-#{record.id}"
+          [
+            "actions-dropdown-button",
+            record&.id
+          ].compact.join("-")
+        end
+
+        def dropdown_id
+          [
+            "actions-dropdown",
+            record&.id
+          ].compact.join("-")
         end
       end
     end

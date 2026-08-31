@@ -72,4 +72,11 @@ class UchiRepositoryActionsTest < ActiveSupport::TestCase
     assert_equal [:row], repository.actions_for(:row).first.on
     assert_equal [:show], repository.actions_for(:show).first.on
   end
+
+  test "#index_actions returns a New action by default" do
+    repository = Uchi::Repositories::Author.new
+
+    assert_equal 1, repository.index_actions.size
+    assert_instance_of Uchi::Action::New, repository.index_actions.first
+  end
 end

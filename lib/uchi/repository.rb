@@ -152,10 +152,21 @@ module Uchi
 
     # Returns the actions configured to appear in the given context.
     #
-    # @param context [Symbol] The context to get actions for. One of :row, :show.
+    # @param context [Symbol] The context to get actions for. One of :index, :row, :show.
     # @return [Array<Uchi::Action>]
     def actions_for(context)
       actions.select { |action| action.on.include?(context) }
+    end
+
+    # Returns the actions available in the index page's header, e.g. a "New"
+    # button.
+    #
+    # Unlike #actions, these aren't executed on a specific record, so they
+    # aren't filtered through #actions_for.
+    #
+    # @return [Array<Uchi::Action>]
+    def index_actions
+      [Action::New.new]
     end
 
     def model

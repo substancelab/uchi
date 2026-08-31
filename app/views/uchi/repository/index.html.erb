@@ -5,8 +5,13 @@
     description: @repository.translate.description(:index),
     title: @repository.translate.title_for_index,
   )) do |header| %>
-  <% header.with_action do %>
-    <%= link_to(@repository.translate.link_to_new, @repository.routes.path_for(:new), class: Uchi::Flowbite::Button.classes) %>
+  <% if @repository.index_actions.any? %>
+    <% header.with_action do %>
+      <%= render(Uchi::Ui::Actions::Dropdown.new(
+        actions: @repository.index_actions,
+        repository: @repository
+      )) %>
+    <% end %>
   <% end %>
 
   <% header.with_breadcrumb(items: [
