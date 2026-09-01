@@ -221,6 +221,25 @@ module Uchi
         )
       end
 
+      def link_to_show(record)
+        first_present_value(
+          translate(
+            "link_to_show",
+            default: nil,
+            model: singular_name,
+            record: repository.title(record),
+            scope: i18n_scope("button")
+          ),
+          translate(
+            "common.show",
+            default: nil,
+            model: singular_name,
+            record: repository.title(record)
+          ),
+          "Show"
+        )
+      end
+
       def loading_message
         translate("loading", default: "Loading...", scope: "uchi.repository.common")
       end

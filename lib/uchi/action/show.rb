@@ -21,7 +21,7 @@ module Uchi
       # executes the action via a POST request.
       def render(record:, repository:, view:)
         view.link_to(
-          name,
+          repository.translate.link_to_show(record),
           repository.routes.path_for(:show, id: record.id),
           class: "block p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded",
           data: {
@@ -34,7 +34,7 @@ module Uchi
       # when this is the only action available.
       def button_render(record:, repository:, view:)
         view.link_to(
-          name,
+          repository.translate.link_to_show(record),
           repository.routes.path_for(:show, id: record.id),
           class: Uchi::Flowbite::Button.classes(style: style),
           data: {

@@ -206,6 +206,24 @@ class UchiRepositoryTranslateTest < ActiveSupport::TestCase
     assert_equal "Edit", result
   end
 
+  test "#link_to_show falls back to common.show when .button.link_to_show isn't present" do
+    record = Title.new
+    I18n.with_locale(:da) do
+      I18n.backend.store_translations(:da, uchi: {common: {show: "Vis"}})
+      repository = Uchi::Repositories::Title.new
+      result = repository.translate.link_to_show(record)
+      assert_equal "Vis", result
+    end
+  ensure
+    I18n.backend.reload!
+  end
+
+  test "#link_to_show falls back to Show" do
+    author = Author.new(name: "Test Author")
+    result = @translate.link_to_show(author)
+    assert_equal "Show", result
+  end
+
   test "#link_to_add returns translation from uchi.repository.author.button.link_to_add" do
     I18n.with_locale(:da) do
       result = @translate.link_to_add
