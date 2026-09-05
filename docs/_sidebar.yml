@@ -104,6 +104,10 @@
             text: Text
             icon: text-align-left
 
+- authentication:
+    text: Authentication
+    icon: key
+
 - customizations:
     text: Customizations
     icon: paint-brush
