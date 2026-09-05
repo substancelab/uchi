@@ -1,6 +1,6 @@
 # Authentication
 
-As with everything Uchi tries to assume as little as possible about your application, therefore authentication is also up to you. This means you continue to use whatever authentication mechanism you've already implemented, be it HTTP Basic Authentication, Devise, Rails' authentication generator, or something entirely different.
+Uchi assumes as little as possible about your application, which means authentication is up to your code. This, however, also means you can continue to use whatever authentication mechanism you've already implemented, be it HTTP Basic Authentication, Devise, Rails' authentication generator, or something entirely different.
 
 ## Rails' authentication generator
 
