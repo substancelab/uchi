@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Code from `Uchi::ApplicationController` has been moved to `Uchi::Controller`. This provides a clean `ApplicationController` for consumer applications to reopen and modify.
-- `Actions::ExecutionsController` now inherits from `ApplicationController` as expected.
+- Code from `Uchi::ApplicationController` has been moved to `Uchi::Controller`. This provides a clean `Uchi::ApplicationController` for consumer applications to reopen and modify.
+- `Uchi::Actions::ExecutionsController` now inherits from `Uchi::ApplicationController` as expected.
 - All internal Uchi controllers are now routed under a `_` scope to avoid naming conflicts with your repository controllers.
 
 ## [0.3.1]
