@@ -7,7 +7,7 @@ module Uchi
     # This controller handles POST requests to execute actions registered on
     # repositories. It finds the appropriate action, loads the records, executes
     # the action, and handles the response.
-    class ExecutionsController < Uchi::Controller
+    class ExecutionsController < Uchi::ApplicationController
       def create
         repository = find_repository
         action = find_action(repository: repository)
