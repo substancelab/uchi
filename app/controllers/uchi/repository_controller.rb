@@ -277,7 +277,18 @@ module Uchi
 
     def set_uchi_context
       super
-      @uchi_context.view = :index
+      @uchi_context.view = view_for_action
+    end
+
+    # Maps the current action to the view it renders (or, for actions that
+    # only redirect on success, the view it falls back to on failure).
+    def view_for_action
+      case action_name
+      when "create" then :new
+      when "update" then :edit
+      when "destroy" then :index
+      else action_name.to_sym
+      end
     end
   end
 end

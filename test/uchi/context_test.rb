@@ -15,7 +15,7 @@ class UchiContextTest < ActiveSupport::TestCase
   test "#view reads and writes" do
     @context.view = :index
 
-    assert_equal :index, @context.view
+    assert_equal Uchi::View.new(:index), @context.view
   end
 
   test "#view= accepts nil" do
