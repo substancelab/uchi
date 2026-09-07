@@ -23,7 +23,7 @@ module Uchi
       end
 
       test "has custom collection_query" do
-        custom_query = ->(query) { query.where(active: true) }
+        custom_query = ->(query:) { query.where(active: true) }
         field = Uchi::Field::BelongsTo.new(:book).collection_query(custom_query)
         assert_equal custom_query, field.collection_query
       end
@@ -91,7 +91,7 @@ module Uchi
       end
 
       test "#collection_query allows method chaining" do
-        custom_query = ->(query) { query.where(active: true) }
+        custom_query = ->(query:) { query.where(active: true) }
         field = Uchi::Field::BelongsTo.new(:book)
           .collection_query(custom_query)
           .sortable(false)

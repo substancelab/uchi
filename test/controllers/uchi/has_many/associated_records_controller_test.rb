@@ -166,7 +166,7 @@ module Uchi
 
           def fields
             [
-              Uchi::Field::HasMany.new(:titles).collection_query(->(query) {
+              Uchi::Field::HasMany.new(:titles).collection_query(->(query:) {
                 query.where("locale LIKE ?", "en-%")
               })
             ]
@@ -212,7 +212,7 @@ module Uchi
 
           def fields
             [
-              Uchi::Field::HasMany.new(:titles).collection_query(->(query) {
+              Uchi::Field::HasMany.new(:titles).collection_query(->(query:) {
                 query.order(title: :desc)
               })
             ]

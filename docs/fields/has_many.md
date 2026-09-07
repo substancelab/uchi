@@ -24,7 +24,7 @@ The chainable `#collection_query` method lets you control what records are inclu
 
 ```ruby
 Field::HasMany.new(:projects)
-  .collection_query(lambda { |query|
+  .collection_query(lambda { |query:|
     query.some_scope
   })
 ```
@@ -37,7 +37,7 @@ For example, if your `User` model has a `projects` method that returns the `Proj
 
 ```ruby
 Field::HasMany.new(:projects)
-  .collection_query(lambda { |query|
+  .collection_query(lambda { |query:|
     query.where(id: Current.user.projects)
   })
 ```
@@ -48,7 +48,7 @@ When opening the record selector of a HasMany field the records are returned in 
 
 ```ruby
 Field::HasMany.new(:projects)
-  .collection_query(lambda { |query|
+  .collection_query(lambda { |query:|
     query.reorder(budget: :desc) }
   )
 ```

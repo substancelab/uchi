@@ -3,7 +3,7 @@
 module Uchi
   class Field
     class BelongsTo < Field
-      DEFAULT_COLLECTION_QUERY = ->(query) { query }.freeze
+      DEFAULT_COLLECTION_QUERY = ->(query:) { query }.freeze
 
       module Helpers
         def associated_record
@@ -122,7 +122,7 @@ module Uchi
       #   or the query proc when getting
       #
       # @example Setting
-      #   Field::BelongsTo.new(:company).collection_query(->(query) {
+      #   Field::BelongsTo.new(:company).collection_query(->(query:) {
       #     query.where(active: true)
       #   })
       #

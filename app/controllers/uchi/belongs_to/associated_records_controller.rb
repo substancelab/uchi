@@ -15,7 +15,7 @@ module Uchi
         @current_value = field.value(parent_record)
 
         @field_name = params[:field]
-        @records = field.collection_query.call(find_all_records_from_association)
+        @records = field.collection_query.call(query: find_all_records_from_association)
       end
 
       protected

@@ -3,7 +3,7 @@
 module Uchi
   class Field
     class HasAndBelongsToMany < Field
-      DEFAULT_COLLECTION_QUERY = ->(query) { query }.freeze
+      DEFAULT_COLLECTION_QUERY = ->(query:) { query }.freeze
 
       class Edit < Uchi::Field::Base::Edit
         def collection
@@ -76,7 +76,7 @@ module Uchi
 
       def collection(record:)
         query = associated_repository(record: record).find_all
-        @collection_query.call(query)
+        @collection_query.call(query: query)
       end
 
       def initialize(name)
@@ -95,7 +95,7 @@ module Uchi
       #   or the query proc when getting
       #
       # @example Setting
-      #   Field::HasAndBelongsToMany.new(:tags).collection_query(->(query) {
+      #   Field::HasAndBelongsToMany.new(:tags).collection_query(->(query:) {
       #     query.where(active: true)
       #   })
       #
@@ -128,7 +128,7 @@ module Uchi
       end
 
       def default_sortable
-        lambda { |query, direction|
+        lambda { |direction:, query:|
           reflection = query.klass.reflect_on_association(name)
           return query unless reflection
 

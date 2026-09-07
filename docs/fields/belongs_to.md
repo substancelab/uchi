@@ -24,7 +24,7 @@ The chainable `#collection_query` method lets you control what records are inclu
 
 ```ruby
 Field::BelongsTo.new(:person)
-  .collection_query(lambda { |query|
+  .collection_query(lambda { |query:|
     query.some_scope
   })
 ```
@@ -37,7 +37,7 @@ For example, if your `User` model has an `authorized_people` method that returns
 
 ```ruby
 Field::BelongsTo.new(:person)
-  .collection_query(lambda { |query|
+  .collection_query(lambda { |query:|
     query.where(id: Current.user.authorized_people)
   })
 ```
@@ -48,7 +48,7 @@ When opening the record selector of a BelongsTo field the records are returned i
 
 ```ruby
 Field::BelongsTo.new(:person)
-  .collection_query(lambda { |query|
+  .collection_query(lambda { |query:|
     query.reorder(:first_name, :last_names) }
   )
 ```

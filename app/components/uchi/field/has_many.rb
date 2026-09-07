@@ -3,7 +3,7 @@
 module Uchi
   class Field
     class HasMany < Field
-      DEFAULT_COLLECTION_QUERY = ->(query) { query }.freeze
+      DEFAULT_COLLECTION_QUERY = ->(query:) { query }.freeze
 
       class Edit < Uchi::Field::Base::Edit
         def associated_records
@@ -150,7 +150,7 @@ module Uchi
       #   or the query proc when getting
       #
       # @example Setting
-      #   Field::HasMany.new(:users).collection_query(->(query) {
+      #   Field::HasMany.new(:users).collection_query(->(query:) {
       #     query.where(active: true)
       #   })
       #
@@ -221,7 +221,7 @@ module Uchi
       protected
 
       def default_sortable
-        lambda { |query, direction|
+        lambda { |direction:, query:|
           reflection = query.klass.reflect_on_association(name)
           return query unless reflection
 

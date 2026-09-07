@@ -22,7 +22,7 @@ The chainable `#collection_query` method lets you control what records are avail
 
 ```ruby
 Field::HasAndBelongsToMany.new(:tags)
-  .collection_query(lambda { |query|
+  .collection_query(lambda { |query:|
     query.some_scope
   })
 ```
@@ -33,7 +33,7 @@ You can use [`#collection_query`](#collection_query) to limit what records are r
 
 ```ruby
 Field::HasAndBelongsToMany.new(:tags)
-  .collection_query(lambda { |query|
+  .collection_query(lambda { |query:|
     query.where(id: Current.user.tags)
   })
 ```
