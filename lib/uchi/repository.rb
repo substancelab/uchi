@@ -43,6 +43,8 @@ module Uchi
       end
     end
 
+    attr_reader :context
+
     # Returns a new, unsaved instance of the model this repository manages.
     def build(attributes = {})
       model.new(attributes)
@@ -127,6 +129,10 @@ module Uchi
     # for further details.
     def includes
       []
+    end
+
+    def initialize(context: nil)
+      @context = context
     end
 
     # Returns the list of actions available for this repository.
