@@ -272,6 +272,12 @@ module Uchi
 
     def set_repository
       @repository = repository_class.new
+      @uchi_context.repository = @repository
+    end
+
+    def set_uchi_context
+      super
+      @uchi_context.view = :index
     end
   end
 end

@@ -9,6 +9,7 @@ require "uchi/engine"
 
 require "uchi/action"
 require "uchi/action_response"
+require "uchi/context"
 require "uchi/field"
 require "uchi/i18n"
 require "uchi/plugins"
