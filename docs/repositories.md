@@ -37,15 +37,17 @@ Lists of records in a repository are by default sorted by a column called `id`. 
 
 ```ruby
 module Uchi
-  class CustomersRepository < Uchi::Repository
-    def default_sort_order
-      SortOrder.new(:name, :desc)
+  module Repositories
+    class Customer < Repository
+      def default_sort_order
+        SortOrder.new(:name, :desc)
+      end
     end
   end
 end
 ```
 
-`default_sort_order` should return a `Uchi::Repository::SortOrder`.
+`default_sort_order` should return a `Uchi::SortOrder`.
 
 ## Avoiding n+1
 
