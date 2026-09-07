@@ -106,7 +106,7 @@ module Uchi
       end
 
       test "POST create runs action on single record" do
-        post "/uchi/actions/executions",
+        post uchi.actions_executions_path,
           params: {
             model: "Author",
             action_name: "PublishAuthorAction",
@@ -119,7 +119,7 @@ module Uchi
       end
 
       test "POST create runs action on multiple records" do
-        post "/uchi/actions/executions",
+        post uchi.actions_executions_path,
           params: {
             model: "Author",
             action_name: "PublishAuthorAction",
@@ -133,7 +133,7 @@ module Uchi
       end
 
       test "POST create passes input to action" do
-        post "/uchi/actions/executions",
+        post uchi.actions_executions_path,
           params: {
             model: "Author",
             action_name: "ExportAuthorAction",
@@ -146,7 +146,7 @@ module Uchi
       end
 
       test "POST create redirects to repository index by default" do
-        post "/uchi/actions/executions",
+        post uchi.actions_executions_path,
           params: {
             model: "Author",
             action_name: "PublishAuthorAction",
@@ -158,7 +158,7 @@ module Uchi
       end
 
       test "POST create redirects to custom path if specified in response" do
-        post "/uchi/actions/executions",
+        post uchi.actions_executions_path,
           params: {
             model: "Author",
             action_name: "RedirectAuthorAction",
@@ -170,7 +170,7 @@ module Uchi
 
       test "POST create raises error for non-existent model" do
         assert_raises(NameError) do
-          post "/uchi/actions/executions",
+          post uchi.actions_executions_path,
             params: {
               model: "NonExistent",
               action_name: "PublishAuthorAction",
@@ -181,7 +181,7 @@ module Uchi
 
       test "POST create raises error for non-existent action" do
         assert_raises(NameError) do
-          post "/uchi/actions/executions",
+          post uchi.actions_executions_path,
             params: {
               model: "Author",
               action_name: "non_existent_action",
@@ -191,7 +191,7 @@ module Uchi
       end
 
       test "POST create handles error response with alert flash" do
-        post "/uchi/actions/executions",
+        post uchi.actions_executions_path,
           params: {
             model: "Author",
             action_name: "ErrorAuthorAction",
@@ -204,7 +204,7 @@ module Uchi
       end
 
       test "POST create handles error response for multiple records" do
-        post "/uchi/actions/executions",
+        post uchi.actions_executions_path,
           params: {
             model: "Author",
             action_name: "ErrorAuthorAction",
@@ -216,7 +216,7 @@ module Uchi
       end
 
       test "POST create handles download response" do
-        post "/uchi/actions/executions",
+        post uchi.actions_executions_path,
           params: {
             model: "Author",
             action_name: "DownloadAuthorAction",
@@ -230,7 +230,7 @@ module Uchi
       end
 
       test "POST create handles turbo_stream response" do
-        post "/uchi/actions/executions",
+        post uchi.actions_executions_path,
           params: {
             model: "Author",
             action_name: "TurboStreamAuthorAction",
@@ -243,7 +243,7 @@ module Uchi
 
       test "POST create raises error when action raises exception" do
         assert_raises(StandardError) do
-          post "/uchi/actions/executions",
+          post uchi.actions_executions_path,
             params: {
               model: "Author",
               action_name: "FailingAuthorAction",
@@ -253,7 +253,7 @@ module Uchi
       end
 
       test "POST create handles invalid record ID gracefully" do
-        post "/uchi/actions/executions",
+        post uchi.actions_executions_path,
           params: {
             model: "Author",
             action_name: "PublishAuthorAction",
@@ -266,7 +266,7 @@ module Uchi
       end
 
       test "POST create processes only valid record IDs in batch" do
-        post "/uchi/actions/executions",
+        post uchi.actions_executions_path,
           params: {
             model: "Author",
             action_name: "PublishAuthorAction",

@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+
+- Code from `Uchi::ApplicationController` has been moved to `Uchi::Controller`. This provides a clean `Uchi::ApplicationController` for consumer applications to reopen and modify.
+- `Uchi::Actions::ExecutionsController` now inherits from `Uchi::ApplicationController` as expected.
+- All internal Uchi controllers are now routed under a `_` scope to avoid naming conflicts with your repository controllers.
+
 ## [0.3.1]
 
 ### Added
