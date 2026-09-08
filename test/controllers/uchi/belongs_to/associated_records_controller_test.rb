@@ -168,7 +168,7 @@ module Uchi
 
           def fields
             [
-              Uchi::Field::BelongsTo.new(:book).collection_query(->(query) {
+              Uchi::Field::BelongsTo.new(:book).collection_query(->(query:) {
                 query.where("original_title LIKE ?", "Active:%")
               }),
               Uchi::Field::String.new(:locale),
@@ -217,7 +217,7 @@ module Uchi
 
           def fields
             [
-              Uchi::Field::BelongsTo.new(:book).collection_query(->(query) {
+              Uchi::Field::BelongsTo.new(:book).collection_query(->(query:) {
                 query.order(original_title: :desc)
               }),
               Uchi::Field::String.new(:locale),

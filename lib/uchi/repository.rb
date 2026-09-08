@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "uchi/call_with_flexible_arguments"
+
 require_relative "repository/routes"
 
 module Uchi
@@ -198,7 +200,7 @@ module Uchi
 
       lambda_fields, plain_fields = searchable_fields.partition { |field| field.searchable.respond_to?(:call) }
 
-      conditions = lambda_fields.map { |field| id_in(field.searchable.call(query, search)) }
+      conditions = lambda_fields.map { |field| id_in(Uchi::CallWithFlexibleArguments.new(field.searchable).call(query: query, term: search)) }
       conditions += plain_field_conditions(plain_fields, search)
 
       query.where(conditions.inject(:or))
@@ -225,7 +227,12 @@ module Uchi
       return query unless field_to_sort_by
 
       if field_to_sort_by.sortable.respond_to?(:call)
-        field_to_sort_by.sortable.call(query, sort_order.direction)
+        Uchi::CallWithFlexibleArguments
+          .new(field_to_sort_by.sortable)
+          .call(
+            direction: sort_order.direction,
+            query: query
+          )
       else
         sort_order.apply(query)
       end

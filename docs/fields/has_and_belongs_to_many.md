@@ -18,11 +18,11 @@ end
 
 ## `#collection_query`
 
-The chainable `#collection_query` method lets you control what records are available to pick from. It accepts a lambda, which receives an `ActiveRecord::Relation` with all records for the associated repository.
+The chainable `#collection_query` method lets you control what records are available to pick from. It accepts a proc, which receives an `ActiveRecord::Relation` with all records for the associated repository.
 
 ```ruby
 Field::HasAndBelongsToMany.new(:tags)
-  .collection_query(lambda { |query|
+  .collection_query(-> (query:) {
     query.some_scope
   })
 ```
@@ -33,7 +33,7 @@ You can use [`#collection_query`](#collection_query) to limit what records are r
 
 ```ruby
 Field::HasAndBelongsToMany.new(:tags)
-  .collection_query(lambda { |query|
+  .collection_query(-> (query:) {
     query.where(id: Current.user.tags)
   })
 ```

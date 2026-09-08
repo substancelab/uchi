@@ -88,7 +88,7 @@ Field::String.new(:name).sortable(true)
 To customize the query used to sort by a given field, pass a lambda to the `sortable` method:
 
 ```ruby
-Field::String.new(:name).sortable(lambda { |query, direction|
+Field::String.new(:name).sortable(lambda { |direction:, query:|
   query.order(first_name: direction, last_names: direction)
 })
 ```
@@ -103,7 +103,7 @@ The lambda should return an `ActiveRecord::Relation` with the desired sort order
 You can even use this to sort by computed columns via SQL:
 
 ```ruby
-Field::Number.new(:users_count).sortable(lambda { |query, direction|
+Field::Number.new(:users_count).sortable(lambda { |direction:, query:|
   query.joins(:users).group(:id).order("COUNT(users.id) #{direction}")
 })
 ```
@@ -113,7 +113,7 @@ Field::Number.new(:users_count).sortable(lambda { |query, direction|
 Thanks to ActiveRecord we can even sort by columns in other tables/models. If you have an `Employee` model that belongs to a `Company` and you want to allow your users to sort the employee list by company name, you can configure the field like this:
 
 ```ruby
-Field::BelongsTo.new(:company).sortable(lambda { |query, direction|
+Field::BelongsTo.new(:company).sortable(lambda { |direction:, query:|
   query.joins(:office).order(:offices => {:name => direction})
 })
 ```

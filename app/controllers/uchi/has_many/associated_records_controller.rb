@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "uchi/call_with_flexible_arguments"
 require "uchi/pagination/controller"
 
 module Uchi
@@ -15,7 +16,9 @@ module Uchi
         @current_values = field.value(parent_record) || []
 
         @field_name = params[:field]
-        @records = field.collection_query.call(find_all_records_from_association)
+        @records = Uchi::CallWithFlexibleArguments
+          .new(field.collection_query)
+          .call(query: find_all_records_from_association)
       end
 
       protected

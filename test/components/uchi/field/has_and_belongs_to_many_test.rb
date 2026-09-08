@@ -23,7 +23,7 @@ module Uchi
       end
 
       test "has custom collection_query" do
-        custom_query = ->(query) { query.where(published: true) }
+        custom_query = ->(query:) { query.where(published: true) }
         field = Uchi::Field::HasAndBelongsToMany.new(:categories).collection_query(custom_query)
         assert_equal custom_query, field.collection_query
       end

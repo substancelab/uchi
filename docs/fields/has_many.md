@@ -20,11 +20,11 @@ end
 
 ## `#collection_query`
 
-The chainable `#collection_query` method lets you control what records are included in the dropdown. It accepts a lambda, which is called when the user opens the dropdown or changes the filter input. The lambda receives an `ActiveRecord::Relation` with all records matching the filter query.
+The chainable `#collection_query` method lets you control what records are included in the dropdown. It accepts a proc, which is called when the user opens the dropdown or changes the filter input. The proc receives an `ActiveRecord::Relation` with all records matching the filter query.
 
 ```ruby
 Field::HasMany.new(:projects)
-  .collection_query(lambda { |query|
+  .collection_query(->(query:) {
     query.some_scope
   })
 ```
@@ -37,23 +37,23 @@ For example, if your `User` model has a `projects` method that returns the `Proj
 
 ```ruby
 Field::HasMany.new(:projects)
-  .collection_query(lambda { |query|
+  .collection_query(->(query:) {
     query.where(id: Current.user.projects)
   })
 ```
 
 ## How to control the order of records in dropdowns
 
-When opening the record selector of a HasMany field the records are returned in the default order defined by the repository. To do something else, pass a lambda to the [`#collection_query`](#collection_query) method:
+When opening the record selector of a HasMany field the records are returned in the default order defined by the repository. To do something else, pass a proc to the [`#collection_query`](#collection_query) method:
 
 ```ruby
 Field::HasMany.new(:projects)
-  .collection_query(lambda { |query|
-    query.reorder(budget: :desc) }
-  )
+  .collection_query(->(query:) {
+    query.reorder(budget: :desc)
+  })
 ```
 
-The lambda receives an `ActiveRecord::Relation` with all records returned from the repository. Note that you might have to use `#reorder`, not just `#order`, since the relation may already have an order defined.
+The proc receives an `ActiveRecord::Relation` with all records returned from the repository. Note that you might have to use `#reorder`, not just `#order`, since the relation may already have an order defined.
 
 ## How to change titles in the dropdown
 

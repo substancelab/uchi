@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Breaking
+
+- All procs are now called with keyword arguments. This means procs configured for `collection_query`, `searchable`, `sortable` will need to have their signature changed (from eg `lambda { |query, term| }` to `lambda { |query:, term:| }`).
+
 ### Changed
 
 - Code from `Uchi::ApplicationController` has been moved to `Uchi::Controller`. This provides a clean `Uchi::ApplicationController` for consumer applications to reopen and modify.
