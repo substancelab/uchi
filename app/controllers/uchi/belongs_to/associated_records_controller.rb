@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "uchi/call_with_flexible_arguments"
 require "uchi/pagination/controller"
 
 module Uchi

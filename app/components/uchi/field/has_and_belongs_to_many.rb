@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "uchi/call_with_flexible_arguments"
+
 module Uchi
   class Field
     class HasAndBelongsToMany < Field

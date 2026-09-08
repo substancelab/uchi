@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "uchi/call_with_flexible_arguments"
+
 require_relative "repository/routes"
 
 module Uchi
