@@ -6,6 +6,11 @@ order: 100
 
 After having installed the gem to your application (See [installation](/installation) instructions) you are ready to configure Uchi.
 
+:::tip Or ask your LLM to do it
+
+> Follow instructions from https://docs.uchiadmin.com/installation/ to add a Uchi admin backend. Generate repositories for all existing models. Reuse existing authentication to lock down the controllers.
+:::
+
 :::steps
 ### Mount Uchi in your application
 
