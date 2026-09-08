@@ -4,9 +4,11 @@ module Uchi
   # Provides a forward- and backwards compatible way of calling a proc.
   #
   # Expects `proc` to accept only keyword arguments and calls the proc with only
-  # the keyword arguments it declares.
+  # the keyword arguments it declares. Optional keyword arguments that are not
+  # provided are left out, so the proc's own default applies. A proc accepting
+  # `**kwargs` is called with all provided keyword arguments.
   #
-  # If the proc expects a keyword argument that is not provided to call an
+  # If the proc requires a keyword argument that is not provided an
   # ArgumentError is raised.
   class CallWithFlexibleArguments
     attr_reader :proc
@@ -14,17 +16,20 @@ module Uchi
     def call(**kwargs)
       parameters = proc.parameters
 
+      return proc.call(**kwargs) if parameters.any? { |type, _name| type == :keyrest }
+
       # Generate a list of arguments both included in the proc's parameters and
-      # present in the provided keyword arguments.
-      arguments = parameters.map do |type, name|
+      # present in the provided keyword arguments. Optional keyword arguments
+      # not present in kwargs are omitted, so the proc's default applies.
+      arguments = parameters.filter_map do |type, name|
         if kwargs.key?(name)
           [name, kwargs[name]]
-        else
+        elsif type == :keyreq
           raise \
             ArgumentError,
-            "Unsupported keyword argument: #{name} in #{proc.inspect}"
+            "Missing required keyword argument: #{name} in #{proc.inspect}"
         end
-      end.compact
+      end
 
       proc.call(**arguments.to_h)
     end

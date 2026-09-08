@@ -41,6 +41,38 @@ class UchiCallWithFlexibleArgumentsTest < ActiveSupport::TestCase
     assert_match(/name/, error.message)
   end
 
+  test "#call omits an optional keyword argument that is not provided" do
+    proc = ->(name:, greeting: "hello") { "#{greeting} #{name}" }
+
+    result = Uchi::CallWithFlexibleArguments.new(proc).call(name: "world")
+
+    assert_equal "hello world", result
+  end
+
+  test "#call passes an optional keyword argument when it is provided" do
+    proc = ->(name:, greeting: "hello") { "#{greeting} #{name}" }
+
+    result = Uchi::CallWithFlexibleArguments.new(proc).call(name: "world", greeting: "hi")
+
+    assert_equal "hi world", result
+  end
+
+  test "#call passes all keyword arguments to a proc accepting **kwargs" do
+    proc = ->(**kwargs) { kwargs }
+
+    result = Uchi::CallWithFlexibleArguments.new(proc).call(first: "a", second: "b")
+
+    assert_equal({first: "a", second: "b"}, result)
+  end
+
+  test "#call passes declared and undeclared keyword arguments to a proc mixing keywords and **kwargs" do
+    proc = ->(name:, **rest) { [name, rest] }
+
+    result = Uchi::CallWithFlexibleArguments.new(proc).call(name: "world", extra: "value")
+
+    assert_equal ["world", {extra: "value"}], result
+  end
+
   test "#call works with a proc that declares no parameters" do
     proc = -> { "no args" }
 
