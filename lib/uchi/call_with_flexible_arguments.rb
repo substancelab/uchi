@@ -16,6 +16,14 @@ module Uchi
     def call(**kwargs)
       parameters = proc.parameters
 
+      positional = parameters.find { |type, _name| [:req, :opt].include?(type) }
+      if positional
+        raise \
+          ArgumentError,
+          "Expected #{proc.inspect} to accept only keyword arguments, but " \
+          "it declares positional parameter: #{positional.last}"
+      end
+
       return proc.call(**kwargs) if parameters.any? { |type, _name| type == :keyrest }
 
       # Generate a list of arguments both included in the proc's parameters and

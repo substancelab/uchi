@@ -73,6 +73,26 @@ class UchiCallWithFlexibleArgumentsTest < ActiveSupport::TestCase
     assert_equal ["world", {extra: "value"}], result
   end
 
+  test "#call raises ArgumentError when the proc declares a required positional parameter" do
+    proc = ->(name) { "hi #{name}" }
+
+    error = assert_raises(ArgumentError) do
+      Uchi::CallWithFlexibleArguments.new(proc).call(name: "world")
+    end
+
+    assert_match(/name/, error.message)
+  end
+
+  test "#call raises ArgumentError when the proc declares an optional positional parameter" do
+    proc = ->(name = "default") { "hi #{name}" }
+
+    error = assert_raises(ArgumentError) do
+      Uchi::CallWithFlexibleArguments.new(proc).call(name: "world")
+    end
+
+    assert_match(/name/, error.message)
+  end
+
   test "#call works with a proc that declares no parameters" do
     proc = -> { "no args" }
 
