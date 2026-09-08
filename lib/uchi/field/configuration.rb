@@ -141,7 +141,7 @@ module Uchi
       #   Field::Number.new(:calculated_sum).sortable(false)
       #
       # @example Setting with lambda
-      #   Field::Number.new(:users_count).sortable(lambda { |query:, direction:|
+      #   Field::Number.new(:users_count).sortable(lambda { |context:, direction:, query:|
       #     query.joins(:users).group(:id).order("COUNT(users.id) #{direction}")
       #   })
       #

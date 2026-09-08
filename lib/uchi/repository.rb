@@ -244,6 +244,7 @@ module Uchi
         Uchi::CallWithFlexibleArguments
           .new(field_to_sort_by.sortable)
           .call(
+            context: context,
             direction: sort_order.direction,
             query: query
           )
