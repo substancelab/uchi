@@ -9362,7 +9362,8 @@
     static debounces = ["handleChange"];
     static targets = ["id", "dropdown", "input", "label", "list"];
     static values = {
-      backendUrl: String
+      backendUrl: String,
+      view: String
     };
     buildCombobox() {
       return new Combobox(this.inputTarget, this.listTarget);
@@ -9389,7 +9390,10 @@
     }
     fetchOptions(options) {
       get(this.backendUrlValue, {
-        query: { query: this.inputTarget.value }
+        query: {
+          query: this.inputTarget.value,
+          view: this.viewValue
+        }
       }).then(({ response }) => {
         return response.text();
       }).then((html) => {
@@ -9468,7 +9472,8 @@
     static targets = ["checkbox", "dropdown", "idField", "idsContainer", "input", "label", "list"];
     static values = {
       backendUrl: String,
-      fieldName: String
+      fieldName: String,
+      view: String
     };
     clickOutside(event) {
       if (!this.dropdownTarget.hidden) {
@@ -9485,7 +9490,10 @@
     }
     fetchOptions() {
       get(this.backendUrlValue, {
-        query: { query: this.inputTarget.value }
+        query: {
+          query: this.inputTarget.value,
+          view: this.viewValue
+        }
       }).then(({ response }) => {
         return response.text();
       }).then((html) => {

@@ -3,7 +3,7 @@
 module Uchi
   class Field
     class BelongsTo < Field
-      DEFAULT_COLLECTION_QUERY = ->(query:) { query }.freeze
+      DEFAULT_COLLECTION_QUERY = ->(context:, query:) { query }.freeze
 
       module Helpers
         def associated_record

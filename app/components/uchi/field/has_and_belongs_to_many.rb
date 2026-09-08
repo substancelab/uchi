@@ -80,7 +80,10 @@ module Uchi
         query = associated_repository(record: record).find_all
         Uchi::CallWithFlexibleArguments
           .new(@collection_query)
-          .call(query: query)
+          .call(
+            context: repository.context,
+            query: query
+          )
       end
 
       def initialize(name)

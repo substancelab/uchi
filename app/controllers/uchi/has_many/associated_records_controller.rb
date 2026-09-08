@@ -18,7 +18,10 @@ module Uchi
         @field_name = params[:field]
         @records = Uchi::CallWithFlexibleArguments
           .new(field.collection_query)
-          .call(query: find_all_records_from_association)
+          .call(
+            context: uchi_context,
+            query: find_all_records_from_association
+          )
       end
 
       protected
@@ -35,7 +38,7 @@ module Uchi
           repository_class = Uchi::Repository.for_model(model_name)
           raise NameError, "No repository found for model #{model_name}" unless repository_class
 
-          repository_class.new
+          repository_class.new(context: uchi_context)
         end
       end
 
@@ -43,7 +46,7 @@ module Uchi
 
       def associated_repository
         @associated_repository ||= begin
-          associated_repository = Uchi::Repository.for_model(association.klass)&.new
+          associated_repository = Uchi::Repository.for_model(association.klass)&.new(context: uchi_context)
           raise NameError, "No repository found for associated model #{association.klass}" unless associated_repository
 
           associated_repository
@@ -86,6 +89,11 @@ module Uchi
         return nil unless params[:record_id].present?
 
         source_repository.find(params[:record_id])
+      end
+
+      def set_uchi_context
+        super
+        @uchi_context.view = params[:view]
       end
     end
   end
