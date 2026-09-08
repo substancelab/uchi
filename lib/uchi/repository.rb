@@ -206,7 +206,15 @@ module Uchi
 
       lambda_fields, plain_fields = searchable_fields.partition { |field| field.searchable.respond_to?(:call) }
 
-      conditions = lambda_fields.map { |field| id_in(Uchi::CallWithFlexibleArguments.new(field.searchable).call(query: query, term: search)) }
+      conditions = lambda_fields.map do |field|
+        id_in(
+          Uchi::CallWithFlexibleArguments.new(field.searchable).call(
+            context: context,
+            query: query,
+            term: search
+          )
+        )
+      end
       conditions += plain_field_conditions(plain_fields, search)
 
       query.where(conditions.inject(:or))

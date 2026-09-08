@@ -142,7 +142,7 @@ class UchiRepositoryTest < ActiveSupport::TestCase
       define_singleton_method(:model) { Author }
       define_method(:fields) {
         [
-          Uchi::Field::String.new(:name).searchable(lambda { |query:, term:|
+          Uchi::Field::String.new(:name).searchable(lambda { |context:, query:, term:|
             query.where("name LIKE ?", "%#{term}%")
           })
         ]
@@ -162,10 +162,10 @@ class UchiRepositoryTest < ActiveSupport::TestCase
       define_singleton_method(:model) { Author }
       define_method(:fields) {
         [
-          Uchi::Field::String.new(:name).searchable(lambda { |query:, term:|
+          Uchi::Field::String.new(:name).searchable(lambda { |context:, query:, term:|
             query.where("name LIKE ?", "%#{term}%")
           }),
-          Uchi::Field::Text.new(:biography).searchable(lambda { |query:, term:|
+          Uchi::Field::Text.new(:biography).searchable(lambda { |context:, query:, term:|
             query.where("biography LIKE ?", "%#{term}%")
           })
         ]
