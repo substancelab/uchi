@@ -15,7 +15,9 @@ module Uchi
         @current_values = field.value(parent_record) || []
 
         @field_name = params[:field]
-        @records = field.collection_query.call(query: find_all_records_from_association)
+        @records = Uchi::CallWithFlexibleArguments
+          .new(field.collection_query)
+          .call(query: find_all_records_from_association)
       end
 
       protected
