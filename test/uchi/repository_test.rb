@@ -49,6 +49,10 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_equal "authors", author_repository.controller_name
   end
 
+  test "#context defaults to an Uchi::Context if not given during initialize" do
+    assert_instance_of Uchi::Context, author_repository.context
+  end
+
   test "#default_sort_order returns a sort by id ascending" do
     sort_order = author_repository.default_sort_order
 

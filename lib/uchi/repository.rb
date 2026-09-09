@@ -132,7 +132,7 @@ module Uchi
     end
 
     def initialize(context: nil)
-      @context = context
+      @context = context || build_default_context
     end
 
     # Returns the list of actions available for this repository.
