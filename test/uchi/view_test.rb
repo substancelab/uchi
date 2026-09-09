@@ -28,4 +28,8 @@ class UchiViewTest < ActiveSupport::TestCase
   test "#to_s returns the name as a string" do
     assert_equal "show", Uchi::View.new(:show).to_s
   end
+
+  test "raises when given an unknown view name" do
+    assert_raises(ArgumentError) { Uchi::View.new(:preview) }
+  end
 end
