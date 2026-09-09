@@ -25,6 +25,20 @@ class UchiViewTest < ActiveSupport::TestCase
     assert [Uchi::View.new(:edit), Uchi::View.new(:show)].include?(:show)
   end
 
+  test "views wrapping the same name have the same hash" do
+    assert_equal Uchi::View.new(:show).hash, Uchi::View.new(:show).hash
+  end
+
+  test "can be used as a Hash key interchangeably with another instance wrapping the same name" do
+    hash = {Uchi::View.new(:show) => "value"}
+
+    assert_equal "value", hash[Uchi::View.new(:show)]
+  end
+
+  test "de-duplicates in a Set with another instance wrapping the same name" do
+    assert_equal 1, Set[Uchi::View.new(:show), Uchi::View.new(:show)].size
+  end
+
   test "#to_s returns the name as a string" do
     assert_equal "show", Uchi::View.new(:show).to_s
   end

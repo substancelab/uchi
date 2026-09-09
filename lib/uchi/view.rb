@@ -2,12 +2,12 @@
 
 module Uchi
   # Represents a view/action a field or resource can appear on, e.g. :index,
-  # :show, :new, :edit. Behaves like the underlying Symbol for equality,
-  # hashing and array membership, so existing code comparing against plain
-  # symbols keeps working.
+  # :show, :new, :edit.
   #
-  # @example
-  #   Uchi::View.new(:show) == :show # => true
+  # Uchi::View behaves like the underlying Symbol for equality, hashing and
+  # array membership.
+  #
+  # @example Uchi::View.new(:show) == :show # => true
   #   [Uchi::View.new(:edit)].include?(:edit) # => true
   class View
     NAMES = [:edit, :index, :new, :show].freeze
@@ -20,7 +20,10 @@ module Uchi
     end
 
     def ==(other)
-      name == self.class.name_of(other)
+      return name == other if other.is_a?(Symbol)
+      return name == other.name if other.is_a?(self.class)
+
+      false
     end
     alias_method :eql?, :==
 
@@ -54,12 +57,6 @@ module Uchi
 
     def show?
       name == :show
-    end
-
-    class << self
-      def name_of(value)
-        value.is_a?(View) ? value.name : value.to_sym
-      end
     end
   end
 end
