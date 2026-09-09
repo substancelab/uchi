@@ -6,6 +6,14 @@ module Uchi
       @book = Book.create!(original_title: "The Hobbit")
     end
 
+    test "it inherits from Uchi::ApplicationController" do
+      assert_includes Uchi::BooksController.new.class.ancestors, Uchi::ApplicationController
+    end
+
+    test "it inherits from Uchi::Controller" do
+      assert_includes Uchi::BooksController.new.class.ancestors, Uchi::Controller
+    end
+
     test "DELETE destroy deletes the record" do
       delete uchi_book_url(id: @book.id)
 
