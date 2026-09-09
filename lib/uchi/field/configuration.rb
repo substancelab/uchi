@@ -19,21 +19,21 @@ module Uchi
         @sortable = default_sortable
       end
 
-      # Sets or gets which actions this field should appear on.
+      # Sets or gets which views this field should appear on.
       #
-      # When called with arguments, sets the actions and returns self for chaining.
-      # When called without arguments, returns the current actions.
+      # When called with arguments, sets the views and returns self for chaining.
+      # When called without arguments, returns the current views.
       #
-      # @param actions [Array<Symbol>] The actions where this field should appear
-      #   (e.g., :index, :show, :new, :edit)
-      # @return [self, Array<Symbol>] Returns self for method chaining when setting,
-      #   or the actions array when getting
+      # @param actions [Array<Symbol, String, Uchi::View>] The views where this field
+      #   should appear (e.g., :index, :show, :new, :edit)
+      # @return [self, Array<Uchi::View>] Returns self for method chaining when setting,
+      #   or the views array when getting
       #
       # @example Setting
       #   Field::Number.new(:id).on(:index, :show)
       #
       # @example Getting
-      #   field.on # => [:index, :show]
+      #   field.on # => [Uchi::View.new(:index), Uchi::View.new(:show)]
       def on(*actions)
         return @on if actions.empty?
 
