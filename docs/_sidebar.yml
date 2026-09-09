@@ -58,6 +58,10 @@
             text: Actions
             icon: lightning
 
+        - views:
+            text: Views
+            icon: eye
+
 - fields:
     text: Field types
     icon: table

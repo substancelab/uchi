@@ -16,7 +16,7 @@ module Uchi
       end
 
       test "has default options specific to Id field" do
-        assert_equal [:index, :show], @field.on  # Different from other fields
+        assert_equal [:index, :show], @field.on.map(&:to_sym)  # Different from other fields
         assert @field.searchable?  # Different from other fields
         assert @field.sortable?
       end
