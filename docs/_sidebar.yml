@@ -58,6 +58,10 @@
             text: Actions
             icon: lightning
 
+        - context:
+            text: Context
+            icon: globe
+
         - views:
             text: Views
             icon: eye

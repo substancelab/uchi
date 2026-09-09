@@ -91,10 +91,11 @@ Field::String.new(:name).sortable(lambda { |direction:, query:|
 })
 ```
 
-The lambda receives 2 arguments:
+The lambda receives the following arguments:
 
-1. `query`: The `ActiveRecord::Relation` that makes up the current database query
+1. `context`: The [`Uchi::Context`](/context) we're currently processing.
 2. `direction`: A symbol indicating what order to sort; either `:asc` or `:desc`.
+3. `query`: The `ActiveRecord::Relation` that makes up the current database query
 
 The lambda should return an `ActiveRecord::Relation` with the desired sort order added.
 

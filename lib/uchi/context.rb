@@ -4,7 +4,10 @@ module Uchi
   # Context class for Uchi framework, used to encapsulate request-specific data
   # and state.
   class Context
+    # @return [User, nil] the user associated with the context
     attr_accessor :user
+
+    # @return [Uchi::View, nil] the view associated with the context
     attr_reader :view
 
     # Set the view for the context. Accepts a Uchi::View instance or a value
