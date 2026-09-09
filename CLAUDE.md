@@ -15,3 +15,4 @@
 - Documentation is written in Markdown, stored in docs/.
 - We use Docyard to generate and serve the documentation.
 - Use `rake docs:serve` to start a local documentation server.
+- Store images for documentation in docs/public/<section>/images and reference them with absolute paths (/views/images/image.png).

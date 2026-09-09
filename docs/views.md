@@ -15,6 +15,8 @@ In code these are represented as `Uchi::View` instances.
 
 The page where you edit the record in a repository.
 
+![Edit view](/views/images/view-edit.png)
+
 ```ruby
 view.name #=> :edit
 view.edit? #=> true
@@ -23,6 +25,8 @@ view.edit? #=> true
 ## Index
 
 The homepage for each repository, listing the first page of records.
+
+![Index view](/views/images/view-index.png)
 
 ```ruby
 view.name #=> :index
@@ -33,6 +37,8 @@ view.index? #=> true
 
 A page to add new records to a repository.
 
+![New view](/views/images/view-new.png)
+
 ```ruby
 view.name #=> :new
 view.new? #=> true
@@ -41,6 +47,8 @@ view.new? #=> true
 ## Show
 
 A page dedicated to showing the details of a record.
+
+![Show view](/views/images/view-show.png)
 
 ```ruby
 view.name #=> :show
