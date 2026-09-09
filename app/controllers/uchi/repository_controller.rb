@@ -272,7 +272,6 @@ module Uchi
 
     def set_repository
       @repository = repository_class.new(context: @uchi_context)
-      @uchi_context.repository = @repository
     end
 
     def set_uchi_context

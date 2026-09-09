@@ -220,6 +220,10 @@ module Uchi
       query.where(conditions.inject(:or))
     end
 
+    def build_default_context
+      Uchi::Context.new
+    end
+
     # Wraps a scope in an `id IN (subquery)` Arel condition, so it can be
     # combined with other search conditions without running its own query.
     def id_in(scope)

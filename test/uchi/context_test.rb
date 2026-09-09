@@ -49,7 +49,6 @@ class UchiContextTest < ActiveSupport::TestCase
   end
 
   test "attributes default to nil" do
-    assert_nil @context.repository
     assert_nil @context.user
     assert_nil @context.view
   end

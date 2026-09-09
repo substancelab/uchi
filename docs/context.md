@@ -12,6 +12,5 @@ All of the attributes can return `nil`
 
 | Attribute | Type | Description |
 |---|---|---|
-| `repository` | `Uchi::Repository` | The repository instance handling the current request. |
 | `user` | `Object` | Returns the current user authenticated in your application, whatever that means in your application. If `current_user` is configured, this is the result of calling that. |
 | `view` | `Uchi::View` | The view that is being rendered. |

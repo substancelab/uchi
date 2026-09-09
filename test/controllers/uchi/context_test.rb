@@ -6,11 +6,6 @@ module Uchi
       @author = Author.create!(name: "Test Author")
     end
 
-    test "GET index sets #repository on the context" do
-      get uchi_authors_url
-      assert_equal Uchi::Repositories::Author, @controller.send(:uchi_context).repository.class
-    end
-
     test "GET index sets #view to :index" do
       get uchi_authors_url
       assert_equal Uchi::View.new(:index), @controller.send(:uchi_context).view
