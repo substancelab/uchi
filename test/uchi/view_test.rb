@@ -32,4 +32,24 @@ class UchiViewTest < ActiveSupport::TestCase
   test "raises when given an unknown view name" do
     assert_raises(ArgumentError) { Uchi::View.new(:preview) }
   end
+
+  test "#index? returns true only for the index view" do
+    assert Uchi::View.new(:index).index?
+    assert_not Uchi::View.new(:show).index?
+  end
+
+  test "#show? returns true only for the show view" do
+    assert Uchi::View.new(:show).show?
+    assert_not Uchi::View.new(:index).show?
+  end
+
+  test "#new? returns true only for the new view" do
+    assert Uchi::View.new(:new).new?
+    assert_not Uchi::View.new(:index).new?
+  end
+
+  test "#edit? returns true only for the edit view" do
+    assert Uchi::View.new(:edit).edit?
+    assert_not Uchi::View.new(:index).edit?
+  end
 end

@@ -40,6 +40,22 @@ module Uchi
       name
     end
 
+    def edit?
+      name == :edit
+    end
+
+    def index?
+      name == :index
+    end
+
+    def new?
+      name == :new
+    end
+
+    def show?
+      name == :show
+    end
+
     class << self
       def name_of(value)
         value.is_a?(View) ? value.name : value.to_sym
