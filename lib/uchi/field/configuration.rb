@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "uchi/view"
+
 module Uchi
   class Field
     module Configuration
@@ -35,7 +37,7 @@ module Uchi
       def on(*actions)
         return @on if actions.empty?
 
-        @on = actions.flatten
+        @on = actions.flatten.map { |action| Uchi::View.new(action) }
         self
       end
 
@@ -171,7 +173,7 @@ module Uchi
       protected
 
       def default_on
-        [:edit, :index, :new, :show]
+        [Uchi::View.new(:edit), Uchi::View.new(:index), Uchi::View.new(:new), Uchi::View.new(:show)]
       end
 
       def default_searchable?

@@ -15,6 +15,7 @@ require "uchi/plugins"
 require "uchi/repository"
 require "uchi/routes"
 require "uchi/sort_order"
+require "uchi/view"
 require "uchi/repository/translate"
 
 module Uchi
