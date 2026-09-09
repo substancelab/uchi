@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Uchi::Actions::ExecutionsController` now inherits from `Uchi::ApplicationController` as expected.
 - All internal Uchi controllers are now routed under a `_` scope to avoid naming conflicts with your repository controllers.
 - `rails generate uchi:install` no longer adds an unnecessary `namespace :uchi` block to `routes.rb`.
+- Views are now referenced using a `Uchi::View` instead of a `Symbol` as before.
+
 
 ## [0.3.1]
 
