@@ -54,7 +54,7 @@ end
 Now Uchi will be available at `/admin` instead of `/uchi`.
 
 :::note
-When changing the default mount point you need to update your controllers to use the custom namespace as well. Ie if Uchi is mounted at /admin, your repository controllers need to live in a `Admin` namespace (`class Admin::UsersController`), not `Uchi` (`class Uchi::UsersController`).
+When changing the default mount point you need to update your controllers to use the custom namespace as well. i.e. if Uchi is mounted at `/admin`, your repository controllers need to live in an `Admin` namespace (`class Admin::UsersController`), not `Uchi` (`class Uchi::UsersController`).
 :::
 
 ### How to change the root URL
