@@ -81,8 +81,8 @@ See https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-
 
 When a model is rendered in the UI, we call the `#title` method on the repository for that model. By default `#title` returns the value of the first of the following methods that exists on the model:
 
-1. `#name`
-2. `#title`
+1. `#title`
+2. `#name`
 3. `#to_s`
 
 If none of those return a suitable value for your model, you can override the `#title` method in your repository to return a better value:

@@ -170,8 +170,8 @@ module Uchi
     # Returns the title to show for a given record. By default, this method
     # returns the value of the first of the following methods that exist:
     #
-    # 1. `name`
-    # 2. `title`
+    # 1. `title`
+    # 2. `name`
     # 3. `to_s`
     #
     # You can override this method in your repository subclass to provide
@@ -179,7 +179,7 @@ module Uchi
     def title(record)
       return nil unless record
 
-      [:name, :title, :to_s].each do |method|
+      [:title, :name, :to_s].each do |method|
         if record.respond_to?(method)
           return record.public_send(method)
         end
