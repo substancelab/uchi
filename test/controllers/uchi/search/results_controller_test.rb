@@ -14,12 +14,11 @@ module Uchi
       end
 
       test "GET index links to matching records" do
-        # Because Uchi::Engine is mounted with isolate_namespace, processing a
-        # request routed into the engine sets `@request.script_name` to "/uchi"
-        # for the rest of the test session. Any subsequent call to a main-app
-        # route helper (like edit_uchi_book_path) then picks up that leftover
-        # script_name and prepends it again, producing /uchi/uchi/books/1/edit
-        # instead of /uchi/books/1/edit.
+        # Processing a request sets `@request.script_name` to "/uchi" for the
+        # rest of the test session. Any subsequent call to a main-app route
+        # helper (like edit_uchi_book_path) then picks up that leftover
+        # script_name and prepends it again, producing /uchi/uchi/books/1
+        # instead of /uchi/books/1.
         path_to_hobbit = uchi_book_path(@hobbit.id)
         path_to_silmarillion = uchi_book_path(@silmarillion.id)
 
