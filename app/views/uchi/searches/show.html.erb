@@ -3,7 +3,7 @@
 
 <%= render(Uchi::Ui::PageHeader.new(title: title)) do |header| %>
   <% header.with_breadcrumb(items: [
-    {href: search_index_path, label: title}
+    {href: search_path, label: title}
   ]) %>
 <% end %>
 
