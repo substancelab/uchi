@@ -49,8 +49,6 @@ Possible actions are
 - `:new`
 - `:edit`
 
-The default is to show all fields on all pages.
-
 ### Only show a field for specific records
 
 Giving the field a `visible` lambda gives you more control over when to render a field.
