@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - All internal Uchi controllers are now routed under a `_` scope to avoid naming conflicts with your repository controllers.
 - `rails generate uchi:install` no longer adds an unnecessary `namespace :uchi` block to `routes.rb`.
 - Views are now referenced using a `Uchi::View` instead of a `Symbol` as before.
+- `Repository#title` now prefers the return value from the `title` method before
+  checking for `name` or `to_s`, because, well, that's what the method is named.
 
 
 ## [0.3.1]
