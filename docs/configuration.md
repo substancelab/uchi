@@ -54,19 +54,3 @@ end
 :::
 
 Now start your Rails server and visit [http://localhost:3000/uchi/customers](http://localhost:3000/uchi/customers). Welcome to Uchi 😁
-
-### Mounting at a Custom Path
-
-By default, Uchi is mounted at `/uchi`. To use a different path:
-
-```ruby
-Rails.application.routes.draw do
-  Uchi.routes.mount(self, at: "admin")
-
-  namespace :admin do
-    # Your other admin routes
-  end
-end
-```
-
-Now Uchi will be available at `/admin` instead of `/uchi`.

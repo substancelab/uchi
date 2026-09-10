@@ -37,6 +37,26 @@ Creating your own navigation partial gives you full control over the navigation 
 
 Uchi automatically adds routes for each repository and uses whichever repository is defined first as the root route (ie what you'll get at `/uchi`).
 
+### Mounting at a Custom Path
+
+By default, Uchi is mounted at `/uchi`. To use a different path:
+
+```ruby
+Rails.application.routes.draw do
+  Uchi.routes.mount(self, at: "admin")
+
+  namespace :admin do
+    # Your other admin routes
+  end
+end
+```
+
+Now Uchi will be available at `/admin` instead of `/uchi`.
+
+:::note
+When changing the default mount point you need to update your controllers to use the custom namespace as well. Ie if Uchi is mounted at /admin, your repository controllers need to live in a `Admin` namespace (`class Admin::UsersController`), not `Uchi` (`class Uchi::UsersController`).
+:::
+
 ### How to change the root URL
 
 If you want another repository to be displayed at the root URL (ie `/uchi`), you can add the relevant route to `config/routes.rb`:
