@@ -19,7 +19,7 @@ module Uchi
       end
 
       def path
-        Uchi.routes.search_path
+        helpers.uchi.search_index_path
       end
 
       def render?

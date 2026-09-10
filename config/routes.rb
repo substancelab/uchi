@@ -9,5 +9,9 @@ Uchi::Engine.routes.draw do
     namespace :has_many do
       resources :associated_records, only: [:index]
     end
+    resources :search, only: [:index], path: "search", as: "search"
+    namespace :search do
+      resources :results, only: [:index]
+    end
   end
 end
