@@ -15,6 +15,8 @@ module Uchi
     attr_reader :name
 
     def initialize(name)
+      raise ArgumentError, "Unsupported view: #{name.inspect}" unless name.respond_to?(:to_sym)
+
       @name = name.is_a?(View) ? name.name : name.to_sym
       raise ArgumentError, "unknown view: #{@name.inspect}" unless NAMES.include?(@name)
     end

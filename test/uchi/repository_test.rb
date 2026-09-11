@@ -49,6 +49,10 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_equal "authors", author_repository.controller_name
   end
 
+  test "#context defaults to an Uchi::Context if not given during initialize" do
+    assert_instance_of Uchi::Context, author_repository.context
+  end
+
   test "#default_sort_order returns a sort by id ascending" do
     sort_order = author_repository.default_sort_order
 
@@ -142,7 +146,7 @@ class UchiRepositoryTest < ActiveSupport::TestCase
       define_singleton_method(:model) { Author }
       define_method(:fields) {
         [
-          Uchi::Field::String.new(:name).searchable(lambda { |query:, term:|
+          Uchi::Field::String.new(:name).searchable(lambda { |context:, query:, term:|
             query.where("name LIKE ?", "%#{term}%")
           })
         ]
@@ -162,10 +166,10 @@ class UchiRepositoryTest < ActiveSupport::TestCase
       define_singleton_method(:model) { Author }
       define_method(:fields) {
         [
-          Uchi::Field::String.new(:name).searchable(lambda { |query:, term:|
+          Uchi::Field::String.new(:name).searchable(lambda { |context:, query:, term:|
             query.where("name LIKE ?", "%#{term}%")
           }),
-          Uchi::Field::Text.new(:biography).searchable(lambda { |query:, term:|
+          Uchi::Field::Text.new(:biography).searchable(lambda { |context:, query:, term:|
             query.where("biography LIKE ?", "%#{term}%")
           })
         ]

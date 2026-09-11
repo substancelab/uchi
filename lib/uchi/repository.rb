@@ -43,6 +43,8 @@ module Uchi
       end
     end
 
+    attr_accessor :context
+
     # Returns a new, unsaved instance of the model this repository manages.
     def build(attributes = {})
       model.new(attributes)
@@ -129,6 +131,10 @@ module Uchi
       []
     end
 
+    def initialize(context: nil)
+      @context = context || build_default_context
+    end
+
     # Returns the list of actions available for this repository.
     #
     # Actions are instances of Uchi::Action subclasses that can be executed
@@ -200,10 +206,22 @@ module Uchi
 
       lambda_fields, plain_fields = searchable_fields.partition { |field| field.searchable.respond_to?(:call) }
 
-      conditions = lambda_fields.map { |field| id_in(Uchi::CallWithFlexibleArguments.new(field.searchable).call(query: query, term: search)) }
+      conditions = lambda_fields.map do |field|
+        id_in(
+          Uchi::CallWithFlexibleArguments.new(field.searchable).call(
+            context: context,
+            query: query,
+            term: search
+          )
+        )
+      end
       conditions += plain_field_conditions(plain_fields, search)
 
       query.where(conditions.inject(:or))
+    end
+
+    def build_default_context
+      Uchi::Context.new
     end
 
     # Wraps a scope in an `id IN (subquery)` Arel condition, so it can be
@@ -230,6 +248,7 @@ module Uchi
         Uchi::CallWithFlexibleArguments
           .new(field_to_sort_by.sortable)
           .call(
+            context: context,
             direction: sort_order.direction,
             query: query
           )

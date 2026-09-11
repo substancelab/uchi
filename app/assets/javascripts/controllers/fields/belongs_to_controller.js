@@ -9,7 +9,8 @@ export default class extends Controller {
   static targets = ["id", "dropdown", "input", "label", "list"]
 
   static values = {
-    backendUrl: String
+    backendUrl: String,
+    view: String
   }
 
   buildCombobox() {
@@ -45,7 +46,10 @@ export default class extends Controller {
 
   fetchOptions(options) {
     get(this.backendUrlValue, {
-      query: { query: this.inputTarget.value }
+      query: {
+        query: this.inputTarget.value,
+        view: this.viewValue
+      }
     }).then(({response}) => {
       return response.text()
     }).then((html) => {

@@ -82,7 +82,7 @@ module Uchi
       #   Field::Number.new(:id).searchable(true)
       #
       # @example Setting with lambda
-      #   Field::BelongsTo.new(:company).searchable(lambda { |query:, term:|
+      #   Field::BelongsTo.new(:company).searchable(lambda { |context:, query:, term:|
       #     query.joins(:company).where("companies.name LIKE ?", "%#{term}%")
       #   })
       def searchable(value = Configuration::Unset)
@@ -141,7 +141,7 @@ module Uchi
       #   Field::Number.new(:calculated_sum).sortable(false)
       #
       # @example Setting with lambda
-      #   Field::Number.new(:users_count).sortable(lambda { |query:, direction:|
+      #   Field::Number.new(:users_count).sortable(lambda { |context:, direction:, query:|
       #     query.joins(:users).group(:id).order("COUNT(users.id) #{direction}")
       #   })
       #

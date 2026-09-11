@@ -26,7 +26,7 @@ module Uchi
           @associated_repository ||= begin
             model = reflection.klass
             repository_class = Uchi::Repository.for_model(model)
-            repository_class.new
+            repository_class.new(context: repository.context)
           end
         end
 
@@ -87,7 +87,7 @@ module Uchi
               "No repository found for associated model #{associated_model}"
           end
 
-          repository_class.new
+          repository_class.new(context: repository.context)
         end
 
         # Returns the scope to pass when linking to create a new record for

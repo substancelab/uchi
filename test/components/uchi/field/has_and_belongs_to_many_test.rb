@@ -80,6 +80,12 @@ module Uchi
         field = Uchi::Field::HasAndBelongsToMany.new(:categories).sortable(false)
         assert_not field.sortable?
       end
+
+      test "#associated_repository shares the owning repository's context, so its view isn't reset to nil" do
+        @repository.context.view = :edit
+
+        assert_same @repository.context, @field.associated_repository(record: @record).context
+      end
     end
 
     class HasAndBelongsToManyEditTest < ViewComponent::TestCase

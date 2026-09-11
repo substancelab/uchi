@@ -33,17 +33,18 @@ Uchi casts whatever data type the field uses into a string when searching and pe
 By default the search is performed using a `LIKE` query on the attribute (`ILIKE` in PostgreSQL). To customize how a field is searched, pass a lambda to the `searchable` method instead of `true`/`false`:
 
 ```ruby
-Field::String.new(:number).searchable(lambda { |query:, term:|
+Field::String.new(:number).searchable(lambda { |context:, query:, term:|
   # Remove space characters before searching
   term = term.tr(" ", "")
   query.where("REPLACE(number, ' ', '') LIKE ?", "%#{term}%")
 })
 ```
 
-The lambda receives 2 arguments:
+The lambda receives the following arguments:
 
-1. `query`: The `ActiveRecord::Relation` that makes up the current database query
-2. `term`: The search term entered by the user
+1. `context`: The [`Uchi::Context`](/context) we're currently processing.
+2. `query`: The `ActiveRecord::Relation` that makes up the current database query
+3. `term`: The search term entered by the user
 
 The lambda should return an `ActiveRecord::Relation` matching the records for that term. Results from lambda-based searchable fields are combined with results from other searchable fields on the repository.
 

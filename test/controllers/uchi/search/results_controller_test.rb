@@ -1,5 +1,25 @@
 require "test_helper"
 
+# Test repository capturing the context its searchable lambda is called with
+class BookWithContextCapturingSearchRepository < Uchi::Repository
+  class << self
+    attr_accessor :captured_context
+  end
+
+  def self.model
+    Book
+  end
+
+  def fields
+    [
+      Uchi::Field::String.new(:original_title).searchable(lambda { |context:, query:, term:|
+        self.class.captured_context = context
+        query.where(original_title: term)
+      })
+    ]
+  end
+end
+
 module Uchi
   module Search
     class ResultsControllerTest < ActionDispatch::IntegrationTest
@@ -37,6 +57,22 @@ module Uchi
         assert_raises(NameError) do
           get uchi.search_results_path(repository: "unknown", query: "Hobbit")
         end
+      end
+
+      test "GET index sets the context's view to :index before searching" do
+        original_repository = Uchi::Repositories::Book
+        Uchi::Repositories.send(:remove_const, :Book)
+        Uchi::Repositories.const_set(:Book, BookWithContextCapturingSearchRepository)
+        BookWithContextCapturingSearchRepository.captured_context = nil
+
+        begin
+          get uchi.search_results_path(repository: "books", query: "Hobbit")
+        ensure
+          Uchi::Repositories.send(:remove_const, :Book)
+          Uchi::Repositories.const_set(:Book, original_repository)
+        end
+
+        assert_equal :index, BookWithContextCapturingSearchRepository.captured_context&.view&.to_sym
       end
     end
   end

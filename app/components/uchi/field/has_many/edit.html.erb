@@ -172,6 +172,7 @@
     data-controller="has-many"
     data-has-many-backend-url-value="<%= helpers.uchi.has_many_associated_records_path(field: field.name, model: repository.model, record_id: record&.id) %>"
     data-has-many-field-name-value="<%= field_name_for_input %>"
+    data-has-many-view-value="<%= repository.context&.view %>"
   >
     <%= render(Uchi::Flowbite::Input::Label.new(attribute: field.name, form: form, options: {for: dom_id_for_toggle})) { label } %>
 

@@ -9,7 +9,8 @@ export default class extends Controller {
 
   static values = {
     backendUrl: String,
-    fieldName: String
+    fieldName: String,
+    view: String
   }
 
   clickOutside(event) {
@@ -31,7 +32,10 @@ export default class extends Controller {
 
   fetchOptions() {
     get(this.backendUrlValue, {
-      query: { query: this.inputTarget.value }
+      query: {
+        query: this.inputTarget.value,
+        view: this.viewValue
+      }
     }).then(({response}) => {
       return response.text()
     }).then((html) => {

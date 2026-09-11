@@ -36,7 +36,7 @@ module Uchi
     def index
       if params[:scope]
         # Handle being shown inline in another record's show view
-        parent_repository = Uchi::Repository.for_model(params[:scope][:model])&.new
+        parent_repository = Uchi::Repository.for_model(params[:scope][:model])&.new(context: @uchi_context)
         parent_record = parent_repository.find(params[:scope][:id])
         field_name = params[:scope][:field]
         inverse_of = params[:scope][:inverse_of]&.to_sym
@@ -157,7 +157,7 @@ module Uchi
       return default unless scoped?
 
       parent_model_name = scope[:model]
-      parent_repository = Uchi::Repository.for_model(parent_model_name)&.new
+      parent_repository = Uchi::Repository.for_model(parent_model_name)&.new(context: @uchi_context)
       raise NameError, "No repository found for scoped model #{parent_model_name}" unless parent_repository
 
       parent_model_id = scope[:id]
@@ -181,10 +181,10 @@ module Uchi
       association = parent_record.class.reflect_on_association(name.to_sym)
       raise NameError, "No association named #{name} on #{parent_record.class}" unless association
 
-      source_repository = Uchi::Repository.for_model(association.active_record)&.new
+      source_repository = Uchi::Repository.for_model(association.active_record)&.new(context: @uchi_context)
       raise NameError, "No repository found for scoped model #{association.active_record}" unless source_repository
 
-      associated_repository = Uchi::Repository.for_model(association.klass)&.new
+      associated_repository = Uchi::Repository.for_model(association.klass)&.new(context: @uchi_context)
       raise NameError, "No repository found for associated model #{association.klass}" unless associated_repository
 
       field = source_repository.fields.find { |f| f.name == name.to_sym }
@@ -271,7 +271,23 @@ module Uchi
     end
 
     def set_repository
-      @repository = repository_class.new
+      @repository = repository_class.new(context: @uchi_context)
+    end
+
+    def set_uchi_context
+      super
+      @uchi_context.view = view_for_action
+    end
+
+    # Maps the current action to the view it renders (or, for actions that
+    # only redirect on success, the view it falls back to on failure).
+    def view_for_action
+      case action_name
+      when "create" then :new
+      when "update" then :edit
+      when "destroy" then :index
+      else action_name.to_sym
+      end
     end
   end
 end
