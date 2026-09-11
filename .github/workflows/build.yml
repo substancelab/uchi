@@ -7,11 +7,54 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        db: [ sqlite, mysql, postgres ]
+        include:
+          - db: mysql
+            database_username: root
+            database_password: password
+          - db: postgres
+            database_username: postgres
+            database_password: postgres
     env:
       RAILS_ENV: test
+      DB: ${{ matrix.db }}
+      DATABASE_HOST: 127.0.0.1
+      DATABASE_USERNAME: ${{ matrix.database_username }}
+      DATABASE_PASSWORD: ${{ matrix.database_password }}
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
+      - name: Install client libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libmysqlclient-dev libpq-dev
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
         with:

@@ -13,6 +13,8 @@ gem "capybara"
 gem "standard", "~> 1.56"
 
 # Stuff for running the tests and the dummy app
+gem "mysql2"
+gem "pg"
 gem "rails-controller-testing"
 gem "sqlite3"
 
