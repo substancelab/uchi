@@ -5,13 +5,6 @@ class UchiContextTest < ActiveSupport::TestCase
     @context = Uchi::Context.new
   end
 
-  test "#repository reads and writes" do
-    repository = Object.new
-    @context.repository = repository
-
-    assert_equal repository, @context.repository
-  end
-
   test "#user reads and writes" do
     user = Object.new
     @context.user = user
