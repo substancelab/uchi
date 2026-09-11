@@ -151,6 +151,12 @@ module Uchi
         assert_kind_of Uchi::Repositories::Book, repo
       end
 
+      test "#associated_repository shares the parent repository's context, so its view isn't reset to nil" do
+        @repository.context.view = :edit
+
+        assert_same @repository.context, @component.associated_repository.context
+      end
+
       test "handles polymorphic associations with existing record" do
         # Create an ActiveStorage::Attachment which has a polymorphic belongs_to :record
         book = Book.create!(original_title: "Test Book")

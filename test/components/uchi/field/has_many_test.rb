@@ -213,6 +213,12 @@ module Uchi
       test "#associated_records returns empty array for new record" do
         assert_equal [], @component.associated_records
       end
+
+      test "#associated_repository shares the parent repository's context, so nested fields see the request's view" do
+        @repository.context.view = :edit
+
+        assert_same @repository.context, @component.associated_repository.context
+      end
     end
 
     class HasManyIndexTest < ViewComponent::TestCase
