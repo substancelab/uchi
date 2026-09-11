@@ -23,7 +23,12 @@ module Uchi
         repository_class = Uchi::Repository.all.find { |candidate| candidate.controller_name == params[:repository] }
         raise NameError, "No repository found for #{params[:repository]}" unless repository_class
 
-        repository_class.new
+        repository_class.new(context: uchi_context)
+      end
+
+      def set_uchi_context
+        super
+        @uchi_context.view = :index
       end
     end
   end
