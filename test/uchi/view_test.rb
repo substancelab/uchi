@@ -47,6 +47,10 @@ class UchiViewTest < ActiveSupport::TestCase
     assert_raises(ArgumentError) { Uchi::View.new(:preview) }
   end
 
+  test "raises when given an unsupported object" do
+    assert_raises(ArgumentError) { Uchi::View.new(Object.new) }
+  end
+
   test "#index? returns true only for the index view" do
     assert Uchi::View.new(:index).index?
     assert_not Uchi::View.new(:show).index?
