@@ -24,6 +24,9 @@ module Uchi
   #     end
   #   end
   class Action
+    # @return [Uchi::Context] the context in which the action is performed
+    attr_accessor :context
+
     # Returns the display name for this action.
     #
     # By default, this looks up the translation key

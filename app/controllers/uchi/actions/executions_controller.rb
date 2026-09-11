@@ -11,6 +11,7 @@ module Uchi
       def create
         repository = find_repository
         action = find_action(repository: repository)
+        action.context = uchi_context
         input = build_input(action: action)
         records = find_records(repository: repository)
 
@@ -37,7 +38,7 @@ module Uchi
           raise NameError, "Repository for model '#{model_name}' not found"
         end
 
-        repository_class.new
+        repository_class.new(context: uchi_context)
       end
 
       # Finds the action instance on the repository.
