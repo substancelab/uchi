@@ -28,6 +28,7 @@ jobs:
       mysql:
         image: mysql:8
         env:
+          MYSQL_ROOT_HOST: "%"
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: uchi_dummy_test
         ports:
