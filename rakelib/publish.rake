@@ -6,9 +6,12 @@ require_relative "verify_release"
 
 CHANGELOG_PATH = File.expand_path("../CHANGELOG.md", __dir__)
 
+def built_gem_version
+  Gem::Version.new(Uchi::VERSION).to_s
+end
+
 def built_gem_path
-  version = Gem::Version.new(Uchi::VERSION)
-  File.expand_path("../pkg/uchi-#{version}.gem", __dir__)
+  File.expand_path("../pkg/uchi-#{built_gem_version}.gem", __dir__)
 end
 
 def changelog_entry
@@ -75,12 +78,12 @@ namespace :release do
       host: Uchi::Publish::HOST,
       path: built_gem_path,
       token: Uchi::Publish.token,
-      version: Uchi::VERSION
+      version: built_gem_version
     )
 
-    puts "Pushing uchi #{Uchi::VERSION} to #{Uchi::Publish::HOST}..."
+    puts "Pushing uchi #{built_gem_version} to #{Uchi::Publish::HOST}..."
     message = publisher.publish!
-    puts message.empty? ? "Pushed uchi #{Uchi::VERSION}." : message
+    puts message.empty? ? "Pushed uchi #{built_gem_version}." : message
   rescue Uchi::Publish::Error => error
     abort error.message
   end
