@@ -43,6 +43,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_155224) do
     t.text "biography"
     t.date "born_on"
     t.datetime "created_at", null: false
+    t.boolean "deceased", default: false, null: false
     t.string "name"
     t.datetime "updated_at", null: false
   end
