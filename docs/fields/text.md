@@ -7,3 +7,7 @@ A multiline edit field (`textarea`).
 ```ruby
 Field::Text.new(:body)
 ```
+
+## Search
+
+Searchable by default. Matches with `LIKE`.

@@ -8,3 +8,7 @@ Renders a checkbox for editing, and a yes/no indicator on display pages.
 ```ruby
 Field::Boolean.new(:published)
 ```
+
+## Search
+
+Not searchable by default. If enabled, matches by equality against recognized true/false terms (`true`/`false`, `1`/`0`, `on`/`off`, ...); other terms match nothing.
