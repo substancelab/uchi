@@ -6,16 +6,6 @@ The cornerstones of Uchi are the repositories. This is where you configure what 
 
 There's a one-to-one mapping between a repository and a model. So if you have a `User` model that you want to include in Uchi, you must have a `User` repository as well.
 
-### Root URL
-
-If you want to expose a repository at the root URL (ie `/uchi/`) you can configure a [`root`](https://guides.rubyonrails.org/routing.html#using-root) for the namespace:
-
-```ruby
-namespace :uchi do
-  root "companies#index"
-end
-```
-
 ## How to configure the repository for a controller
 
 Each repository is exposed to the user via a controller. For the vast majority of cases Uchi guesses the repository to use for a given controller, but in case you have special requirements, you can override the `#repository_class` method in your controller:

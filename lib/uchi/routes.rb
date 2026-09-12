@@ -12,7 +12,14 @@ module Uchi
     # application's routes mapper.
     #
     # @param at [Symbol] The path segment where Uchi should be mounted.
-    def mount(host_routes, at: default_at)
+    #
+    # @yield Extra routes to draw inside the Uchi namespace, e.g. to show a
+    # specific repository at the root URL:
+    #
+    #  Uchi.routes.mount(self) do
+    #    root to: "projects#index"
+    #  end
+    def mount(host_routes, at: default_at, &block)
       @mount_at = (at || default_at).to_sym
       host_routes.mount(
         Uchi::Engine,
@@ -20,7 +27,7 @@ module Uchi
         at: mount_at
       )
 
-      draw_repository_routes(host_routes, at: mount_at)
+      draw_repository_routes(host_routes, at: mount_at, &block)
     end
 
     def draw_root_route(routes, repository:, at: default_at)
@@ -31,7 +38,7 @@ module Uchi
       end
     end
 
-    def draw_repository_routes(routes, at: default_at)
+    def draw_repository_routes(routes, at: default_at, &block)
       repositories = Uchi::Repository.all
 
       repositories.each do |repository_class|
@@ -41,7 +48,9 @@ module Uchi
         end
       end
 
-      draw_root_route(routes, at: at, repository: repositories.first)
+      routes.namespace(at, as: mount_as, &block) if block
+
+      draw_root_route(routes, at: at, repository: repositories.first) unless routes.has_named_route?(root_route_name)
     end
 
     # Returns the name to use when generating routing helper method names
@@ -63,6 +72,10 @@ module Uchi
 
     def mount_path
       mount_at
+    end
+
+    def root_route_name
+      :"#{mount_as}_root"
     end
   end
 end
