@@ -247,6 +247,81 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_equal [acme], clubs
   end
 
+  test "#find_all matches a searchable integer field by equality" do
+    alice = Author.create!(name: "Alice")
+    _bob = Author.create!(name: "Bob")
+    repository = Class.new(Uchi::Repository) do
+      define_singleton_method(:model) { Author }
+      define_method(:fields) {
+        [Uchi::Field::Number.new(:id).searchable(true)]
+      }
+    end.new
+
+    authors = repository.find_all(search: alice.id.to_s)
+
+    assert_equal [alice], authors
+  end
+
+  test "#find_all returns no records when a search term doesn't match a searchable integer field" do
+    Author.create!(name: "Alice")
+    repository = Class.new(Uchi::Repository) do
+      define_singleton_method(:model) { Author }
+      define_method(:fields) {
+        [Uchi::Field::Number.new(:id).searchable(true)]
+      }
+    end.new
+
+    authors = repository.find_all(search: "not-a-number")
+
+    assert_empty authors
+  end
+
+  test "#find_all matches a searchable boolean field by equality" do
+    alice = Author.create!(name: "Alice", deceased: true)
+    bob = Author.create!(name: "Bob", deceased: false)
+    repository = Class.new(Uchi::Repository) do
+      define_singleton_method(:model) { Author }
+      define_method(:fields) {
+        [Uchi::Field::Boolean.new(:deceased).searchable(true)]
+      }
+    end.new
+
+    assert_equal [alice], repository.find_all(search: "true")
+    assert_equal [bob], repository.find_all(search: "false")
+  end
+
+  test "#find_all returns no records when a search term doesn't match a searchable boolean field" do
+    Author.create!(name: "Alice", deceased: true)
+    Author.create!(name: "Bob", deceased: false)
+    repository = Class.new(Uchi::Repository) do
+      define_singleton_method(:model) { Author }
+      define_method(:fields) {
+        [Uchi::Field::Boolean.new(:deceased).searchable(true)]
+      }
+    end.new
+
+    authors = repository.find_all(search: "Alice")
+
+    assert_empty authors
+  end
+
+  test "#find_all combines a LIKE match on a text field with an equality match on a numeric field" do
+    alice = Author.create!(name: "Alice")
+    bob = Author.create!(name: "Bob")
+    repository = Class.new(Uchi::Repository) do
+      define_singleton_method(:model) { Author }
+      define_method(:fields) {
+        [
+          Uchi::Field::String.new(:name),
+          Uchi::Field::Number.new(:id).searchable(true)
+        ]
+      }
+    end.new
+
+    assert_equal [alice], repository.find_all(search: "Alic")
+    assert_equal [bob], repository.find_all(search: bob.id.to_s)
+  end
+
   test "#find_all applies a sort order if given" do
     alice = Author.create!(name: "Alice")
     bob = Author.create!(name: "Bob")
