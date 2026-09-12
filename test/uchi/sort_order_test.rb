@@ -33,7 +33,9 @@ class UchiSortOrderTest < ActiveSupport::TestCase
 
     sorted_query = sort_order.apply(query)
 
-    assert_includes sorted_query.to_sql, "ORDER BY \"authors\".\"name\" DESC"
+    quoted_table = Author.quoted_table_name
+    quoted_column = Author.connection.quote_column_name("name")
+    assert_includes sorted_query.to_sql, "ORDER BY #{quoted_table}.#{quoted_column} DESC"
     assert_equal sorted_query, query.order(name: :desc)
   end
 

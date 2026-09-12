@@ -130,7 +130,7 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_equal [alice, bob], authors
   end
 
-  test "#find_all applies a search query if given" do
+  test "#find_all applies a case independent search query if given" do
     alice = Author.create!(name: "Alice")
     _bob = Author.create!(name: "Bob")
 
@@ -140,22 +140,22 @@ class UchiRepositoryTest < ActiveSupport::TestCase
   end
 
   test "#find_all applies a search query using a lambda field on a plain attribute" do
-    alice = Author.create!(name: "Alice")
-    _bob = Author.create!(name: "Bob")
+    bob = Author.create!(name: "Bob")
+    _bobby = Author.create!(name: "Bobby")
     repository = Class.new(Uchi::Repository) do
       define_singleton_method(:model) { Author }
       define_method(:fields) {
         [
           Uchi::Field::String.new(:name).searchable(lambda { |context:, query:, term:|
-            query.where("name LIKE ?", "%#{term}%")
+            query.where(name: term)
           })
         ]
       }
     end.new
 
-    authors = repository.find_all(search: "IC")
+    authors = repository.find_all(search: "Bob")
 
-    assert_equal [alice], authors
+    assert_equal [bob], authors
   end
 
   test "#find_all combines results from two lambda fields on plain attributes via OR" do

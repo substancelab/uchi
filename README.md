@@ -206,6 +206,16 @@ After checking out the repo, run `bin/setup` to install dependencies. You can al
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, rename the `## Unreleased` heading in `CHANGELOG.md` to the new version, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file and its release notes to the Uchi Mothership at [gems.uchiadmin.com](https://gems.uchiadmin.com). Uchi is not published to rubygems.org. See [RELEASING.md](RELEASING.md) for the required API token and details.
 
+### Running tests against different databases
+
+The test suite runs against SQLite by default. To run it against MySQL or PostgreSQL, set `DB` to `mysql` or `postgres` (plus `DATABASE_HOST`/`DATABASE_USERNAME`/`DATABASE_PASSWORD` if they differ from the defaults in `test/dummy/config/database.yml`):
+
+```
+DB=mysql bundle exec rake app:test
+```
+
+See `.github/workflows/build.yml` for the service containers CI uses for each database.
+
 ## Principles
 
 ### Defaults are defaults
@@ -223,6 +233,10 @@ This includes both attributes and associations as much as feasible.
 ### Fewer assumptions
 
 We try to make as few assumptions about the consumer application as possible; even if it means the consumer has to be a bit more explicit in their code.
+
+### Be database agnostic
+
+We support the same DBMSs as ActiveRecord does.
 
 ## Credits
 

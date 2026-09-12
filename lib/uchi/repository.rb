@@ -235,9 +235,23 @@ module Uchi
         arel_field = model.arel_table[field.name]
         Arel::Nodes::NamedFunction.new(
           "CAST",
-          [arel_field.as(Arel::Nodes::SqlLiteral.new("VARCHAR"))]
+          [arel_field.as(Arel::Nodes::SqlLiteral.new(cast_to_text_type))]
         ).matches("%#{search}%")
       }
+    end
+
+    # Returns the CAST target type used to coerce non-text columns to text
+    # for substring search. MySQL doesn't support CAST(... AS VARCHAR) or
+    # CAST(... AS TEXT); it requires CHAR. Postgres and SQLite accept TEXT,
+    # but Postgres' bare CHAR truncates to a single character, so it can't be
+    # used as a shared default across adapters.
+    def cast_to_text_type
+      case model.connection.adapter_name
+      when /mysql/i
+        "CHAR"
+      else
+        "TEXT"
+      end
     end
 
     def apply_sort_order(query, sort_order)

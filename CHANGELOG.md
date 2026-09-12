@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `Uchi::Context` with useful details about what's currently happening.
 - `collection_query`, `searchable`, `sortable` procs now receive a `context` argument with the current `Uchi::Context`.
+- Official support for PostgreSQL and MySQL, in addition to SQLite.
 
 ### Changed
 

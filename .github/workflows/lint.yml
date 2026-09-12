@@ -18,6 +18,8 @@ jobs:
         run: npm run herb:lint
   ruby:
     runs-on: ubuntu-latest
+    env:
+      BUNDLE_WITHOUT: test_databases
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
