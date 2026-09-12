@@ -61,6 +61,14 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_equal :asc, sort_order.direction
   end
 
+  test "#default_sort_order returns a sort by the model's primary key ascending when it isn't named id" do
+    sort_order = club_repository.default_sort_order
+
+    assert sort_order.is_a?(Uchi::SortOrder)
+    assert_equal :club_id, sort_order.column
+    assert_equal :asc, sort_order.direction
+  end
+
   test "#fields_for_edit returns fields to include on the edit page" do
     fields = author_repository.fields_for_edit(record: Author.new)
 
@@ -221,6 +229,24 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_not_includes people, carol
   end
 
+  test "#find_all defaults to sorting by the model's primary key when it isn't named id" do
+    second = Club.create!(club_id: 20, name: "Second created, higher primary key")
+    first = Club.create!(club_id: 10, name: "First created, lower primary key")
+
+    clubs = club_repository.find_all
+
+    assert_equal [first, second], clubs
+  end
+
+  test "#find_all applies a search query using a lambda field when the model's primary key isn't named id" do
+    acme = Club.create!(name: "Acme")
+    _widgets = Club.create!(name: "Widgets")
+
+    clubs = club_repository.find_all(search: "Acme")
+
+    assert_equal [acme], clubs
+  end
+
   test "#find_all applies a sort order if given" do
     alice = Author.create!(name: "Alice")
     bob = Author.create!(name: "Bob")
@@ -298,6 +324,15 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     end
   end
 
+  test "#find_many looks up records by the model's primary key when it isn't named id" do
+    acme = Club.create!(name: "Acme")
+    _widgets = Club.create!(name: "Widgets")
+
+    clubs = club_repository.find_many([acme.club_id])
+
+    assert_equal [acme], clubs
+  end
+
   test "#model returns the model class the repository manages" do
     assert_equal Author, author_repository.model
   end
@@ -344,6 +379,25 @@ class UchiRepositoryTest < ActiveSupport::TestCase
 
   def book_repository
     Uchi::Repositories::Book.new
+  end
+
+  # Club has a primary key column named club_id rather than id, so this
+  # exercises the primary-key-aware branches in Repository (default sort
+  # order, #find_many, and the #id_in search subquery) that would otherwise
+  # only ever be tested against models where id and the primary key happen
+  # to be the same column.
+  def club_repository
+    Class.new(Uchi::Repository) do
+      define_singleton_method(:model) { Club }
+      define_method(:fields) {
+        [
+          Uchi::Field::Number.new(:club_id),
+          Uchi::Field::String.new(:name).searchable(lambda { |query:, term:|
+            query.where(name: term)
+          })
+        ]
+      }
+    end.new
   end
 
   def title_repository
