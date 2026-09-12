@@ -8,3 +8,7 @@ Renders a date picker for editing.
 ```ruby
 Field::Date.new(:published_on)
 ```
+
+## Search
+
+Not searchable by default. If enabled, matches by equality; the search term must parse as a date (e.g. `2024-01-01`).

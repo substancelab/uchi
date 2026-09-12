@@ -7,3 +7,7 @@ A basic input field intended for simple, single line values.
 ```ruby
 Field::String.new(:name)
 ```
+
+## Search
+
+Searchable by default. Matches with `LIKE`.

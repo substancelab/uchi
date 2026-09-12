@@ -8,3 +8,7 @@ Renders a date and time picker for editing.
 ```ruby
 Field::DateTime.new(:published_at)
 ```
+
+## Search
+
+Not searchable by default. If enabled, matches by equality; the search term must parse as a date/time (e.g. `2024-01-01 12:00`).

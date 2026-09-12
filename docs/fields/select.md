@@ -7,6 +7,10 @@ The `Select` field renders a dropdown letting users pick a value from a fixed se
 
 Values are matched against option keys by their string representation, so e.g. a persisted string of `"fiction"` matches an option keyed by the symbol `:fiction` - the same way a `<select>` element matches its options against the persisted attribute value.
 
+## Search
+
+Not searchable by default. If enabled, search follows the underlying column's type (`LIKE` for string/text, equality otherwise) and matches against the stored value, not the label.
+
 ## How to add a Select field
 
 Add a `Select` field to a repository's `#fields` method, configuring the available options with `#options`:
