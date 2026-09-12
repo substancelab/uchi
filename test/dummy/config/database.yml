@@ -18,9 +18,11 @@ default: &default
   host: <%= ENV.fetch("DATABASE_HOST", "127.0.0.1").to_json %>
   username: <%= ENV.fetch("DATABASE_USERNAME", "postgres").to_json %>
   password: <%= ENV.fetch("DATABASE_PASSWORD", "postgres").to_json %>
-<% else %>
+<% elsif db == "sqlite" %>
   adapter: sqlite3
   timeout: 5000
+<% else %>
+  <% raise "Unsupported DB #{db.inspect}" %>
 <% end %>
 
 development:
