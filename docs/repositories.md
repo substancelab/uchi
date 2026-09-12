@@ -8,10 +8,10 @@ There's a one-to-one mapping between a repository and a model. So if you have a 
 
 ### Root URL
 
-If you want to expose a repository at the root URL (ie `/uchi/`) you can configure a [`root`](https://guides.rubyonrails.org/routing.html#using-root) for the namespace:
+If you want another repository to be displayed at the root URL (ie `/uchi`), pass a block to `mount` and draw the route yourself:
 
 ```ruby
-namespace :uchi do
+Uchi.routes.mount(self) do
   root "companies#index"
 end
 ```

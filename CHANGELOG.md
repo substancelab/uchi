@@ -27,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Views are now referenced using a `Uchi::View` instead of a `Symbol` as before.
 - `Repository#title` now prefers the return value from the `title` method before checking for `name` or `to_s`, because, well, that's what the method is named.
 
+### Fixed
+
+- The root repository URL can now be customized in a way that works even when mounted at a custom mount point.
+
 
 ## [0.3.1]
 
