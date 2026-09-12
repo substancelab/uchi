@@ -2,6 +2,18 @@
 
 Uchi assumes as little as possible about your application, which means authentication is up to your code. This, however, also means you can continue to use whatever authentication mechanism you've already implemented, be it HTTP Basic Authentication, Devise, Rails' authentication generator, or something entirely different.
 
+## Current user
+
+Uchi exposes a [Uchi::Context](/context) instance which includes the currently logged in user.
+
+To expose the current user to Uchi, set the user value in the context in `before_action`:
+
+```ruby
+before_action do
+  uchi_context.user = Current.session&.user
+end
+```
+
 ## Rails' authentication generator
 
 :::note
@@ -23,10 +35,16 @@ Include the `Authentication` module and provide a `new_session_path` method, whi
 To use routes from your application inside the `Uchi` namespace you need to prefix them with `main_app`.
 :::
 
+And finally expose the currently logged in user from the session to Uchi's context.
+
 ```ruby
 module Uchi
   class ApplicationController < Uchi::Controller
     include Authentication
+
+    before_action {
+      uchi_context.user = Current.session&.user
+    }
 
     def new_session_path
       main_app.new_session_path
@@ -34,9 +52,3 @@ module Uchi
   end
 end
 ```
-
-## Current user
-
-Uchi exposes a [Uchi::Current](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html) class which includes the currently logged in user at `Uchi::Current.user`.
-
-By default Uchi gets the user using the global `current_user` method, so it should work with Devise and most Rails authentication systems.
