@@ -130,7 +130,7 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_equal [alice, bob], authors
   end
 
-  test "#find_all applies a search query if given" do
+  test "#find_all applies a case independent search query if given" do
     alice = Author.create!(name: "Alice")
     _bob = Author.create!(name: "Bob")
 
