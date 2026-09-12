@@ -59,7 +59,7 @@ When changing the default mount point you need to update your controllers to use
 
 ### How to change the root URL
 
-If you want another repository to be displayed at the root URL (ie `/uchi`), pass a block to `mount` and draw the route yourself:
+If you want the root URL (i.e. `/uchi`) to go to another repository than the default, pass a block to `mount` and draw the route yourself:
 
 ```ruby
 # config/routes.rb
