@@ -25,13 +25,8 @@ module Uchi
     attr_reader :uchi_context
     helper_method :uchi_context
 
-    helper_method def uchi_user
-      current_user if respond_to?(:current_user, true)
-    end
-
     def set_uchi_context
       @uchi_context = Uchi::Context.new
-      @uchi_context.user = uchi_user
     end
   end
 end
