@@ -234,6 +234,10 @@ This includes both attributes and associations as much as feasible.
 
 We try to make as few assumptions about the consumer application as possible; even if it means the consumer has to be a bit more explicit in their code.
 
+### Be database agnostic
+
+We support the same DBMSs as ActiveRecord does.
+
 ## Credits
 
 * Uchi contains parts of [Pagy](https://github.com/ddnexus/pagy), Copyright (c) 2017-2025 Domizio Demichelis
