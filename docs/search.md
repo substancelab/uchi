@@ -4,7 +4,7 @@ Uchi offers search across your repositories and fields out of the box.
 
 Search is configured on a field-by-field basis. If a repository contains at least one searchable `Field`, a search field appears on the index page, and a global search page is enabled.
 
-The search is fairly naive and is a bunch of `LIKE '%term%'` (`ILIKE` in PostgreSQL) clauses strung together by `OR`, but this can be modified by passing lambdas to `searchable` for the given field.
+The search is fairly naive and is a bunch of conditions strung together by `OR`: `LIKE '%term%'` for text-based fields, equality for everything else. This can be modified by passing lambdas to `searchable` for the given field.
 
 ## Global search
 
@@ -26,11 +26,11 @@ You can also enable search for fields that don't enable it by default:
 Field::Number.new(:id).searchable(true)
 ```
 
-Uchi casts whatever data type the field uses into a string when searching and performs a partial match on it using `LIKE` (`ILIKE` in PostgreSQL), which may or may not yield the results you expect.
+For text-based fields (`string`, `text`) Uchi performs a partial match using `LIKE` (`ILIKE` in PostgreSQL). For every other field type, the search term is cast to the field's type and matched by equality; if the term can't be cast (e.g. `"abc"` against an `:id`), the field is skipped.
 
 ## Customize search
 
-By default the search is performed using a `LIKE` query on the attribute (`ILIKE` in PostgreSQL). To customize how a field is searched, pass a lambda to the `searchable` method instead of `true`/`false`:
+By default the search is performed using `LIKE`/equality as described above. To customize how a field is searched, pass a lambda to the `searchable` method instead of `true`/`false`:
 
 ```ruby
 Field::String.new(:number).searchable(lambda { |context:, query:, term:|
