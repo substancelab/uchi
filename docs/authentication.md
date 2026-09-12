@@ -10,7 +10,7 @@ To expose the current user to Uchi, set the user value in the context in `before
 
 ```ruby
 before_action do
-  uchi_context.user = Current.session&.user
+  uchi_context.user = current_user
 end
 ```
 
