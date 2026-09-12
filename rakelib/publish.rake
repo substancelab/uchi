@@ -7,7 +7,8 @@ require_relative "verify_release"
 CHANGELOG_PATH = File.expand_path("../CHANGELOG.md", __dir__)
 
 def built_gem_path
-  File.expand_path("../pkg/uchi-#{Uchi::VERSION}.gem", __dir__)
+  version = Gem::Version.new(Uchi::VERSION)
+  File.expand_path("../pkg/uchi-#{version}.gem", __dir__)
 end
 
 def changelog_entry
