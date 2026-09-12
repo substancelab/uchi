@@ -14,9 +14,29 @@ before_action do
 end
 ```
 
-## Rails' authentication generator
+Uchi doesn't care what type the value is, it can be a fully fledged `User` object, or perhaps a `String` with a username, it's up to you.
+
+## Basic authentication
+
+The simplest way to lock your admin interface down is to enable basic authentication in your `Uchi::ApplicationController`:
+
+```ruby
+module Uchi
+  class ApplicationController < Uchi::Controller
+    http_basic_authenticate_with name: "uchi", password: "rocks"
+  end
+end
+```
+
+See [HTTP Basic authentication](https://api.rubyonrails.org/classes/ActionController/HttpAuthentication/Basic.html) for more advanced examples.
 
 :::note
+This does not add a logged in user to `Uchi::Context`.
+:::
+
+## Rails' authentication generator
+
+:::tip
 While the examples here are based on [Rails' authentication generator](https://guides.rubyonrails.org/security.html#authentication) the patterns should work for pretty much all authentication systems with some modifications.
 :::
 

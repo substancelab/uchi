@@ -143,58 +143,7 @@ en:
 
 ## Authentication
 
-### Basic authentication
-
-The simplest way to lock your admin interface down is to enable basic authentication in your `Uchi::ApplicationController`:
-
-```ruby
-module Uchi
-  class ApplicationController < Uchi::Controller
-    http_basic_authenticate_with :name => "uchi", :password => "rocks"
-  end
-end
-```
-
-See https://api.rubyonrails.org/classes/ActionController/HttpAuthentication/Basic.html for more advanced examples.
-
-## Existing authentication
-
-Uchi exposes a helper method (both in views and controllers) called `#uchi_user`. By default it calls the global `current_user` method, so it should work with Devise and most Rails authentication systems.
-
-In order to require the user to be logged in, you could do something like
-
-```ruby
-module Uchi
-  class ApplicationController < Uchi::Controller
-    before_action :authenticate_user!
-
-    private
-
-    def authenticate_user!
-      return if uchi_user
-
-      # Insert more details authentication requirements here, for example:
-      # return unless uchi_user && uchi_user.admin?
-
-      redirect_to main_app.new_user_session_path, :alert => "You must be signed in to access this section."
-    end
-  end
-end
-```
-
-### Not using `current_user`?
-
-If you expose the current user model via another method name, override the `uchi_user` method in your `Uchi::ApplicationController`:
-
-```ruby
-module Uchi
-  class ApplicationController < Uchi::Controller
-    def uchi_user
-      current_employee
-    end
-  end
-end
-```
+Uchi assumes as little as possible about your application, which means authentication is up to your code. See [the authentication docs](https://docs.uchiadmin.com/authentication) for details.
 
 ## Contributing
 
