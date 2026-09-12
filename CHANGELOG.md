@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - The root repository URL can now be customized in a way that works even when mounted at a custom mount point.
+- Repositories now support models with primary key columns not named `id`.
 
 
 ## [0.3.1]

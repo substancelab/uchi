@@ -58,7 +58,7 @@ module Uchi
     end
 
     def default_sort_order
-      SortOrder.new(:id, :asc)
+      SortOrder.new(model.primary_key.to_sym, :asc)
     end
 
     # Returns an array of fields to show on the edit page.
@@ -115,7 +115,7 @@ module Uchi
     #
     # @return [ActiveRecord::Relation] The found records
     def find_many(ids)
-      model.where(id: ids)
+      model.where(model.primary_key => ids)
     end
 
     def find(id)
@@ -227,7 +227,8 @@ module Uchi
     # Wraps a scope in an `id IN (subquery)` Arel condition, so it can be
     # combined with other search conditions without running its own query.
     def id_in(scope)
-      model.arel_table[:id].in(scope.select(:id).arel)
+      primary_key = model.primary_key.to_sym
+      model.arel_table[primary_key].in(scope.select(primary_key).arel)
     end
 
     def plain_field_conditions(fields, search)
