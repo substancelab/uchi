@@ -12,5 +12,8 @@ module Uchi
 
     # Shorthand for all views.
     ALL = [EDIT, INDEX, NEW, SHOW]
+
+    # Shorthand for views with a form
+    FORM = [EDIT, NEW]
   end
 end

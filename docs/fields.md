@@ -48,13 +48,7 @@ or you can use the symbol shorthand:
 Field::Number.new(:id).on(:index)
 ```
 
-Possible actions are
-
-| Symbol | Constant |
-| `Uchi::View::EDIT` | `:edit` |
-| `Uchi::View::INDEX` | `:index` |
-| `Uchi::View::NEW` | `:new` |
-| `Uchi::View::SHOW` | `:show` |
+See the [Views documentation](/views) for possible values.
 
 ### Only show a field for specific records
 

@@ -2,14 +2,28 @@
 
 The individual screens and pages Uchi renders are divided into a set of views:
 
-- Edit
-- Index
-- New
-- Show
+* Edit
+* Index
+* New
+* Show
 
-These map cleanly to the actions (and views) you know from standard Rails CRUD controllers. In Uchi the views are shared across all repositories, meaning it's the same view template that renders the show page for all records.
+These map to the actions (and views) you know from standard Rails CRUD controllers. In Uchi the views are shared across all repositories, meaning it's the same view template that renders the show page for all records.
 
 In code each view is represented as a `Uchi::View` instance. Each instance is available as a constant, e.g. `Uchi::View::NEW` etc.
+
+| View | Constant |
+|---|---|
+| Edit | `Uchi::View::EDIT` |
+| Index | `Uchi::View::INDEX` |
+| New | `Uchi::View::NEW` |
+| Show | `Uchi::View::SHOW` |
+
+In addition to these we have a few shorthands:
+
+| Constant | Description |
+|---|---|
+| `Uchi::View::ALL` | An `Array` with all the views |
+| `Uchi::View::FORM` | An `Array` with views with form fields `[Uchi::View::EDIT, Uchi::View::NEW]` |
 
 You can use these when defining [field visibility](/fields#visibility):
 
