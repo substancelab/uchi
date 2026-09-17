@@ -147,7 +147,10 @@ module Uchi
     #
     # @return [Array<Uchi::Action>]
     def actions
-      []
+      [
+        Action::Edit.new,
+        Action::Delete.new
+      ]
     end
 
     # Returns the actions configured to appear in the given view.

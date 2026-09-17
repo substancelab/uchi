@@ -43,10 +43,12 @@ class TestRepositoryWithScopedActions < Uchi::Repository
 end
 
 class UchiRepositoryActionsTest < ActiveSupport::TestCase
-  test "#actions returns empty array by default" do
+  test "#actions returns array with default actions" do
     repository = Uchi::Repositories::Author.new
 
-    assert_equal [], repository.actions
+    assert_equal \
+      [Uchi::Action::Edit, Uchi::Action::Delete],
+      repository.actions.map(&:class)
   end
 
   test "#actions can be overridden to return actions" do
