@@ -39,13 +39,13 @@ Uchi ships with a bunch of field types that you can use to build out your user i
 Use the `on` method to control what pages to show a field on. For example if your id field should only be visible on the index listing, you can configure it as
 
 ```ruby
-Field::Number.new(:id).on(Uchi::View::INDEX)
+Field::Id.new(:id).on(Uchi::View::INDEX)
 ```
 
 or you can use the symbol shorthand:
 
 ```ruby
-Field::Number.new(:id).on(:index)
+Field::Id.new(:id).on(:index)
 ```
 
 See the [Views documentation](/views) for possible values.
