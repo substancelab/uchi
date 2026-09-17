@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "uchi/view"
+require "uchi/view" unless defined?(Uchi::View)
 
 module Uchi
   class View
