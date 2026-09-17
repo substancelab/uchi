@@ -62,3 +62,5 @@ module Uchi
     end
   end
 end
+
+require "uchi/view/constants"

@@ -27,7 +27,7 @@ module Uchi
       protected
 
       def default_on
-        [Uchi::View.new(:edit), Uchi::View.new(:new), Uchi::View.new(:show)]
+        [Uchi::View::EDIT, Uchi::View::NEW, Uchi::View::SHOW]
       end
 
       def default_searchable?

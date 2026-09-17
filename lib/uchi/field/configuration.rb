@@ -173,7 +173,7 @@ module Uchi
       protected
 
       def default_on
-        Uchi::View::NAMES.map { |name| Uchi::View.new(name) }
+        Uchi::View::ALL
       end
 
       def default_searchable?
