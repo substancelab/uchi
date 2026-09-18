@@ -148,6 +148,7 @@ module Uchi
     # @return [Array<Uchi::Action>]
     def actions
       [
+        Action::New.new,
         Action::Edit.new,
         Action::Delete.new
       ]
