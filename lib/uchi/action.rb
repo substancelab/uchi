@@ -66,7 +66,8 @@ module Uchi
       raise NotImplementedError, "#{self.class}#perform must be implemented"
     end
 
-    # Returns the HTML necessary for executing the action.
+    # Returns the HTML necessary for executing the action as an item in a
+    # dropdown menu of actions (see Uchi::Ui::Actions::Dropdown).
     #
     # By default, actions are rendered as a button that, when clicked, submits
     # a POST request to execute the action (see #perform). Override this
@@ -76,7 +77,7 @@ module Uchi
     # @param record [Object] - The record the action would apply to
     # @param view [ActionView::Base] - The view context for rendering
     # @return [String] HTML for executing the action
-    def render(record:, view:)
+    def render_as_dropdown_item(record:, view:)
       view.form_with(url: view.uchi.actions_executions_path, method: :post, class: "block") do
         view.safe_join([
           view.hidden_field_tag(:model, repository.model.name),
@@ -107,11 +108,11 @@ module Uchi
     # standalone primary button/link, for use when it is rendered outside the
     # dropdown menu. (see Uchi::Ui::Actions::Dropdown).
     #
-    # By default, this looks like #render but styled with the Flowbite
-    # button classes matching #style, instead of the menu item styling used
-    # when this action appears alongside others in a dropdown. Override
-    # this method to render the action differently, e.g. as a plain link
-    # (see Uchi::Action::Edit).
+    # By default, this looks like #render_as_dropdown_item but styled with the
+    # Flowbite button classes matching #style, instead of the menu item styling
+    # used when this action appears alongside others in a dropdown. Override
+    # this method to render the action differently, e.g. as a plain link (see
+    # Uchi::Action::Edit).
     #
     # @param record [Object] - The record the action would apply to
     # @param view [ActionView::Base] - The view context for rendering

@@ -19,7 +19,7 @@ module Uchi
 
       # Renders as a plain link to the edit page, instead of a button that
       # executes the action via a POST request.
-      def render(record:, view:)
+      def render_as_dropdown_item(record:, view:)
         view.link_to(
           repository.translate.link_to_edit(record),
           repository.routes.path_for(:edit, id: record.id),

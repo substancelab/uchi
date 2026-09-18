@@ -21,7 +21,7 @@ module Uchi
       # Renders as a button that submits a DELETE request directly to the
       # record's destroy route, with a confirmation dialog, instead of
       # executing the action via the generic actions execution endpoint.
-      def render(record:, view:)
+      def render_as_dropdown_item(record:, view:)
         view.button_to(
           repository.translate.link_to_destroy(record),
           repository.routes.path_for(:destroy, id: record.id),

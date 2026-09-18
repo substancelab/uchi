@@ -134,11 +134,11 @@ class UchiActionTest < ActiveSupport::TestCase
     assert_same repository, action.repository
   end
 
-  test "#render uses the repository set on the action" do
+  test "#render_as_dropdown_item uses the repository set on the action" do
     action = TestPublishAction.new
     action.repository = fake_repository
 
-    action.render(record: nil, view: fake_action_view)
+    action.render_as_dropdown_item(record: nil, view: fake_action_view)
 
     assert_equal Author, action.repository.model
   end
@@ -163,14 +163,14 @@ class UchiActionTest < ActiveSupport::TestCase
   private
 
   # A minimal stand-in for the Uchi::Repository instance passed to
-  # Action#render and Action#render_as_button.
+  # Action#render_as_dropdown_item and Action#render_as_button.
   def fake_repository
     Struct.new(:model).new(Author)
   end
 
   # A minimal stand-in for the ActionView::Base instance passed to
-  # Action#render and Action#render_as_button, just enough to exercise those
-  # methods without a real view context.
+  # Action#render_as_dropdown_item and Action#render_as_button, just enough to
+  # exercise those methods without a real view context.
   def fake_action_view
     Class.new do
       def uchi

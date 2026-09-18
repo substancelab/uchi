@@ -47,7 +47,7 @@
       >
         <% actions_inside_dropdown.each do |action| %>
           <li role="menuitem">
-            <%= action.render(record: record, view: self.view_context) %>
+            <%= action.render_as_dropdown_item(record: record, view: self.view_context) %>
           </li>
         <% end %>
       </ul>
