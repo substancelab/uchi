@@ -52,6 +52,22 @@ module Uchi
           assert_no_selector("a")
           assert_no_selector("[data-controller='dropdown']")
         end
+
+        test "assigns the repository to each action" do
+          action = DropdownTestAction.new
+
+          render_inline(Dropdown.new(actions: [action], repository: @repository))
+
+          assert_same @repository, action.repository
+        end
+
+        test "assigns the repository's context to each action" do
+          action = DropdownTestAction.new
+
+          render_inline(Dropdown.new(actions: [action], repository: @repository))
+
+          assert_same @repository.context, action.context
+        end
       end
     end
   end
