@@ -9,7 +9,7 @@ class DropdownTestAction < Uchi::Action
     view.link_to(name, "#")
   end
 
-  def button_render(record:, view:)
+  def render_as_button(record:, view:)
     view.link_to(name, "#", class: Uchi::Flowbite::Button.classes)
   end
 end

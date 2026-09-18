@@ -116,7 +116,7 @@ module Uchi
     # @param record [Object] - The record the action would apply to
     # @param view [ActionView::Base] - The view context for rendering
     # @return [String] HTML for executing the action
-    def button_render(record:, view:)
+    def render_as_button(record:, view:)
       view.form_with(url: view.uchi_path_to(:actions_executions), method: :post, class: "inline-block") do
         view.safe_join([
           view.hidden_field_tag(:model, repository.model.name),
