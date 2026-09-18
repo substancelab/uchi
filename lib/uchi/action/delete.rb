@@ -35,8 +35,8 @@ module Uchi
         )
       end
 
-      # Renders as a primary (danger-styled) button, for use when this is
-      # the only action available.
+      # Renders as a primary (danger-styled) button, for use when the action
+      # is rendered outside the dropdown menu.
       def render_as_button(record:, view:)
         view.button_to(
           repository.translate.link_to_destroy(record),

@@ -28,7 +28,7 @@ module Uchi
       end
 
       # Renders a button to trigger the action, linking to the edit page, for
-      # use when this is the only action available.
+      # use when the action is rendered outside the dropdown menu.
       def render_as_button(record:, view:)
         view.link_to(
           repository.translate.link_to_edit(record),

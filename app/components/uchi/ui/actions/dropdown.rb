@@ -5,10 +5,10 @@ module Uchi
     module Actions
       # Renders a dropdown menu of actions that can be performed on a record.
       #
-      # This component displays available actions for a repository in a dropdown
-      # menu. Each action can be clicked to execute it on the specified record(s).
-      # When there's only a single action, it's rendered directly instead of
-      # being wrapped in a dropdown.
+      # This component displays available actions for a repository. Each action
+      # can be clicked to execute it on the specified record(s). The first
+      # Repository#max_number_of_actions_outside_dropdown actions are rendered
+      # directly as buttons; any remaining actions are placed in a dropdown menu.
       class Dropdown < ViewComponent::Base
         include Uchi::RoutesHelper
 
