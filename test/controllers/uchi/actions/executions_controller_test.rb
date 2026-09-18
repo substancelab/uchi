@@ -70,6 +70,17 @@ class ContextCapturingAuthorAction < Uchi::Action
   end
 end
 
+class RepositoryCapturingAuthorAction < Uchi::Action
+  class << self
+    attr_accessor :captured_repository
+  end
+
+  def perform(records, input = {})
+    self.class.captured_repository = repository
+    Uchi::ActionResponse.success
+  end
+end
+
 # Test repository with actions (not in Uchi::Repositories to avoid auto-discovery)
 class AuthorWithActionsRepository < Uchi::Repository
   def self.model
@@ -89,7 +100,8 @@ class AuthorWithActionsRepository < Uchi::Repository
       DownloadAuthorAction.new,
       TurboStreamAuthorAction.new,
       FailingAuthorAction.new,
-      ContextCapturingAuthorAction.new
+      ContextCapturingAuthorAction.new,
+      RepositoryCapturingAuthorAction.new
     ]
   end
 end
@@ -101,6 +113,7 @@ module Uchi
         @alice = Author.create!(name: "Alice")
         @bob = Author.create!(name: "Bob")
         ContextCapturingAuthorAction.captured_context = nil
+        RepositoryCapturingAuthorAction.captured_repository = nil
 
         # Temporarily remove standard Author repository and inject test repository
         if Uchi::Repositories.const_defined?(:Author)
@@ -275,6 +288,18 @@ module Uchi
 
         assert_response :redirect
         assert_instance_of Uchi::Context, ContextCapturingAuthorAction.captured_context
+      end
+
+      test "POST create sets the repository on the action before performing it" do
+        post uchi.actions_executions_path,
+          params: {
+            model: "Author",
+            action_name: "RepositoryCapturingAuthorAction",
+            id: @alice.id
+          }
+
+        assert_response :redirect
+        assert_instance_of AuthorWithActionsRepository, RepositoryCapturingAuthorAction.captured_repository
       end
 
       test "POST create handles invalid record ID gracefully" do

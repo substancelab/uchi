@@ -6,30 +6,14 @@
     title: @repository.translate.title_for_show(@record),
   )
 ) do |header| %>
-  <% if @repository.actions.any? %>
+  <% if @repository.actions_for(Uchi::View::SHOW).any? %>
     <% header.with_action do %>
       <%= render(Uchi::Ui::Actions::Dropdown.new(
-        actions: @repository.actions,
+        actions: @repository.actions_for(Uchi::View::SHOW),
         record: @record,
         repository: @repository
       )) %>
     <% end %>
-  <% end %>
-
-  <% header.with_action do %>
-    <%= button_to(
-      @repository.translate.link_to_destroy(@record),
-      @repository.routes.path_for(:destroy, id: @record.id),
-      method: :delete,
-      class: Uchi::Flowbite::Button.classes(style: :danger),
-      data: {
-        :"turbo-confirm" => @repository.translate.destroy_dialog_title(@record)
-      }
-    ) %>
-  <% end %>
-
-  <% header.with_action do %>
-    <%= link_to(@repository.translate.link_to_edit(@record), @repository.routes.path_for(:edit, id: @record.id), class: Uchi::Flowbite::Button.classes) %>
   <% end %>
 
   <% header.with_breadcrumb(items: [

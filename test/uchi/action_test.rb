@@ -101,4 +101,97 @@ class UchiActionTest < ActiveSupport::TestCase
     assert response.success?
     assert_includes response.message_text, "Test"
   end
+
+  test "#on returns [:show] by default" do
+    action = TestPublishAction.new
+
+    assert_equal [Uchi::View::SHOW], action.on
+  end
+
+  test "#on sets the contexts and returns self for chaining" do
+    action = TestPublishAction.new
+
+    result = action.on(:index)
+
+    assert_same action, result
+    assert_equal [Uchi::View::INDEX], action.on
+  end
+
+  test "#on flattens array arguments" do
+    action = TestPublishAction.new
+
+    action.on([Uchi::View::INDEX, Uchi::View::SHOW])
+
+    assert_equal [Uchi::View::INDEX, Uchi::View::SHOW], action.on
+  end
+
+  test "#repository can be set and read" do
+    action = TestPublishAction.new
+    repository = Object.new
+
+    action.repository = repository
+
+    assert_same repository, action.repository
+  end
+
+  test "#render_as_dropdown_item uses the repository set on the action" do
+    action = TestPublishAction.new
+    action.repository = fake_repository
+
+    action.render_as_dropdown_item(record: nil, view: fake_action_view)
+
+    assert_equal Author, action.repository.model
+  end
+
+  test "#render_as_button uses the repository set on the action" do
+    action = TestPublishAction.new
+    action.repository = fake_repository
+
+    action.render_as_button(record: Author.new, view: fake_action_view)
+
+    assert_equal Author, action.repository.model
+  end
+
+  test "Edit is visible on :show by default" do
+    assert_equal [Uchi::View::SHOW], Uchi::Action::Edit.new.on
+  end
+
+  test "Delete is only visible on :edit by default" do
+    assert_equal [Uchi::View::EDIT], Uchi::Action::Delete.new.on
+  end
+
+  private
+
+  # A minimal stand-in for the Uchi::Repository instance passed to
+  # Action#render_as_dropdown_item and Action#render_as_button.
+  def fake_repository
+    Struct.new(:model).new(Author)
+  end
+
+  # A minimal stand-in for the ActionView::Base instance passed to
+  # Action#render_as_dropdown_item and Action#render_as_button, just enough to
+  # exercise those methods without a real view context.
+  def fake_action_view
+    Class.new do
+      def uchi
+        Struct.new(:actions_executions_path).new("/uchi/actions/executions")
+      end
+
+      def form_with(**)
+        yield
+      end
+
+      def hidden_field_tag(*)
+        ""
+      end
+
+      def button_tag(*, **)
+        block_given? ? yield : ""
+      end
+
+      def safe_join(array)
+        array.join
+      end
+    end.new
+  end
 end

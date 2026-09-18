@@ -1,6 +1,14 @@
 module Uchi
   module Repositories
     class Book < Repository
+      def actions
+        [
+          Action::Delete.new,
+          Action::Edit.new.on([Uchi::View::SHOW]),
+          Action::New.new
+        ]
+      end
+
       def fields
         [
           Field::HasMany.new(:titles).nested_fields(
@@ -12,6 +20,8 @@ module Uchi
       end
 
       def title(model)
+        return self.class unless model
+
         model.original_title
       end
     end

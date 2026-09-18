@@ -147,7 +147,28 @@ module Uchi
     #
     # @return [Array<Uchi::Action>]
     def actions
-      []
+      [
+        Action::New.new,
+        Action::Edit.new,
+        Action::Delete.new
+      ]
+    end
+
+    # Returns the actions configured to appear in the given view.
+    #
+    # @param view [Uchi::View, Symbol] The view to get actions for.
+    # @return [Array<Uchi::Action>]
+    def actions_for(view)
+      actions.select { |action| action.on.include?(view) }
+    end
+
+    # Returns the maximum number of actions that should be displayed outside of
+    # the dropdown menu. If a repository has more than this amount of actions
+    # registered, a dropdown menu will be used for the extra actions.
+    #
+    # @return [Integer] The maximum number of actions outside the dropdown.
+    def max_number_of_actions_outside_dropdown
+      2
     end
 
     def model
