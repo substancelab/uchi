@@ -125,7 +125,11 @@ class UchiActionTest < ActiveSupport::TestCase
     assert_equal [Uchi::View::INDEX, Uchi::View::SHOW], action.on
   end
 
-  test "Delete is only visible on :show by default" do
-    assert_equal [Uchi::View::SHOW], Uchi::Action::Delete.new.on
+  test "Edit is visible on :show by default" do
+    assert_equal [Uchi::View::SHOW], Uchi::Action::Edit.new.on
+  end
+
+  test "Delete is only visible on :edit by default" do
+    assert_equal [Uchi::View::EDIT], Uchi::Action::Delete.new.on
   end
 end

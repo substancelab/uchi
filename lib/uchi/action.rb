@@ -87,7 +87,7 @@ module Uchi
           ) do
             name
           end
-        ])
+        ].compact)
       end
     end
 
