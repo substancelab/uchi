@@ -162,6 +162,15 @@ module Uchi
       actions.select { |action| action.on.include?(view) }
     end
 
+    # Returns the maximum number of actions that should be displayed outside of
+    # the dropdown menu. If a repository has more than this amount of actions
+    # registered, a dropdown menu will be used for the extra actions.
+    #
+    # @return [Integer] The maximum number of actions outside the dropdown.
+    def max_number_of_actions_outside_dropdown
+      2
+    end
+
     def model
       self.class.model
     end
