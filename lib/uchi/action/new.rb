@@ -17,7 +17,7 @@ module Uchi
 
       # Renders as a plain link to the new page, instead of a button that
       # executes the action via a POST request.
-      def render(record:, view:)
+      def render_as_dropdown_item(record:, view:)
         view.link_to(
           name,
           repository.routes.path_for(:new),

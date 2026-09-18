@@ -5,7 +5,7 @@ class DropdownTestAction < Uchi::Action
     Uchi::ActionResponse.success
   end
 
-  def render(record:, view:)
+  def render_as_dropdown_item(record:, view:)
     view.link_to(name, "#")
   end
 
