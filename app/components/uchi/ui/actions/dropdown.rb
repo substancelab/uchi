@@ -19,6 +19,8 @@ module Uchi
           @actions = actions
           @record = record
           @repository = repository
+
+          actions.each { |action| action.repository = repository }
         end
 
         def render?

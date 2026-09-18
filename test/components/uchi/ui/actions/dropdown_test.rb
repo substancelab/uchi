@@ -5,11 +5,11 @@ class DropdownTestAction < Uchi::Action
     Uchi::ActionResponse.success
   end
 
-  def render(record:, repository:, view:)
+  def render(record:, view:)
     view.link_to(name, "#")
   end
 
-  def button_render(record:, repository:, view:)
+  def button_render(record:, view:)
     view.link_to(name, "#", class: Uchi::Flowbite::Button.classes)
   end
 end

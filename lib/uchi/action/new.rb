@@ -17,7 +17,7 @@ module Uchi
 
       # Renders as a plain link to the new page, instead of a button that
       # executes the action via a POST request.
-      def render(record:, repository:, view:)
+      def render(record:, view:)
         view.link_to(
           name,
           repository.routes.path_for(:new),
@@ -27,7 +27,7 @@ module Uchi
 
       # Renders as a primary button-styled link to the new-record page, for
       # use when this is the only action available.
-      def button_render(record:, repository:, view:)
+      def button_render(record:, view:)
         view.link_to(
           name,
           repository.routes.path_for(:new),
@@ -42,6 +42,12 @@ module Uchi
 
       def default_on
         [Uchi::View::INDEX]
+      end
+
+      def name
+        return super unless repository
+
+        repository.translate.link_to_new
       end
     end
   end
