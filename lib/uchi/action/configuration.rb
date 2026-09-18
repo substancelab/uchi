@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "uchi/view"
+
 module Uchi
   class Action
     module Configuration
