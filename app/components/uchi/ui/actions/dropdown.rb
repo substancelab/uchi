@@ -27,12 +27,24 @@ module Uchi
 
         private
 
+        def actions_inside_dropdown
+          @actions_inside_dropdown ||= actions.drop(max_number_of_actions_outside_dropdown)
+        end
+
+        def actions_outside_dropdown
+          @actions_outside_dropdown ||= actions.first(max_number_of_actions_outside_dropdown)
+        end
+
         def button_id
           "actions-dropdown-button-#{record_id}"
         end
 
         def dropdown_id
           "actions-dropdown-#{record_id}"
+        end
+
+        def max_number_of_actions_outside_dropdown
+          repository&.max_number_of_actions_outside_dropdown || 1
         end
 
         def record_id

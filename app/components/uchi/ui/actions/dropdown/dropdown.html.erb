@@ -1,6 +1,8 @@
-<% if actions.one? %>
-  <%= actions.first.button_render(record: record, view: self.view_context) %>
-<% else %>
+<% actions_outside_dropdown.each do |action| %>
+  <%= action.button_render(record: record, view: self.view_context) %>
+<% end %>
+
+<% if actions_inside_dropdown.any? %>
   <div class="relative" data-controller="dropdown">
     <%= render(Uchi::Flowbite::Button.new(style: :secondary, :data => {:action => "dropdown#toggle click@window->dropdown#hide"}, id: button_id)) do %>
       <div class="inline-flex items-center">
@@ -43,7 +45,7 @@
         aria-labelledby="<%= button_id %>"
         class="p-2 text-sm text-body font-medium"
       >
-        <% actions.each do |action| %>
+        <% actions_inside_dropdown.each do |action| %>
           <li role="menuitem">
             <%= action.render(record: record, view: self.view_context) %>
           </li>

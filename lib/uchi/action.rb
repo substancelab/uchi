@@ -104,8 +104,8 @@ module Uchi
     end
 
     # Returns the HTML necessary for executing the action, styled as a
-    # standalone primary button/link, for use when it's the only action
-    # available (see Uchi::Ui::Actions::Dropdown).
+    # standalone primary button/link, for use when it is rendered outside the
+    # dropdown menu. (see Uchi::Ui::Actions::Dropdown).
     #
     # By default, this looks like #render but styled with the Flowbite
     # button classes matching #style, instead of the menu item styling used
