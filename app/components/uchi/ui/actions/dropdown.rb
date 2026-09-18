@@ -24,7 +24,11 @@ module Uchi
         private
 
         def button_id
-          "actions-dropdown-button-#{record.id}"
+          "actions-dropdown-button-#{record_id}"
+        end
+
+        def record_id
+          @record_id ||= record&.id || Time.current.to_i
         end
       end
     end
