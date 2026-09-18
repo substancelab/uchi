@@ -47,7 +47,7 @@ class UchiRepositoryActionsTest < ActiveSupport::TestCase
     repository = Uchi::Repositories::Author.new
 
     assert_equal \
-      [Uchi::Action::Edit, Uchi::Action::Delete],
+      [Uchi::Action::New, Uchi::Action::Edit, Uchi::Action::Delete],
       repository.actions.map(&:class)
   end
 
