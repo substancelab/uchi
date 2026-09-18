@@ -41,6 +41,11 @@ module Uchi
       assert_select "a[href=?]", uchi_book_path(id: @book.id), text: "Cancel"
     end
 
+    test "GET edit includes a button to delete the record" do
+      get edit_uchi_book_url(id: @book.id)
+      assert_select "form[action=?]", uchi_book_path(id: @book.id), text: "Delete"
+    end
+
     test "GET index links to show for each record" do
       get uchi_books_url
 
@@ -75,11 +80,6 @@ module Uchi
     test "GET show renders the show view" do
       get uchi_book_url(id: @book.id)
       assert_template :show
-    end
-
-    test "GET show includes a button to delete the record" do
-      get uchi_book_url(id: @book.id)
-      assert_select "form[action=?]", uchi_book_path(id: @book.id), text: "Delete"
     end
 
     test "GET show renders titles inline instead of a turbo-frame, since Book's titles field has nested_fields configured" do

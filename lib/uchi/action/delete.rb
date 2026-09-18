@@ -38,7 +38,7 @@ module Uchi
       protected
 
       def default_on
-        [Uchi::View::SHOW]
+        [Uchi::View::EDIT]
       end
     end
   end

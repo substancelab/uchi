@@ -5,6 +5,16 @@
     description: @repository.translate.description(:edit),
     title: @repository.translate.title_for_edit(@record),
   )) do |header| %>
+  <% if @repository.actions_for(Uchi::View::EDIT).any? %>
+    <% header.with_action do %>
+      <%= render(Uchi::Ui::Actions::Dropdown.new(
+        actions: @repository.actions_for(Uchi::View::EDIT),
+        record: @record,
+        repository: @repository
+      )) %>
+    <% end %>
+  <% end %>
+
   <% header.with_breadcrumb(items: [
     {href: @repository.routes.root_path, label: @repository.translate.breadcrumb_label_for_root },
     {href: @repository.routes.path_for(:index), label: @repository.translate.breadcrumb_label(:index) },
