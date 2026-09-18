@@ -1,5 +1,5 @@
 <% actions_outside_dropdown.each do |action| %>
-  <%= action.button_render(record: record, view: self.view_context) %>
+  <%= action.render_as_button(record: record, view: self.view_context) %>
 <% end %>
 
 <% if actions_inside_dropdown.any? %>

@@ -27,7 +27,7 @@ module Uchi
 
       # Renders as a primary button-styled link to the new-record page, for
       # use when this is the only action available.
-      def button_render(record:, view:)
+      def render_as_button(record:, view:)
         view.link_to(
           name,
           repository.routes.path_for(:new),
