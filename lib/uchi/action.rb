@@ -79,7 +79,7 @@ module Uchi
         view.safe_join([
           view.hidden_field_tag(:model, repository.model.name),
           view.hidden_field_tag(:action_name, self.class.name),
-          view.hidden_field_tag(:id, record.id),
+          record ? view.hidden_field_tag(:id, record.id) : nil,
 
           view.button_tag(
             type: "submit",
