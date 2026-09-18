@@ -8,7 +8,7 @@ module Uchi
     class Delete < Action
       # Renders as a primary (danger-styled) button, for use when this is
       # the only action available.
-      def button_render(record:, repository:, view:)
+      def button_render(record:, view:)
         view.button_to(
           repository.translate.link_to_destroy(record),
           repository.routes.path_for(:destroy, id: record.id),
@@ -35,7 +35,7 @@ module Uchi
       # Renders as a button that submits a DELETE request directly to the
       # record's destroy route, with a confirmation dialog, instead of
       # executing the action via the generic actions execution endpoint.
-      def render(record:, repository:, view:)
+      def render(record:, view:)
         view.button_to(
           repository.translate.link_to_destroy(record),
           repository.routes.path_for(:destroy, id: record.id),

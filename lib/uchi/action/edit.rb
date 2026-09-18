@@ -8,9 +8,9 @@ module Uchi
     class Edit < Action
       # Renders a button to trigger the action, linking to the edit page, for
       # use when this is the only action available.
-      def button_render(record:, repository:, view:)
+      def button_render(record:, view:)
         view.link_to(
-          name,
+          repository.translate.link_to_edit(record),
           repository.routes.path_for(:edit, id: record.id),
           class: Uchi::Flowbite::Button.classes(style: style),
           data: {
@@ -32,9 +32,9 @@ module Uchi
 
       # Renders as a plain link to the edit page, instead of a button that
       # executes the action via a POST request.
-      def render(record:, repository:, view:)
+      def render(record:, view:)
         view.link_to(
-          name,
+          repository.translate.link_to_edit(record),
           repository.routes.path_for(:edit, id: record.id),
           class: "block p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
         )

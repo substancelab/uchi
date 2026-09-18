@@ -12,6 +12,7 @@ module Uchi
         repository = find_repository
         action = find_action(repository: repository)
         action.context = uchi_context
+        action.repository = repository
         input = build_input(action: action)
         records = find_records(repository: repository)
 

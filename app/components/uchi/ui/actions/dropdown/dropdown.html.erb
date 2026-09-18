@@ -1,5 +1,5 @@
 <% if actions.one? %>
-  <%= actions.first.button_render(record: record, repository: repository, view: self.view_context) %>
+  <%= actions.first.button_render(record: record, view: self.view_context) %>
 <% else %>
   <div class="relative" data-controller="dropdown">
     <%= render(Uchi::Flowbite::Button.new(style: :secondary, :data => {:action => "dropdown#toggle click@window->dropdown#hide"}, id: button_id)) do %>
@@ -45,7 +45,7 @@
       >
         <% actions.each do |action| %>
           <li role="menuitem">
-            <%= action.render(record: record, repository: repository, view: self.view_context) %>
+            <%= action.render(record: record, view: self.view_context) %>
           </li>
         <% end %>
       </ul>

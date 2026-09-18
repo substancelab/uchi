@@ -20,6 +20,8 @@ module Uchi
       end
 
       def title(model)
+        return self.class unless model
+
         model.original_title
       end
     end

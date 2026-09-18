@@ -31,6 +31,9 @@ module Uchi
     # @return [Uchi::Context] the context in which the action is performed
     attr_accessor :context
 
+    # @return [Uchi::Repository] the repository this action is registered on
+    attr_accessor :repository
+
     # Returns the display name for this action.
     #
     # By default, this looks up the translation key
@@ -71,10 +74,9 @@ module Uchi
     # Uchi::Action::Edit).
     #
     # @param record [Object] - The record the action would apply to
-    # @param repository [Uchi::Repository] - The repository the record belongs to
     # @param view [ActionView::Base] - The view context for rendering
     # @return [String] HTML for executing the action
-    def render(record:, repository:, view:)
+    def render(record:, view:)
       view.form_with(url: view.uchi.actions_executions_path, method: :post, class: "block") do
         view.safe_join([
           view.hidden_field_tag(:model, repository.model.name),
@@ -112,10 +114,9 @@ module Uchi
     # (see Uchi::Action::Edit).
     #
     # @param record [Object] - The record the action would apply to
-    # @param repository [Uchi::Repository] - The repository the record belongs to
     # @param view [ActionView::Base] - The view context for rendering
     # @return [String] HTML for executing the action
-    def button_render(record:, repository:, view:)
+    def button_render(record:, view:)
       view.form_with(url: view.uchi.actions_executions_path, method: :post, class: "inline-block") do
         view.safe_join([
           view.hidden_field_tag(:model, repository.model.name),
