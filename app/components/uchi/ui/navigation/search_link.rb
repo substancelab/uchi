@@ -18,7 +18,7 @@ module Uchi
         end
 
         def path
-          helpers.uchi.search_path
+          Uchi.routes.path_to(:search)
         end
 
         def render?

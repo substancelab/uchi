@@ -34,6 +34,17 @@ class UchiRoutesTest < ActiveSupport::TestCase
     assert_equal "/admin", @route_set.url_helpers.uchi_root_path
   end
 
+  test "path_to generates a path scoped to a mount at a nested path" do
+    path = nil
+
+    draw {
+      Uchi.routes.mount(self, at: "admin/uchi")
+      path = Uchi.routes.path_to(:search)
+    }
+
+    assert_equal "/admin/uchi/_/search", path
+  end
+
   private
 
   def draw(&block)
