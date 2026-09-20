@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `collection_query`, `searchable`, `sortable` procs now receive a `context` argument with the current `Uchi::Context`.
 - Official support for PostgreSQL and MySQL, in addition to SQLite.
 - A set of constants to use when referencing views: `Uchi::View::INDEX` etc. See the Views documentation for details.
+- Support for mounting the engine at a nested path like `/admin/uchi` or similar.
 
 ### Changed
 

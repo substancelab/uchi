@@ -8,6 +8,8 @@ module Uchi
       # This component displays available actions for a repository in a dropdown
       # menu. Each action can be clicked to execute it on the specified record(s).
       class Dropdown < ViewComponent::Base
+        include Uchi::RoutesHelper
+
         attr_reader :actions, :record, :repository
 
         def initialize(actions:, record:, repository:)

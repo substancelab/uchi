@@ -64,6 +64,39 @@ module Uchi
       @mount_at ||= default_at
     end
 
+    # Generates a path to a named route inside the Uchi engine, e.g. `:search`
+    # for `search_path`.
+    #
+    # This calls the engine's own url helpers directly, with an explicit
+    # `script_name`, instead of going through the `uchi` routes proxy that Rails
+    # generates for the mount (e.g. `helpers.uchi.search_path`).
+    #
+    # That proxy derives the script name by combining the current request's
+    # script name with the mount's, a calculation that breaks down when Uchi is
+    # mounted at a path with more than one segment (e.g. `at: "admin/uchi"`) and
+    # the current request isn't itself routed through the engine (which is the
+    # common case since repository controllers are drawn directly into the host
+    # application's routes).
+    #
+    # @param script_name [String] The current request's script name, e.g. from
+    # `request.script_name`. Needed so links keep working when the host
+    # application itself is served from a sub-URI, e.g. Rack `SCRIPT_NAME`.
+    # Defaults to "" so callers without a request in scope still work.
+    #
+    # For requests already routed through the Uchi engine itself (e.g. the
+    # search page), `request.script_name` already includes the mount, so it's
+    # stripped back off here before being re-added, to avoid ending up with it
+    # twice, e.g. "/admin/uchi/admin/uchi".
+    def path_to(name, script_name: "", **options)
+      host_script_name = script_name.delete_suffix("/#{mount_at}")
+
+      Uchi::Engine.routes.url_helpers.public_send(
+        "#{name}_path",
+        **options,
+        script_name: "#{host_script_name}/#{mount_at}"
+      )
+    end
+
     private
 
     def default_at

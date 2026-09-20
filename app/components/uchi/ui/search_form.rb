@@ -7,6 +7,8 @@ module Uchi
     # Based on Flowbite's Simple search input
     # (https://flowbite.com/docs/forms/search-input/#simple-search-input)
     class SearchForm < ViewComponent::Base
+      include Uchi::RoutesHelper
+
       attr_reader :query
 
       def initialize(query: nil)
@@ -19,7 +21,7 @@ module Uchi
       end
 
       def path
-        helpers.uchi.search_path
+        uchi_path_to(:search)
       end
 
       def render?

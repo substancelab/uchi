@@ -6,6 +6,8 @@ module Uchi
       # Renders the icon link to the search page shown in the main
       # navigation.
       class SearchLink < ViewComponent::Base
+        include Uchi::RoutesHelper
+
         attr_reader :html_class
 
         def initialize(html_class: nil)
@@ -18,7 +20,7 @@ module Uchi
         end
 
         def path
-          helpers.uchi.search_path
+          uchi_path_to(:search)
         end
 
         def render?
