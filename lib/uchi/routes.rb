@@ -77,18 +77,24 @@ module Uchi
     # the current request isn't itself routed through the engine (which is the
     # common case since repository controllers are drawn directly into the host
     # application's routes).
-    def path_to(name, **options)
+    #
+    # @param script_name [String] The current request's script name, e.g. from
+    # `request.script_name`. Needed so links keep working when the host
+    # application itself is served from a sub-URI, e.g. Rack `SCRIPT_NAME`.
+    # Defaults to "" so callers without a request in scope still work.
+    #
+    # For requests already routed through the Uchi engine itself (e.g. the
+    # search page), `request.script_name` already includes the mount, so it's
+    # stripped back off here before being re-added, to avoid ending up with it
+    # twice, e.g. "/admin/uchi/admin/uchi".
+    def path_to(name, script_name: "", **options)
+      host_script_name = script_name.delete_suffix("/#{mount_at}")
+
       Uchi::Engine.routes.url_helpers.public_send(
         "#{name}_path",
         **options,
-        script_name: script_name
+        script_name: "#{host_script_name}/#{mount_at}"
       )
-    end
-
-    # Returns the script name Uchi's engine routes are mounted at, e.g.
-    # "/admin/uchi".
-    def script_name
-      "/#{mount_at}"
     end
 
     private

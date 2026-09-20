@@ -45,6 +45,41 @@ class UchiRoutesTest < ActiveSupport::TestCase
     assert_equal "/admin/uchi/_/search", path
   end
 
+  test "path_to prepends the current request's script name" do
+    path = nil
+
+    draw {
+      Uchi.routes.mount(self, at: "admin/uchi")
+      path = Uchi.routes.path_to(:search, script_name: "/myapp")
+    }
+
+    assert_equal "/myapp/admin/uchi/_/search", path
+  end
+
+  test "path_to does not duplicate the mount when the request is already routed through the engine" do
+    path = nil
+
+    draw {
+      Uchi.routes.mount(self, at: "admin/uchi")
+      # Requests dispatched to the engine's own controllers (e.g. search)
+      # already have the mount in their script name.
+      path = Uchi.routes.path_to(:search, script_name: "/admin/uchi")
+    }
+
+    assert_equal "/admin/uchi/_/search", path
+  end
+
+  test "path_to keeps the host's sub-URI when the request is already routed through the engine" do
+    path = nil
+
+    draw {
+      Uchi.routes.mount(self, at: "admin/uchi")
+      path = Uchi.routes.path_to(:search, script_name: "/myapp/admin/uchi")
+    }
+
+    assert_equal "/myapp/admin/uchi/_/search", path
+  end
+
   private
 
   def draw(&block)

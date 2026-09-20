@@ -4,6 +4,8 @@ module Uchi
   class Field
     class Base < Field
       class Component < ViewComponent::Base
+        include Uchi::RoutesHelper
+
         attr_reader :field, :record, :repository
 
         def initialize(field:, record:, repository:)
