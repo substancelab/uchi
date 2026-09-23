@@ -7,6 +7,13 @@ require "standard/rake"
 APP_RAKEFILE = File.expand_path("test/dummy/Rakefile", __dir__)
 load "rails/tasks/engine.rake"
 
+namespace :assets do
+  desc "Compile assets"
+  task :build do
+    sh "npm run assets:build"
+  end
+end
+
 namespace :docs do
   desc "Build documentation using Docyard"
   task :build do
@@ -43,4 +50,4 @@ namespace :herb do
   end
 end
 
-task default: ["app:test", "standard", "herb:lint", "herb:format:check"]
+task default: ["assets:build", "app:test", "standard", "herb:lint", "herb:format:check"]

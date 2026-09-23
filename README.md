@@ -174,7 +174,7 @@ See `.github/workflows/build.yml` for the service containers CI uses for each da
 
 All green? Then you are ready to release.
 
-1. Build the gem: `rake build`.
+1. Build the gem: `rake assets:build build`.
 2. Update `Uchi::VERSION` in `lib/uchi/version.rb` with the version you want to release.
 3. Update `CHANGELOG.md`: Add a version reference to the list at the bottom and replace the `Unreleased` header with the new version number.
 4. Commit these changes: `$ git commit -am "Release 0.4.0"`
