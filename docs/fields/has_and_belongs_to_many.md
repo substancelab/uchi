@@ -16,6 +16,10 @@ def fields
 end
 ```
 
+## Search
+
+Not searchable by default. The field isn't backed by a real column, so enabling it needs a `searchable` lambda - see [Search for columns in an associated table](/search#search-for-columns-in-an-associated-table).
+
 ## `#collection_query`
 
 The chainable `#collection_query` method lets you control what records are available to pick from. It accepts a proc, which receives an `ActiveRecord::Relation` with all records for the associated repository.

@@ -7,3 +7,7 @@ A simple field that's tailored for `id` attributes. It renders whatever the id i
 ```ruby
 Field::Id.new(:id)
 ```
+
+## Search
+
+Searchable by default. Matches by equality; the search term must be a valid number.

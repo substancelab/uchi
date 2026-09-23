@@ -6,6 +6,20 @@ require_relative "repository/routes"
 
 module Uchi
   class Repository
+    # Column types that are searched with a substring (LIKE) match. Every
+    # other type is compared by equality, since a LIKE pattern is a string
+    # operation and doesn't apply meaningfully to e.g. an integer or date
+    # column across all adapters.
+    TEXT_COLUMN_TYPES = [:string, :text].freeze
+    private_constant :TEXT_COLUMN_TYPES
+
+    # String representations accepted as `true`/`false` when comparing a
+    # search term against a boolean column. ActiveModel::Type::Boolean casts
+    # any non-blank, non-false-value string to `true`, so without this
+    # allowlist an unrelated search term would match every truthy row.
+    BOOLEAN_TRUE_VALUES = [true, 1, "1", "t", "T", "true", "TRUE", "on", "ON"].to_set.freeze
+    private_constant :BOOLEAN_TRUE_VALUES
+
     class << self
       # Returns all defined Uchi::Repository classes
       def all
@@ -217,6 +231,8 @@ module Uchi
       end
       conditions += plain_field_conditions(plain_fields, search)
 
+      return query.none if conditions.empty?
+
       query.where(conditions.inject(:or))
     end
 
@@ -231,28 +247,43 @@ module Uchi
       model.arel_table[primary_key].in(scope.select(primary_key).arel)
     end
 
+    # Builds one equality or LIKE condition per field, skipping fields whose
+    # column type can't represent the search term at all (e.g. a search of
+    # "abc" against an integer column).
     def plain_field_conditions(fields, search)
-      fields.map { |field|
-        arel_field = model.arel_table[field.name]
-        Arel::Nodes::NamedFunction.new(
-          "CAST",
-          [arel_field.as(Arel::Nodes::SqlLiteral.new(cast_to_text_type))]
-        ).matches("%#{search}%")
-      }
+      fields.filter_map { |field| plain_field_condition(field, search) }
     end
 
-    # Returns the CAST target type used to coerce non-text columns to text
-    # for substring search. MySQL doesn't support CAST(... AS VARCHAR) or
-    # CAST(... AS TEXT); it requires CHAR. Postgres and SQLite accept TEXT,
-    # but Postgres' bare CHAR truncates to a single character, so it can't be
-    # used as a shared default across adapters.
-    def cast_to_text_type
-      case model.connection.adapter_name
-      when /mysql/i
-        "CHAR"
+    def plain_field_condition(field, search)
+      arel_field = model.arel_table[field.name]
+      type = model.type_for_attribute(field.name)
+
+      if TEXT_COLUMN_TYPES.include?(type.type)
+        arel_field.matches("%#{search}%")
       else
-        "TEXT"
+        value = cast_search_term(type, search)
+        arel_field.eq(value) unless value.nil?
       end
+    end
+
+    # Casts +search+ to the field's native type using ActiveRecord's own type
+    # casting, so the comparison works the same way across adapters. Returns
+    # nil when the term isn't a valid value for the type, so the field is
+    # left out of the search instead of comparing against a nonsensical value.
+    def cast_search_term(type, search)
+      return boolean_search_value(search) if type.type == :boolean
+
+      type.cast(search)
+    end
+
+    # Rails' own boolean casting treats any non-blank, non-false-value string
+    # as true, which would make an unrelated search term match every truthy
+    # row. Only recognize known true/false representations here, and leave
+    # everything else unmatched (nil) instead.
+    def boolean_search_value(search)
+      return true if BOOLEAN_TRUE_VALUES.include?(search)
+      return false if ActiveModel::Type::Boolean::FALSE_VALUES.include?(search)
+      nil
     end
 
     def apply_sort_order(query, sort_order)
