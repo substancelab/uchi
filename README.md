@@ -180,6 +180,11 @@ All green? Then you are ready to release.
 4. Commit these changes: `$ git commit -am "Release 0.4.0"`
 5. Release to Mothership: `$ rake release`
 
+After release, a few administrative tasks:
+
+1. Deploy the documentation site: https://hatchbox.io/apps/13315-uchi-docs
+2. Upgrade the demo site to the new version: https://github.com/substancelab/uchi-demo-crm/
+
 ## Principles
 
 ### Defaults are defaults
