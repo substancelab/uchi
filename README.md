@@ -165,6 +165,21 @@ DB=mysql bundle exec rake app:test
 
 See `.github/workflows/build.yml` for the service containers CI uses for each database.
 
+## Release
+
+1. Make sure tests pass: `$ rake app:test`
+2. Make sure herb lint passes: `$ rake herb:lint`
+3. Make sure standard passes: `$ rake app:standard`
+4. Verify the [most recent build on `main`](https://github.com/substancelab/uchi/actions?query=branch%3Amain) is green.
+
+All green? Then you are ready to release.
+
+1. Build the gem: `rake build`.
+2. Update `Uchi::VERSION` in `lib/uchi/version.rb` with the version you want to release.
+3. Update `CHANGELOG.md`: Add a version reference to the list at the bottom and replace the `Unreleased` header with the new version number.
+4. Commit these changes: `$ git commit -am "Release 0.4.0"`
+5. Release to Mothership: `$ rake release`
+
 ## Principles
 
 ### Defaults are defaults
