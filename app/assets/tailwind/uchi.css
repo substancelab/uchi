@@ -19,6 +19,7 @@ running the following command:
 
 /* Don't include classes used in docs into Uchis stylesheet */
 @source not "docs";
+@source not "dist";
 
 /* Don't include classes found in node_modules */
 @source not "node_modules";
