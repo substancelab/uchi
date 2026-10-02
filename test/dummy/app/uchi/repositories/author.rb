@@ -9,6 +9,10 @@ module Uchi
           Field::Text.new(:biography).on(:edit, :new, :show)
         ]
       end
+
+      def max_number_of_actions_outside_dropdown
+        1
+      end
     end
   end
 end
