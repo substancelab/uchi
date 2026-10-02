@@ -23,16 +23,6 @@ module Uchi
         )
       end
 
-      # Renders as a plain link to the new page, instead of a button that
-      # executes the action via a POST request.
-      def render_as_dropdown_item(record:, view:)
-        view.link_to(
-          name,
-          repository.routes.path_for(:new),
-          class: "block p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
-        )
-      end
-
       # Renders as a primary button-styled link to the new-record page, for
       # use when the action is rendered outside the dropdown menu.
       def render_as_button(record:, view:)
@@ -43,6 +33,16 @@ module Uchi
           data: {
             "turbo-frame": "_top"
           }
+        )
+      end
+
+      # Renders as a plain link to the new page, instead of a button that
+      # executes the action via a POST request.
+      def render_as_dropdown_item(record:, view:)
+        view.link_to(
+          name,
+          repository.routes.path_for(:new),
+          class: "block p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
         )
       end
 

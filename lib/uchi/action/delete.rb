@@ -20,6 +20,20 @@ module Uchi
         end
       end
 
+      # Renders as a primary (danger-styled) button, for use when the action
+      # is rendered outside the dropdown menu.
+      def render_as_button(record:, view:)
+        view.button_to(
+          repository.translate.link_to_destroy(record),
+          repository.routes.path_for(:destroy, id: record.id),
+          class: Uchi::Flowbite::Button.classes(style: style),
+          data: {
+            "turbo-confirm": repository.translate.destroy_dialog_title(record)
+          },
+          method: :delete
+        )
+      end
+
       # Renders as a button that submits a DELETE request directly to the
       # record's destroy route, with a confirmation dialog, instead of
       # executing the action via the generic actions execution endpoint.
@@ -28,20 +42,6 @@ module Uchi
           repository.translate.link_to_destroy(record),
           repository.routes.path_for(:destroy, id: record.id),
           class: "block p-2 rounded text-left w-full hover:bg-neutral-tertiary-medium hover:text-heading",
-          data: {
-            "turbo-confirm": repository.translate.destroy_dialog_title(record)
-          },
-          method: :delete
-        )
-      end
-
-      # Renders as a primary (danger-styled) button, for use when the action
-      # is rendered outside the dropdown menu.
-      def render_as_button(record:, view:)
-        view.button_to(
-          repository.translate.link_to_destroy(record),
-          repository.routes.path_for(:destroy, id: record.id),
-          class: Uchi::Flowbite::Button.classes(style: style),
           data: {
             "turbo-confirm": repository.translate.destroy_dialog_title(record)
           },

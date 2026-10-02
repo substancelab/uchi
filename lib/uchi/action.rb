@@ -34,6 +34,16 @@ module Uchi
     # @return [Uchi::Repository] the repository this action is registered on
     attr_accessor :repository
 
+    # Returns the list of fields to show in the action form.
+    #
+    # Fields are instances of Uchi::Field subclasses (e.g., Field::String,
+    # Field::Boolean).
+    #
+    # @return [Array<Uchi::Field>]
+    def fields
+      []
+    end
+
     # Returns the display name for this action.
     #
     # By default, this looks up the translation key
@@ -45,16 +55,6 @@ module Uchi
       translate(:name, default: self.class.name.demodulize.titleize)
     end
 
-    # Returns the list of fields to show in the action form.
-    #
-    # Fields are instances of Uchi::Field subclasses (e.g., Field::String,
-    # Field::Boolean).
-    #
-    # @return [Array<Uchi::Field>]
-    def fields
-      []
-    end
-
     # Performs the action on the given records.
     #
     # This method must be implemented in subclasses.
@@ -64,6 +64,31 @@ module Uchi
     # @return [Uchi::ActionResponse]
     def perform(records, input = {})
       raise NotImplementedError, "#{self.class}#perform must be implemented"
+    end
+
+    # Returns the HTML necessary for executing the action, styled as a
+    # standalone primary button/link, for use when it is rendered outside the
+    # dropdown menu. (see Uchi::Ui::Actions::Dropdown).
+    #
+    # By default, this looks like #render_as_dropdown_item but styled with the
+    # Flowbite button classes matching #style, instead of the menu item styling
+    # used when this action appears alongside others in a dropdown. Override
+    # this method to render the action differently, e.g. as a plain link (see
+    # Uchi::Action::Edit).
+    #
+    # @param record [Object] - The record the action would apply to
+    # @param view [ActionView::Base] - The view context for rendering
+    # @return [String] HTML for executing the action
+    def render_as_button(record:, view:)
+      view.form_with(url: view.uchi_path_to(:actions_executions), method: :post, class: "inline-block") do
+        view.safe_join([
+          view.hidden_field_tag(:model, repository.model.name),
+          view.hidden_field_tag(:action_name, self.class.name),
+          (record ? view.hidden_field_tag(:id, record.id) : nil),
+
+          view.button_tag(name, type: "submit", class: Uchi::Flowbite::Button.classes(style: style))
+        ].compact)
+      end
     end
 
     # Returns the HTML necessary for executing the action as an item in a
@@ -94,6 +119,13 @@ module Uchi
       end
     end
 
+    # Returns true if this action requires input fields.
+    #
+    # @return [Boolean]
+    def requires_input?
+      fields.any?
+    end
+
     # Returns this action's visual style, used to pick the Flowbite button
     # classes when the action is rendered outside the dropdown menu (see
     # #render_as_button).
@@ -102,38 +134,6 @@ module Uchi
     #   (e.g. :default, :danger, :secondary)
     def style
       :default
-    end
-
-    # Returns the HTML necessary for executing the action, styled as a
-    # standalone primary button/link, for use when it is rendered outside the
-    # dropdown menu. (see Uchi::Ui::Actions::Dropdown).
-    #
-    # By default, this looks like #render_as_dropdown_item but styled with the
-    # Flowbite button classes matching #style, instead of the menu item styling
-    # used when this action appears alongside others in a dropdown. Override
-    # this method to render the action differently, e.g. as a plain link (see
-    # Uchi::Action::Edit).
-    #
-    # @param record [Object] - The record the action would apply to
-    # @param view [ActionView::Base] - The view context for rendering
-    # @return [String] HTML for executing the action
-    def render_as_button(record:, view:)
-      view.form_with(url: view.uchi_path_to(:actions_executions), method: :post, class: "inline-block") do
-        view.safe_join([
-          view.hidden_field_tag(:model, repository.model.name),
-          view.hidden_field_tag(:action_name, self.class.name),
-          (record ? view.hidden_field_tag(:id, record.id) : nil),
-
-          view.button_tag(name, type: "submit", class: Uchi::Flowbite::Button.classes(style: style))
-        ].compact)
-      end
-    end
-
-    # Returns true if this action requires input fields.
-    #
-    # @return [Boolean]
-    def requires_input?
-      fields.any?
     end
 
     private

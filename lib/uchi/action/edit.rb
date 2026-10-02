@@ -17,16 +17,6 @@ module Uchi
         )
       end
 
-      # Renders as a plain link to the edit page, instead of a button that
-      # executes the action via a POST request.
-      def render_as_dropdown_item(record:, view:)
-        view.link_to(
-          repository.translate.link_to_edit(record),
-          repository.routes.path_for(:edit, id: record.id),
-          class: "block p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
-        )
-      end
-
       # Renders a button to trigger the action, linking to the edit page, for
       # use when the action is rendered outside the dropdown menu.
       def render_as_button(record:, view:)
@@ -37,6 +27,16 @@ module Uchi
           data: {
             "turbo-frame": "_top"
           }
+        )
+      end
+
+      # Renders as a plain link to the edit page, instead of a button that
+      # executes the action via a POST request.
+      def render_as_dropdown_item(record:, view:)
+        view.link_to(
+          repository.translate.link_to_edit(record),
+          repository.routes.path_for(:edit, id: record.id),
+          class: "block p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
         )
       end
 
