@@ -36,7 +36,10 @@ module Uchi
         view.link_to(
           repository.translate.link_to_edit(record),
           repository.routes.path_for(:edit, id: record.id),
-          class: "block p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+          class: "block p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded",
+          data: {
+            "turbo-frame": "_top"
+          }
         )
       end
 

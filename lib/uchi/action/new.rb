@@ -42,7 +42,10 @@ module Uchi
         view.link_to(
           name,
           repository.routes.path_for(:new),
-          class: "block p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+          class: "block p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded",
+          data: {
+            "turbo-frame": "_top"
+          }
         )
       end
 

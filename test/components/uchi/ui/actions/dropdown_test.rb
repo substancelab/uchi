@@ -46,6 +46,20 @@ module Uchi
           assert_selector("li[role='menuitem']", count: 1)
         end
 
+        test "renders Edit inside the dropdown menu as a link targeting the top frame" do
+          author = Author.create!(name: "Alice")
+
+          render_inline(Dropdown.new(actions: [DropdownTestAction.new, Uchi::Action::Edit.new], record: author, repository: @repository))
+
+          assert_selector("li[role='menuitem'] a[data-turbo-frame='_top'][href='#{@repository.routes.path_for(:edit, id: author.id)}']")
+        end
+
+        test "renders New inside the dropdown menu as a link targeting the top frame" do
+          render_inline(Dropdown.new(actions: [DropdownTestAction.new, Uchi::Action::New.new], repository: @repository))
+
+          assert_selector("li[role='menuitem'] a[data-turbo-frame='_top'][href='#{@repository.routes.path_for(:new)}']")
+        end
+
         test "renders nothing when there are no actions" do
           render_inline(Dropdown.new(actions: [], repository: @repository))
 
