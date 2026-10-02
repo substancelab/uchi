@@ -165,6 +165,13 @@ class UchiActionTest < ActiveSupport::TestCase
     assert_equal [Uchi::View::SHOW], Uchi::Action::Edit.new.on
   end
 
+  test "New#name returns the repository's translated label" do
+    action = Uchi::Action::New.new
+    action.repository = Uchi::Repositories::Author.new
+
+    assert_equal action.repository.translate.link_to_new, action.name
+  end
+
   test "Delete is only visible on :edit by default" do
     assert_equal [Uchi::View::EDIT], Uchi::Action::Delete.new.on
   end

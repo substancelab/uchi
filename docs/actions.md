@@ -181,7 +181,7 @@ def name
 end
 ```
 
-The built-in `New`, `Edit`, and `Delete` actions don't use this lookup — since their labels are already repository-specific (e.g. "New author", "Delete comment"), they instead use the repository's own translations, such as `repository.translate.link_to_new`. See [Translations](/translations) for how to customize those.
+The built-in actions don't use this lookup, since their labels are repository-specific and use the repository's own translations instead. `New` overrides `#name` to return `repository.translate.link_to_new` (e.g. "New author"). `Edit` and `Delete` label their buttons with `repository.translate.link_to_edit(record)` and `repository.translate.link_to_destroy(record)`, which can include the record's title (e.g. "Delete Jane Austen"). See [Translations](/translations) for how to customize those.
 
 Use `#style` to control the action's visual style (e.g. `:default` or `:danger`):
 

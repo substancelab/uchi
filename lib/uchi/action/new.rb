@@ -6,6 +6,14 @@ module Uchi
   class Action
     # Redirects to the new page for a repository
     class New < Action
+      # Returns the repository's translated "new" label (e.g. "New author"),
+      # falling back to the default action name when no repository is set.
+      def name
+        return super unless repository
+
+        repository.translate.link_to_new
+      end
+
       def perform(records, input = {})
         # Theoretically, this action should never use its #perform method since
         # it renders a link directly to the new page without even executing the
@@ -42,12 +50,6 @@ module Uchi
 
       def default_on
         [Uchi::View::INDEX]
-      end
-
-      def name
-        return super unless repository
-
-        repository.translate.link_to_new
       end
     end
   end
