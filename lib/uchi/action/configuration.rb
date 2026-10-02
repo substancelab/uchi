@@ -12,7 +12,7 @@ module Uchi
       #
       # @param views [Array<Symbol, String, Uchi::View>] The views where this
       #   action should appear (e.g., :index, :show)
-      # @return [self, Array<Symbol>] Returns self for method chaining when
+      # @return [self, Array<Uchi::View>] Returns self for method chaining when
       #   setting, or the views array when getting
       #
       # @example Setting
