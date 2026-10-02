@@ -41,7 +41,11 @@ module Uchi
   module Repositories
     class Comment < Repository
       def actions
-        super + [Uchi::Action::Delete.new.on(:show, :edit)]
+        [
+          Uchi::Action::New.new,
+          Uchi::Action::Edit.new,
+          Uchi::Action::Delete.new.on(:show, :edit)
+        ]
       end
     end
   end
