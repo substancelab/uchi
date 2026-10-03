@@ -17,7 +17,7 @@ module Uchi
     # search term against a boolean column. ActiveModel::Type::Boolean casts
     # any non-blank, non-false-value string to `true`, so without this
     # allowlist an unrelated search term would match every truthy row.
-    BOOLEAN_TRUE_VALUES = [true, 1, "1", "t", "T", "true", "TRUE", "on", "ON"].to_set.freeze
+    BOOLEAN_TRUE_VALUES = [true, 1, "1", "t", "T", "true", "TRUE", "on", "ON"].freeze
     private_constant :BOOLEAN_TRUE_VALUES
 
     class << self
