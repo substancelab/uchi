@@ -114,7 +114,7 @@ Thanks to ActiveRecord we can even sort by columns in other tables/models. If yo
 
 ```ruby
 Field::BelongsTo.new(:company).sortable(lambda { |direction:, query:|
-  query.joins(:office).order(:offices => {:name => direction})
+  query.joins(:company).order(companies: {name: direction})
 })
 ```
 
