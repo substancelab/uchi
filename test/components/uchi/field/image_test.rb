@@ -45,6 +45,14 @@ module Uchi
         assert_not @field.searchable?
       end
 
+      test "#searchable? returns false when set to true" do
+        assert_not @field.searchable(true).searchable?
+      end
+
+      test "#searchable? returns true when given a lambda" do
+        assert @field.searchable(lambda { |query:, term:| query }).searchable?
+      end
+
       test "#show_component returns an instance of Show component" do
         component = @field.show_component(record: @form.object, repository: @repository)
         assert_equal @field, component.field

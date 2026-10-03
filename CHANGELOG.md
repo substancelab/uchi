@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - All procs are now called with keyword arguments. This means procs configured for `collection_query`, `searchable`, `sortable` will need to have their signature changed (from eg `lambda { |query, term| }` to `lambda { |query:, term:| }`).
 - Internal `uchi_user` method has been removed. If you happened to use it, use `Uchi::Context#user` instead.
+- `Field::File` and `Field::Image` are no longer searchable by default, and `searchable(true)` has no effect. Pass a lambda to `searchable` to enable searching in attached files.
 
 ### Added
 

@@ -28,6 +28,8 @@ Field::Number.new(:id).searchable(true)
 
 For text-based fields (`string`, `text`) Uchi performs a partial match using `LIKE` (`ILIKE` in PostgreSQL). For every other field type, the search term is cast to the field's type and matched by equality; if the term can't be cast (e.g. `"abc"` against an `:id`), the field is skipped.
 
+`File` and `Image` fields can only be searched by passing a lambda, see [Customize search](#customize-search). `searchable(true)` has no effect on them.
+
 ## Customize search
 
 By default the search is performed using `LIKE`/equality as described above. To customize how a field is searched, pass a lambda to the `searchable` method instead of `true`/`false`:
