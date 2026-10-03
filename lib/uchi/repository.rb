@@ -250,7 +250,7 @@ module Uchi
           )
         )
       end
-      conditions += plain_field_conditions(plain_fields, search)
+      conditions += plain_field_conditions(fields: plain_fields, search: search)
 
       return query.none if conditions.empty?
 
@@ -271,18 +271,18 @@ module Uchi
     # Builds one equality or LIKE condition per field, skipping fields whose
     # column type can't represent the search term at all (e.g. a search of
     # "abc" against an integer column).
-    def plain_field_conditions(fields, search)
-      fields.filter_map { |field| plain_field_condition(field, search) }
+    def plain_field_conditions(fields:, search:)
+      fields.filter_map { |field| plain_field_condition(field: field, search: search) }
     end
 
-    def plain_field_condition(field, search)
+    def plain_field_condition(field:, search:)
       arel_field = model.arel_table[field.name]
       type = model.type_for_attribute(field.name)
 
       if TEXT_COLUMN_TYPES.include?(type.type)
         arel_field.matches("%#{search}%")
       else
-        value = cast_search_term(type, search)
+        value = cast_search_term(search: search, type: type)
         arel_field.eq(value) unless value.nil?
       end
     end
@@ -291,9 +291,9 @@ module Uchi
     # casting, so the comparison works the same way across adapters. Returns
     # nil when the term isn't a valid value for the type, so the field is
     # left out of the search instead of comparing against a nonsensical value.
-    def cast_search_term(type, search)
+    def cast_search_term(search:, type:)
       return boolean_search_value(search) if type.type == :boolean
-      return nil if numeric_type?(type) && !numeric_term?(type, search)
+      return nil if numeric_type?(type) && !numeric_term?(search: search, type: type)
 
       type.cast(search)
     end
@@ -303,7 +303,7 @@ module Uchi
     # Since type casting alone is lenient ("12abc" casts to 12, "abc" to 0),
     # this adds a bit more strictness, so we don't find id 12 when searching for
     # "12bob"
-    def numeric_term?(type, search)
+    def numeric_term?(search:, type:)
       case type.type
       when :integer then search.match?(/\A[+-]?\d+\z/)
       else !Float(search, exception: false).nil?
