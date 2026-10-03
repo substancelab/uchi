@@ -2,13 +2,13 @@
 
 Uchi offers search across your repositories and fields out of the box.
 
-Search is configured on a field-by-field basis. If a repository contains at least one searchable `Field`, a search field appears on the index page, and a global search page is enabled.
+Search is configured on a field-by-field basis. If a repository contains at least one searchable `Field`, a search field appears on its index page.
 
 The search is fairly naive and is a bunch of conditions strung together by `OR`: `LIKE '%term%'` for text-based fields, equality for everything else. This can be modified by passing lambdas to `searchable` for the given field.
 
 ## Global search
 
-Global search is accessible via the search icon in the navigation. It searches across all repositories with at least one searchable field.
+Global search is accessible via the search icon in the navigation, which is shown when at least one repository has a searchable field. It searches across all repositories with at least one searchable field and shows up to 5 results per repository.
 
 ## Disable search
 
