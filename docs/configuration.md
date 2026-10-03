@@ -8,7 +8,7 @@ After having installed the gem to your application (See [installation](/installa
 
 :::tip Or ask your LLM to do it
 
-> Follow instructions from https://docs.uchiadmin.com/installation/ to add a Uchi admin backend. Generate repositories for all existing models. Reuse existing authentication to lock down the controllers.
+> Follow instructions from https://docs.uchiadmin.com/configuration/ to add a Uchi admin backend. Generate repositories for all existing models. Reuse existing authentication to lock down the controllers.
 :::
 
 :::steps
