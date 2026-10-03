@@ -35,7 +35,7 @@ Creating your own navigation partial gives you full control over the navigation 
 
 ## Routes
 
-Uchi automatically adds routes for each repository and uses whichever repository is defined first as the root route (ie what you'll get at `/uchi`).
+Uchi automatically adds routes for each repository and uses the first repository, sorted alphabetically by class name, as the root route (ie what you'll get at `/uchi`).
 
 ### Mounting at a Custom Path
 
