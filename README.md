@@ -50,14 +50,18 @@ Next up; customize your repository to return the fields you want to expose.
 Each repository defines a method, `#fields`, that returns the fields to include in the views in that repository. For example, a `Customer` repository could return its fields as:
 
 ```ruby
-class Uchi::Repositories::Customer < Uchi::Repository
-  def fields
-    [
-      Field::String.new(:name),
-      Field::Date.new(:started_on),
-      Field::BelongsTo.new(:company),
-      Field::HasMany.new(:agreements),
-    ]
+module Uchi
+  module Repositories
+    class Customer < Repository
+      def fields
+        [
+          Field::String.new(:name),
+          Field::Date.new(:started_on),
+          Field::BelongsTo.new(:company),
+          Field::HasMany.new(:agreements),
+        ]
+      end
+    end
   end
 end
 ```
