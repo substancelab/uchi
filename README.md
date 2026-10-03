@@ -9,10 +9,12 @@ Level up your scaffolds with a modern admin backend framework, designed for Rail
 
 ### 1. Install the gem
 
+Uchi is distributed from a private gem server and requires a license. See the [installation docs](https://docs.uchiadmin.com/installation) for how to authenticate with the gem server.
+
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "uchi"
+gem "uchi", source: "https://gems.uchiadmin.com"
 ```
 
 And then execute:
@@ -27,6 +29,8 @@ $ bundle
 $ rails generate uchi:install
 ```
 
+This mounts Uchi in `config/routes.rb`.
+
 ### 3. Create a repository
 
 Add a repository for one of your models by running
@@ -35,7 +39,7 @@ Add a repository for one of your models by running
 $ rails generate uchi:repository Customer
 ```
 
-This adds a repository in `app/uchi/repositories/customer.rb`, a controller to use that repository in `app/controllers/uchi/customers_controller.rb` and a route to `config/routes.rb` to send requests to the controller.
+This adds a repository in `app/uchi/repositories/customer.rb` and a controller to use that repository in `app/controllers/uchi/customers_controller.rb`. Routes are drawn automatically for every repository.
 
 You can now visit http://localhost:3000/uchi/customers - welcome to Uchi :)
 
@@ -46,7 +50,7 @@ Next up; customize your repository to return the fields you want to expose.
 Each repository defines a method, `#fields`, that returns the fields to include in the views in that repository. For example, a `Customer` repository could return its fields as:
 
 ```ruby
-class Uchi::Repository::Customer < Uchi::Repository
+class Uchi::Repositories::Customer < Uchi::Repository
   def fields
     [
       Field::String.new(:name),
@@ -64,9 +68,15 @@ Uchi comes with a bunch of fields that you can choose from, fx:
 - `Field::Boolean`
 - `Field::Date`
 - `Field::DateTime`
+- `Field::File`
+- `Field::HasAndBelongsToMany`
 - `Field::HasMany`
+- `Field::Id`
+- `Field::Image`
 - `Field::Number`
+- `Field::Select`
 - `Field::String`
+- `Field::Text`
 
 If none of the above works for you, you can create your own and use those.
 
@@ -80,10 +90,10 @@ There's a one-to-one mapping between a repository and a model. So if you have a 
 
 ### Model inference
 
-For the most part the model class for each repository is inferred from the repository class name, ie `Uchi::Repository::User` manages the `User` model. In some cases you might need to specify the relationship explicitly. You can override the `Uchi::Repository.model` class method in that case:
+For the most part the model class for each repository is inferred from the repository class name, ie `Uchi::Repositories::User` manages the `User` model. In some cases you might need to specify the relationship explicitly. You can override the `Uchi::Repository.model` class method in that case:
 
 ```ruby
-class Uchi::Repository::Something < Uchi::Repository
+class Uchi::Repositories::Something < Uchi::Repository
   def self.model
     ::SomethingElse
   end
@@ -98,22 +108,25 @@ Everything is localizable and translatable out of the box.
 
 ### Fields
 
-Repository fields are translated using translation keys on the form `uchi.repository.<repository name>.field.<field name>`. For example, the translations for a `User` repository could look like:
+Repository field labels are translated using translation keys on the form `uchi.repository.<repository name>.field.<field name>.label`. For example, the translations for a `User` repository could look like:
 
 ```yaml
 en:
   uchi:
     repository:
       user:
-        name: "Name"
-        password: "Password"
+        field:
+          name:
+            label: "Name"
+          password:
+            label: "Password"
 ```
 
 Field translations not specified in the `uchi` scope will default to whatever we get from Rails' `Model#human_attribute_name`.
 
 ### Repositories
 
-Repository names are based on the models they manage. Their translation keys are on the form `uchi.repository.<repository name>.model` and should have pluralization options. So a `UserRepository` would look like:
+Repository names are based on the models they manage. Their translation keys are on the form `uchi.repository.<repository name>.model` and should have pluralization options. So the `User` repository would look like:
 
 ```yaml
 en:
@@ -125,21 +138,22 @@ en:
           other: users
 ```
 
-Repository translations will default to whatever we get from Rails' `Model#model_name.human_name`.
+Repository translations default to the model's name as provided by Rails' `Model.model_name`.
 
-### Views
+### Buttons
 
-Copy on views can be translated specifically for each view. Their translation keys are on the form `uchi.repository.<repository name>.view.<view name>.<element key>`. For example to translate the "Add" button on the index view for the `UserRepository` you'd use the following translation:
+Buttons can be translated specifically for each repository. Their translation keys are on the form `uchi.repository.<repository name>.button.<button key>`. For example to translate the "New" button on the index view for the `User` repository you'd use the following translation:
 
 ```yaml
 en:
   uchi:
     repository:
       user:
-        view:
-          index:
-            add: "Create %{model}"
+        button:
+          link_to_new: "Create %{model}"
 ```
+
+Button translations not specified for a repository fall back to `uchi.common`, ie `uchi.common.new`.
 
 ## Authentication
 
