@@ -64,7 +64,7 @@ Note that this is not usable for index pages. The index table header always show
 
 ## Search
 
-If a repository contains at least one searchable `Field`, a search field appears on the index page. By default all text-based fields are considered searchable. See the [Search](/search) documentation for more details.
+If a repository contains at least one searchable `Field`, a search field appears on the index page. Whether a field is searchable by default is described on each field's page. See the [Search](/search) documentation for more details.
 
 ```ruby
 Field::Text.new(:name).searchable(true)

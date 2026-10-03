@@ -12,7 +12,7 @@ Global search is accessible via the search icon in the navigation. It searches a
 
 ## Disable search
 
-By default all text-based fields are considered searchable. To toggle searchability for a field use the `searchable` method:
+Whether a field is searchable by default depends on the field type; see the Search section of each field's page under [Fields](/fields). To toggle searchability for a field use the `searchable` method:
 
 ```ruby
 Field::String.new(:password).searchable(false)
@@ -23,12 +23,12 @@ Field::String.new(:password).searchable(false)
 You can also enable search for fields that don't enable it by default:
 
 ```ruby
-Field::Number.new(:id).searchable(true)
+Field::Number.new(:employee_number).searchable(true)
 ```
 
 For text-based fields (`string`, `text`) Uchi performs a partial match using `LIKE` (`ILIKE` in PostgreSQL). For every other field type, the search term is cast to the field's type and matched by equality; if the term can't be cast (e.g. `"abc"` against an `:id`), the field is skipped.
 
-`File` and `Image` fields can only be searched by passing a lambda, see [Customize search](#customize-search). `searchable(true)` has no effect on them.
+Fields that aren't backed by a column on the model's table, like associations and attachments, can only be searched by passing a lambda, see [Customize search](#customize-search). `searchable(true)` has no effect on them.
 
 ## Customize search
 
