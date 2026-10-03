@@ -8,11 +8,14 @@ There's a one-to-one mapping between a repository and a model. So if you have a 
 
 ## How to configure the repository for a controller
 
-Each repository is exposed to the user via a controller. For the vast majority of cases Uchi guesses the repository to use for a given controller, but in case you have special requirements, you can override the `#repository_class` method in your controller:
+Each repository is exposed to the user via a controller. The controller name is the pluralized param key of the model, so a `USB` model is routed to `Uchi::UsbsController`.
+
+For the vast majority of cases Uchi guesses the repository to use for a given controller by singularizing the controller name, ie `Uchi::UsbsController` uses `Uchi::Repositories::Usb`. In case you have special requirements, you can override the private `#repository_class` method in your controller:
 
 ```ruby
 module Uchi
-  class UsbController < Uchi::RepositoryController
+  class UsbsController < Uchi::RepositoryController
+    private
 
     def repository_class
       Uchi::Repositories::USB
