@@ -1,6 +1,6 @@
 # `Field::Image`
 
-Lets users upload and view images.
+Lets users upload and view images. Unlike most fields, `Image` is not searchable or sortable by default.
 
 ![Image field showing an uploaded logo on a show page](/fields/images/image_show.png)
 
