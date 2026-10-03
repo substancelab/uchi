@@ -34,6 +34,12 @@ Each action has an `#on` configuration that determines which views it's visible 
 Uchi::Action::Delete.new.on # => [Uchi::View::EDIT]
 ```
 
+Custom actions are only visible on the `:show` view by default:
+
+```ruby
+Uchi::Actions::SendWelcomeEmail.new.on # => [Uchi::View::SHOW]
+```
+
 You can change this on a per-instance basis when registering the action:
 
 ```ruby
