@@ -8,3 +8,7 @@ Lets users upload and download files. Unlike most fields, `File` is not searchab
 ```ruby
 Field::File.new(:attachment)
 ```
+
+## Search
+
+Not searchable by default, and not backed by a comparable column even if enabled - an Active Storage attachment.

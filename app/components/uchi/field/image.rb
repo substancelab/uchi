@@ -24,6 +24,12 @@ module Uchi
       class Show < Uchi::Field::Base::Show
       end
 
+      # Attachments have no column to compare a term against, so the field is
+      # only searchable when given a lambda describing how to search it.
+      def searchable?
+        searchable.respond_to?(:call)
+      end
+
       protected
 
       def default_searchable?

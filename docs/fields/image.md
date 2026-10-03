@@ -7,3 +7,7 @@ Lets users upload and view images.
 ```ruby
 Field::Image.new(:logo)
 ```
+
+## Search
+
+Not searchable by default, and not backed by a comparable column even if enabled - an Active Storage attachment.
