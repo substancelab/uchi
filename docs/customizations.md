@@ -7,7 +7,7 @@ While Uchi comes with a set of sensible defaults you'll inevitably find the need
 The default navigation menu renders a sorted list of all the [repositories](/repositories) included in Uchi. If you want more control over how this is done, you have a few options:
 
 1. Override the component
-2. Generate your own navigation partial
+2. Add your own navigation partial
 
 ### Override the component
 
@@ -33,9 +33,11 @@ If you want even more control over the navigation menu, including being able to 
 
 Creating your own navigation partial gives you full control over the navigation menu, including the `nav` element that wraps the navigation area, allowing you to remove the menu entirely by rendering an empty partial.
 
+The default partial also renders the global search link (`Uchi::Ui::Navigation::SearchLink`) and the menu for small viewports. Your partial replaces all of it, so copy the [default partial](https://github.com/substancelab/uchi/blob/main/app/views/uchi/navigation/_main.html.erb) as a starting point if you want to keep those.
+
 ## Routes
 
-Uchi automatically adds routes for each repository and uses whichever repository is defined first as the root route (ie what you'll get at `/uchi`).
+Uchi automatically adds routes for each repository and uses the first repository, sorted alphabetically by class name, as the root route (ie what you'll get at `/uchi`).
 
 ### Mounting at a Custom Path
 
@@ -54,7 +56,7 @@ end
 Now Uchi will be available at `/admin` instead of `/uchi`.
 
 :::note
-When changing the default mount point you need to update your controllers to use the custom namespace as well. i.e. if Uchi is mounted at `/admin`, your repository controllers need to live in an `Admin` namespace (`class Admin::UsersController`), not `Uchi` (`class Uchi::UsersController`).
+When changing the default mount point you need to update your controllers to use the custom namespace as well. i.e. if Uchi is mounted at `/admin`, your repository controllers need to live in an `Admin` namespace (`class Admin::UsersController`), not `Uchi` (`class Uchi::UsersController`). A path with multiple segments maps to nested namespaces, ie `at: "admin/uchi"` requires `Admin::Uchi::UsersController`.
 :::
 
 ### How to change the root URL

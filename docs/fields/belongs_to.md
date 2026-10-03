@@ -33,16 +33,21 @@ Field::BelongsTo.new(:person)
   })
 ```
 
+The proc can accept the following keyword arguments:
+
+1. `context`: The [`Uchi::Context`](/context) we're currently processing.
+2. `query`: The `ActiveRecord::Relation` described above.
+
 ## How to limit what records are returned
 
-You can use [`#collection_query`](#collection_query) to limit what records are returned. Remember you have access to the currently logged-in user in `Current.user`.
+You can use [`#collection_query`](#collection_query) to limit what records are returned. The currently logged-in user is available as `context.user`, see [Current user](/authentication#current-user).
 
 For example, if your `User` model has an `authorized_people` method that returns the people records the current user is allowed to access, you could do something like:
 
 ```ruby
 Field::BelongsTo.new(:person)
-  .collection_query(-> (query:) {
-    query.where(id: Current.user.authorized_people)
+  .collection_query(-> (context:, query:) {
+    query.where(id: context.user.authorized_people)
   })
 ```
 
@@ -65,14 +70,14 @@ The dropdown displays the `title` of the record. For example, a `Person` reposit
 
 ## BelongsTo field for polymorphic associations
 
-Out of the box, `Field::BelongsTo` works for regular `belongs_to` associations as well as polymorphic ones. However, for polymorphic associations the field cannot be shown in forms (ie `edit` or `new` pages) since Uchi cannot guess what models to show in the associated record dropdown.
+Out of the box, `Field::BelongsTo` works for regular `belongs_to` associations as well as polymorphic ones. However, for polymorphic associations the field is not shown in forms (ie `edit` or `new` pages) since Uchi cannot guess what models to show in the associated record dropdown. Uchi removes `edit` and `new` from the field's views automatically.
 
-For now, the best workaround is to remove the `BelongsTo` field from those pages and add explicit fields for the polymorphic attributes instead, ie:
+To edit the association, add explicit fields for the polymorphic attributes, ie:
 
 ```ruby
 def fields
   [
-    Field::BelongsTo.new(:owner).on(:index, :show),
+    Field::BelongsTo.new(:owner),
     Field::String.new(:owner_type).on(:edit, :new),
     Field::Number.new(:owner_id).on(:edit, :new),
   ]

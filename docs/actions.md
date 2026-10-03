@@ -34,6 +34,12 @@ Each action has an `#on` configuration that determines which views it's visible 
 Uchi::Action::Delete.new.on # => [Uchi::View::EDIT]
 ```
 
+Custom actions are only visible on the `:show` view by default:
+
+```ruby
+Uchi::Actions::SendWelcomeEmail.new.on # => [Uchi::View::SHOW]
+```
+
 You can change this on a per-instance basis when registering the action:
 
 ```ruby
@@ -124,11 +130,11 @@ module Uchi
 end
 ```
 
-`#perform` receives the records the action was triggered for. It's expected to return a `Uchi::ActionResponse`.
+`#perform` receives the records the action was triggered for. It should return a `Uchi::ActionResponse`; any other return value is treated as `Uchi::ActionResponse.success`.
 
 ### Responses
 
-The default response after performing an action is to redirect to the page where the action was performed. To customize the behavior you can return an explicit `Uchi::ActionResponse` from the action:
+The default response after performing an action is to redirect back to the page where the action was performed, falling back to the index page if the referrer isn't available. For redirecting responses, the response message is shown as a flash message; download and Turbo Stream responses don't show it. To customize the behavior you can return an explicit `Uchi::ActionResponse` from the action:
 
 ```ruby
 if things_went_well?
@@ -173,7 +179,19 @@ end
 
 ### Naming and styling
 
-By default, an action's display name is looked up from `uchi.action.[action_key].name`, and falls back to a humanized version of the class name (e.g. `SendWelcomeEmail` becomes "Send Welcome Email"). Override `#name` to customize it:
+By default, an action's display name is looked up from `uchi.action.[action_key].name`, where `action_key` is the underscored, full class name with `/` replaced by `.`. For `Uchi::Actions::SendWelcomeEmail` the key is `uchi.action.uchi.actions.send_welcome_email.name`:
+
+```yaml
+en:
+  uchi:
+    action:
+      uchi:
+        actions:
+          send_welcome_email:
+            name: "Send welcome email"
+```
+
+If no translation is found, the name falls back to a titleized version of the class name without its namespace (e.g. `SendWelcomeEmail` becomes "Send Welcome Email"). Override `#name` to customize it:
 
 ```ruby
 def name

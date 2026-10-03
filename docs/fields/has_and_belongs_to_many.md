@@ -31,14 +31,19 @@ Field::HasAndBelongsToMany.new(:tags)
   })
 ```
 
+The proc can accept the following keyword arguments:
+
+1. `context`: The [`Uchi::Context`](/context) we're currently processing.
+2. `query`: The `ActiveRecord::Relation` described above.
+
 ## How to limit what records are returned
 
-You can use [`#collection_query`](#collection_query) to limit what records are returned. Remember you have access to the currently logged-in user in `Current.user`.
+You can use [`#collection_query`](#collection_query) to limit what records are returned. The currently logged-in user is available as `context.user`, see [Current user](/authentication#current-user).
 
 ```ruby
 Field::HasAndBelongsToMany.new(:tags)
-  .collection_query(-> (query:) {
-    query.where(id: Current.user.tags)
+  .collection_query(-> (context:, query:) {
+    query.where(id: context.user.tags)
   })
 ```
 

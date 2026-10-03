@@ -1,6 +1,6 @@
 # `Field::Image`
 
-Lets users upload and view images.
+Lets users upload and view images. Unlike most fields, `Image` is not searchable or sortable by default.
 
 ![Image field showing an uploaded logo on a show page](/fields/images/image_show.png)
 
@@ -10,4 +10,4 @@ Field::Image.new(:logo)
 
 ## Search
 
-Not searchable by default, and not backed by a comparable column even if enabled - an Active Storage attachment.
+Not searchable by default. The field is an Active Storage attachment, not a column, so enabling it needs a `searchable` lambda - see [Customize search](/search#customize-search).

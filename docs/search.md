@@ -2,17 +2,17 @@
 
 Uchi offers search across your repositories and fields out of the box.
 
-Search is configured on a field-by-field basis. If a repository contains at least one searchable `Field`, a search field appears on the index page, and a global search page is enabled.
+Search is configured on a field-by-field basis. If a repository contains at least one searchable `Field`, a search field appears on its index page.
 
 The search is fairly naive and is a bunch of conditions strung together by `OR`: `LIKE '%term%'` for text-based fields, equality for everything else. This can be modified by passing lambdas to `searchable` for the given field.
 
 ## Global search
 
-Global search is accessible via the search icon in the navigation. It searches across all repositories with at least one searchable field.
+Global search is accessible via the search icon in the navigation, which is shown when at least one repository has a searchable field. It searches across all repositories with at least one searchable field and shows up to 5 results per repository.
 
 ## Disable search
 
-By default all text-based fields are considered searchable. To toggle searchability for a field use the `searchable` method:
+Whether a field is searchable by default depends on the field type; see the Search section of each field's page under [Fields](/fields). To toggle searchability for a field use the `searchable` method:
 
 ```ruby
 Field::String.new(:password).searchable(false)
@@ -23,12 +23,12 @@ Field::String.new(:password).searchable(false)
 You can also enable search for fields that don't enable it by default:
 
 ```ruby
-Field::Number.new(:id).searchable(true)
+Field::Number.new(:employee_number).searchable(true)
 ```
 
 For text-based fields (`string`, `text`) Uchi performs a partial match using `LIKE` (`ILIKE` in PostgreSQL). For every other field type, the search term is cast to the field's type and matched by equality; if the term can't be cast (e.g. `"abc"` against an `:id`), the field is skipped.
 
-`File` and `Image` fields can only be searched by passing a lambda, see [Customize search](#customize-search). `searchable(true)` has no effect on them.
+Fields that aren't backed by a column on the model's table, like associations and attachments, can only be searched by passing a lambda, see [Customize search](#customize-search). `searchable(true)` has no effect on them.
 
 ## Customize search
 

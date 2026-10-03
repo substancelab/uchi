@@ -11,4 +11,4 @@ Field::File.new(:attachment)
 
 ## Search
 
-Not searchable by default, and not backed by a comparable column even if enabled - an Active Storage attachment.
+Not searchable by default. The field is an Active Storage attachment, not a column, so enabling it needs a `searchable` lambda - see [Customize search](/search#customize-search).
