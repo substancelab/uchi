@@ -23,7 +23,7 @@ end
 
 ## Default sort order
 
-Lists of records in a repository are by default sorted by a column called `id`. To customize the default sort order, which is used when a user hasn’t explicitly chosen to sort by a specific field, you can create a `default_sort_order` method in the repository:
+Lists of records in a repository are by default sorted ascending by the model's primary key. To customize the default sort order, which is used when a user hasn’t explicitly chosen to sort by a specific field, you can create a `default_sort_order` method in the repository:
 
 ```ruby
 module Uchi
@@ -38,6 +38,8 @@ end
 ```
 
 `default_sort_order` should return a `Uchi::SortOrder`.
+
+The sort order is only applied if the repository has a field with the same name as the sort column. If `#fields` doesn't include a field named `:name`, the example above leaves the records unsorted. The same applies to the default sort order if there is no field for the primary key.
 
 ## Avoiding n+1
 
