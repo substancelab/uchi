@@ -290,6 +290,21 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_empty authors
   end
 
+  test "#find_all ignores searchable fields that aren't backed by a column" do
+    alice = Author.create!(name: "Alice")
+    repository = Class.new(Uchi::Repository) do
+      define_singleton_method(:model) { Author }
+      define_method(:fields) {
+        [
+          Uchi::Field::String.new(:name),
+          Uchi::Field::HasMany.new(:books).searchable(true)
+        ]
+      }
+    end.new
+
+    assert_equal [alice], repository.find_all(search: "Alice")
+  end
+
   test "#find_all matches a searchable boolean field by equality" do
     alice = Author.create!(name: "Alice", deceased: true)
     bob = Author.create!(name: "Bob", deceased: false)

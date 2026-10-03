@@ -268,14 +268,17 @@ module Uchi
       model.arel_table[primary_key].in(scope.select(primary_key).arel)
     end
 
-    # Builds one equality or LIKE condition per field, skipping fields whose
-    # column type can't represent the search term at all (e.g. a search of
-    # "abc" against an integer column).
+    # Builds one equality or LIKE condition per field, skipping fields that
+    # aren't backed by a column (e.g. attachments and associations) and fields
+    # whose column type can't represent the search term at all (e.g. a search
+    # of "abc" against an integer column).
     def plain_field_conditions(fields:, search:)
       fields.filter_map { |field| plain_field_condition(field: field, search: search) }
     end
 
     def plain_field_condition(field:, search:)
+      return unless model.column_names.include?(field.name.to_s)
+
       arel_field = model.arel_table[field.name]
       type = model.type_for_attribute(field.name)
 
