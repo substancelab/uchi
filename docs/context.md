@@ -4,7 +4,7 @@
 
 Its primary use case is as part of the arguments received by procs used to configure `collection_query`, [`searchable`](/search#customize-search), or [`sortable`](/fields#customize-sorting) options.
 
-It is generally available in all controllers, repositories, components, and actions.
+Controllers access it via `uchi_context`, repositories and actions via `#context`, and components via `repository.context`.
 
 :::note
 All of the attributes can return `nil`
@@ -12,5 +12,5 @@ All of the attributes can return `nil`
 
 | Attribute | Type | Description |
 |---|---|---|
-| `user` | `Object` | Returns the current user authenticated in your application, whatever that means in your application. If `current_user` is configured, this is the result of calling that. |
+| `user` | `Object` | The current user authenticated in your application, whatever that means in your application. `nil` unless your application sets it, see [Current user](/authentication#current-user). |
 | `view` | `Uchi::View` | The view that is being rendered. |
