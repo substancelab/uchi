@@ -5,13 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Breaking
+
+- `Repository#actions` now returns `Uchi::Action::New`, `Uchi::Action::Edit`, and `Uchi::Action::Delete` by default. If you override `actions`, include these (or call `super`) to keep the New, Edit, and Delete buttons.
+- `searchable(true)` is now ignored for `Field::File` and `Field::Image`, since attachments have no column to search. Pass a lambda to `searchable` to make them searchable.
+
+### Added
+
+- Default actions for creating, editing, and deleting records: `Uchi::Action::New`, `Uchi::Action::Edit`, and `Uchi::Action::Delete`. These replace the previously hardcoded buttons.
+- Actions can now be configured to appear on the index, show, and edit views. On the index view, they aren't tied to a specific record.
+- Actions now render in a dropdown if a page has more than `Repository#max_number_of_actions_outside_dropdown` actions. Defaults to 2.
+- `Action#render_as_button`, `Action#render_as_dropdown_item`, and `Action#style` for customizing how an action is rendered.
+- Actions now have access to their `repository` when rendered and performed.
+
+### Changed
+
+- The Delete button has moved from the show view to the edit view.
+- Search compares text columns using `LIKE` and all other columns using equality. Searching for `12` no longer matches an id of `112`.
+- Numeric columns are only searched when the search term is a valid number, so `12bob` no longer matches an id of `12`.
+- Boolean columns are only searched when the search term is a recognized boolean value, like `true` or `0`.
+
+### Fixed
+
+- Searching no longer fails for searchable fields that aren't backed by a database column.
+- A search where no field can match the term now returns no results instead of all records.
+
+
 ## [0.4.0]
 
 ### Breaking
 
 - All procs are now called with keyword arguments. This means procs configured for `collection_query`, `searchable`, `sortable` will need to have their signature changed (from eg `lambda { |query, term| }` to `lambda { |query:, term:| }`).
 - Internal `uchi_user` method has been removed. If you happened to use it, use `Uchi::Context#user` instead.
-- `searchable(true)` is now ignored for `Field::File` and `Field::Image`, since attachments have no column to search. Pass a lambda to `searchable` to make them searchable.
 
 ### Added
 
