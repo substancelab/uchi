@@ -134,7 +134,7 @@ end
 
 ### Responses
 
-The default response after performing an action is to redirect back to the page where the action was performed, falling back to the index page if the referrer isn't available. The response message is shown as a flash message. To customize the behavior you can return an explicit `Uchi::ActionResponse` from the action:
+The default response after performing an action is to redirect back to the page where the action was performed, falling back to the index page if the referrer isn't available. For redirecting responses, the response message is shown as a flash message; download and Turbo Stream responses don't show it. To customize the behavior you can return an explicit `Uchi::ActionResponse` from the action:
 
 ```ruby
 if things_went_well?
