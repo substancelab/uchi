@@ -173,7 +173,19 @@ end
 
 ### Naming and styling
 
-By default, an action's display name is looked up from `uchi.action.[action_key].name`, and falls back to a humanized version of the class name (e.g. `SendWelcomeEmail` becomes "Send Welcome Email"). Override `#name` to customize it:
+By default, an action's display name is looked up from `uchi.action.[action_key].name`, where `action_key` is the underscored, full class name with `/` replaced by `.`. For `Uchi::Actions::SendWelcomeEmail` the key is `uchi.action.uchi.actions.send_welcome_email.name`:
+
+```yaml
+en:
+  uchi:
+    action:
+      uchi:
+        actions:
+          send_welcome_email:
+            name: "Send welcome email"
+```
+
+If no translation is found, the name falls back to a titleized version of the class name without its namespace (e.g. `SendWelcomeEmail` becomes "Send Welcome Email"). Override `#name` to customize it:
 
 ```ruby
 def name
