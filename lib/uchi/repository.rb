@@ -293,8 +293,25 @@ module Uchi
     # left out of the search instead of comparing against a nonsensical value.
     def cast_search_term(type, search)
       return boolean_search_value(search) if type.type == :boolean
+      return nil if numeric_type?(type) && !numeric_term?(type, search)
 
       type.cast(search)
+    end
+
+    # Returns true if +search+ matches the strict format of the numeric +type+.
+    #
+    # Since type casting alone is lenient ("12abc" casts to 12, "abc" to 0),
+    # this adds a bit more strictness, so we don't find id 12 when searching for
+    # "12bob"
+    def numeric_term?(type, search)
+      case type.type
+      when :integer then search.match?(/\A[+-]?\d+\z/)
+      else !Float(search, exception: false).nil?
+      end
+    end
+
+    def numeric_type?(type)
+      [:decimal, :float, :integer].include?(type.type)
     end
 
     # Rails' own boolean casting treats any non-blank, non-false-value string

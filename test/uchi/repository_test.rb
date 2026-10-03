@@ -276,6 +276,20 @@ class UchiRepositoryTest < ActiveSupport::TestCase
     assert_empty authors
   end
 
+  test "#find_all returns no records when a search term only starts with a valid integer" do
+    alice = Author.create!(name: "Alice")
+    repository = Class.new(Uchi::Repository) do
+      define_singleton_method(:model) { Author }
+      define_method(:fields) {
+        [Uchi::Field::Number.new(:id).searchable(true)]
+      }
+    end.new
+
+    authors = repository.find_all(search: "#{alice.id}abc")
+
+    assert_empty authors
+  end
+
   test "#find_all matches a searchable boolean field by equality" do
     alice = Author.create!(name: "Alice", deceased: true)
     bob = Author.create!(name: "Bob", deceased: false)
