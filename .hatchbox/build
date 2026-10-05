@@ -1,0 +1,4 @@
+bundle install && yarn install
+bundle exec rake docs:build
+mkdir -p public
+cp -r dist/* public
